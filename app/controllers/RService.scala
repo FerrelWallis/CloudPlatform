@@ -598,6 +598,7 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
 
   def getFiles(id:String,taskname:String)= Action{implicit request=>
     val files = new File(Utils.path+"/users/"+id+"/"+taskname+"/out").listFiles().filter(_.getName.contains("png")).map(_.getAbsolutePath)
+
     Ok(Json.toJson(files))
   }
 
