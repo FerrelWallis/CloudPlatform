@@ -1,0 +1,85 @@
+<link rel="stylesheet" type="text/css" href="/assets/css/reset.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="/assets/css/fluid.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="/assets/css/mws.style.css" media="screen" />
+<link rel="stylesheet" type="text/css" href="/assets/css/icons/icons.css" media="screen" />
+    <!-- Theme Stylesheet -->
+<link rel="stylesheet" type="text/css" href="/assets/css/mws.theme.css" media="screen" />
+
+    <!-- JavaScript Plugins -->
+
+<script type="text/javascript" src="/assets/js/jquery-1.7.1.min.js"></script>
+
+<script type="text/javascript" src="/assets/plugins/jquery.dataTables.js"></script>
+<script type="text/javascript" src="/assets/plugins/colorpicker/colorpicker.js"></script>
+<script type="text/javascript" src="/assets/plugins/spinner/ui.spinner.js"></script>
+
+<script type="text/javascript" src="/assets/js/jquery-ui.js"></script>
+
+
+
+
+
+
+<div id="mws-container" class="clearfix">
+    <div class="container">
+        <div class="mws-panel grid_8">
+            <div class="mws-panel-header">
+                <span class="mws-i-24 i-table-1">Data Table with Numbered Pagination</span>
+            </div>
+            <div class="mws-panel-body">
+                <table class="mws-datatable-fn mws-table" id="table">
+                    <thead>
+                        <tr>
+                            <th>Rendering engine</th>
+                            <th>Browser</th>
+                            <th>Platform(s)</th>
+                            <th>Engine version</th>
+                            <th>CSS grade</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+            $(document).ready(function () {
+                $("#table").dataTable({
+                    searching:true,
+                    bPaginate:true,
+                    bLengthChange: true,
+                    bFilter:true,
+                    bSort:true,
+                    bAutoWidth:true,
+                    sPaginationType: "full_numbers",
+                    sAjaxSource:"/CloudPlatform/MyTasks/getDutys?uid=1",
+                    sAjaxDataProp:'rows',
+                    fnServerData: function ( sSource, aoData, fnCallback ) {
+                        $.ajax( {
+                            dataType: 'json',
+                            type: "POST",
+                            url: sSource,
+                            data: aoData,
+                            success: fnCallback
+                        } );
+                    },
+                    aoColumns:[
+                        {mDataProp:"taskname"},
+                        {mDataProp:"sname"},
+                        {mDataProp:"submit"},
+                        {mDataProp:"finish"},
+                        {mDataProp:"status"}
+                    ],
+                    contentType: "application/x-www-form-urlencoded"
+
+                });
+
+            });
+
+            // $(".mws-datatable").dataTable();
+            // $(".mws-datatable-fn").dataTable({sPaginationType: "full_numbers"});
+
+
+    </script>

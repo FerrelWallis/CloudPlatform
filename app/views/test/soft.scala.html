@@ -1,0 +1,93 @@
+
+<link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("css/test/meiji.css")" media="screen" />
+<link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("zui/zui.min.css")" media="screen" />
+<link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("layui/layui.css")" media="screen" />
+
+<div class="block">
+    <div class="title"><h6>
+                                                                         参数设置
+    </h6></div>
+    <div class="contain">
+        <div class="tip"><strong>说明：</strong>
+            <div class="add_Explain">
+                <p></p>
+            </div>
+        </div>
+        <table class="common-table" border="0" cellpadding="0" cellspacing="0">
+            <tbody>
+                    <!--<tr class="title">
+                                                    <th>中文别名</th>
+                                                    <th width="60%">值</th>
+                                                </tr>-->
+                <tr class="otu_table" name="数据表" default_value="" is_required="1" is_front_show="1" show_type="upload">
+                    <td align="left" width="200">数据表 <span class="must">*</span><span class="explain left"><i class="icon-question-sign"></i><span class="word">一般为样本对应的物种丰度表</span></span></td>
+                    <td align="left">
+                        <input id="file_hidden" type="hidden" value="" name="file_ids[2229]">
+                        <input type="text" value="" size="60" readonly="readonly" name="parameter_ids[2229][value]">
+
+                        <a href="javascript:;" class="layui-btn layui-btn-sm layui-btn-normal select_file_dir" parent_hash="" act="choose_file" style="cursor:pointer" first_choose="1"><i class="iconcloud"></i> 选择文件</a>
+                        <a parameter-id="2229" class="layui-btn layui-btn-sm layui-btn-primary show-sample"><i class="iconcloud"></i> 参考示例</a>
+                        <a href="javascript:;" class="layui-btn layui-btn-sm layui-btn-primary clear_file"><i class="iconcloud"></i> 清除</a>
+                    </td>
+                </tr><tr class="group_table" name="分组表" default_value="" is_required="1" is_front_show="1" show_type="upload">
+                <td align="left" width="200">分组表 <span class="must">*</span><span class="explain left"><i class="icon-question-sign"></i><span class="word">样本分组的表</span></span></td>
+                <td align="left">
+                    <input id="file_hidden" type="hidden" value="" name="file_ids[2230]">
+                    <input type="text" value="" size="60" readonly="readonly" name="parameter_ids[2230][value]">
+
+                    <a href="javascript:;" class="layui-btn layui-btn-sm layui-btn-normal select_file_dir" parent_hash="" act="choose_file" style="cursor:pointer" first_choose="1"><i class="iconcloud"></i> 选择文件</a>
+                    <a parameter-id="2230" class="layui-btn layui-btn-sm layui-btn-primary show-sample"><i class="iconcloud"></i> 参考示例</a>
+                    <a href="javascript:;" class="layui-btn layui-btn-sm layui-btn-primary clear_file"><i class="iconcloud"></i> 清除</a>
+                </td>
+            </tr>                                            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+
+<div class="form2 form2_out tab-pane fade">
+    <p>form2输出结果：</p>
+    <br>
+    <img class="img-rounded img-thumbnail img-responsive" src="/assets/example/pca_result.png" alt="生物云平台">
+</div>
+<div class="form2_ins tab-pane fade">
+    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+        <span><a href="https://www.omicshare.com/forum/thread-631-1-1.html" target="_blank"><i class="icon icon-question-sign" style="font-size: 14px!important;"></i><strong><span style="color:#337FE5;">了解该工具的原理与详细解析，请点击＞＞</span></strong></a></span>
+    </p>
+    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+        <br>
+    </p>
+    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+        <span style="font-weight:700;">form2功能：</span><br>
+        将多个变量通过线性变换，筛选出数个比较重要的变量。
+    </p>
+    <br>
+    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+        <span style="font-weight:700;">输入：</span>
+    </p>
+    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        ① 矩阵文件:文件为二维矩阵文件，第一行一般为样本，第一列为基因名。
+    </p>
+    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        ② 列的ID:筛选用来做聚类分析的列，一般为样本名。如果不填即默认用上传矩阵文件中的全部列做聚类分析。列表中的每一行表示一个列名，且列名必须在矩阵文件中存在。
+    </p>
+    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        ③ 行的ID:筛选用来做聚类分析的行，一般为基因名。如果不填即默认用上传矩阵文件中的全部行做聚类分析。列表中的每一行表示一个行名，且行名必须在矩阵文件中存在.
+    </p>
+    <br>
+    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+        <span style="font-weight:700;">参数：</span>
+    </p>
+    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        归一化：我们利用z-score进行数据的归一化，即将每个基因的表达量减去这个基因在所有样本中表达量的均值，然后除以其标准差。对数据进行归一化，可消除表达量异常高的基因的影响，减少数据间的“贫富差距”。我们推荐对数据进行归一化。
+    </p>
+    <br>
+    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+        <span style="font-weight:700;">输出：</span>
+    </p>
+    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        程序将输出主成分分析结果图
+    </p>
+    <br>						</div>

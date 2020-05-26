@@ -1,0 +1,178 @@
+.parameter_step .block:first-child {
+    display: block;
+}
+.parameter_step .block {
+    margin-bottom: 10px;
+    border: 1px solid #e2e2e2;
+}
+body, ul, ol, li, p, h1, h2, h3, h4, h5, h6, form, table, td, th, img, div, dl, dt, dd, pre, object, textarea, input, a, i, label {
+    margin: 0;
+    padding: 0;
+}
+blockquote, body, button, dd, div, dl, dt, form, h1, h2, h3, h4, h5, h6, input, li, ol, p, pre, td, textarea, th, ul {
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+.parameter_step .title {
+    height: 35px;
+    line-height: 35px;
+    padding: 0 10px;
+    width: auto;
+    background: #f5f5f5;
+    cursor: pointer;
+}
+.module_detail .module_info .contain {
+    padding: 10px;
+}
+.parameter_step .tip {
+    margin-bottom: 20px;
+}
+.parameter_step .title h6 {
+    font-weight: normal;
+    color: #999;
+    font-size: 13px;
+    text-align: left;
+    display: inline-block;
+}
+.parameter_step .tip {
+    margin-bottom: 20px;
+}
+.common-table {
+    width: 100%;
+}
+.common-table th, .common-table td {
+    color: #555;
+    padding: 10px 5px;
+    text-align: left;
+}
+
+.common-table td {
+    white-space: normal;
+    font-size: 12px;
+    border-bottom: 1px solid #eee;
+    line-height: 32px;
+}
+#form_parameter .explain {
+    vertical-align: middle;
+}
+
+.explain {
+    display: inline-block;
+    margin: 0 5px;
+    width: auto;
+    vertical-align: top;
+    color: #999;
+    position: relative;
+    text-align: center;
+}
+.parameter_step i.icon-question-sign {
+    margin: 0;
+    height: auto;
+    line-height: normal;
+}
+
+.common-table td i {
+    font-style: normal;
+}
+.explain i {
+    cursor: pointer;
+    font-size: 14px;
+    color: #ccc;
+    position: relative;
+    z-index: 1;
+    line-height: 25px;
+    height: 25px;
+}
+[class*=" icon-"], [class^=icon-] {
+    font-family: FontAwesome;
+    font-weight: 400;
+    font-style: normal;
+    text-decoration: inherit;
+    -webkit-font-smoothing: antialiased;
+    display: inline;
+    width: auto;
+    height: auto;
+    line-height: normal;
+    vertical-align: baseline;
+    background-image: none;
+    background-position: 0 0;
+    background-repeat: repeat;
+    margin-top: 0;
+}
+.parameter_step .explain .word {
+    bottom: 25px;
+}
+.explain.left .word {
+    margin-left: -20px;
+}
+.explain .word {
+    line-height: 20px;
+    font-weight: normal;
+    position: absolute;
+    padding: 5px 10px;
+    z-index: 120;
+    width: 287px;
+    display: none;
+    color: #fff!important;
+    background: rgba(0,0,0,0.8);
+    border-radius: 3px;
+    font-size: 12px;
+    text-align: left;
+    margin-left: -156px;
+    left: 50%;
+    bottom: 30px;
+    word-wrap: break-word;
+}
+.common-table td input {
+    float: left;
+    margin-right: 3px;
+    vertical-align: top;
+}
+#form_parameter input[type="text"], #form_parameter select, .hello-dialog input[type="text"] {
+    height: 32px;
+    border: 1px solid #e6e6e6;
+    border-radius: 2px;
+    padding: 0 5px;
+    vertical-align: middle;
+}
+
+.common-table td input {
+    float: left;
+    margin-right: 3px;
+    vertical-align: top;
+}
+.common-table td a {
+    display: inline-block;
+    max-width: 90%;
+    word-break: break-all;
+    min-width: 35px;
+}
+
+.layui-btn-sm {
+    height: 32px;
+    line-height: 32px;
+}
+.layui-btn-normal {
+    background-color: #27d17e;
+}
+.common-table td i {
+    font-style: normal;
+}
+.layui-btn i {
+    vertical-align: top;
+}
+.layui-btn-sm i {
+    font-size: 16px!important;
+}
+.iconcloud {
+    font-family: "iconcloud" !important;
+    font-size: 16px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.layui-btn+.layui-btn {
+    margin-left: 10px;
+}

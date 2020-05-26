@@ -1,0 +1,62 @@
+
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+
+GET           /                                                      controllers.HomeController.index
+GET           /CloudPlatform/home                                    controllers.HomeController.home
+GET           /CloudPlatform/PersonalCenter                          controllers.HomeController.personal
+GET           /CloudPlatform/myTask                                  controllers.HomeController.mytask
+
+GET           /CloudPlatform/SoftPage/GO                             controllers.SoftController.go
+GET           /CloudPlatform/SoftPage/KEGG                           controllers.SoftController.kegg
+GET           /CloudPlatform/SoftPage/PCA                            controllers.SoftController.pca
+GET           /CloudPlatform/SoftPage/CCA                            controllers.SoftController.cca
+GET           /CloudPlatform/SoftPage/Heatmap                        controllers.SoftController.heatmap
+GET           /CloudPlatform/SoftPage/Boxplot                        controllers.SoftController.boxplot
+
+GET           /CloudPlatform/SoftPage/NetWeight                      controllers.SoftController.netWeight
+GET           /CloudPlatform/SoftPage/NetDirected                    controllers.SoftController.netDirected
+
+POST          /CloudPlatform/SoftTool/runPCA                         controllers.RService.doPCA(id:String)
+POST          /CloudPlatform/SoftTool/runHeatmap                     controllers.RService.doHeatmap(id:String)
+POST          /CloudPlatform/SoftTool/runBoxplot                     controllers.RService.doBoxplot(id:String,textnum:Int)
+POST          /CloudPlatform/SoftTool/runGo                          controllers.RService.doGo(id:String,difftype:String,adddesc:Boolean)
+POST          /CloudPlatform/SoftTool/runKegg                        controllers.RService.doKegg(id:String,userefer:Boolean,desc:Boolean)
+POST          /CloudPlatform/SoftTool/runCca                         controllers.RService.doCca(id:String,color:String)
+POST          /CloudPlatform/SoftTool/runWeight                      controllers.RService.doWeight(id:String)
+POST          /CloudPlatform/SoftTool/runDirected                    controllers.RService.doDirected(id:String)
+
+#POST           /CloudPlatform/SoftTool/getFiles                     controllers.RService.getFiles(id:String,taskname:String)
+POST          /CloudPlatform/SoftTool/getFiles                       controllers.RService.getFiles(id:String,taskname:String)
+GET           /CloudPlatform/SoftTool/download                       controllers.RService.download(path:String)
+GET           /CloudPlatform/SoftTool/downloadExamples               controllers.RService.downloadExamples(name:String)
+GET           /CloudPlatform/pic                                     controllers.RService.getPic(path:String)
+
+POST          /CloudPlatform/MyTasks/getDutys                        controllers.DutyController.getAllDutyById(uid:String)
+POST          /CloudPlatform/MyTasks/deleteDutys                     controllers.DutyController.deleteDuty(uid:String,taskname:String)
+GET           /CloudPlatform/MyTasks/taskPreview                     controllers.DutyController.taskPreview(uid:String,taskname:String)
+
+POST          /CloudPlatform/User/signIn                             controllers.UserController.signIn
+GET           /CloudPlatform/User/signInSuccess                      controllers.UserController.signInSuccess(path:String,id:String)
+POST          /CloudPlatform/User/changePassword                     controllers.UserController.changePassword
+GET           /CloudPlatform/User/signout                            controllers.UserController.signout
+POST          /CloudPlatform/User/addUser                            controllers.UserController.addUser
+
+
+
+
+#test below
+GET     /test                       controllers.HomeController.test
+GET     /testlog                    controllers.HomeController.testlog
+GET     /testslider                 controllers.HomeController.testSlider
+GET     /testindex                  controllers.HomeController.testindex
+GET     /personal                   controllers.HomeController.testperson
+GET     /table                      controllers.HomeController.testtable
+GET     /testsoft                   controllers.SoftController.testsoft
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
+
+      

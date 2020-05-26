@@ -1,0 +1,421 @@
+
+<link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("css/test/mysoft.css")" media="screen" />
+
+<script type="text/javascript" src="@routes.Assets.versioned("js/jquery-1.7.1.min.js")"></script>
+<script type="text/javascript" src="@routes.Assets.versioned("js/myzui.min.js")"></script>
+
+<div class="col-md-12 mysoft-content">
+    <div class="mysoft-content-left whitebox" style="width: 771px;">
+        <form action="/tools/Home/Soft/pca" method="POST" enctype="multipart/form-data" class="well form-inline">
+            <img class="tools-img" src="/tools/Public/Home/dist/img/softs/icons8/pca.png">
+            <h3 class="tools-title">主成分分析(PCA)</h3>
+            <div class="form-group">
+                <h2>
+                </h2>
+            </div><br><br>
+            <div class="form-group-p">
+                <div class="form-group">
+                    <label for="mytaskname">任务编号：</label>
+                </div>
+                <div class="form-group">
+                    <input id="mytaskname" type="text" class="form-control" name="taskname" placeholder="" value="pcab848cc">
+                </div>
+            </div>
+
+            <br><br>
+
+            <script type="text/javascript">
+    $("#mytaskname").keyup(function () {
+        var val = $("#mytaskname").val();
+        var rule = /[()（）@@#$%^&*~`!|\/\\?;,.，。:"]/;
+        if (rule.test(val)) {
+            alert('任务编号里不能有特殊字符，请重新填写!');
+        }
+    })
+</script>
+
+            <div id="div1" class="one-line">
+                <div class="form-group-p">
+                    <div class="form-group">
+                        <label for="exampleInputName2">
+                            <em>1：</em>上传矩阵表格文件：
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="filepath1" name="text1" readonly="readonly">
+                        <img id="tempimg1" dynsrc="" src="" style="display:none">
+                        <input id="hideinput1" type="file" name="table1" style="display:none;" onchange="change(this.value)">
+                    </div>
+                </div>
+                <div class="form-group-extra">
+                    <span id="choosefile" type="button" onclick="choosefile($(this))" data-id="1" class="btn btn-sm btn-info choosebutton">选择文件</span>&nbsp;&nbsp;
+                    <em>
+                        <a href="/tools/Public/help/exam.fpkm" target="_blank">示例文件</a>
+                    </em>
+                </div>
+                <br>
+                <br>
+            </div>
+            <hr>
+            <br>
+            <h4>可选输入：</h4>
+            <br>
+            <div style="width: 100%;">
+                <h5>
+                    <em>2：</em>输入列的ID (二选一)</h5>
+                <br>
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                        <a href="###" data-target="#tab2Content1" data-toggle="tab">输入文件</a>
+                    </li>
+                    <li>
+                        <a href="###" data-target="#tab2Content2" data-toggle="tab">手动输入</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane fade active in" id="tab2Content1">
+                        <p><br></p>
+                        <div id="div2" class="one-line">
+                        <div class="form-group-p">
+                            <div class="form-group">
+                                <label for="exampleInputName2">或者输入列的ID文件：</label>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="filepath2" name="text2" readonly="readonly">
+                                <img id="tempimg2" dynsrc="" src="" style="display:none">
+                                <input id="hideinput2" type="file" name="table2" style="display:none;" onchange="change(this.value)">
+                            </div>
+                        </div>
+                        <div class="form-group-extra">
+                            <span id="choosefile" type="button" onclick="choosefile($(this))" data-id="2" class="btn btn-sm btn-info choosebutton">选择文件</span>&nbsp;&nbsp;<em>
+                            <a href="/tools/Public/help/exam.group" target="_blank">示例文件</a>
+                        </em>
+                        </div>
+                        <br>
+                        <br>
+                    </div>
+                        <p></p>
+                    </div>
+                    <div class="tab-pane fade" id="tab2Content2">
+                        <p></p>
+                        <div class="tab-pane" id="tabContent2">
+                        <textarea id="txdata1" name="txdata1" class="form-control kindeditorSimple" style="width: 100%;height:150px;" placeholder="列的ID：筛选用来做主成分分析的样本名称。如果不填，则使用上传的表格文件中的所有样本做主成分分析。列表中的第一列代表样本名称（样本名称必须在表达量的表格文件中存在），第二列代表样本所在的实验组名称。"></textarea>
+                    </div>
+                        <p></p>
+                        <br>
+                    </div>
+                </div>
+
+                <h4><em>3：</em>输入行的ID (二选一)</h4>
+                <br>
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                        <a href="###" data-target="#tab2Content3" data-toggle="tab">输入文件</a>
+                    </li>
+                    <li>
+                        <a href="###" data-target="#tab2Content4" data-toggle="tab">手动输入</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane fade active in" id="tab2Content3">
+                        <p><br></p>
+                        <div id="div3" class="one-line">
+                        <div class="form-group-p">
+                            <div class="form-group">
+                                <label for="exampleInputName2">或者输入行的ID文件：</label>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="filepath3" name="text3" readonly="readonly">
+                                <img id="tempimg3" dynsrc="" src="" style="display:none">
+                                <input id="hideinput3" type="file" name="table3" style="display:none;" onchange="change(this.value)">
+                            </div>
+                        </div>
+                        <div class="form-group-extra">
+                            <span id="choosefile" type="button" onclick="choosefile($(this))" data-id="3" class="btn btn-sm btn-info choosebutton">选择文件</span>&nbsp;&nbsp;<em>
+                            <a href="/tools/Public/help/exam.row" target="_blank">示例文件</a>
+                        </em>
+                        </div>
+                    </div>
+                        <p></p>
+                    </div>
+                    <div class="tab-pane fade" id="tab2Content4">
+                        <p>
+                            <textarea id="txdata2" name="txdata2" class="form-control kindeditorSimple" style="width: 100%;height:150px;" placeholder="行的ID：筛选用来做主成分分析的基因名称列表。如果不填，则使用上传的表格文件中的所有基因做主成分分析。"></textarea>
+                        </p>
+                    </div>
+                </div>
+
+                <br>
+                <br style="clear: both;">
+            </div>
+@*            <div class="form-group-p">*@
+@*                <div class="form-group">*@
+@*                    <label>归一化：</label>*@
+@*                </div>*@
+@*                <div class="form-group">*@
+@*                    <select name="scale">*@
+@*                        <option value="no">no</option>*@
+@*                        <option value="yes">yes</option>*@
+@*                    </select>*@
+@*                </div>*@
+@*            </div>*@
+            <br>
+            <br>
+            <br><br>
+            <br>
+            <br>
+            <input type="hidden" value="upload" name="act">
+            <input type="hidden" value="pca" name="action">
+            <input type="submit" value="提&nbsp;&nbsp;交" name="submit" class="btn btn-primary">
+        </form>
+
+    </div>
+
+    <div class="handler"></div>
+    <div class="mysoft-content-right" style="width: 279px;">
+        <ul class="nav nav-tabs">
+            <li class="">
+                <a href="###" data-target="#tab2Contenta" data-toggle="tab">说明							</a>
+            </li>
+            <li class="active">
+                <a href="###" data-target="#tab2Contentb" data-toggle="tab">例子</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane fade" id="tab2Contenta">
+                <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                    <span><a href="https://www.omicshare.com/forum/thread-631-1-1.html" target="_blank"><i class="icon icon-question-sign"></i><strong><span style="color:#337FE5;">了解该工具的原理与详细解析，请点击＞＞</span></strong></a></span>
+                </p>
+                <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                    <br>
+                </p>
+                <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                    <span style="font-weight:700;">功能：</span><br>
+                    将多个变量通过线性变换，筛选出数个比较重要的变量。
+                </p>
+                <br>
+                <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                    <span style="font-weight:700;">输入：</span>
+                </p>
+                <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+	① 矩阵文件:文件为二维矩阵文件，第一行一般为样本，第一列为基因名。
+                </p>
+                <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+	② 列的ID:筛选用来做聚类分析的列，一般为样本名。如果不填即默认用上传矩阵文件中的全部列做聚类分析。列表中的每一行表示一个列名，且列名必须在矩阵文件中存在。
+                </p>
+                <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+	③ 行的ID:筛选用来做聚类分析的行，一般为基因名。如果不填即默认用上传矩阵文件中的全部行做聚类分析。列表中的每一行表示一个行名，且行名必须在矩阵文件中存在.
+                </p>
+                <br>
+                <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                    <span style="font-weight:700;">参数：</span>
+                </p>
+                <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+	归一化：我们利用z-score进行数据的归一化，即将每个基因的表达量减去这个基因在所有样本中表达量的均值，然后除以其标准差。对数据进行归一化，可消除表达量异常高的基因的影响，减少数据间的“贫富差距”。我们推荐对数据进行归一化。
+                </p>
+                <br>
+                <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                    <span style="font-weight:700;">输出：</span>
+                </p>
+                <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+	程序将输出主成分分析结果图
+                </p>
+                <br>						</div>
+            <div class="tab-pane fade active in" id="tab2Contentb">
+                <h5>选择矩阵文件:
+                    <a href="/tools/Public/help/pca.list" target="_blank">示例文件								</a>
+                </h5>
+                <br>
+                <h5>输入需要分析的样本和指标</h5>
+                <br>
+                <blockquote>
+                    <pre>z13-15
+                        z14-8
+                        yh2
+                    </pre>
+                </blockquote>
+                <blockquote>
+                    <pre>protein-5
+                        POD-10
+                        SOD-5
+                        SOD-10
+                    </pre>
+                </blockquote>
+                <br>
+                <img class="img-rounded img-thumbnail img-responsive" src="/tools/Public/help/pca.png" alt="生物云平台">
+                <br>
+                <p>输出结果：</p>
+                <br>
+                <img class="img-rounded img-thumbnail img-responsive" src="/tools/Public/help/pca_result.png" alt="生物云平台">
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    function choosefile($para) {
+        if ('1' == 0) {
+            login();
+            return;
+        }
+        $number = $para.attr("data-id");
+        (new $.zui.ModalTrigger({
+            custom: function () {
+                // console.log(data);
+                str = '<h3>本地文件:</h3><br><span><input type="button" id="localfile" value="浏览本地文件" class="mybutton"></span><hr><br><h3>云端文件：（请先把需要的数据上传到我的数据）</h3><br><div class="inputfile"><div id="fileTreeDemo_2" class="demo"></div></div><div style="text-align:center;"><input type="button" class="upload-btn btn-choose" value="确认" id="dochoose"  style="margin:5px;"/><input type="button" id="close" class="upload-btn btn-close" data-dismiss="modal" value="取消" style="margin:5px;"/></div>';
+
+                return str;
+            }, width: 'auto', position: 'top', title: '选择文件', name: 'uploadFileModel'
+        })).show({
+            shown: function () {
+                // $("#php-file-tree").tree({expanded: 'li:first'});
+                //选择本地文件
+                $("#localfile").click(function () {
+                    $("#close").click();
+                    $("#hideinput" + $number).click();
+                });
+            }
+        });
+
+        $('#fileTreeDemo_2').fileTree({
+            script: '/tools/home/soft/my_file_tree',
+            folderEvent: 'click',
+            expandSpeed: 150,
+            collapseSpeed: 150,
+            multiFolder: false
+        }, function (file) {
+            //选择云端文件
+            $("#dochoose").click(function () {
+                var data = $(".select-active").attr("rel");
+                data = '根目录/' + data;
+                $("#close").click();
+                $("#filepath" + $number).val(data);
+                // $.post("newname",{dirpath:data},function(data){
+                // $("#hideinput"+$number).val(data);
+                // });
+            });
+            $("a").dblclick(function () {
+                var data = $(this).attr("rel");
+                data = '根目录/' + data;
+                $("#close").click();
+                $("#filepath" + $number).val(data);
+                // $.post("newname",{dirpath:data},function(data){
+                // $("#hideinput"+$number).val(data);
+                // });
+            });
+        });
+
+    }
+
+    $("input[type=submit]").click(function () {
+        if ('1' == 0) {
+            login();
+            return false;
+        }
+    })
+
+    //上传文件判断，大小和格式 限制! 问题：云端文件判断不了。（云端文件上传时已经经过限制，可以大于5M，本地限制大小是因上传速度问题)
+    var maxsize = 5 * 1024 * 1024;//2M
+    var errMsg = '建议使用云端文件，本地文件上传最大为5M！';
+
+    function change(value, rowMax, colMax) {
+        $("#filepath" + $number).val(value);
+        var filepath = document.getElementById("hideinput" + $number);
+        // var extStart = filepath.value.lastIndexOf(".");
+        // var ext = filepath.value.substring(extStart, filepath.length).toUpperCase();
+        var file_size = 0;
+        // if ($.support.msie) {
+        //     var img = new Image();
+        //     img.src = filepath;
+        // } else {
+
+//验证文件的行数和列数
+        if (rowMax > 0 || colMax > 0) {
+            var reader = new FileReader();
+            reader.readAsText(filepath.files[0]);
+            reader.onload = function () {
+
+                let texttext = reader.result;
+                let textArr = texttext.split('\n');
+                if (rowMax > 0 && textArr.length > rowMax) {
+                    alert('文件行数不超过' + rowMax);
+                    $("#filepath" + $number).val('');
+                    $("#hideinput" + $number).val('');
+                    return false;
+                }
+                if (colMax > 0) {
+                    for (let i in textArr) {
+                        let rowData = textArr[i].split('\t');
+                        if (rowData.length > colMax) {
+                            alert('文件列数不超过' + colMax);
+                            $("#filepath" + $number).val('');
+                            $("#hideinput" + $number).val('');
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+
+        file_size = filepath.files[0].size;
+        let name = filepath.files[0].name;
+        let patt = /^[a-zA-Z0-9._]+$/;
+        if (!patt.test(name)) {
+            alert("文件名只能由字母，数字，'_'和'.'组成");
+            $("#filepath" + $number).val('');
+            $("#hideinput" + $number).val('');
+        }
+        var size = file_size;
+        if (size > maxsize) {
+            alert(errMsg);
+            $("#filepath" + $number).val('');
+            $("#hideinput" + $number).val('');
+        }
+        // }
+        return true;
+    }
+
+    function taskSuccess() {
+        (new $.zui.ModalTrigger({
+            custom: function () {
+                // console.log(data);
+                str = '<h3>任务提交成功</h3>' +
+
+                        '<div style="text-align:center;">' +
+                        '<input type="button" class="upload-btn btn-choose" value="查看任务" id="dochoose"  style="margin:5px;"/><input type="button" id="close" class="upload-btn btn-close" data-dismiss="modal" value="回到工具页面" style="margin:5px;"/>' +
+                        '</div>';
+
+                return str;
+            }, width: 'auto', position: 'top', title: '任务提交成功',
+        })).show({
+            shown: function () {
+            }
+        });
+    }
+    function bindColor(textInput,colorInput,colorPick) {
+        $(colorInput).colorpicker({color: '#00bfff', defaultPalette: 'web'});
+        $(colorPick).on('click', function (evt) {
+            evt.stopImmediatePropagation();
+            let newcolor = $(colorInput).val();
+            if (newcolor != '') {
+                let oldcolor = $(textInput).val();
+                if (oldcolor.indexOf(newcolor) >= 0) {
+                    alert('不能有重复颜色');
+                    exit();
+                }
+                if (oldcolor == '') {
+                    $(textInput).val(newcolor);
+                } else {
+                    let allcolor = oldcolor + ',' + newcolor;
+                    $(textInput).val(allcolor);
+                }
+            }
+        });
+        $(".evo-cp-wrap").css("width", "25px");
+        $(".evo-cp-wrap").css("float", "left");
+    }
+</script>
+

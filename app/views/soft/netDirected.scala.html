@@ -1,0 +1,272 @@
+@()(implicit session: Session)
+@home.main("netDirected"){
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("css/test/mysoft.css")" media="screen" />
+
+        <!--button弹出操作-->
+    <script src="@routes.Assets.versioned("layer-v3.0/layer/layer.js")" type="text/javascript"></script>
+    <script type="text/javascript" src="@routes.Assets.versioned("js/myzui.min.js")"></script>
+
+    <style>
+            .mysoft-content-left .form-group-extra .btn-sm {
+                font-size: 14px;
+                background-color: #27b9d0;
+                border-color: #27b9d0;
+                border-radius: 4px;
+                padding: 5px 15px;
+                height: auto;
+            }
+            .mysoft-content-right .tab-content, .mysoft-content-left form {
+                box-shadow: unset;
+            }
+            .img-thumbnail {
+                display: inline-block;
+                max-width: 100%;
+                height: auto;
+                padding: 4px;
+                line-height: 1.53846154;
+                background-color: #fff;
+                border: unset;
+                border-radius: 4px;
+                -webkit-transition: all .2s ease-in-out;
+                -o-transition: all .2s ease-in-out;
+                transition: all .2s ease-in-out;
+            }
+            blockquote {
+                padding: 10px 20px;
+                margin: 0 0 20px;
+                border-left: unset;
+            }
+    </style>
+
+    <div class="col-md-12 mysoft-content">
+        <div class="mysoft-content-left whitebox" style="width: 715px;">
+            <form id="Directed" method="GET" enctype="multipart/form-data" class="well form-inline" style="box-sizing: border-box!important;">
+                <img class="tools-img" src="/assets/images/softpic/cytoscape.png">
+                <h3 class="tools-title">有向网络图</h3>
+                <div class="form-group">
+                    <h2>
+                    </h2>
+                </div><br><br>
+                <div class="form-group-p">
+                    <div class="form-group">
+                        <label for="mytaskname">任务编号：</label>
+                    </div>
+                    <div class="form-group">
+                        <input id="mytaskname" type="text" class="form-control" name="taskname" placeholder="" value="cytoscape5c2887">
+                    </div>
+                </div>
+
+                <br><br>
+
+                <script type="text/javascript">
+                        $("#mytaskname").keyup(function () {
+                            var val = $("#mytaskname").val();
+                            var rule = /[()（）@@#$%^&*~`!|\/\\?;,.，。:"]/;
+                            if (rule.test(val)) {
+                                alert('任务编号里不能有特殊字符，请重新填写!');
+                            }
+                        })
+                </script>
+
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                        <a href="###" data-target="#tab2Content4" data-toggle="tab">
+                            输入文件                                </a>
+                    </li>
+                    <li>
+                        <a href="###" data-target="#tab2Content3" data-toggle="tab">
+                            手动输入                                </a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane fade active in" id="tab2Content4">
+                        <br>
+                        <div id="div1" class="one-line">
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label for="exampleInputName2">输入边界文件：
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" style="" id="filepath1" name="text1" readonly="readonly">
+                                    <img id="tempimg1" dynsrc="" src="" style="display:none">
+                                    <input id="hideinput1" type="file" name="table1" style="display:none;" onchange="change(this.value)">
+                                </div>
+                            </div>
+                            <div class="form-group-extra">
+                                <span id="choosefile" type="button" onclick="choosefile($(this))" data-id="1" class="btn btn-sm btn-info choosebutton">选择文件</span>
+                                <em>
+                                    <a href="/tools/Public/help/cytoscape-TF.txt" target="_blank">
+                                        示例文件                                            </a>
+                                </em>
+                            </div>
+                            <br>
+                            <br>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="tab2Content3">
+                        <p>
+                            <br>
+                            <textarea id="" name="txdata" class="form-control kindeditorSimple" style="height:150px;width:100%;" placeholder="或手动输入文件"></textarea>
+                        </p>
+                    </div>
+                </div>
+                <br>
+                <br style="clear:both;">
+                <input type="hidden" value="upload" name="act">
+                <input type="hidden" value="blastcmp" name="action">
+                <input type="button" value="提&nbsp;&nbsp;交" name="submit" class="btn btn-primary" onclick="directed()">
+            </form>
+
+        </div>
+        <div class="handler"></div>
+        <div class="mysoft-content-right" style="width: 387px;">
+
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="###" data-target="#tab2Content2" data-toggle="tab">示例结果</a>
+                </li>
+                <li class=""><a href="###" data-target="#tab2Content1" data-toggle="tab">使用说明</a>
+                </li>
+            </ul>
+            <div class="tab-content" style="box-sizing: border-box!important;">
+                <div class="tab-pane fade active in" id="tab2Content2">
+                    <h5>输出结果：</h5>
+                    <br>
+                    <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/cytoscape_out.png" alt="生物云平台">
+
+                </div>
+                <div class="tab-pane fade" id="tab2Content1">
+                    <p><strong>功能：</strong><br>将基因间的调控关系绘制成一个有向的网络图。</p><br>
+                    <p><strong>输入：</strong><br>
+                    </p><p>①需要输入一个边界文件。</p>
+                    <p>②边界文件格式说明:边界文件包含三列，其中，
+                        <br>&nbsp;&nbsp;第一列和第三列为基因名称或基因ID，在同一行中，第一列的基因作用于第三列的基因。
+                        <br>&nbsp;&nbsp;第二列为关系分组的组名。组名可自定义，后续得到网络图后可以根据组别信息整组修改网络图中的边（调控关系）的样式。
+                        <br>&nbsp;&nbsp;边界文件必需包含表头，表头可以自定义，如：source type target                            </p>
+                    <br>
+                    <p><strong>参数：</strong></p>
+                    <p>无</p><br>
+                    <p>
+                        <strong>输出结果：</strong><br>
+                        输出一个可以编辑的网络图。自行编辑后，可以保存为png, pdf, svg格式。 </p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script type="text/javascript" src="@routes.Assets.versioned("js/toolsAdjust.js")"></script>
+    <script type="text/javascript">
+
+
+        function directed() {
+            if(@session.get("userId").isEmpty){
+                swal({
+                    title: "尚未登录",
+                    text: "请先登录账号",
+                    type: "warning",
+                    confirmButtonText: "确认"
+                })
+            }else {
+                var form1 = new FormData($("#Directed")[0]);
+
+                var element = "<div id='content'><span id='info'>运行中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;'></div>"
+                var index = layer.alert(element, {
+                    skin: 'layui-layer-lan',
+                    closeBtn: 0,
+                    title: "Info",
+                    btn: []
+                });
+
+                $.ajax({
+                    url: "/CloudPlatform/SoftTool/runDirected?id=@session.get("userId")",
+                    type: "post",
+                    processData: false,
+                    contentType: false,
+                    data: form1,
+                    success: function (data) {
+                        if (data.valid === "false") {
+                            layer.close(index);
+                            swal("Error", data.message, "error");
+
+                        } else {
+
+                            layer.close(index);
+                            $.ajax({
+                                url:"/CloudPlatform/SoftTool/getFiles?id=@session.get("userId")"+"&taskname="+data.taskname,
+                                type:"post",
+                                success:function (pics) {
+                                    var pic = "";
+                                    var html = "";
+                                    $.each(pics,function (i,v) {
+                                        pic +="<li><img class='img-rounded img-thumbnail img-responsive' src='/CloudPlatform/pic?path="+v+"' alt=\"生物云平台\"><li>"
+                                        html += "<li><a href='/CloudPlatform/SoftTool/download?path="+data.path+"&name=" + v.substring(v.lastIndexOf("\\")+1,v.length) + "' target='_blank'>" + v.substring(v.lastIndexOf("\\")+1,v.length) + "</a></li>"
+                                    });
+                                    $("#filesUrl").html(html);
+                                    $("#pics").html(pic);
+                                }
+                            })
+
+                            $("#result_tab1").show();
+                            $("#result_tab1").addClass("active")
+                            $("#out_tab1").removeClass("active")
+                            $("#ins_tab1").removeClass("active")
+                            $("#result1").addClass("active").addClass("in")
+                            $("#form1").removeClass("active");
+                            $("#instruction1").removeClass("active");
+                        }
+                    }
+                });
+            }
+        }
+
+            function choosefile($para) {
+                if(@session.get("userId").isEmpty){
+                    swal({
+                        title: "尚未登录",
+                        text: "请先登录账号",
+                        type: "warning",
+                        confirmButtonText: "确认"
+                    })
+                }else {
+                    $number = $para.attr("data-id");
+                    $("#hideinput" + $number).click();
+                }
+            }
+
+
+            //上传文件判断，大小和格式 限制! 问题：云端文件判断不了。（云端文件上传时已经经过限制，可以大于5M，本地限制大小是因上传速度问题)
+            var maxsize = 5 * 1024 * 1024;//2M
+            var errMsg = '建议使用云端文件，本地文件上传最大为5M！';
+
+            function change(value, rowMax, colMax) {
+                $("#filepath" + $number).val(value);
+                var filepath = document.getElementById("hideinput" + $number);
+
+                var file_size = 0;
+
+
+                file_size = filepath.files[0].size;
+                let name = filepath.files[0].name;
+                let patt = /^[a-zA-Z0-9._]+$/;
+                if (!patt.test(name)) {
+                    alert("文件名只能由字母，数字，'_'和'.'组成");
+                    $("#filepath" + $number).val('');
+                    $("#hideinput" + $number).val('');
+                }
+                var size = file_size;
+                if (size > maxsize) {
+                    alert(errMsg);
+                    $("#filepath" + $number).val('');
+                    $("#hideinput" + $number).val('');
+                }
+
+            }
+
+
+
+    </script>
+
+
+}

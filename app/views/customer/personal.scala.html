@@ -1,0 +1,164 @@
+@()(implicit session: Session)
+@home.main("Personal Center"){
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("mycss/personal.css")" media="screen" />
+
+    <div class="container" style="margin: 0 10px;width: 98%;">
+        <div class="mws-panel  mws-collapsible">
+            <div class="mws-panel-header">
+                <span class="mws-i-24 i-user">个人资料</span>
+            </div>
+            <div class="mws-panel-body">
+                <div class="mws-panel-content" style="height: 175px;">
+                    <div class="grid_2">
+                        <img src="/assets/example/profile.jpg" style="width: 161px;border-radius: 50px;">
+                    </div>
+                    <div class="grid_6" style="margin-top: 1px;" >
+                        <div class="grid_3">
+                            <p>用户名：</p>
+                            <p>手机：</p>
+                            <p>邮箱：</p>
+                            <p>学校/机构/公司：</p>
+                        </div>
+                        <div class="grid_5">
+                            <p>@session.get("userName")</p>
+                            <p>@session.get("userPhone")</p>
+                            <p>@session.get("userEmail")</p>
+                            <p>@session.get("userCompany")</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="mws-panel  mws-collapsible">
+            <div class="mws-panel-header">
+                <span class="mws-i-24 i-clipboard-1">任务记录</span>
+            </div>
+            <div class="mws-panel-body" style="height: 325px;overflow-y: scroll;">
+                <div class="mws-panel-content" style="padding: 0">
+                    <table class="mws-table">
+                        <thead>
+                            <tr>
+                                <th>任务编号</th>
+                                <th>使用软件</th>
+                                <th>提交时间</th>
+                                <th>任务状态</th>
+                                <th>CSS grade</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="gradeX">
+                                <td>Trident</td>
+                                <td>Internet
+                                    Explorer 4.0</td>
+                                <td>Win 95+</td>
+                                <td class="center">4</td>
+                                <td class="center">X</td>
+                            </tr>
+                            <tr class="gradeC">
+                                <td>Trident</td>
+                                <td>Internet
+                                    Explorer 5.0</td>
+                                <td>Win 95+</td>
+                                <td class="center">5</td>
+                                <td class="center">C</td>
+                            </tr>
+                            <tr class="gradeA">
+                                <td>Trident</td>
+                                <td>Internet
+                                    Explorer 5.5</td>
+                                <td>Win 95+</td>
+                                <td class="center">5.5</td>
+                                <td class="center">A</td>
+                            </tr>
+                            <tr class="gradeA">
+                                <td>Trident</td>
+                                <td>Internet
+                                    Explorer 6</td>
+                                <td>Win 98+</td>
+                                <td class="center">6</td>
+                                <td class="center">A</td>
+                            </tr>
+                            <tr class="gradeA">
+                                <td>Trident</td>
+                                <td>Internet Explorer 7</td>
+                                <td>Win XP SP2+</td>
+                                <td class="center">7</td>
+                                <td class="center">A</td>
+                            </tr>
+                            <tr class="gradeA">
+                                <td>Trident</td>
+                                <td>AOL browser (AOL desktop)</td>
+                                <td>Win XP</td>
+                                <td class="center">6</td>
+                                <td class="center">A</td>
+                            </tr>
+                            <tr class="gradeA">
+                                <td>Gecko</td>
+                                <td>Firefox 1.0</td>
+                                <td>Win 98+ / OSX.2+</td>
+                                <td class="center">1.7</td>
+                                <td class="center">A</td>
+                            </tr>
+                            <tr class="gradeA">
+                                <td>Gecko</td>
+                                <td>Firefox 1.5</td>
+                                <td>Win 98+ / OSX.2+</td>
+                                <td class="center">1.8</td>
+                                <td class="center">A</td>
+                            </tr>
+                            <tr class="gradeA">
+                                <td>Gecko</td>
+                                <td>Camino 1.5</td>
+                                <td>OSX.3+</td>
+                                <td class="center">1.8</td>
+                                <td class="center">A</td>
+                            </tr>
+                            <tr class="gradeA">
+                                <td>Gecko</td>
+                                <td>Netscape 7.2</td>
+                                <td>Win 95+ / Mac OS 8.6-9.2</td>
+                                <td class="center">1.7</td>
+                                <td class="center">A</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="mws-panel  mws-collapsible">
+            <div class="mws-panel-header">
+                <span class="mws-i-24 i-favorite">我的收藏</span>
+            </div>
+            <div class="mws-panel-body" style="height: 160px;overflow-y: scroll;">
+                <div class="mws-panel-content" style="">
+                    <ul>
+                        <li class="project-item isotope-item" style="width: 23%">
+                            <div class="project-img">
+                                <img src="/assets/images/recommend/pca.png" alt="">
+                            </div>
+                            <div class="project-desc">
+                                <h3><a href="#">PCA</a></h3>
+                            </div>
+                        </li>
+                        <li class="project-item isotope-item" style="width: 23%">
+
+                            <div class="project-img">
+                                <img src="/assets/images/recommend/gogsea.png" alt="">
+                            </div>
+                            <div class="project-desc">
+                                <h3><a href="#">GO富集分析</a></h3>
+                            </div>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="clear"></div>
+
+    </div>
+}

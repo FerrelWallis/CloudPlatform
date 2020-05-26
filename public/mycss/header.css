@@ -1,0 +1,212 @@
+div#mws-header
+{
+    border-color:#69b2b5;
+}
+
+.mws-panel .mws-panel-header span,
+div#mws-navigation ul li.active a,
+div#mws-navigation ul li.active span,
+div#mws-user-tools #mws-username,
+div#mws-navigation ul li span.mws-nav-tooltip,
+div#mws-user-tools #mws-user-info #mws-user-functions #mws-username,
+.ui-dialog .ui-dialog-title,
+.ui-state-default,
+.ui-state-active,
+.ui-state-hover,
+.ui-state-focus,
+.ui-state-default a,
+.ui-state-active a,
+.ui-state-hover a,
+.ui-state-focus a
+{
+    color:#9bcacc;
+    text-shadow:0 0 6px rgba(134, 206, 209, 0.66);
+}
+
+div#mws-searchbox input.mws-search-submit,
+.mws-panel .mws-panel-header .mws-collapse-button span,
+div.dataTables_wrapper .dataTables_paginate div,
+div.dataTables_wrapper .dataTables_paginate span.paginate_active,
+.fc-state-highlight,
+.ui-slider-horizontal .ui-slider-range,
+.ui-slider-vertical .ui-slider-range,
+.ui-progressbar .ui-progressbar-value,
+.ui-datepicker td.ui-datepicker-current-day,
+.ui-datepicker .ui-datepicker-prev .ui-icon,
+.ui-datepicker .ui-datepicker-next .ui-icon,
+.ui-accordion-header .ui-icon,
+.ui-dialog-titlebar-close .ui-icon
+{
+    background-color:#69b2b5;
+}
+
+
+.social-nav {
+    /*position: absolute;*/
+    /*top: 31px;*/
+    /*right: 0px;*/
+    overflow: hidden;
+    width: auto;
+    display: inline-block;
+    text-align: center;
+    height: 100%;
+}
+
+.social-nav_li {
+    display: inline-block;
+    vertical-align: middle;
+    width: 94px;
+    height: 100%;
+    margin-left: 5px;
+    border: 1px solid transparent;
+    border-radius: unset;
+    -moz-border-radius: unset;
+    -webkit-border-radius: unset;
+}
+
+.social-nav_li a {
+    display: inline-block;
+    width: 100%;
+    height: 36px;
+    color: white;
+    font-size: 17px;
+    padding-top: 22px;
+}
+.social-nav_li a:hover,.social-nav_li a:focus {
+    background: rgb(50,50,50);
+    color: #9bcacc!important;
+}
+
+.top-logo {
+    color: #555;
+    font-size: 20px;
+    line-height: 40px;
+}
+
+.rss:hover {
+    border-color: #555;
+}
+
+.rss a:hover {
+    color: #555;
+    text-decoration: none !important;
+}
+
+.login-form-head h4, .login-form-head p {
+    color: #444!important;
+
+}
+.login-form-head, .login-box form, .login-box form .form-gp input {
+    background: unset;
+}
+.reveal-modal {
+    /*background: #FFFFFF;*/
+    /*background: url("../public/images/back.PNG") no-repeat ;*/
+    left: 55%;
+    margin-left: -285px;
+    position: absolute;
+    top: 170px;
+    visibility: hidden;
+    width: 490px;
+    z-index: 101;
+    box-shadow: 0 0 5px rgba(0, 0, 0, .4);
+    border-radius: 6px;
+
+}
+
+
+input[type="password"]:focus,
+input[type="email"]:focus,
+input[type="text"]:focus,
+textarea:focus {
+    color: #888;
+    box-shadow:unset!important;
+}
+
+.reveal-modal form.signup {
+    padding: 0px 0 28px;
+
+}
+.login-form-head {
+    text-align: center;
+    padding: 14px 50px 0px 50px;
+}
+.rmber-area {
+    font-size: 13px;
+    margin: 18px 18px;
+}
+.text-muted a {
+    color: #145ccd!important;
+}
+.login-form-body {
+    padding: 50px 50px 0px 50px;
+}
+.reveal-modal .close-reveal-modal {
+    width: 58px;
+    height: 62px;
+    position: absolute;
+    top: 0;
+    right: 16px;
+    background: rgb(58,63,65);
+    color: white!important;
+    font-size: 44px;
+    text-align: center;
+    text-indent: unset;
+    cursor: pointer;
+}
+.reveal-modal .close-reveal-modal:hover {
+    width: 58px;
+    height: 62px;
+    position: absolute;
+    top: 0;
+    right: 16px;
+    background: black;
+    color: #9bcacc!important;
+    font-size: 44px;
+    text-align: center;
+    text-indent: unset;
+    cursor: pointer;
+}
+a{
+    text-decoration: none!important;
+    -webkit-transition: unset!important;
+    -o-transition: unset!important;
+    transition: unset!important;
+}
+.form-gp i {
+    position: absolute;
+    right: 5px;
+    top:1px;
+    bottom: unset;
+    color: cadetblue;
+    font-size: 16px;
+}
+.form-gp.focused label {
+    top: -15px;
+    color: #4f8385;
+}
+
+.form-gp label {
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: #b3b2b2;
+    -webkit-transition: unset;
+    transition: unset;
+}
+.submit-btn-area button {
+    -webkit-transition: unset;
+    transition: unset;
+}
+div#mws-logo-container #mws-logo-wrap {
+    width: 225px;
+    height: 58px;
+    text-align: unset;
+    display: unset;
+}
+div#mws-logo-container {
+    width: 241px;
+    height: 58px;
+    float: left;
+    padding: 0 10px;
+}

@@ -1,0 +1,154 @@
+@(title: String)(content: Html)(implicit session: Session)
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <!--整体页面-->
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("css/reset.css")" media="screen" />
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("css/mws.style.css")" media="screen" />
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("css/icons/icons.css")" media="screen" />
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("css/text.css")" media="screen" />
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("css/mws.theme.css")" media="screen" />
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("css/icons/ic.css")" media="screen" />
+
+            <!-- 登录注册修改密码-->
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("css/mycss.css")" media="screen" />
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("css/base.css")" media="screen" />
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("css/styles.css")" media="screen" />
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("css/themify-icons.css")" media="screen" />
+
+        <!--主页内容-->
+        <link rel="stylesheet" href="/assets/zui/zui.min.css" media="screen" />
+        <link rel="stylesheet" type="text/css" href="/assets/css/fluid.css" media="screen" />
+        <link rel="stylesheet" type="text/css" href="/assets/css/jui/jquery.ui.css" media="screen" />
+        <link rel="stylesheet" type="text/css" href="/assets/css/demo.css" media="screen" />
+
+        <!--登录注册formValidation-->
+        <link rel="stylesheet" media="screen" href="/assets/FormValidation/dist/css/formValidation.min.css">
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("bootstrap-sweetalert-master/dist/sweetalert.css")">
+
+
+
+
+        <!--JavaScript-->
+        <script type="text/javascript" src="@routes.Assets.versioned("bootstrap/js/jquery-3.1.1.min.js")"></script>
+        <script type="text/javascript" src="@routes.Assets.versioned("bootstrap/js/bootstrap.js")"></script>
+
+        <!--我的任务js-->
+@*        <script type="text/javascript" src="@routes.Assets.versioned("plugins/jquery.dataTables.js")"></script>*@
+@*        <script type="text/javascript" src="@routes.Assets.versioned("plugins/colorpicker/colorpicker.js")"></script>*@
+@*        <script type="text/javascript" src="@routes.Assets.versioned("plugins/spinner/ui.spinner.js")"></script>*@
+
+
+
+            <!--主页下导航栏,个人中心-->
+        <script type="text/javascript" src="@routes.Assets.versioned("js/jquery-ui.js")"></script>
+        <script type="text/javascript" src="@routes.Assets.versioned("js/mws.js")"></script>
+
+            <!--登陆注册弹出、formValidation js-->
+        <script type="text/javascript" src="@routes.Assets.versioned("js/jquery.reveal.js")"></script>
+        <script src="@routes.Assets.versioned("FormValidation/dist/js/formValidation.js")" type="text/javascript"></script>
+        <script src="@routes.Assets.versioned("FormValidation/dist/js/framework/bootstrap.js")" type="text/javascript"></script>
+        <script src="@routes.Assets.versioned("bootstrap-sweetalert-master/dist/sweetalert.min.js")" type="text/javascript"></script>
+
+
+
+        <title>@title</title>
+
+    </head>
+
+    <body>
+
+        <style>
+            body{
+                font: 13px/1.5 'PTSansRegular', Arial, Helvetica, sans-serif;
+                font-size: 13px;
+                line-height: 1.5;
+                font-family: "PTSansRegular", Arial, Helvetica, sans-serif;
+            }
+            a{
+                cursor: pointer;
+            }
+            ul{
+                padding-left: 0px!important;
+            }
+            /**, :before, :after {*/
+            /*     -webkit-box-sizing: unset!important;*/
+            /*    -moz-box-sizing: unset!important;*/
+            /*     box-sizing: unset!important;*/
+            /*}*/
+        </style>
+        @home.header()
+
+        <div id="mws-wrapper">
+            <div id="mws-sidebar-stitch"></div>
+            <div id="mws-sidebar-bg"></div>
+
+            <div id="mws-sidebar">
+@*                <div id="mws-searchbox" class="mws-inset">*@
+@*                    <form action="http://www.malijuwebshop.com/themes/mws-admin/typography.html">*@
+@*                        <input type="text" class="mws-search-input" />*@
+@*                        <input type="submit" class="mws-search-submit" />*@
+@*                    </form>*@
+@*                </div>*@
+                <div id="mws-navigation">
+                    <ul>
+                        <li><a href="@routes.HomeController.index()" class="mws-i-24 i-home">主页</a></li>
+                        <li><a onclick="checklog()" class="mws-i-24 i-single-user">个人中心</a></li>
+                        <li>
+                            <a href="#" class="mws-i-24 i-blocks-images">软件中心</a>
+                            <ul>
+                                <li><a href="form_elements.html" class="mws-ic-16 ic-star-1 collect">我的收藏</a></li>
+                                <li><a href="form_layouts.html">所有软件</a></li>
+                                <li><a href="form_elements.html">功能分析</a></li>
+                                <li><a href="form_elements.html">聚类分析</a></li>
+                                <li><a href="form_elements.html">统计检验与差异分析</a></li>
+                                <li><a href="form_elements.html">序列处理</a></li>
+                                <li><a href="form_elements.html">注释工具</a></li>
+                                <li><a href="form_elements.html">基础绘图</a></li>
+                                <li><a href="form_elements.html">表格与格式转化</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="@routes.HomeController.mytask()" class="mws-i-24 i-clipboard-1">我的任务</a></li>
+                        <li><a href="#" class="mws-i-24 i-info-about">平台说明</a></li>
+                        <li><a href="#" class="mws-i-24 i-headphones">联系客服</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div id="mws-container" class="clearfix">
+
+            @content
+
+            </div>
+        </div>
+
+
+        <script>
+                $(function () {
+                    createCode();
+                    formValidation();
+                });
+
+                function checklog() {
+                    if(@session.get("userId").isEmpty){
+                        swal({
+                            title: "尚未登录",
+                            text: "请先登录账号",
+                            type: "warning",
+                            confirmButtonText: "确认"
+                        })
+                    }else {
+                        window.location.href = "/CloudPlatform/PersonalCenter";
+                    }
+                }
+
+        </script>
+
+
+    </body>
+
+
+
+</html>
+

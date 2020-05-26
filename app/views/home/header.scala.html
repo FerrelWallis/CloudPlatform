@@ -1,0 +1,524 @@
+@()(implicit session: Session)
+
+<link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("mycss/header.css")" media="screen" />
+
+<div id="mws-header" class="clearfix fix">
+    <div id="mws-logo-container">
+        <div id="mws-logo-wrap">
+
+        </div>
+    </div>
+
+    <div style="float: right;height: 58px;">
+        <div id="mws-user-tools" class="clearfix" style="position: relative">
+            @if(session.get("userId").isEmpty) {
+                <div class="social-nav">
+                    <div class="rss social-nav_li">
+                        <a href="#" class="signin ti-user" data-reveal-id="signin" title="Sign in">
+                            登录
+                        </a>
+                    </div>
+                    <div class="rss social-nav_li">
+                        <a href="#" class="signup " data-reveal-id="signup" title="Sign in" style="padding-top: 20px;">
+                            注册
+                        </a>
+                    </div>
+                </div>
+            } else {
+                <div id="mws-user-info" class="mws-inset">
+                    <div id="mws-user-photo">
+                        <img src="/assets/example/profile.jpg" alt="User Photo" />
+                    </div>
+                    <div id="mws-user-functions">
+                        <div id="mws-username">
+                            你好, @session.get("userName")
+                        </div>
+                        <ul>
+                            <li><a href="@routes.HomeController.personal()">个人中心</a></li>
+                            <li><a href="#" data-reveal-id="newpassword">修改密码</a></li>
+                            <li><a href="#" onclick="Signout()">退出</a></li>
+                        </ul>
+                    </div>
+                </div>
+            }
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div id="signin" class="reveal-modal">
+
+    <div class="cont">
+        <div class="login-form-head">
+            <h4 style="font-size: 2.5rem!important;font-family: 'Poppins', sans-serif">账号登录</h4>
+            <p style="font-size: 15px;margin-top: 10px;">你好, 欢迎使用生物云平台</p>
+        </div>
+        <form action="#" class="signup form-horizontal" id="signinForm">
+            <div class="login-form-body">
+                <div class="form-gp form-group">
+                    <label for="exampleInputEmail1">账号(注册手机/邮箱)</label>
+                    <input type="text" id="login-user" name="user">
+                    <i class="ti-email"></i>
+                </div>
+                <div class="form-gp form-group">
+                    <label for="InputPassword1">密码</label>
+                    <input type="password" id="login-pas" name="password">
+                    <i class="ti-lock"></i>
+                </div>
+                <div class="form-gp form-group">
+                    <label for="validnumber">验证码</label>
+                    <input type = "text" id = "validnumber" name="validnumber" autofocus="autofocus" style="float: left;
+                        width: 241px;
+                        margin-left: 2px;" required />
+                    <input type = "button" class="code" onclick="createCode()"
+                    style="width: 89px;
+                        height: 30px;
+                        margin-left: 18px;
+                        border: 1px solid #d8d8d8;
+                        background: white;" />
+                </div>
+
+                <div class="row mb-4 rmber-area">
+                    <div class="col-6">
+
+                    </div>
+                    <div class="col-6 text-right">
+                        <a href="#" style="font-size: 14px;">忘记密码?</a>
+                    </div>
+                </div>
+                <div class="submit-btn-area">
+                    <button id="form_submit" type="submit" onclick="Signin()">登录 <i class="ti-arrow-right"></i></button>
+                    <a class="signup" data-reveal-id="signup"></a>
+                </div>
+                <div class="form-footer text-center mt-5">
+                    <p class="text-muted" style="margin-top: 33px;font-size: 14px;">还没有账号? <a onclick="openSignup()" style="cursor: pointer;">立即注册</a></p>
+                </div>
+            </div>
+        </form>
+    </div>
+    <a class="close-reveal-modal">&#215;</a>
+</div>
+
+    <!-- BEGIN MODAL WINDOWS -->
+<div id="signup" class="reveal-modal" style="top: 95px;">
+    <div class="cont">
+        <div class="login-form-head">
+            <h4 style="font-size: 2.5rem!important;font-family: 'Poppins', sans-serif">账号注册</h4>
+            <p style="font-size: 16px;margin-top: 10px">你好, 欢迎加入我们生物云平台</p>
+        </div>
+        <form action="" class="signup form-horizontal" id="signupForm">
+            <div class="login-form-body">
+                <div class="form-gp form-group">
+                    <label for="exampleInputName1">手机号</label><i class="ti-mobile"></i>
+                    <input type="text" id="exampleIFnputName1" name="phone">
+
+                </div>
+                <div class="form-gp form-group">
+                    <label for="exampleInputName1">姓名</label>
+                    <input type="text" id="exampleInputName1" name="name">
+                    <i class="ti-user"></i>
+                </div>
+                <div class="form-gp form-group">
+                    <label for="exampleInputEmail1">邮箱</label>
+                    <input type="email" id="exampleInputEmail1" name="email">
+                    <i class="ti-email"></i>
+                </div>
+                <div class="form-gp form-group">
+                    <label for="exampleInputEmail1">单位(学校/机构/公司)</label>
+                    <input type="text" id="exampleInputEmail1" name="company">
+                    <i class="ti-briefcase"></i>
+                </div>
+                <div class="form-gp form-group">
+                    <label for="exampleInputPassword1">密码</label>
+                    <input type="password" id="exampleInputPassword1" name="password">
+                    <i class="ti-lock"></i>
+                </div>
+                <div class="form-gp form-group">
+                    <label for="exampleInputPassword2">确认密码</label>
+                    <input type="password" id="exampleInputPassword2" name="password1">
+                    <i class="ti-lock"></i>
+                </div>
+                <div class="form-gp form-group">
+                    <label for="validnumber">验证码</label>
+                    <input type = "text" id = "validnumber1" name="validnumber" autofocus="autofocus" style="float: left;
+                        width: 241px;
+                        margin-left: 2px;" required />
+                    <input type = "button" class="code" onclick="createCode()"
+                    style="width: 89px;
+                        height: 30px;
+                        margin-left: 18px;
+                        border: 1px solid #d8d8d8;
+                        background: white;" />
+                </div>
+                <div class="submit-btn-area" style="margin-top: 44px;" >
+                    <button id="form_submit" type="submit" onclick="Signup()">注册 <i class="ti-arrow-right"></i></button>
+                </div>
+                <div class="form-footer text-center mt-5">
+                    <p class="text-muted" style="margin-top: 33px;font-size: 14px;">已经有帐号? <a onclick="openSignin()" style="cursor: pointer;">登录</a></p>
+                </div>
+            </div>
+        </form>
+    </div>
+    <a class="close-reveal-modal">&#215;</a>
+</div>
+
+<div id="newpassword" class="reveal-modal">
+    <div class="cont">
+        <div class="login-form-head">
+            <h4 style="font-size: 2.5rem!important;font-family: 'Poppins', sans-serif">修改密码</h4>
+            <p style="font-size: 14px;margin-top: 10px">嗨! 这里修改密码，请务必记住新密码</p>
+        </div>
+        <form class="signup form-horizontal" id="passwordForm">
+            <div class="login-form-body">
+                <div class="form-gp form-group focused">
+                    <label for="phone">手机号</label>
+                    <input type="text" id="phone" name="phone" value="@session.get("userPhone")"   readonly>
+                    <i class="ti-user"></i>
+                </div>
+                <div class="form-gp form-group">
+                    <label for="InputOldPassword">原密码</label>
+                    <input type="password" id="InputOldPassword" name="password">
+                    <i class="ti-lock"></i>
+                </div>
+                <div class="form-gp form-group">
+                    <label for="InputNewPassword1">新密码</label>
+                    <input type="password" id="InputNewPassword1" name="password1">
+                    <i class="ti-lock"></i>
+                </div>
+                <div class="form-gp form-group">
+                    <label for="InputNewPassword2">确认密码</label>
+                    <input type="password" id="InputNewPassword2" name="password2">
+                    <i class="ti-lock"></i>
+                </div>
+                <div class="form-gp form-group">
+                    <label for="validnumber">验证码</label>
+                    <input type = "text" id = "validnumber2" name="validnumber" autofocus="autofocus" style="float: left;
+                        width: 241px;
+                        margin-left: 2px;" required />
+                    <input type = "button" class="code" onclick="createCode()"
+                    style="width: 89px;
+                        height: 30px;
+                        margin-left: 18px;
+                        border: 1px solid #d8d8d8;
+                        background: white;" />
+                </div>
+                <div class="submit-btn-area" style="margin-top: 44px;" >
+                    <button id="form_submit" type="submit" onclick="changePassword()">确认修改 <i class="ti-arrow-right"></i></button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <a class="close-reveal-modal">&#215;</a>
+</div>
+
+
+<script>
+        $('.form-gp input').on('focus', function() {
+            $(this).parent('.form-gp').addClass('focused');
+        });
+        $('.form-gp input').on('focusout', function() {
+            if ($(this).val().length === 0) {
+                $(this).parent('.form-gp').removeClass('focused');
+            }
+        });
+
+        var path = window.location.pathname;
+
+
+        var code ; //在全局定义验证码
+
+        function openSignup() {
+            $(".close-reveal-modal").click();
+            $(".signup").click();
+            createCode();
+        }
+
+        function openSignin() {
+            $(".close-reveal-modal").click();
+            $(".signin").click();
+            createCode();
+        }
+
+        function createCode() {
+            code = "";
+            var codeLength = 4;//验证码的长度
+            var random = new Array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);//随机数
+            for (var i = 0; i < codeLength; i++) {//循环操作
+                var index = Math.floor(Math.random() * 10);//取得随机数的索引（0~35）
+                code += random[index];//根据索引取得随机数加到code上
+            }
+            $(".code").val(code);//把code值赋给验证码
+        }
+
+        function Signout() {
+            window.location.href = "/CloudPlatform/User/signout";
+        }
+
+        //登录
+        function Signin() {
+            var form = $("#signinForm");
+            var fv = form.data("formValidation");
+            fv.validate();
+            if (fv.isValid()) {
+                $.ajax({
+                    url: "@routes.UserController.signIn()",
+                    type: "post",
+                    dataType: "json",
+                    data: form.serialize(),
+                    success: function (data) {
+                        if (data.valid === "false") {
+                            swal({
+                                title: "错误",
+                                text: "账号或密码错误",
+                                type: "error",
+                                confirmButtonText: "确认"
+                            })
+                        } else {
+                            window.location.href = "/CloudPlatform/User/signInSuccess?path=" + path + "&id=" + data.id;
+                        }
+                    }
+                });
+            }
+        }
+
+        //注册
+        function Signup() {
+            var form = $("#signupForm");
+            var fv = form.data("formValidation");
+            fv.validate();
+            if (fv.isValid()) {
+                $.ajax({
+                    url: "@routes.UserController.addUser()",
+                    type: "post",
+                    dataType: "json",
+                    data: form.serialize(),
+                    success: function (data) {
+                        if (data.valid == "false") {
+                            swal({
+                                title: "错误!",
+                                text: data.message,
+                                type: "error",
+                                confirmButtonText: "确定"
+                            })
+                        } else {
+                            $(".close-reveal-modal").click();
+                            swal({
+                                title: "注册成功",
+                                text: "注册成功!欢迎使用云平台",
+                                type: 'success',
+                                confirmButtonText: "确定"
+                            }, function () {
+                                $(".signin").click();
+                                createCode();
+                            })
+                        }
+                    }
+                });
+            }
+
+        }
+
+        //修改密码
+        function changePassword() {
+            var form = $("#passwordForm");
+            var fv = form.data("formValidation");
+            fv.validate();
+            if (fv.isValid()) {
+                $.ajax({
+                    url: "@routes.UserController.changePassword()",
+                    type: "post",
+                    dataType: "json",
+                    data: form.serialize(),
+                    success: function (data) {
+                        if (data.valid == "false") {
+                            swal({
+                                title: "Error!",
+                                text: data.message,
+                                type: "error",
+                                confirmButtonText: "OK"
+                            })
+                        } else {
+                            $(".close-reveal-modal").click();
+                            swal({
+                                title: "修改成功",
+                                text: "修改密码成功!",
+                                type: 'success',
+                                confirmButtonText: "返回页面，请重新登录！"
+                            }, function () {
+                                window.location.href = "/CloudPlatform/User/signout?path=" + path;
+                            })
+                        }
+                    }
+                });
+            }
+
+        }
+
+        function formValidation() {
+            $("#signinForm").formValidation({
+                framework: 'bootstrap',
+                icon: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                fields: {
+                    user: {
+                        validators: {
+                            notEmpty: {
+                                message: '请输入账号！'
+                            }
+                        }
+                    },
+                    password: {
+                        validators: {
+                            notEmpty: {
+                                message: '请输入密码！'
+                            }
+                        }
+                    },
+                    validnumber: {
+                        validators: {
+                            notEmpty: {
+                                message: '请输入验证码！'
+                            },
+                            callback: {
+                                message: '验证码错误！',
+                                callback: function () {
+                                    return $('#validnumber').val() === code;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            $('#signupForm').formValidation({
+                framework: 'bootstrap',
+                icon: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                fields: {
+                    phone: {
+                        validators: {
+                            notEmpty: {
+                                message: '请输入手机号！'
+                            },
+                            phone:{
+                                message: '请输入正确手机号',
+                                country: 'CN'
+                            }
+                        }
+                    },
+                    name: {
+                        validators: {
+                            notEmpty: {
+                                message: '请填写姓名！'
+                            }
+                        }
+                    },
+                    email: {
+                        validators: {
+                            notEmpty: {
+                                message: '请填写邮箱地址！'
+                            },
+                            emailAddress:{
+                                message:'请输入正确邮箱地址！'
+                            }
+                        }
+                    },
+                    password: {
+                        validators: {
+                            notEmpty: {
+                                message: '请输入密码！'
+                            },
+                            stringLength: {
+                                min: 6,
+                                message: '请输入至少六位密码！'
+                            }
+                        }
+                    },
+                    password1: {
+                        validators: {
+                            notEmpty: {
+                                message: '请输入确认密码！'
+                            },
+                            identical: {
+                                field: 'password',
+                                message: '两次密码不一致!'
+                            }
+                        }
+                    },
+                    validnumber: {
+                        validators: {
+                            notEmpty: {
+                                message: "请输入验证码！"
+                            },
+                            callback: {
+                                message: '验证码错误！',
+                                callback: function () {
+                                    return $('#validnumber1').val() === code;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            $('#passwordForm').formValidation({
+                framework: 'bootstrap',
+                icon: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                fields: {
+                    password: {
+                        validators: {
+                            notEmpty: {
+                                message: '请输入旧密码！'
+                            }
+                        }
+                    },
+                    password1: {
+                        validators: {
+                            notEmpty: {
+                                message: '请输入新密码！'
+                            },
+                            stringLength: {
+                                min: 6,
+                                message: '请输入至少六位密码！'
+                            }
+                        }
+                    },
+                    password2: {
+                        validators: {
+                            notEmpty: {
+                                message: '请输入确认密码！'
+                            },
+                            identical: {
+                                field: 'password1',
+                                message: '两次密码不一致!'
+                            }
+                        }
+                    },
+                    validnumber: {
+                        validators: {
+                            notEmpty: {
+                                message: "请输入验证码！"
+                            },
+                            callback: {
+                                message: '验证码错误！',
+                                callback: function () {
+                                    return $('#validnumber2').val() === code;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+</script>

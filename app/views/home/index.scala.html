@@ -1,0 +1,557 @@
+@()(implicit session: Session)
+@home.main("Home"){
+
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("mycss/index.css")" media="screen" />
+
+    <style>
+            .ui-widget-content, .ui-widget-content a:hover {
+                color: #333333;
+            }
+    </style>
+
+    <div class="container" style="height: 400px">
+        <div class="container-fluid" style="padding: 0 0 0 ;background: #ffffff;height: 100%">
+            <div id="myNiceCarousel" class="carousel slide" data-ride="carousel" style="height: 100%">
+                    <!-- 圆点指示器 -->
+                <ol class="carousel-indicators">
+                    <li data-target="#myNiceCarousel" data-slide-to="0" class="active"></li>
+                    <li data-target="#myNiceCarousel" data-slide-to="1" class=""></li>
+                    <li data-target="#myNiceCarousel" data-slide-to="2" class=""></li>
+                    <li data-target="#myNiceCarousel" data-slide-to="3" class=""></li>
+                    <li data-target="#myNiceCarousel" data-slide-to="4" class=""></li>
+                </ol>
+                    <!-- 轮播项目 -->
+                <div class="carousel-inner" style="height: 100%">
+                    <div class="item active" style="height: 100%">
+                        <a href="#">
+                            <img alt="First slide" src="/assets/images/main/mianpic1.jpg" style="height:100%;width:100%;">
+                        </a>
+                        <div class="carousel-caption">
+                        </div>
+                    </div>
+                    <div class="item" style="height: 100%">
+                        <a href="#">
+                            <img alt="First slide" src="/assets/images/main/mianpic2.jpg" style="height:100%;width:100%;">
+                        </a>
+                        <div class="carousel-caption">
+                        </div>
+                    </div>
+                    <div class="item" style="height: 100%">
+                        <a href="#">
+                            <img alt="First slide" src="/assets/images/main/mainpic3.jpg" style="height:100%;width:100%;">
+                        </a>
+                        <div class="carousel-caption">
+                        </div>
+                    </div>
+                    <div class="item" style="height: 100%">
+                        <a href="#">
+                            <img alt="First slide" src="/assets/images/main/mainpic4.jpg" style="height:100%;width:100%;">
+                        </a>
+                        <div class="carousel-caption">
+                        </div>
+                    </div>
+                    <div class="item" style="height: 100%">
+                        <a href="#">
+                            <img alt="First slide" src="/assets/images/main/mianpic1.jpg" style="height:100%;width:100%;">
+                        </a>
+                        <div class="carousel-caption">
+                        </div>
+                    </div>
+                </div>
+                    <!-- 项目切换按钮 -->
+                <a class="left carousel-control left_arrow" href="#myNiceCarousel" data-slide="prev"></a>
+                <a class="right carousel-control right_arrow" href="#myNiceCarousel" data-slide="next"></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" style="padding-top: 20px;">
+        <div class="mws-panel grid_8">
+            <div class="mws-tabs">
+                <ul>
+                    <li><a href="#jQuery-icons">最新工具</a></li>
+                    <li><a href="#yummy-16">热门工具</a></li>
+                </ul>
+                <div id="jQuery-icons" style="padding: 1em 0em 1em 1em;">
+                    <ul id="icons" class="ui-widget ui-helper-clearfix">
+                        <li class="mws-report">
+                            <a href="/CloudPlatform/SoftPage/PCA">
+                                <div class="mws-report-icon mws-ic Pca"></div>
+                                <div class="mws-report-content">
+                                    <h4>PCA</h4>
+                                    <p style="padding-right: 10px">将多个变量通过线性变换，筛选出数个比较重要的变量</p>
+                                    <div class="likeable" style="float:right;">
+                                        <div id="fmsg1" style="display:none;">
+                                            <div class="tooltip fade left in" style="width:75px; bottom:14px; right:65px; display: block;">
+                                                <div class="tooltip-arrow" style=""></div>
+                                                <div class="tooltip-inner">点击收藏</div>
+                                            </div>
+                                        </div>
+                                        <div id="fmsg2" style="display:none;">
+                                            <div class="tooltip fade left in" style="width:75px; bottom:14px; right: 65px; display: block;">
+                                                <div class="tooltip-arrow" style=""></div>
+                                                <div class="tooltip-inner">取消收藏</div>
+                                            </div>
+                                        </div>
+                                        <i class="icon icon-star-empty" onmouseover="mover($(this))" onmouseout="mout($(this))" onclick="collect($(this))"></i>
+                                        <input type="hidden" value="132">
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="mws-report">
+                            <a href="/CloudPlatform/SoftPage/GO">
+                                <div class="mws-report-icon mws-ic GoSea"></div>
+                                <div class="mws-report-content">
+                                    <h4>GO富集分析</h4>
+                                    <p style="padding-right: 10px">应用超几何检验，找出与整个基因组背景相比，在差异表达基因中显著富集的GO条目</p>
+                                    <div class="likeable" style="float:right;">
+                                        <div id="fmsg1" style="display:none;">
+                                            <div class="tooltip fade left in" style="width:75px; bottom:14px; right:65px; display: block;">
+                                                <div class="tooltip-arrow" style=""></div>
+                                                <div class="tooltip-inner">点击收藏</div>
+                                            </div>
+                                        </div>
+                                        <div id="fmsg2" style="display:none;">
+                                            <div class="tooltip fade left in" style="width:75px; bottom:14px; right: 65px; display: block;">
+                                                <div class="tooltip-arrow" style=""></div>
+                                                <div class="tooltip-inner">取消收藏</div>
+                                            </div>
+                                        </div>
+                                        <i class="icon icon-star-empty" onmouseover="mover($(this))" onmouseout="mout($(this))" onclick="collect($(this))"></i>
+                                        <input type="hidden" value="132">
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="mws-report">
+                            <a href="/CloudPlatform/SoftPage/KEGG">
+                                <div class="mws-report-icon mws-ic KeggSea"></div>
+                                <div class="mws-report-content">
+                                    <h4>KEGG富集分析</h4>
+                                    <p style="padding-right: 10px">应用超几何检验，找出与整个基因组背景相比，在差异表达基因中显著性富集的Pathway</p>
+                                    <div class="likeable" style="float:right;">
+                                        <div id="fmsg1" style="display:none;">
+                                            <div class="tooltip fade left in" style="width:75px; bottom:14px; right:65px; display: block;">
+                                                <div class="tooltip-arrow" style=""></div>
+                                                <div class="tooltip-inner">点击收藏</div>
+                                            </div>
+                                        </div>
+                                        <div id="fmsg2" style="display:none;">
+                                            <div class="tooltip fade left in" style="width:75px; bottom:14px; right: 65px; display: block;">
+                                                <div class="tooltip-arrow" style=""></div>
+                                                <div class="tooltip-inner">取消收藏</div>
+                                            </div>
+                                        </div>
+                                        <i class="icon icon-star-empty" onmouseover="mover($(this))" onmouseout="mout($(this))" onclick="collect($(this))"></i>
+                                        <input type="hidden" value="132">
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="mws-report">
+                            <a href="/CloudPlatform/SoftPage/CCA">
+                                <div class="mws-report-icon mws-ic CCA"></div>
+                                <div class="mws-report-content">
+                                    <h4>CCA/RDA</h4>
+                                    <p style="padding-right: 10px">计算并展示环境因子、微生物群落和样本关系</p>
+                                    <div class="likeable" style="float:right;">
+                                        <div id="fmsg1" style="display:none;">
+                                            <div class="tooltip fade left in" style="width:75px; bottom:14px; right:65px; display: block;">
+                                                <div class="tooltip-arrow" style=""></div>
+                                                <div class="tooltip-inner">点击收藏</div>
+                                            </div>
+                                        </div>
+                                        <div id="fmsg2" style="display:none;">
+                                            <div class="tooltip fade left in" style="width:75px; bottom:14px; right: 65px; display: block;">
+                                                <div class="tooltip-arrow" style=""></div>
+                                                <div class="tooltip-inner">取消收藏</div>
+                                            </div>
+                                        </div>
+                                        <i class="icon icon-star-empty" onmouseover="mover($(this))" onmouseout="mout($(this))" onclick="collect($(this))"></i>
+                                        <input type="hidden" value="132">
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="mws-report">
+                            <a href="/CloudPlatform/SoftPage/Heatmap">
+                                <div class="mws-report-icon mws-ic HeatMap"></div>
+                                <div class="mws-report-content">
+                                    <h4>Heatmap 热图</h4>
+                                    <p style="padding-right: 10px">将表格数据绘制成一个热图</p>
+                                    <div class="likeable" style="float:right;">
+                                        <div id="fmsg1" style="display:none;">
+                                            <div class="tooltip fade left in" style="width:75px; bottom:14px; right:65px; display: block;">
+                                                <div class="tooltip-arrow" style=""></div>
+                                                <div class="tooltip-inner">点击收藏</div>
+                                            </div>
+                                        </div>
+                                        <div id="fmsg2" style="display:none;">
+                                            <div class="tooltip fade left in" style="width:75px; bottom:14px; right: 65px; display: block;">
+                                                <div class="tooltip-arrow" style=""></div>
+                                                <div class="tooltip-inner">取消收藏</div>
+                                            </div>
+                                        </div>
+                                        <i class="icon icon-star-empty" onmouseover="mover($(this))" onmouseout="mout($(this))" onclick="collect($(this))"></i>
+                                        <input type="hidden" value="132">
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="mws-report">
+                            <a href="/CloudPlatform/SoftPage/Boxplot">
+                                <div class="mws-report-icon mws-ic BoxPlot"></div>
+                                <div class="mws-report-content">
+                                    <h4>Boxplot 盒型图</h4>
+                                    <p style="padding-right: 10px">将表格数据绘制成一个盒形图</p>
+                                    <div class="likeable" style="float:right;">
+                                        <div id="fmsg1" style="display:none;">
+                                            <div class="tooltip fade left in" style="width:75px; bottom:14px; right:65px; display: block;">
+                                                <div class="tooltip-arrow" style=""></div>
+                                                <div class="tooltip-inner">点击收藏</div>
+                                            </div>
+                                        </div>
+                                        <div id="fmsg2" style="display:none;">
+                                            <div class="tooltip fade left in" style="width:75px; bottom:14px; right: 65px; display: block;">
+                                                <div class="tooltip-arrow" style=""></div>
+                                                <div class="tooltip-inner">取消收藏</div>
+                                            </div>
+                                        </div>
+                                        <i class="icon icon-star-empty" onmouseover="mover($(this))" onmouseout="mout($(this))" onclick="collect($(this))"></i>
+                                        <input type="hidden" value="132">
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div id="yummy-16" style="padding: 1em 0em 1em 1em;">
+                    <ul id="icons" class="ui-widget ui-helper-clearfix">
+                        <li class="mws-report">
+                            <a href="/CloudPlatform/SoftPage/PCA">
+                                <div class="mws-report-icon mws-ic Pca"></div>
+                                <div class="mws-report-content">
+                                    <h4>PCA</h4>
+                                    <p style="padding-right: 10px">将多个变量通过线性变换，筛选出数个比较重要的变量</p>
+                                    <div class="likeable" style="float:right;">
+                                        <div id="fmsg1" style="display:none;">
+                                            <div class="tooltip fade left in" style="width:75px; bottom:14px; right:65px; display: block;">
+                                                <div class="tooltip-arrow" style=""></div>
+                                                <div class="tooltip-inner">点击收藏</div>
+                                            </div>
+                                        </div>
+                                        <div id="fmsg2" style="display:none;">
+                                            <div class="tooltip fade left in" style="width:75px; bottom:14px; right: 65px; display: block;">
+                                                <div class="tooltip-arrow" style=""></div>
+                                                <div class="tooltip-inner">取消收藏</div>
+                                            </div>
+                                        </div>
+                                        <i class="icon icon-star-empty" onmouseover="mover($(this))" onmouseout="mout($(this))" onclick="collect($(this))"></i>
+                                        <input type="hidden" value="132">
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="mws-report">
+                            <a href="/CloudPlatform/SoftPage/Heatmap">
+                                <div class="mws-report-icon mws-ic HeatMap"></div>
+                                <div class="mws-report-content">
+                                    <h4>Heatmap 热图</h4>
+                                    <p style="padding-right: 10px">将表格数据绘制成一个热图</p>
+                                    <div class="likeable" style="float:right;">
+                                        <div id="fmsg1" style="display:none;">
+                                            <div class="tooltip fade left in" style="width:75px; bottom:14px; right:65px; display: block;">
+                                                <div class="tooltip-arrow" style=""></div>
+                                                <div class="tooltip-inner">点击收藏</div>
+                                            </div>
+                                        </div>
+                                        <div id="fmsg2" style="display:none;">
+                                            <div class="tooltip fade left in" style="width:75px; bottom:14px; right: 65px; display: block;">
+                                                <div class="tooltip-arrow" style=""></div>
+                                                <div class="tooltip-inner">取消收藏</div>
+                                            </div>
+                                        </div>
+                                        <i class="icon icon-star-empty" onmouseover="mover($(this))" onmouseout="mout($(this))" onclick="collect($(this))"></i>
+                                        <input type="hidden" value="132">
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="mws-report">
+                            <a href="/CloudPlatform/SoftPage/GO">
+                                <div class="mws-report-icon mws-ic GoSea"></div>
+                                <div class="mws-report-content">
+                                    <h4>GO富集分析</h4>
+                                    <p style="padding-right: 10px">应用超几何检验，找出与整个基因组背景相比，在差异表达基因中显著富集的GO条目</p>
+                                    <div class="likeable" style="float:right;">
+                                        <div id="fmsg1" style="display:none;">
+                                            <div class="tooltip fade left in" style="width:75px; bottom:14px; right:65px; display: block;">
+                                                <div class="tooltip-arrow" style=""></div>
+                                                <div class="tooltip-inner">点击收藏</div>
+                                            </div>
+                                        </div>
+                                        <div id="fmsg2" style="display:none;">
+                                            <div class="tooltip fade left in" style="width:75px; bottom:14px; right: 65px; display: block;">
+                                                <div class="tooltip-arrow" style=""></div>
+                                                <div class="tooltip-inner">取消收藏</div>
+                                            </div>
+                                        </div>
+                                        <i class="icon icon-star-empty" onmouseover="mover($(this))" onmouseout="mout($(this))" onclick="collect($(this))"></i>
+                                        <input type="hidden" value="132">
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="mws-report">
+                            <a href="/CloudPlatform/SoftPage/KEGG">
+                                <div class="mws-report-icon mws-ic KeggSea"></div>
+                                <div class="mws-report-content">
+                                    <h4>KEGG富集分析</h4>
+                                    <p style="padding-right: 10px">应用超几何检验，找出与整个基因组背景相比，在差异表达基因中显著性富集的Pathway</p>
+                                    <div class="likeable" style="float:right;">
+                                        <div id="fmsg1" style="display:none;">
+                                            <div class="tooltip fade left in" style="width:75px; bottom:14px; right:65px; display: block;">
+                                                <div class="tooltip-arrow" style=""></div>
+                                                <div class="tooltip-inner">点击收藏</div>
+                                            </div>
+                                        </div>
+                                        <div id="fmsg2" style="display:none;">
+                                            <div class="tooltip fade left in" style="width:75px; bottom:14px; right: 65px; display: block;">
+                                                <div class="tooltip-arrow" style=""></div>
+                                                <div class="tooltip-inner">取消收藏</div>
+                                            </div>
+                                        </div>
+                                        <i class="icon icon-star-empty" onmouseover="mover($(this))" onmouseout="mout($(this))" onclick="collect($(this))"></i>
+                                        <input type="hidden" value="132">
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="mws-report">
+                            <a href="/CloudPlatform/SoftPage/NetWeight">
+                                <div class="mws-report-icon mws-ic Net"></div>
+                                <div class="mws-report-content">
+                                    <h4>权重网络图</h4>
+                                    <p style="padding-right: 10px">一款图形化显示权重网络并进行分析和编辑的软件</p>
+                                    <div class="likeable" style="float:right;">
+                                        <div id="fmsg1" style="display:none;">
+                                            <div class="tooltip fade left in" style="width:75px; bottom:14px; right:65px; display: block;">
+                                                <div class="tooltip-arrow" style=""></div>
+                                                <div class="tooltip-inner">点击收藏</div>
+                                            </div>
+                                        </div>
+                                        <div id="fmsg2" style="display:none;">
+                                            <div class="tooltip fade left in" style="width:75px; bottom:14px; right: 65px; display: block;">
+                                                <div class="tooltip-arrow" style=""></div>
+                                                <div class="tooltip-inner">取消收藏</div>
+                                            </div>
+                                        </div>
+                                        <i class="icon icon-star-empty" onmouseover="mover($(this))" onmouseout="mout($(this))" onclick="collect($(this))"></i>
+                                        <input type="hidden" value="132">
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="mws-report">
+                            <a href="/CloudPlatform/SoftPage/NetDirected">
+                                <div class="mws-report-icon mws-ic Net"></div>
+                                <div class="mws-report-content">
+                                    <h4>有向网络图</h4>
+                                    <p style="padding-right: 10px">一款图形化显示有向网络并进行分析和编辑的软件</p>
+                                    <div class="likeable" style="float:right;">
+                                        <div id="fmsg1" style="display:none;">
+                                            <div class="tooltip fade left in" style="width:75px; bottom:14px; right:65px; display: block;">
+                                                <div class="tooltip-arrow" style=""></div>
+                                                <div class="tooltip-inner">点击收藏</div>
+                                            </div>
+                                        </div>
+                                        <div id="fmsg2" style="display:none;">
+                                            <div class="tooltip fade left in" style="width:75px; bottom:14px; right: 65px; display: block;">
+                                                <div class="tooltip-arrow" style=""></div>
+                                                <div class="tooltip-inner">取消收藏</div>
+                                            </div>
+                                        </div>
+                                        <i class="icon icon-star-empty" onmouseover="mover($(this))" onmouseout="mout($(this))" onclick="collect($(this))"></i>
+                                        <input type="hidden" value="132">
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+
+            function mover($para) {
+                if (($para).hasClass("yellow-icon")) {
+                    $para.prev().show();
+                } else {
+                    $para.removeClass('icon-star-empty');
+                    $para.addClass('icon-star');
+                    $para.prev().prev().show();
+                }
+            }
+
+            function mout($para) {
+                $para.prev().hide();
+                $para.prev().prev().hide();
+                if (!$para.hasClass("yellow-icon")) {
+                    $para.addClass('icon-star-empty');
+                    $para.removeClass('icon-star');
+                }
+
+            }
+
+            var islock = false;  //防止重复点击
+            function collect($para) {
+                //没登陆的时候聚焦到登陆框
+                if (@session.get("userId").isEmpty) {
+                    openSignin();
+                    return;
+                }
+                if (islock) {
+                    alert(" =.=!!");
+                    return;
+                }
+                islock = true;
+                setTimeout(function () {
+                    islock = false;
+                }, 200);
+                let softid = $para.next().next().val();
+                if (($para).hasClass("yellow-icon")) {
+                    $(function () {
+                        $.post("/tools/home/soft/decollsoft", {soft_id: softid}, function (text) {
+                            shouMyMsg('<i class="icon icon-exclamation-sign"></i>已取消收藏该软件', 1000);
+                            $para.next().text(text);
+                            $para.removeClass("red-icon").addClass("icon-heart-empty");
+                            $para.next().text(text);
+                            // $para.parent().parent().parent().prev().find("i").eq(0).removeClass("red-icon").addClass("icon-heart-empty");
+                            $para.prev().prev().show();
+                            $para.prev().hide();
+                        })
+                    })
+                } else {
+                    $(function () {
+                        $.post("/tools/home/soft/collsoft", {soft_id: softid}, function (text) {
+                            $para.removeClass("icon-heart-empty").addClass("icon-heart red-icon");
+                            $para.next().text(text);
+                            // $para.parent().parent().parent().prev().find("i").eq(0).removeClass("icon-heart-empty").addClass("icon-heart red-icon");
+                            $para.prev().prev().hide();
+                            $para.prev().show();
+                        });
+                        shouMyMsg('<i class="icon icon-exclamation-sign"></i>收藏该软件成功', 1000);
+                    })
+                }
+            }
+
+
+            //demo.js
+            $(".mws-accordion").accordion();
+
+            $(".mws-tabs").tabs();
+
+            $(".mws-datepicker").datepicker({showOtherMonths:true});
+
+            $(".mws-datepicker-wk").datepicker({showOtherMonths:true, showWeek:true});
+
+            $(".mws-datepicker-mm").datepicker({showOtherMonths:true, numberOfMonths:3});
+
+            $(".mws-datepicker-btn").datepicker({showOtherMonths:true, showButtonPanel: true});
+
+            $(".mws-slider").slider({range: "min"});
+
+            $(".mws-progressbar").progressbar({value: 37});
+
+            $(".mws-range-slider").slider({range: true, min:0, max: 500, values: [75, 300]});
+
+            var availableTags = [
+                "ActionScript",
+                "AppleScript",
+                "Asp",
+                "BASIC",
+                "C",
+                "C++",
+                "Clojure",
+                "COBOL",
+                "ColdFusion",
+                "Erlang",
+                "Fortran",
+                "Groovy",
+                "Haskell",
+                "Java",
+                "JavaScript",
+                "Lisp",
+                "Perl",
+                "PHP",
+                "Python",
+                "Ruby",
+                "Scala",
+                "Scheme"
+            ];
+            $( ".mws-autocomplete" ).autocomplete({
+                source: availableTags
+            });
+
+            $("#mws-jui-dialog").dialog({
+                autoOpen: false,
+                title: "jQuery-UI Dialog",
+                modal: true,
+                width: "640",
+                buttons: [{
+                    text: "Close Dialog",
+                    click: function() {
+                        $( this ).dialog( "close" );
+                    }}]
+            });
+            $("#mws-jui-dialog-btn").bind("click", function(event) {
+                $("#mws-jui-dialog").dialog("option", {modal: false}).dialog("open");
+                event.preventDefault();
+            });
+            $("#mws-jui-dialog-mdl-btn").bind("click", function(event) {
+                $("#mws-jui-dialog").dialog("option", {modal: true}).dialog("open");
+                event.preventDefault();
+            });
+
+            $(".mws-slider-vertical").slider({
+                orientation: "vertical",
+                range: "min",
+                min: 0,
+                max: 100,
+                value: 60
+            });
+
+            $( "#eq > span" ).each(function() {
+                // read initial values from markup and remove that
+                var value = parseInt( $( this ).text(), 10 );
+                $( this ).empty().slider({
+                    value: value,
+                    range: "min",
+                    animate: true,
+                    orientation: "vertical"
+                });
+            });
+
+            /* jGrowl Notifications */
+
+            $("#mws-growl-btn").bind("click", function(event) {
+                $.jGrowl("Hello World!", {position: "bottom-right"});
+            });
+
+            $("#mws-growl-btn-1").bind("click", function(event) {
+                $.jGrowl("A sticky message", {sticky: true, position: "bottom-right"});
+            });
+
+            $("#mws-growl-btn-2").bind("click", function(event) {
+                $.jGrowl("Message with Header", {header: "Important!", position: "bottom-right"});
+            });
+    </script>
+
+    @home.footer()
+
+
+}

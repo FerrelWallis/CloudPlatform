@@ -1,0 +1,220 @@
+@()(implicit session: Session)
+
+@home.main("MyTask"){
+
+
+    <script src="@routes.Assets.versioned("layer-v3.0/layer/layer.js")" type="text/javascript"></script>
+
+    <style>
+            input[type="text"]{
+                display: unset;
+                padding: unset;
+                background: white;
+            }
+            select {
+                display: unset;
+            }
+            label {
+                margin-bottom: unset;
+            }
+            .dataTables_wrapper .dataTables_paginate .paginate_button {
+                margin-top: unset;
+            }
+        .grid_8{
+            width: 100%;
+            margin: unset;
+        }
+        /*tr:hover{*/
+        /*    background: #cbeeeb;*/
+        /*}*/
+            .mws-table tbody tr.odd:hover,.mws-table tbody tr.even:hover {
+                background-color: #c4e3f3;
+            }
+            .selected {
+                background-color: #c4e3f3!important;
+            }
+            .layui-layer {
+                -webkit-overflow-scrolling: touch;
+                top: 35%;
+                left: 41%;
+                margin: 0;
+                padding: 0;
+                background-color: #fff;
+                -webkit-background-clip: content;
+                box-shadow: 1px 1px 50px rgba(0,0,0,.3);
+            }
+            .layui-layer-lan .layui-layer-btn {
+                 padding: 10px;
+                 text-align: right;
+                 border-top: unset;
+            }
+            .layui-layer-lan[type=dialog] {
+                min-width: 280px;
+                border-radius: 11.5px;
+            }
+            .layui-layer-lan .layui-layer-title {
+                background: #333;
+                color: #fff;
+                border: none;
+                border-top-left-radius: 11.5px;
+                border-top-right-radius: 11.5px;
+            }
+    </style>
+
+
+    <div class="container" style="width: 99.5%;margin: unset;max-width: unset">
+
+        <div class="mws-panel grid_8">
+            <div class="mws-panel-header">
+                <span class="mws-i-24 i-table-1">我的任务</span>
+
+            </div>
+            <div class="mws-panel-body">
+                <div class="mws-panel-toolbar top clearfix">
+                    <ul>
+                        <li><a class="mws-ic-16 ic-cloud-download-1" style="color: cadetblue" id="download">下载</a></li>
+                        <li><a class="mws-ic-16 ic-eye2" style="color: cadetblue" id="preview">预览</a></li>
+                        <li><a class="mws-ic-16 ic-delete2" style="color: cadetblue" id="delete">删除</a></li>
+                        <li><a class="mws-ic-16 ic-refresh2" style="color: cadetblue" id="refresh">刷新任务状态</a></li>
+                    </ul>
+
+                </div>
+
+                <table class="mws-datatable-fn mws-table" id="table">
+                    <thead>
+                        <tr>
+                            <th>任务编号</th>
+                            <th>软件名称</th>
+                            <th>提交时间</th>
+                            <th>结束时间</th>
+                            <th>状态</th>
+                        </tr>
+                    </thead>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="/assets/plugins/jquery.dataTables.js"></script>
+    <script type="text/javascript" src="/assets/plugins/colorpicker/colorpicker.js"></script>
+    <script type="text/javascript" src="/assets/plugins/spinner/ui.spinner.js"></script>
+
+    <script type="text/javascript" src="/assets/js/jquery-ui.js"></script>
+
+    <script>
+            $(document).ready(function () {
+
+                var mytask;
+                loading();
+
+                function loading() {
+                    mytask=$("#table").dataTable({
+                        searching:true,
+                        bPaginate:true,
+                        bLengthChange: true,
+                        bFilter:true,
+                        destroy:true,
+                        bSort:true,
+                        sPaginationType: "full_numbers",
+                        sAjaxSource:"/CloudPlatform/MyTasks/getDutys?uid=1",
+                        sAjaxDataProp:'rows',
+                        fnServerData: function ( sSource, aoData, fnCallback ) {
+                            $.ajax( {
+                                dataType: 'json',
+                                type: "POST",
+                                url: sSource,
+                                data: aoData,
+                                success: fnCallback
+                            } );
+                        },
+                        aoColumns:[
+                            {mDataProp:"taskname"},
+                            {mDataProp:"sname"},
+                            {mDataProp:"submit"},
+                            {mDataProp:"finish"},
+                            {mDataProp:"status"}
+                        ],
+                        contentType: "application/x-www-form-urlencoded"
+
+                    });
+                }
+
+                function refresh() {
+                    mytask.fnClearTable();
+                    mytask.fnDestroy();
+                    loading();
+                }
+
+                $("#refresh").click(function() {
+                    var element = "<div id='content'><span id='info'>刷新中，请耐心等待...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
+                    var index = layer.alert(element, {
+                        skin: 'layui-layer-lan',
+                        closeBtn: 0,
+                        title: "提醒",
+                        btn: []
+                    });
+                    refresh();
+                    window.setTimeout(function () {
+                        layer.close(index);
+                    }, 2000)
+                });
+
+                $("#table tbody").on('click','tr',function (){
+                    if($(this).hasClass('selected')){
+                        $(this).removeClass('selected');
+                    } else {
+                        $('tr.selected').removeClass('selected');
+                        $(this).addClass('selected');
+
+                    }
+                });
+
+                $("#delete").click(function () {
+                    var taskname=$('tr.selected').find("#taskname").text();
+                    $.ajax({
+                        url:"/CloudPlatform/MyTasks/deleteDutys?uid=@session.get("userId")"+"&taskname="+taskname,
+                        type:"post",
+                        success:function (data) {
+                           if(data.valid==="false"){
+                               swal({
+                                   title: "错误",
+                                   text: "删除失败！"+data.message,
+                                   type: "error",
+                                   confirmButtonText: "确认"
+                               })
+                           }else{
+
+                               swal({
+                                   title: "删除成功",
+                                   text: "任务记录删除成功！",
+                                   type: "success",
+                                   confirmButtonText: "确认"
+                               })
+                               refresh();
+                           }
+                        }
+                    })
+
+                });
+
+
+                $("#preview").click(function () {
+
+                });
+
+                $("#download").click(function () {
+
+                });
+
+
+
+
+            });
+
+
+
+
+    </script>
+
+}
