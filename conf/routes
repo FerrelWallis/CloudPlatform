@@ -3,46 +3,89 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-
 GET           /                                                      controllers.HomeController.index
 GET           /CloudPlatform/home                                    controllers.HomeController.home
 GET           /CloudPlatform/PersonalCenter                          controllers.HomeController.personal
 GET           /CloudPlatform/myTask                                  controllers.HomeController.mytask
+GET           /CloudPlatform/allsoft                                 controllers.HomeController.allsoft(types:String)
 
-GET           /CloudPlatform/SoftPage/GO                             controllers.SoftController.go
-GET           /CloudPlatform/SoftPage/KEGG                           controllers.SoftController.kegg
+GET           /CloudPlatform/SoftPage/GOKEGG                         controllers.SoftController.gokegg
+#GET           /CloudPlatform/SoftPage/KEGG                           controllers.SoftController.kegg
 GET           /CloudPlatform/SoftPage/PCA                            controllers.SoftController.pca
 GET           /CloudPlatform/SoftPage/CCA                            controllers.SoftController.cca
 GET           /CloudPlatform/SoftPage/Heatmap                        controllers.SoftController.heatmap
 GET           /CloudPlatform/SoftPage/Boxplot                        controllers.SoftController.boxplot
-
 GET           /CloudPlatform/SoftPage/NetWeight                      controllers.SoftController.netWeight
 GET           /CloudPlatform/SoftPage/NetDirected                    controllers.SoftController.netDirected
+GET           /CloudPlatform/SoftPage/Net                            controllers.SoftController.net
 
-POST          /CloudPlatform/SoftTool/runPCA                         controllers.RService.doPCA(id:String)
-POST          /CloudPlatform/SoftTool/runHeatmap                     controllers.RService.doHeatmap(id:String)
-POST          /CloudPlatform/SoftTool/runBoxplot                     controllers.RService.doBoxplot(id:String,textnum:Int)
-POST          /CloudPlatform/SoftTool/runGo                          controllers.RService.doGo(id:String,difftype:String,adddesc:Boolean)
+GET           /CloudPlatform/Softwares/home/latest                   controllers.SoftController.getlatestSix
+GET           /CloudPlatform/Softwares/home/hotest                   controllers.SoftController.gethotestSix
+GET           /CloudPlatform/Softwares/home/alllist                  controllers.SoftController.getAllSoft
+GET           /CloudPlatform/Softwares/home/types                    controllers.SoftController.getTypes(types:String)
+GET           /CloudPlatform/Softwares/home/search                   controllers.SoftController.getSearch(search:String)
+#GET           /CloudPlatform/Softwares/home/clulist                  controllers.SoftController.getCluster
+#GET           /CloudPlatform/Softwares/home/paintlist                controllers.SoftController.getPaint
+GET           /CloudPlatform/Softwares/home/likelist                 controllers.SoftController.getLike
+GET           /CloudPlatform/Softwares/home/likebref                 controllers.SoftController.getLikebrief
+
+
+GET          /CloudPlatform/Mytask/teskPreview/PCA                   controllers.PreviewController.prePCA(taskname:String)
+GET          /CloudPlatform/Mytask/teskPreview/Boxplot               controllers.PreviewController.preBoxplot(taskname:String)
+GET          /CloudPlatform/Mytask/teskPreview/Heatmap               controllers.PreviewController.preHeatmap(taskname:String)
+GET          /CloudPlatform/Mytask/teskPreview/CCA                   controllers.PreviewController.preCCA(taskname:String)
+GET          /CloudPlatform/Mytask/teskPreview/Net                   controllers.PreviewController.preNet(taskname:String)
+GET          /CloudPlatform/Mytask/teskPreview/GOKEGG                controllers.PreviewController.preGoKEGG(taskname:String)
+
+
+POST          /CloudPlatform/SoftTool/runPCA                         controllers.RService.doPCA(isgroup:Boolean)
+POST          /CloudPlatform/SoftTool/getPCAData                     controllers.RService.readPCAData(taskname:String)
+POST          /CloudPlatform/SoftTool/redrawPCA                      controllers.RService.redrawPCA(taskname:String)
+
+POST          /CloudPlatform/SoftTool/runBoxplot                     controllers.RService.doBoxplot
+POST          /CloudPlatform/SoftTool/getBoxData                     controllers.RService.readBoxData(taskname:String)
+POST          /CloudPlatform/SoftTool/redrawBox                      controllers.RService.redrawBox(taskname:String)
+
+POST          /CloudPlatform/SoftTool/runHeatmap                     controllers.RService.doHeatmap
+POST          /CloudPlatform/SoftTool/getHeatData                    controllers.RService.readHeatData(taskname:String)
+POST          /CloudPlatform/SoftTool/redrawHeat                     controllers.RService.redrawHeatmap(taskname:String)
+
+POST          /CloudPlatform/SoftTool/runCCA                         controllers.RService.doCCA(isgroup:Boolean)
+POST          /CloudPlatform/SoftTool/getCCAData                     controllers.RService.readCCAData(taskname:String)
+POST          /CloudPlatform/SoftTool/redrawCCA                      controllers.RService.redrawCCA(taskname:String,showsname:Boolean,showevi:Boolean,showspeci:Boolean)
+
+POST          /CloudPlatform/SoftTool/runNet                         controllers.RService.doNet
+POST          /CloudPlatform/SoftTool/getNetData                     controllers.RService.readNetData(taskname:String)
+
+POST          /CloudPlatform/SoftTool/runGo                          controllers.RService.doGo
+POST          /CloudPlatform/SoftTool/getGOData                      controllers.RService.readGoData(taskname:String)
+POST          /CloudPlatform/SoftTool/redrawGO                       controllers.RService.redrawGO(taskname:String,types:String,kogo:String)
+
 POST          /CloudPlatform/SoftTool/runKegg                        controllers.RService.doKegg(id:String,userefer:Boolean,desc:Boolean)
-POST          /CloudPlatform/SoftTool/runCca                         controllers.RService.doCca(id:String,color:String)
-POST          /CloudPlatform/SoftTool/runWeight                      controllers.RService.doWeight(id:String)
-POST          /CloudPlatform/SoftTool/runDirected                    controllers.RService.doDirected(id:String)
+
+#POST          /CloudPlatform/SoftTool/runDirected                    controllers.RService.doDirected(id:String)
 
 #POST           /CloudPlatform/SoftTool/getFiles                     controllers.RService.getFiles(id:String,taskname:String)
-POST          /CloudPlatform/SoftTool/getFiles                       controllers.RService.getFiles(id:String,taskname:String)
+POST          /CloudPlatform/SoftTool/getDownloadFiles               controllers.RService.getDownloadFiles(taskname:String,soft:String)
+GET           /CloudPlatform/SoftTool/downloadZip                    controllers.RService.downloadZip(taskname:String)
 GET           /CloudPlatform/SoftTool/download                       controllers.RService.download(path:String)
 GET           /CloudPlatform/SoftTool/downloadExamples               controllers.RService.downloadExamples(name:String)
-GET           /CloudPlatform/pic                                     controllers.RService.getPic(path:String)
+GET           /CloudPlatform/pic                                     controllers.RService.getPic(path:String,num:Double)
 
-POST          /CloudPlatform/MyTasks/getDutys                        controllers.DutyController.getAllDutyById(uid:String)
+POST          /CloudPlatform/MyTasks/getDutys                        controllers.DutyController.getAllDutyById
+POST          /CloudPlatform/MyTasks/getDutysByType                  controllers.DutyController.getDutyByType(sabbrename:String)
 POST          /CloudPlatform/MyTasks/deleteDutys                     controllers.DutyController.deleteDuty(uid:String,taskname:String)
-GET           /CloudPlatform/MyTasks/taskPreview                     controllers.DutyController.taskPreview(uid:String,taskname:String)
+#GET           /CloudPlatform/MyTasks/taskPreview                     controllers.DutyController.taskPreview(taskname:String)
+POST          /CloudPlatform/MyTasks/checkTaskname                   controllers.DutyController.checktaskname
+
 
 POST          /CloudPlatform/User/signIn                             controllers.UserController.signIn
 GET           /CloudPlatform/User/signInSuccess                      controllers.UserController.signInSuccess(path:String,id:String)
 POST          /CloudPlatform/User/changePassword                     controllers.UserController.changePassword
 GET           /CloudPlatform/User/signout                            controllers.UserController.signout
 POST          /CloudPlatform/User/addUser                            controllers.UserController.addUser
+POST          /CloudPlatform/User/addLike                            controllers.UserController.addLike(sid:String)
+POST          /CloudPlatform/User/delLike                            controllers.UserController.deleteLike(sid:String)
 
 
 

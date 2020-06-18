@@ -2,30 +2,55 @@ package utils
 
 import java.io.File
 
+import dao.softDao
+import javax.imageio.ImageIO
+import models.Tables.SoftRow
 import org.apache.commons.io.FileUtils
+import org.apache.pdfbox.pdmodel.PDDocument
+import org.apache.pdfbox.rendering.PDFRenderer
+import play.api.libs.json.Json
 
-object Utils {
+import scala.concurrent.Await
+import scala.concurrent.duration.Duration
+
+object Utils{
 
   val windowsPath="F:/CloudPlatform/"
-  val linuxPath="/root/CloudPlatform/"
+  val linuxPath="/mnt/sdb/ww/CloudPlatform/"
+
+  val RPath : String= {
+    if (new File(windowsPath).exists()) "\"C:/Program Files/R/R-3.6.3/bin/Rscript.exe\" " else linuxPath+""
+  }
 
   val path : String= {
     if (new File(windowsPath).exists()) windowsPath else linuxPath
   }
 
-  val softwares=(("1","GO富集分析","应用超几何检验，找出与整个基因组背景相比，在差异表达基因中显著富集的GO条目","gogsea.png"),("2","KEGG富集分析","应用超几何检验，找出与整个基因组背景相比，在差异表达基因中显著性富集的Pathway","pathwaygsea.png"),("3","主成分分析（PCA）","将多个变量通过线性变换，筛选出数个比较重要的变量","pca.png"),("4","CCA/RDA","计算并展示环境因子、微生物群落和样本关系","cca.png"),("5","Heatmap 热图","将表格数据绘制成一个热图","heatmap.png"),("6","Boxplot 盒型图","将表格数据绘制成一个盒形图","box.png"),("7","权重网络图","一款图形化显示权重网络并进行分析和编辑的软件","cytoscape.png"),("8","有向网络图","一款图形化显示有向网络并进行分析和编辑的软件","cytoscape.png"))
 
-  val funcAnalyst=(("1","GO富集分析","应用超几何检验，找出与整个基因组背景相比，在差异表达基因中显著富集的GO条目","gogsea.png"),("2","KEGG富集分析","应用超几何检验，找出与整个基因组背景相比，在差异表达基因中显著性富集的Pathway","pathwaygsea.png"))
+  def pdf2Png(pdfPath: String,file:String): Unit = {
+    if (new File(windowsPath).exists()) pdfPng(pdfPath,file)
+    else pdfToPng(pdfPath,file)
+  }
 
-  val ClusterAnalyst=(("3","主成分分析（PCA）","将多个变量通过线性变换，筛选出数个比较重要的变量","pca.png"),("4","CCA/RDA","计算并展示环境因子、微生物群落和样本关系","cca.png"))
+  //PDF转png（windows）
+  def pdfPng(pdfPath: String,file:String): Unit = {
+    val pdfFiles = new File(pdfPath)
+    val outFile = new File(file)
+    val document = PDDocument.load(pdfFiles)
+    val renderer = new PDFRenderer(document)
+    ImageIO.write(renderer.renderImage(0, 3), "png", outFile)
+    document.close()
+  }
 
-  val diffAnalyst=(("5","Heatmap 热图","将表格数据绘制成一个热图","heatmap.png"),("6","Boxplot 盒型图","将表格数据绘制成一个盒形图","box.png"),("7","权重网络图","一款图形化显示权重网络并进行分析和编辑的软件","cytoscape.png"),("8","有向网络图","一款图形化显示有向网络并进行分析和编辑的软件","cytoscape.png"))
+  //Linux下
+  def pdfToPng(pdfpath:String,pngpath:String)={
+    //$path/R_value_top_10_pairs.pdf $path/top.jpg
+    val command = s"convert -density 300 "+ pdfpath + " " + pngpath
+    val execCommand = new ExecCommand
+    //exec需要指定结果输出路径的时候，不指定默认本地任务路径
+    execCommand.exec(command)
+  }
 
-  val sequeAnalyst=()
-
-  val nromalDraw=()
-
-  val chartTrans=()
 
 
   val suffix: String = {

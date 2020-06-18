@@ -2,14 +2,13 @@ package utils
 
 import java.lang.reflect.Field
 
-import models.Tables.DutysRow
+import models.Tables._
 
 object TableUtils {
 
 
-  var MytaskMap:Seq[DutysRow]=Seq()
-//  var EggGene:Seq[String]=Seq()
-//  var EggChr:Seq[String]=Seq()
+//  var MytaskMap:Seq[DutysRow]=Seq()
+  var SoftsMap:Seq[SoftRow]=Seq()
 
 
   def isDouble(value: String): Boolean = {

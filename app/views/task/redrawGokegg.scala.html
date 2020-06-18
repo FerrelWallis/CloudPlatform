@@ -1,0 +1,1064 @@
+@import models.Tables.DutysRow
+@(row:DutysRow)(implicit session: Session)
+@home.main("Task Preview"){
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("font-awesome-4.7.0/css/font-awesome.min.css")" media="screen" />
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("bootstrap-fileinput-master/css/fileinput.css")" media="screen" />
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("palette/evol-colorpicker.min.css")" media="screen" />
+
+    <script src="@routes.Assets.versioned("layer-v3.0/layer/layer.js")" type="text/javascript"></script>
+    <script type="text/javascript" src="@routes.Assets.versioned("palette/evol-colorpicker.min.js")"></script>
+
+    <style>
+            .grid_8{
+                width: 100%;
+                margin: unset;
+            }
+            .mws-panel .mws-panel-content {
+                padding: 24px;
+                float: left;
+                background: white;
+            }
+            .grid_6{
+                width: 60%;
+            }
+            .grid_2{
+                width: 20%;
+            }
+            .title{
+                font-weight: 700;
+                font-family: "Helvetica Neue", Helvetica, 'Microsoft Yahei', 'Hiragino Sans GB', 'WenQuanYi Micro Hei', Tahoma, Arial, sans-serif;
+                margin-top: 20px;
+                margin-bottom: 10px;
+                margin-right: 0px;
+                line-height: 2.6;
+                color: inherit;
+                font-size: 16px;
+                color: #424141;
+            }
+            .content{
+                font-weight: 700;
+                font-family: "Helvetica Neue", Helvetica, 'Microsoft Yahei', 'Hiragino Sans GB', 'WenQuanYi Micro Hei', Tahoma, Arial, sans-serif;
+                font-size: 16px;
+                color: #827e7e;
+            }
+            .success{
+                color: white;
+                background: cadetblue;
+                padding: 8px 15px;
+                border-radius: 19px;
+            }
+            .failed{
+                color: white;
+                background: #bf4064;
+                padding: 8px 15px;
+                border-radius: 19px;
+            }
+            .running{
+                color: white;
+                background: #a08c5f;
+                padding: 8px 15px;
+                border-radius: 19px;
+            }
+            .list{
+                margin-left: 125px;
+                height: 33%;
+            }
+            .list:first-child{
+                margin-left: 0px;
+            }
+            .align{
+                padding-left: 50px;
+            }
+            .button{
+                /*background: #8fb2b3;*/
+                background: #434343;
+                border-radius: 6px;
+                color: white;
+                padding: 10px 30px;
+            }
+            .content a:hover{
+                color: white!important;
+                background-color: black;
+            }
+            #filesUrl a{
+                font-size: 17px;
+                color: gray;
+            }
+            #filesUrl a:hover{
+                color: cadetblue;
+            }
+            /*滚动条样式*/
+            .innerbox::-webkit-scrollbar {/*滚动条整体样式*/
+                width: 4px;     /*高宽分别对应横竖滚动条的尺寸*/
+                height: 4px;
+            }
+            .innerbox::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+                border-radius: 5px;
+                -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+                background: rgba(0,0,0,0.2);
+            }
+            .innerbox::-webkit-scrollbar-track {/*滚动条里面轨道*/
+                -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+                border-radius: 0;
+                background: rgba(0,0,0,0.1);
+            }
+            #prepic{
+                padding: 10px 20px 0 10px!important;
+            }
+            .img-thumbnail{
+                -webkit-transition: unset;
+                transition: unset;
+            }
+            .mws-table tbody tr.odd {
+                background-color: #fafafa;
+            }
+            .mws-table tbody tr.even {
+                background-color: white;
+            }
+            .mws-table thead tr {
+                background: white;
+            }
+            .mws-panel .mws-panel-header {
+                height: 25px;
+                position: relative;
+                padding: 12px;
+                font-size: 14px;
+                border-radius: 4px;
+                border: 1px solid #bebebe;
+                background: #fafafa;
+            }
+            table tr th, table tr td {
+                border-top: 1px solid #ccc !important;
+            }
+            input[type="text"], textarea {
+                background: #fff;
+                background: rgba(255, 255, 255, .4);
+                border: 1px solid #bebebe;
+                padding: 7px 9px;
+                border-radius: 3px;
+                color: #888;
+                box-shadow: unset;
+            }
+            .form-group{
+                float: left;
+            }
+            .right{
+                width: 70%;
+            }
+            .form-group-p{
+                display: inline-block;
+                width: 100%;
+            }
+            input,select{
+                line-height: 32px;
+                height: 32px;
+                width: 60%;
+                border-radius: 5px;
+                margin-left: 10px;
+            }
+            label {
+                display: inline-block;
+                margin-bottom: 5px;
+                margin-top: 5px;
+                font-weight: 700;
+            }
+            .form-group input:not([type="radio"]):not([type="checkbox"]),.form-group select,.form-group .form-control[readonly] {
+                border-radius: 5px;
+                background-color: #f7f7f7;
+                height: 32px;
+                border: 1px solid #e6e6e6;
+                box-shadow: none;
+            }
+            .form-group-extra {
+                display: inline-block;
+                vertical-align: top;
+                line-height: 32px;
+                /* max-width: 180px; */
+            }
+            .input-group .form-control {
+                position: relative;
+                z-index: 2;
+                float: left;
+                width: 80%;
+                margin-bottom: 0;
+                height: 22px;
+                border-radius: 4px;
+            }
+            .input-group .form-control:first-child, .input-group-addon:first-child, .input-group-btn:first-child > .btn, .input-group-btn:first-child > .btn-group > .btn, .input-group-btn:first-child > .dropdown-toggle, .input-group-btn:last-child > .btn:not(:last-child):not(.dropdown-toggle), .input-group-btn:last-child > .btn-group:not(:last-child) > .btn {
+                border-top-right-radius: 4px;
+                border-bottom-right-radius: 4px;
+                border-radius: 5px;
+                background-color: #f7f7f7;
+                height: 21px;
+                border: 1px solid #e6e6e6;
+                box-shadow: none;
+            }
+            .input-group .form-control:last-child, .input-group-addon:last-child, .input-group-btn:last-child > .btn, .input-group-btn:last-child > .btn-group > .btn, .input-group-btn:last-child > .dropdown-toggle, .input-group-btn:first-child > .btn:not(:first-child), .input-group-btn:first-child > .btn-group:not(:first-child) > .btn {
+                border-top-left-radius: 4px;
+                border-bottom-left-radius: 4px;
+            }
+            .fileinput-cancel-button{
+                display: none;
+            }
+            .file-input{
+                width: 330px;
+            }
+            .hidden-xs {
+                display: unset !important;
+            }
+            .redraw-right .form-group-p{
+                padding-left: 30px;
+            }
+            .must{
+                color: red;
+                font-size: large;
+                font-weight: bold;
+                position: relative;
+                left: -10px;
+            }
+            .redraw-head a:hover,.redraw-head a:focus{
+                background: black;
+                color: white;
+            }
+            .layui-layer {
+                -webkit-overflow-scrolling: touch;
+                top: 35%;
+                left: 41%;
+                margin: 0;
+                padding: 0;
+                background-color: #fff;
+                -webkit-background-clip: content;
+                box-shadow: 1px 1px 50px rgba(0,0,0,.3);
+            }
+            .layui-layer-lan .layui-layer-btn {
+                padding: 10px;
+                text-align: right;
+                border-top: unset;
+            }
+            .layui-layer-lan[type=dialog] {
+                min-width: 280px;
+                border-radius: 11.5px;
+            }
+            .layui-layer-lan .layui-layer-title {
+                background: #333;
+                color: #fff;
+                border: none;
+                border-top-left-radius: 11.5px;
+                border-top-right-radius: 11.5px;
+            }
+            .form-group-p {
+                display: inline-block;
+                width: 100%;
+                margin: 5px 0 5px 0;
+            }
+    </style>
+
+    <div class="container" style="width: 98.5%;margin: unset;max-width: unset;padding: 5px">
+        @task.preview(row)
+        <div class="mws-panel grid_8" style="background: white!important;">
+            <div class="mws-panel-body" style="border: unset">
+                <div id="GO" style="display: none" class="mws-panel-content" style="width: 96%;padding-top: 0;padding-right: 0">
+                    <hr>
+                    <ul class="nav nav-tabs" style="background: #f2f2f2;">
+                        <li class="active">
+                            <a href="#" data-target=".form1" data-toggle="tab">go_stack</a>
+                        </li>
+                        <li class="">
+                            <a href="#" data-target=".form2" data-toggle="tab">go_dodge</a>
+                        </li>
+                        <li class="">
+                            <a href="#" data-target=".form3" data-toggle="tab">ko_stack</a>
+                        </li>
+                        <li class="">
+                            <a href="#" data-target=".form4" data-toggle="tab">ko_dodge</a>
+                        </li>
+                        <li class="">
+                            <a href="#" data-target=".form5" data-toggle="tab">gokegg.Go.enrich</a>
+                        </li>
+                        <li class="">
+                            <a href="#" data-target=".form6" data-toggle="tab">gokegg.Ko.enrich</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" style="box-sizing: border-box!important;overflow: auto;scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.2);scrollbar-width: thin;height: 96%;">
+                        <form id="gostack" method="GET" enctype="multipart/form-data" class="form1 well form-inline tab-pane fade active in" style="box-sizing: border-box!important;">
+                            <div class="redraw-head" style="margin-bottom: 10px;margin-top: 10px;">
+                                <h3 style="display: inline-block">重新绘图：</h3>
+                                <a class="button" id="downPic1" style="margin-left: 20px;">下载结果图</a>
+                            </div>
+                            <div style="width: 60%;float: left">
+                                <img id="redraw_pic1" src="" style="width: 100%;height: auto" >
+                            </div>
+                            <div class="redraw-right" style="width: 40%;float: left;margin-bottom: 30px;">
+                                <div class="form-group-p" style="display: none">
+                                    <div class="form-group">
+                                        <label>是否按照UpDown分开绘图：</label>
+                                    </div>
+                                    <div class="form-group" style="width: 50%;">
+                                        <select name="g" >
+                                            <option value="FALSE">no</option>
+                                            <option value="TRUE">yes</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group-p">
+                                    <div class="form-group" style="margin-top: 5px;">
+                                        <label for="">显示前</label><input type="text" name="n" class="form-control" placeholder="数字" value="15" style="width: 50px;margin-right: 10px;margin-left: 10px"><label for="">行数据&nbsp;</label>
+                                    </div>
+                                </div>
+                                <div class="form-group-p">
+                                    <div class="form-group">
+                                        <label for="">条形宽度：</label>
+                                    </div>
+                                    <div class="form-group" style="width: 70px;margin-right: 40px">
+                                        <input type="text" name="br" class="form-control" placeholder="数字" value="0.9" style="width: 50px;float: left;">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">Y轴名称最大长度&nbsp;：</label>
+                                    </div>
+                                    <div class="form-group" style="">
+                                        <input type="text" name="sm" class="form-control" placeholder="数字" value="10" style="width:50px;">
+                                    </div>
+                                </div>
+                                <div class="one-line" >
+                                    <div style="border: 1px solid lightgrey;border-radius: 5px;padding: 10px;margin-left: 30px">
+                                        <div class="form-group-p" style="width: 100%;padding-left: 0">
+                                            <div class="form-group" >
+                                                <label>按照分类顺序取色,颜色不可少于分组数量,多出的颜色自动失效</label>
+                                                <label for="color">
+                                                    自定义颜色：
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group-extra">
+                                            <div class="form-group">
+                                                <input type="text" id="c1" name="cs" class="form-control" placeholder="" value="">
+                                            </div>
+                                            <div style="width: 25px; float: left;margin-top: 5px" class="evo-cp-wrap">
+                                                <input id="color1" name="color1" class="form-control colorPicker evo-cp0" value="#ccffff" type="hidden">
+                                            </div>
+                                            <span id="link1" class="btn" style="margin-left:10px;"> 添加该颜色 </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="form-group-p">
+                                    <div class="form-group">
+                                        <label for="">图片长宽：</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" name="width" class="form-control" placeholder="数字" value="20" style="width: 50px;float: left;margin-right: 5px">
+                                        <label style="float: left">--</label>
+                                        <input type="text" name="height" class="form-control" placeholder="数字" value="14" style="width: 50px;  margin-left: 5px;float: left">
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="form-group-p">
+                                    <div class="form-group">
+                                        <label>清晰度：</label>
+                                    </div>
+                                    <div class="form-group right">
+                                        <select name="dpi">
+                                            <option value="300">300</option>
+                                            <option value="600">600</option>
+                                            <option value="96">96</option>
+                                            <option value="72">72</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group-p">
+                                    <div class="form-group">
+                                        <label for="">x轴字体大小：</label>
+                                    </div>
+                                    <div class="form-group" style="width: 70px;margin-right: 40px">
+                                        <input type="text" name="xts" class="form-control" placeholder="数字" value="18" style="width: 100%;float: left;">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">y轴字体大小：</label>
+                                    </div>
+                                    <div class="form-group" style="width: 70px">
+                                        <input type="text" name="yts" class="form-control" placeholder="数字" value="18" style="width: 100%;float: left;">
+                                    </div>
+                                </div>
+                                <div class="form-group-p">
+                                    <div class="form-group">
+                                        <label for="">说明文字大小：</label>
+                                    </div>
+                                    <div class="form-group" style="width: 70px;margin-right: 35px">
+                                        <input type="text" name="lts" class="form-control" placeholder="数字" value="15" style="width: 100%;float: left;">
+                                    </div>
+                                </div>
+                                <br>
+                                <br>
+                                <input type="button" value="绘&nbsp;&nbsp;制" name="submit" class="btn btn-primary" onclick="DrawGokegg('stack','go','1')" style="margin-left: 30px">
+                            </div>
+                        </form>
+                        <form id="gododge" method="GET" enctype="multipart/form-data" class="form2 well form-inline tab-pane fade" style="box-sizing: border-box!important;">
+                            <div class="redraw-head" style="margin-bottom: 10px;margin-top: 10px;">
+                                <h3 style="display: inline-block">重新绘图：</h3>
+                                <a class="button" id="downPic2" style="margin-left: 20px;">下载结果图</a>
+                            </div>
+                            <div style="width: 60%;float: left">
+                                <img id="redraw_pic2" src="" style="width: 100%;height: auto" >
+                            </div>
+                            <div class="redraw-right" style="width: 40%;float: left;margin-bottom: 30px;">
+                                <div class="form-group-p">
+                                    <div class="form-group">
+                                        <label>是否按照UpDown分开绘图：</label>
+                                    </div>
+                                    <div class="form-group" style="width: 50%;">
+                                        <select name="g" >
+                                            <option value="FALSE">no</option>
+                                            <option value="TRUE">yes</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group-p">
+                                    <div class="form-group" style="margin-top: 5px;">
+                                        <label for="">显示前</label><input type="text" name="n" class="form-control" placeholder="数字" value="15" style="width: 50px;margin-right: 10px;margin-left: 10px"><label for="">行数据&nbsp;</label>
+                                    </div>
+                                </div>
+                                <div class="form-group-p">
+                                    <div class="form-group">
+                                        <label for="">条形宽度：</label>
+                                    </div>
+                                    <div class="form-group" style="width: 70px;margin-right: 40px">
+                                        <input type="text" name="br" class="form-control" placeholder="数字" value="0.9" style="width: 50px;float: left;">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">Y轴名称最大长度&nbsp;：</label>
+                                    </div>
+                                    <div class="form-group" style="">
+                                        <input type="text" name="sm" class="form-control" placeholder="数字" value="10" style="width:50px;">
+                                    </div>
+                                </div>
+                                <div class="one-line" >
+                                    <div style="border: 1px solid lightgrey;border-radius: 5px;padding: 10px;margin-left: 30px">
+                                        <div class="form-group-p" style="width: 100%;padding-left: 0">
+                                            <div class="form-group" >
+                                                <label>按照分类顺序取色,颜色不可少于分组数量,多出的颜色自动失效</label>
+                                                <label for="color">
+                                                    自定义颜色：
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group-extra">
+                                            <div class="form-group">
+                                                <input type="text" id="c2" name="cs" class="form-control" placeholder="" value="">
+                                            </div>
+                                            <div style="width: 25px; float: left;margin-top: 5px" class="evo-cp-wrap">
+                                                <input id="color2" name="color2" class="form-control colorPicker evo-cp0" value="#ccffff" type="hidden">
+                                            </div>
+                                            <span id="link2" class="btn" style="margin-left:10px;"> 添加该颜色 </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="form-group-p">
+                                    <div class="form-group">
+                                        <label for="">图片长宽：</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" name="width" class="form-control" placeholder="数字" value="20" style="width: 50px;float: left;margin-right: 5px">
+                                        <label style="float: left">--</label>
+                                        <input type="text" name="height" class="form-control" placeholder="数字" value="14" style="width: 50px;  margin-left: 5px;float: left">
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="form-group-p">
+                                    <div class="form-group">
+                                        <label>清晰度：</label>
+                                    </div>
+                                    <div class="form-group right">
+                                        <select name="dpi">
+                                            <option value="300">300</option>
+                                            <option value="600">600</option>
+                                            <option value="96">96</option>
+                                            <option value="72">72</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group-p">
+                                    <div class="form-group">
+                                        <label for="">x轴字体大小：</label>
+                                    </div>
+                                    <div class="form-group" style="width: 70px;margin-right: 40px">
+                                        <input type="text" name="xts" class="form-control" placeholder="数字" value="18" style="width: 100%;float: left;">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">y轴字体大小：</label>
+                                    </div>
+                                    <div class="form-group" style="width: 70px">
+                                        <input type="text" name="yts" class="form-control" placeholder="数字" value="18" style="width: 100%;float: left;">
+                                    </div>
+                                </div>
+                                <div class="form-group-p">
+                                    <div class="form-group">
+                                        <label for="">说明文字大小：</label>
+                                    </div>
+                                    <div class="form-group" style="width: 70px;margin-right: 35px">
+                                        <input type="text" name="lts" class="form-control" placeholder="数字" value="15" style="width: 100%;float: left;">
+                                    </div>
+                                </div>
+                                <br>
+                                <br>
+                                <input type="button" value="绘&nbsp;&nbsp;制" name="submit" class="btn btn-primary" onclick="DrawGokegg('dodge','go','2')" style="margin-left: 30px">
+                            </div>
+                        </form>
+                        <form id="kostack" method="GET" enctype="multipart/form-data" class="form3 well form-inline tab-pane fade" style="box-sizing: border-box!important;">
+                            <div class="redraw-head" style="margin-bottom: 10px;margin-top: 10px;">
+                                <h3 style="display: inline-block">重新绘图：</h3>
+                                <a class="button" id="downPic3" style="margin-left: 20px;">下载结果图</a>
+                            </div>
+                            <div style="width: 60%;float: left">
+                                <img id="redraw_pic3" src="" style="width: 100%;height: auto" >
+                            </div>
+                            <div class="redraw-right" style="width: 40%;float: left;margin-bottom: 30px;">
+                                <div class="form-group-p" style="display: none">
+                                    <div class="form-group">
+                                        <label>是否按照UpDown分开绘图：</label>
+                                    </div>
+                                    <div class="form-group" style="width: 50%;">
+                                        <select name="g" >
+                                            <option value="FALSE">no</option>
+                                            <option value="TRUE">yes</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group-p">
+                                    <div class="form-group" style="margin-top: 5px;">
+                                        <label for="">显示前</label><input type="text" name="n" class="form-control" placeholder="数字" value="15" style="width: 50px;margin-right: 10px;margin-left: 10px"><label for="">行数据&nbsp;</label>
+                                    </div>
+                                </div>
+                                <div class="form-group-p">
+                                    <div class="form-group">
+                                        <label for="">条形宽度：</label>
+                                    </div>
+                                    <div class="form-group" style="width: 70px;margin-right: 40px">
+                                        <input type="text" name="br" class="form-control" placeholder="数字" value="0.9" style="width: 50px;float: left;">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">Y轴名称最大长度&nbsp;：</label>
+                                    </div>
+                                    <div class="form-group" style="">
+                                        <input type="text" name="sm" class="form-control" placeholder="数字" value="10" style="width:50px;">
+                                    </div>
+                                </div>
+                                <div class="one-line" >
+                                    <div style="border: 1px solid lightgrey;border-radius: 5px;padding: 10px;margin-left: 30px">
+                                        <div class="form-group-p" style="width: 100%;padding-left: 0">
+                                            <div class="form-group" >
+                                                <label>按照分类顺序取色,颜色不可少于分组数量,多出的颜色自动失效</label>
+                                                <label for="color">
+                                                    自定义颜色：
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group-extra">
+                                            <div class="form-group">
+                                                <input type="text" id="c3" name="cs" class="form-control" placeholder="" value="">
+                                            </div>
+                                            <div style="width: 25px; float: left;margin-top: 5px" class="evo-cp-wrap">
+                                                <input id="color3" name="color3" class="form-control colorPicker evo-cp0" value="#ccffff" type="hidden">
+                                            </div>
+                                            <span id="link3" class="btn" style="margin-left:10px;"> 添加该颜色 </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="form-group-p">
+                                    <div class="form-group">
+                                        <label for="">图片长宽：</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" name="width" class="form-control" placeholder="数字" value="20" style="width: 50px;float: left;margin-right: 5px">
+                                        <label style="float: left">--</label>
+                                        <input type="text" name="height" class="form-control" placeholder="数字" value="14" style="width: 50px;  margin-left: 5px;float: left">
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="form-group-p">
+                                    <div class="form-group">
+                                        <label>清晰度：</label>
+                                    </div>
+                                    <div class="form-group right">
+                                        <select name="dpi">
+                                            <option value="300">300</option>
+                                            <option value="600">600</option>
+                                            <option value="96">96</option>
+                                            <option value="72">72</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group-p">
+                                    <div class="form-group">
+                                        <label for="">x轴字体大小：</label>
+                                    </div>
+                                    <div class="form-group" style="width: 70px;margin-right: 40px">
+                                        <input type="text" name="xts" class="form-control" placeholder="数字" value="18" style="width: 100%;float: left;">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">y轴字体大小：</label>
+                                    </div>
+                                    <div class="form-group" style="width: 70px">
+                                        <input type="text" name="yts" class="form-control" placeholder="数字" value="18" style="width: 100%;float: left;">
+                                    </div>
+                                </div>
+                                <div class="form-group-p">
+                                    <div class="form-group">
+                                        <label for="">说明文字大小：</label>
+                                    </div>
+                                    <div class="form-group" style="width: 70px;margin-right: 35px">
+                                        <input type="text" name="lts" class="form-control" placeholder="数字" value="15" style="width: 100%;float: left;">
+                                    </div>
+                                </div>
+                                <br>
+                                <br>
+                                <input type="button" value="绘&nbsp;&nbsp;制" name="submit" class="btn btn-primary" onclick="DrawGokegg('stack','ko','3')" style="margin-left: 30px">
+                            </div>
+                        </form>
+                        <form id="kododge" method="GET" enctype="multipart/form-data" class="form4 well form-inline tab-pane fade" style="box-sizing: border-box!important;">
+                            <div class="redraw-head" style="margin-bottom: 10px;margin-top: 10px;">
+                                <h3 style="display: inline-block">重新绘图：</h3>
+                                <a class="button" id="downPic4" style="margin-left: 20px;">下载结果图</a>
+                            </div>
+                            <div style="width: 60%;float: left">
+                                <img id="redraw_pic4" src="" style="width: 100%;height: auto" >
+                            </div>
+                            <div class="redraw-right" style="width: 40%;float: left;margin-bottom: 30px;">
+                                <div class="form-group-p">
+                                    <div class="form-group">
+                                        <label>是否按照UpDown分开绘图：</label>
+                                    </div>
+                                    <div class="form-group" style="width: 50%;">
+                                        <select name="g" >
+                                            <option value="FALSE">no</option>
+                                            <option value="TRUE">yes</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group-p">
+                                    <div class="form-group" style="margin-top: 5px;">
+                                        <label for="">显示前</label><input type="text" name="n" class="form-control" placeholder="数字" value="15" style="width: 50px;margin-right: 10px;margin-left: 10px"><label for="">行数据&nbsp;</label>
+                                    </div>
+                                </div>
+                                <div class="form-group-p">
+                                    <div class="form-group">
+                                        <label for="">条形宽度：</label>
+                                    </div>
+                                    <div class="form-group" style="width: 70px;margin-right: 40px">
+                                        <input type="text" name="br" class="form-control" placeholder="数字" value="0.9" style="width: 50px;float: left;">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">Y轴名称最大长度&nbsp;：</label>
+                                    </div>
+                                    <div class="form-group" style="">
+                                        <input type="text" name="sm" class="form-control" placeholder="数字" value="10" style="width:50px;">
+                                    </div>
+                                </div>
+                                <div class="one-line" >
+                                    <div style="border: 1px solid lightgrey;border-radius: 5px;padding: 10px;margin-left: 30px">
+                                        <div class="form-group-p" style="width: 100%;padding-left: 0">
+                                            <div class="form-group" >
+                                                <label for="color">
+                                                    自定义颜色(颜色数量不足，自动使用默认颜色补足)：
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group-extra">
+                                            <div class="form-group">
+                                                <input type="text" id="c4" name="cs" class="form-control" placeholder="" value="">
+                                            </div>
+                                            <div style="width: 25px; float: left;margin-top: 5px" class="evo-cp-wrap">
+                                                <input id="color4" name="color4" class="form-control colorPicker evo-cp0" value="#ccffff" type="hidden">
+                                            </div>
+                                            <span id="link4" class="btn" style="margin-left:10px;"> 添加该颜色 </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="form-group-p">
+                                    <div class="form-group">
+                                        <label for="">图片长宽：</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" name="width" class="form-control" placeholder="数字" value="20" style="width: 50px;float: left;margin-right: 5px">
+                                        <label style="float: left">--</label>
+                                        <input type="text" name="height" class="form-control" placeholder="数字" value="14" style="width: 50px;  margin-left: 5px;float: left">
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="form-group-p">
+                                    <div class="form-group">
+                                        <label>清晰度：</label>
+                                    </div>
+                                    <div class="form-group right">
+                                        <select name="dpi">
+                                            <option value="300">300</option>
+                                            <option value="600">600</option>
+                                            <option value="96">96</option>
+                                            <option value="72">72</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group-p">
+                                    <div class="form-group">
+                                        <label for="">x轴字体大小：</label>
+                                    </div>
+                                    <div class="form-group" style="width: 70px;margin-right: 40px">
+                                        <input type="text" name="xts" class="form-control" placeholder="数字" value="18" style="width: 100%;float: left;">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">y轴字体大小：</label>
+                                    </div>
+                                    <div class="form-group" style="width: 70px">
+                                        <input type="text" name="yts" class="form-control" placeholder="数字" value="18" style="width: 100%;float: left;">
+                                    </div>
+                                </div>
+                                <div class="form-group-p">
+                                    <div class="form-group">
+                                        <label for="">说明文字大小：</label>
+                                    </div>
+                                    <div class="form-group" style="width: 70px;margin-right: 35px">
+                                        <input type="text" name="lts" class="form-control" placeholder="数字" value="15" style="width: 100%;float: left;">
+                                    </div>
+                                </div>
+                                <br>
+                                <br>
+                                <input type="button" value="绘&nbsp;&nbsp;制" name="submit" class="btn btn-primary" onclick="DrawGokegg('dodge','ko','4')" style="margin-left: 30px">
+                            </div>
+                        </form>
+                        <form id="gokeggGo" method="GET" enctype="multipart/form-data" class="form5 well form-inline tab-pane fade" style="box-sizing: border-box!important;">
+                            <div class="redraw-head" style="margin-bottom: 10px;margin-top: 10px;">
+                                <h3 style="display: inline-block">显示结果图：</h3>
+                                <a class="button" id="downPic5" style="margin-left: 20px;">下载结果图</a>
+                            </div>
+                            <div style="width: 60%;margin-left: 15%">
+                                <img id="redraw_pic5" src="" style="width: 100%;height: auto" >
+                            </div>
+                        </form>
+                        <form id="gokeggKo" method="GET" enctype="multipart/form-data" class="form6 well form-inline tab-pane fade" style="box-sizing: border-box!important;">
+                            <div class="redraw-head" style="margin-bottom: 10px;margin-top: 10px;">
+                                <h3 style="display: inline-block">显示结果图：</h3>
+                                <a class="button" id="downPic6" style="margin-left: 20px;">下载结果图</a>
+                            </div>
+                            <div style="width: 60%;margin-left: 15%">
+                                <img id="redraw_pic6" src="" style="width: 100%;height: auto" >
+                            </div>
+                        </form>
+                    </div>
+
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/fileinput.min.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/locales/zh.js")" type="text/javascript"></script>
+
+    <script>
+
+
+            function formValidation() {
+                $("#signinForm").formValidation({
+                    framework: 'bootstrap',
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        user: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入账号！'
+                                }
+                            }
+                        },
+                        password: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入密码！'
+                                }
+                            }
+                        },
+                        validnumber: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入验证码！'
+                                },
+                                callback: {
+                                    message: '验证码错误！',
+                                    callback: function () {
+                                        return $('#validnumber').val() === code;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+                $('#signupForm').formValidation({
+                    framework: 'bootstrap',
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        phone: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入手机号！'
+                                },
+                                phone:{
+                                    message: '请输入正确手机号',
+                                    country: 'CN'
+                                }
+                            }
+                        },
+                        name: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请填写姓名！'
+                                }
+                            }
+                        },
+                        email: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请填写邮箱地址！'
+                                },
+                                emailAddress:{
+                                    message:'请输入正确邮箱地址！'
+                                }
+                            }
+                        },
+                        password: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入密码！'
+                                },
+                                stringLength: {
+                                    min: 6,
+                                    message: '请输入至少六位密码！'
+                                }
+                            }
+                        },
+                        password1: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入确认密码！'
+                                },
+                                identical: {
+                                    field: 'password',
+                                    message: '两次密码不一致!'
+                                }
+                            }
+                        },
+                        validnumber: {
+                            validators: {
+                                notEmpty: {
+                                    message: "请输入验证码！"
+                                },
+                                callback: {
+                                    message: '验证码错误！',
+                                    callback: function () {
+                                        return $('#validnumber1').val() === code;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
+                $('#passwordForm').formValidation({
+                    framework: 'bootstrap',
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        password: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入旧密码！'
+                                }
+                            }
+                        },
+                        password1: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入新密码！'
+                                },
+                                stringLength: {
+                                    min: 6,
+                                    message: '请输入至少六位密码！'
+                                }
+                            }
+                        },
+                        password2: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入确认密码！'
+                                },
+                                identical: {
+                                    field: 'password1',
+                                    message: '两次密码不一致!'
+                                }
+                            }
+                        },
+                        validnumber: {
+                            validators: {
+                                notEmpty: {
+                                    message: "请输入验证码！"
+                                },
+                                callback: {
+                                    message: '验证码错误！',
+                                    callback: function () {
+                                        return $('#validnumber2').val() === code;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
+            }
+
+            var colornum=0;
+
+            $(document).ready(function () {
+                if("@row.status"=="已完成"){
+                    $("#GO").show();
+                    $.ajax({
+                        url:"/CloudPlatform/SoftTool/getGOData?taskname=@row.taskname",
+                        type:"post",
+                        success:function (data) {
+                            $.each(data.pics,function (i,v) {
+                                var num=i+1;
+                                $("#redraw_pic"+num).attr("src","/CloudPlatform/pic?path="+v+"&num="+Math.random());
+                            });
+                            $.each(data.downpics,function (i,v) {
+                                var num=i+1;
+                                $("#downPic"+num).attr("href","/CloudPlatform/SoftTool/download?path="+v);
+                            });
+                        }
+                    });
+                }
+            });
+
+            $('#color1').colorpicker({color: '#00BFFF', defaultPalette: 'web'});
+            $('#color2').colorpicker({color: '#00BFFF', defaultPalette: 'web'});
+            $('#color3').colorpicker({color: '#00BFFF', defaultPalette: 'web'});
+            $('#color4').colorpicker({color: '#00BFFF', defaultPalette: 'web'});
+            $('#link1').on('click', function (evt) {
+                evt.stopImmediatePropagation();
+                var newcolor = $("#color1").val();
+                if (newcolor != '') {
+                    var oldcolor = $("#c1").val();
+                    if (oldcolor.indexOf(newcolor) >= 0) {
+                        alert('不能有重复颜色');
+                        return;
+                    }
+                    if (oldcolor == '') {
+                        $("#c1").val(newcolor);
+                    } else {
+                        var allcolor = oldcolor + ',' + newcolor;
+                        $("#c1").val(allcolor);
+                    }
+                }
+            });
+            $('#link2').on('click', function (evt) {
+                evt.stopImmediatePropagation();
+                var newcolor = $("#color2").val();
+                if (newcolor != '') {
+                    var oldcolor = $("#c2").val();
+                    if (oldcolor.indexOf(newcolor) >= 0) {
+                        alert('不能有重复颜色');
+                        return;
+                    }
+                    if (oldcolor == '') {
+                        $("#c2").val(newcolor);
+                    } else {
+                        var allcolor = oldcolor + ',' + newcolor;
+                        $("#c2").val(allcolor);
+                    }
+                }
+            });
+            $('#link3').on('click', function (evt) {
+                evt.stopImmediatePropagation();
+                var newcolor = $("#color3").val();
+                if (newcolor != '') {
+                    var oldcolor = $("#c3").val();
+                    if (oldcolor.indexOf(newcolor) >= 0) {
+                        alert('不能有重复颜色');
+                        return;
+                    }
+                    if (oldcolor == '') {
+                        $("#c3").val(newcolor);
+                    } else {
+                        var allcolor = oldcolor + ',' + newcolor;
+                        $("#c3").val(allcolor);
+                    }
+                }
+            });
+            $('#link4').on('click', function (evt) {
+                evt.stopImmediatePropagation();
+                var newcolor = $("#color4").val();
+                if (newcolor != '') {
+                    var oldcolor = $("#c4").val();
+                    if (oldcolor.indexOf(newcolor) >= 0) {
+                        alert('不能有重复颜色');
+                        return;
+                    }
+                    if (oldcolor == '') {
+                        $("#c4").val(newcolor);
+                    } else {
+                        var allcolor = oldcolor + ',' + newcolor;
+                        $("#c4").val(allcolor);
+                    }
+                }
+            });
+
+            $(".evo-cp-wrap").css("width", "25px");
+            $(".evo-cp-wrap").css("float", "left");
+
+            function DrawGokegg(types,kogo,num) {
+                var element = "<div id='content'><span id='info'>绘图中，请耐心等待...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
+                var index = layer.alert(element, {
+                    skin: 'layui-layer-lan',
+                    closeBtn: 0,
+                    title: "提醒",
+                    btn: []
+                });
+                var form1 = new FormData($("#"+kogo+types)[0]);
+                $.ajax({
+                    url: "/CloudPlatform/SoftTool/redrawGO?taskname=@row.taskname&types="+types+"&kogo="+kogo,
+                    type: "post",
+                    processData: false,
+                    contentType: false,
+                    data: form1,
+                    success: function (data) {
+                        $("#redraw_pic"+num).attr("src","/CloudPlatform/pic?path="+data.pics+"&num="+Math.random());
+                        layer.close(index);
+                    }
+                });
+            }
+
+            function checkcolor() {
+                var num=$("#color").val().toString().split(",").length;
+                if($("#color").val()==="") return -1;
+                else if(num===colornum) return -1;
+                else return num;
+            }
+
+
+
+
+    </script>
+
+
+
+}

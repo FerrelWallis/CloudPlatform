@@ -44,8 +44,8 @@ $(function () {
     }
 
     function adjustWidth(moveLen) {
-        let minLeftWidth = 450;//左边最小宽度
-        let minRightWidth = 300;//左边最小宽度
+        let minLeftWidth = 530;//左边最小宽度
+        let minRightWidth = 450;//左边最小宽度
         if (moveLen < minLeftWidth) moveLen = minLeftWidth;
         let maxT = box.clientWidth - resize.offsetWidth; //可用宽度
         if (moveLen < minLeftWidth) moveLen = minLeftWidth;

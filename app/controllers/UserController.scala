@@ -2,9 +2,9 @@ package controllers
 
 import java.io.File
 
-import dao.usersDao
+import dao.{softDao, usersDao}
 import javax.inject.{Inject, Singleton}
-import models.Tables.{UserRow, UsersRow}
+import models.Tables.UsersRow
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.libs.json.Json
@@ -14,7 +14,7 @@ import utils.{ExecCommand, Utils}
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, ExecutionContext}
 
-class UserController  @Inject()(cc: ControllerComponents,usersdao:usersDao)(implicit exec: ExecutionContext) extends AbstractController(cc) {
+class UserController  @Inject()(cc: ControllerComponents,usersdao:usersDao,softdao:softDao)(implicit exec: ExecutionContext) extends AbstractController(cc) {
 
   case class UserData(user: String, password: String)
 
@@ -50,7 +50,7 @@ class UserController  @Inject()(cc: ControllerComponents,usersdao:usersDao)(impl
   def signInSuccess(path:String,id:String) = Action.async{implicit request=>
     val session = new Session
     usersdao.getById(id).map{x=>
-      Redirect(path).withNewSession.withSession(session + ("userId" -> x.id.toString)+ ("userPhone"->x.phone) + ("userName"->x.name) +("userEmail"->x.email) + ("userCompany"->x.company))
+      Redirect(path).withNewSession.withSession(session + ("userId" -> x.id.toString) + ("userPhone"->x.phone) + ("userName"->x.name) + ("userEmail"->x.email) + ("userCompany"->x.company))
     }
   }
 
@@ -71,7 +71,7 @@ class UserController  @Inject()(cc: ControllerComponents,usersdao:usersDao)(impl
   def addUser = Action { implicit request =>
     try{
       val form = userForm2.bindFromRequest.get
-      val row = UsersRow(0,form.phone,form.email,form.password,form.name,form.company,"user")
+      val row = UsersRow(0,form.phone,form.email,form.password,form.name,form.company,"user"," ")
       val checkPhone=Await.result(usersdao.checkPhoneExist(form.phone),Duration.Inf)
       val checkEmail=Await.result(usersdao.checkEmailExist(form.email),Duration.Inf)
       if(checkPhone.length==1) {
@@ -119,11 +119,37 @@ class UserController  @Inject()(cc: ControllerComponents,usersdao:usersDao)(impl
     Redirect(routes.HomeController.home()).withNewSession
   }
 
-  val userDir=Utils.path+"users\\"
+  val userDir=Utils.path+"users/"
 
   //创建用户文件夹
   def creatUserDir(id:String)={
     new File(userDir+id).mkdir()
   }
+
+  def addLike(sid:String) = Action{implicit request=>
+    try{
+      val id=request.session.get("userId").get
+      val like=Await.result(usersdao.getLike(id),Duration.Inf)+"/"+sid
+      Await.result(usersdao.updateLike(id,like),Duration.Inf)
+      Await.result(softdao.addLike(sid),Duration.Inf)
+      Ok(Json.obj("valid" -> "true"))
+    }catch {
+      case e : Exception => Ok(Json.obj("valid" ->"false","message" -> e.getMessage))
+    }
+  }
+
+  def deleteLike(sid:String) = Action{implicit request=>
+    try{
+      val id=request.session.get("userId").get
+      val like=Await.result(usersdao.getLike(id),Duration.Inf).split("/"+sid).mkString("")
+      Await.result(usersdao.updateLike(id,like),Duration.Inf)
+      Await.result(softdao.delLike(sid),Duration.Inf)
+      Ok(Json.obj("valid" -> "true"))
+    }catch {
+      case e : Exception => Ok(Json.obj("valid" ->"false","message" -> e.getMessage))
+    }
+  }
+
+
 
 }

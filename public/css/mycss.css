@@ -15,32 +15,36 @@
 }
 
 
-.BoxPlot {
-    background: url(../images/softpic/box.png) 50% center no-repeat;
+.Boxplot {
+    background: url(../images/softpic/box.jpg) 50% center no-repeat;
     background-size: contain;
 }
 .CCA {
-    background: url(../images/softpic/cca.png) 50% center no-repeat;
+    background: url(../images/softpic/cca.jpg) 50% center no-repeat;
     background-size: contain;
 }
-.Net{
-    background: url("../images/softpic/cytoscape.png")50% center no-repeat;
+.NetWeight{
+    background: url("../images/softpic/net.jpg")50% center no-repeat;
     background-size: contain;
 }
-.HeatMap{
-    background: url(../images/softpic/heatmap.png)50% center no-repeat;
+.NetDirected{
+    background: url("../images/softpic/net.jpg")50% center no-repeat;
     background-size: contain;
 }
-.GoSea{
-    background: url(../images/softpic/gogsea.png)50% center no-repeat;
+.Heatmap{
+    background: url(../images/softpic/heatmap.jpg)50% center no-repeat;
     background-size: contain;
 }
-.KeggSea{
-    background: url(../images/softpic/pathwaygsea.png)50% center no-repeat;
+.GOKEGG{
+    background: url(../images/softpic/go.jpg)50% center no-repeat;
     background-size: contain;
 }
-.Pca{
-    background: url(../images/softpic/pca.png)50% center no-repeat;
+.KEGG{
+    background: url(../images/softpic/kegg.jpg)50% center no-repeat;
+    background-size: contain;
+}
+.PCA{
+    background: url(../images/softpic/pca.jpg)50% center no-repeat;
     background-size: contain;
 }
 

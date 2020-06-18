@@ -1,9 +1,10 @@
 @()(implicit session: Session)
-@home.main("GO"){
+@home.main("GOKEGG"){
 
     <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("css/test/mysoft.css")" media="screen" />
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("bootstrap-fileinput-master/css/fileinput.css")" media="screen" />
 
-        <!--button弹出操作-->
+    <!--button弹出操作-->
     <script src="@routes.Assets.versioned("layer-v3.0/layer/layer.js")" type="text/javascript"></script>
     <script type="text/javascript" src="@routes.Assets.versioned("js/myzui.min.js")"></script>
 
@@ -45,13 +46,78 @@
                 margin: 0 0 20px;
                  border-left: unset;
             }
+
+            /*file*/
+            .hidden-xs {
+                display: unset !important;
+            }
+            .input-group .form-control {
+                position: relative;
+                z-index: 2;
+                float: left;
+                width: 80%;
+                margin-bottom: 0;
+                height: 22px;
+                border-radius: 4px;
+            }
+            .input-group .form-control:first-child, .input-group-addon:first-child, .input-group-btn:first-child > .btn, .input-group-btn:first-child > .btn-group > .btn, .input-group-btn:first-child > .dropdown-toggle, .input-group-btn:last-child > .btn:not(:last-child):not(.dropdown-toggle), .input-group-btn:last-child > .btn-group:not(:last-child) > .btn {
+                border-top-right-radius: 4px;
+                border-bottom-right-radius: 4px;
+                border-radius: 5px;
+                background-color: #f7f7f7;
+                height: 21px;
+                border: 1px solid #e6e6e6;
+                box-shadow: none;
+            }
+            .input-group .form-control:last-child, .input-group-addon:last-child, .input-group-btn:last-child > .btn, .input-group-btn:last-child > .btn-group > .btn, .input-group-btn:last-child > .dropdown-toggle, .input-group-btn:first-child > .btn:not(:first-child), .input-group-btn:first-child > .btn-group:not(:first-child) > .btn {
+                border-top-left-radius: 4px;
+                border-bottom-left-radius: 4px;
+            }
+            /*历史任务*/
+            .his_name{
+                /*margin: 5px 10px;*/
+                width: 20%;
+                display: inline-block;
+                text-align: center;
+            }
+            .his_time{
+                /*margin: 5px 10px;*/
+                width: 28%;
+                display: inline-block;
+                text-align: center;
+            }
+            .hislist hr{
+                margin-top: 10px;
+                margin-bottom: 10px;
+            }
+            .btn_refresh{
+                padding: 7px 11px 7px 38px;
+                color: white!important;
+                background: #27b9d0;
+                border-radius: 6px;
+                background-repeat: no-repeat;
+                background-position: 9px 3px;
+                margin: 10px 10px;
+            }
+            .success{
+                padding: 6px 10px;
+                background: cadetblue;
+                border-radius: 16px;
+                color: white;
+            }
+            .failed{
+                padding: 6px 10px;
+                background: #bf4064;
+                border-radius: 16px;
+                color: white;
+            }
     </style>
 
-    <div class="col-md-12 mysoft-content">
+    <div class="col-md-12 mysoft-content" style="width: 98%">
         <div class="whitebox mysoft-content-left" style="width: 730px;">
             <form id="GO" method="GET" enctype="multipart/form-data" class="well form-inline" style="box-sizing: border-box!important;">
-                <img class="tools-img" src="/assets/images/softpic/gogsea.png">
-                <h3 class="tools-title">GO富集分析&nbsp;&nbsp;&nbsp;&nbsp;
+                <img class="tools-img" src="/assets/images/softpic/go.jpg">
+                <h3 class="tools-title">GO/KEGG富集分析&nbsp;&nbsp;&nbsp;&nbsp;
                 </h3>
                 <div class="form-group">
                     <h2>
@@ -62,188 +128,55 @@
                         <label for="mytaskname">任务编号：</label>
                     </div>
                     <div class="form-group">
-                        <input id="mytaskname" type="text" class="form-control" name="taskname" placeholder="" value="go">
+                        <input id="mytaskname" type="text" class="form-control" name="taskname" placeholder="" value="">
                     </div>
                 </div>
 
                 <br><br>
-
-                <script type="text/javascript">
-                        $("#mytaskname").keyup(function () {
-                            var val = $("#mytaskname").val();
-                            var rule = /[()（）@@#$%^&*~`!|\/\\?;,.，。:"]/;
-                            if (rule.test(val)) {
-                                alert('任务编号里不能有特殊字符，请重新填写!');
-                            }
-                        })
-                </script>
-                <div id="div1" class="one-line">
-                    <div class="form-group-p">
-                        <div class="form-group  ">
-                            <em>1：</em><label for="exampleInputName2">
-                            <span data-toggle="collapse" href="#collapse0" class="pointer">
-                                富集目的基因文件：
-                            </span>
-                        </label>
+                <div class="form-group-p" style="width: 100%;">
+                    <div class="form-group-p" style="width: 500px">
+                        <div class="form-group">
+                            <em>1：</em><label><span>上传基因数据文件：</span></label>
                         </div>
-                        <div class="form-group  ">
-                            <input type="text" class="form-control" style="" id="filepath1" name="text1" readonly="readonly">
-                            <img id="tempimg1" dynsrc="" src="" style="display:none">
-                            <input id="hideinput1" type="file" name="table1" style="display:none;" onchange="change(this.value)">
+                        <div class="form-group">
+                            <input type="file" class="form-control file" id="table1" name="table1" onchange="checkGroupfile()">
                         </div>
                     </div>
                     <div class="form-group-extra">
-                        <span id="choosefile" type="button" onclick="choosefile($(this))" data-id="1" class="btn btn-sm btn-info choosebutton">选择文件</span>
-                        <em>
-                            <a href="/tools/Public/help/test.goexample.list" target="_blank" style=" margin-left:10px;">
-                                示例文件									</a>
-                        </em>
-                    </div>
-                    <br>
-                    <br>
-                </div>
-                <div id="collapse0" class="panel-collapse fade collapse" style="height: auto;">
-                    <div class="panel-body">
-                        即想要研究的基因列表，每行第一列为基因id，基因id要包含在背景基因表中							</div>
-                </div>
-
-
-                <div class="form-group">
-                    <label for="qushi">
-                            &nbsp;&nbsp; &nbsp;&nbsp; 类型：&nbsp;&nbsp;
-                    </label>
-                </div>
-                <div class="form-group">
-                    <div class="radio-primary">
-                        <input id="difftype1" name="difftype" type="radio" value="nodiff" checked="checked">
-                        <label for="difftype1">nodiff</label>
-                    </div>
-
-                    <div class="radio-primary">
-                        <input id="difftype2" name="difftype" type="radio" value="diff">
-                        <label for="difftype2">diff</label>
+                        <em><a href='/CloudPlatform/SoftTool/downloadExamples?name=Gokegg.txt' target='_blank' style="margin-left: 20px;">示例文件</a></em>
                     </div>
                 </div>
-
-
-                <textarea id="" name="txdata" class="form-control kindeditorSimple" style="height:150px;width:100%;" placeholder="或手动输入文件"></textarea>
                 <br>
                 <br>
-
-
-                <div class="form-group">
-                    <em>2：</em><label for="exampleInputName2">
-                    <input type="checkbox" name="desc" value="A" id="adddesc">&nbsp;&nbsp;
-                    <span data-toggle="collapse" href="#collapse2" class="pointer">使用已有参考</span>
-                </label>
-                </div>
-
-                    <!--   <div style="float:left;margin-bottom:30px;">
-							<input type="checkbox" name="desc" value="A" id="adddesc">添加已有参考&nbsp;&nbsp;
-						  </div> -->
-                <br>
-                <br>
-                <div id="para" style="display:none;">
-                    <label for="exampleInputName2">
-                        <span>物种/类型/版本</span>
-                    </label>
-
-                    <div class="form-group" style="display: block">
-                        <select name="parameter2" id="parameter2">
-                            <option value="osa" selected="selected">Oryza sativa Japonica genes (IRGSP-1.0
-                                (IRGSP-1.0))
-                            </option>
-                            <option value="osa2">Oryza sativa Indica genes (ASM465v1 (2010-07-BGI))</option>
-                            <option value="ath">Arabidopsis thaliana genes (TAIR10 (2010-09-TAIR10))</option>
-                            <option value="mmu">Mus musculus genes (GRCm38.p4)</option>
-                            <option value="rno">Rattus norvegicus genes (Rnor_6.0)</option>
-                            <option value="dre">Danio rerio genes (GRCz10)</option>
-                            <option value="gga">Gallus gallus genes (Galgal4) E</option>
-                            <option value="hsa">Homo sapiens genes (GRCh38.p5)</option>
-                            <option value="cel">Caenorhabditis elegans genes (WBcel235 (WS250))</option>
-                            <option value="dme">Drosophila melanogaster genes (BDGP6 (dmel_r6.02_FB2014_05)
-                            </option>
-                        </select>
-                        <select name="parameter3" id="parameter3">
-                            <option value="0" selected="selected">基因</option>
-                            <option value="1">转录本</option>
-                        </select>
-                        <select name="parameter4" id="parameter4">
-                            <option value="1" selected="selected">Ensemble_84or31</option>
-                            <option value="2" selected="selected">Ensemble_96or43</option>
-                        </select>
-                    </div>
-                    <br>
-                    <br>
-                    <span id="preview" type="button" onclick="preview()" class="btn btn-sm btn-info " style="margin-top: 7px">预览参考文件</span>
-                </div>
-
-                <br>
-                <br>
-                <div id="collapse2" class="panel-collapse fade collapse" style="height: auto;">
-                    <div class="panel-body">
-                        目前提供的物种有水稻、拟南芥、小鼠、大鼠、斑马鱼、鸡、秀丽线虫、果蝇、人。ID类型可选择基因ID或转录本ID，根据富集目的基因的ID类型决定。可以点击“使用已有参考选项”后出现的“预览参考文件”来查看具体ID。							</div>
-                </div>
-                <script type="text/javascript">
-
-
-                        function preview() {
-                            // $para=$(this).parent().attr("id");
-                            var para1 = $("#parameter4").val();
-                            var para2 = $("#parameter3").val();
-                            var para3 = $("#parameter2").val();
-                            console.log(para1 + para2 + para3);
-                            $.post("/tools/home/soft/goannotpreview", {
-                                para1: para1,
-                                para2: para2,
-                                para3: para3
-                            }, function (data) {
-                                data = $.parseJSON(data);
-
-                                (new $.zui.ModalTrigger({
-                                    custom: function () {
-                                        str = '<div style="overflow:auto;width:880px;height:500px;white-space:nowrap;">' + data.type + '</div>';
-
-                                        return str;
-                                    }, width: '900px', height: '600px', icon: 'file', title: '文件预览'
-                                })).show();
-
-                            })
-                        }
-                </script>
-
-                <div id="div2" class="one-line">
+                <div id="para" >
                     <div class="form-group-p">
                         <div class="form-group">
-                            <em>3：</em><label for="exampleInputName2">
-                            <span data-toggle="collapse" href="#collapse1" class="pointer">
-                                GO背景基因文件：
-                            </span>
-                        </label>
+                            <em>2：</em><label for="exampleInputName2">选择物种：</label>
                         </div>
                         <div class="form-group">
-                            <input type="text" class="form-control" style="" id="filepath2" name="text2" readonly="readonly">
-                            <img id="tempimg2" dynsrc="" src="" style="display:none">
-                            <input id="hideinput2" type="file" name="table2" style="display:none;" onchange="change(this.value)">
+                            <select name="species" id="species">
+                                <option value="Glyma" selected="selected">Glyma</option>
+                                <option value="ENSG">ENSG</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <br>
+                    <br>
+                    <div class="form-group-p">
+                        <div class="form-group">
+                            <label>是否为人类：</label>
+                        </div>
+                        <div class="form-group">
+                            <select name="human">
+                                <option value="no">no</option>
+                                <option value="yes">yes</option>
+                            </select>
                         </div>
                     </div>
-                    <div class="form-group-extra">
-                        <span id="choosefile" type="button" onclick="choosefile($(this))" data-id="2" class="btn btn-sm btn-info choosebutton">选择文件</span>
-                        <em>
-                            <a href="/tools/Public/help/gobackgene.txt" target="_blank" style=" margin-left:10px; ">
-                                示例文件									</a>
-                        </em>
-                    </div>
-                    <br>
-                    <br>
-                </div>
-                <div id="collapse1" class="panel-collapse fade collapse" style="height: auto;">
-                    <div class="panel-body">
-                        所有基因的GO注释文件，格式为第一列为基因id，第二类为GO注释结果							</div>
                 </div>
                 <br>
-                <input type="hidden" value="upload" name="act">
-                <input type="hidden" value="blastcmp" name="action">
+                <br>
                 <input type="button" value="提&nbsp;&nbsp;交" name="submit" class="btn btn-primary" onclick="go()">
             </form>
 
@@ -253,14 +186,17 @@
         <div class="mysoft-content-right" style="width: 320px;">
             <ul class="nav nav-tabs nav-tabs-right">
                 <li class="active">
-                    <a href="###" data-target="#tab2Content2" data-toggle="tab">示例结果</a>
+                    <a href="###" data-target="#example" data-toggle="tab">示例结果</a>
                 </li>
                 <li class="">
-                    <a href="###" data-target="#tab2Content1" data-toggle="tab">使用说明</a>
+                    <a href="###" data-target="#instruction" data-toggle="tab">使用说明</a>
+                </li>
+                <li class="" id="his_tab1">
+                    <a href="#" data-target="#history" data-toggle="tab">GO历史任务</a>
                 </li>
             </ul>
             <div class="tab-content" style="box-sizing: border-box!important;">
-                <div class="tab-pane fade active in" id="tab2Content2">
+                <div class="tab-pane fade active in" id="example">
                     <h5>输出结果：</h5>
                     <blockquote>
                         <p>
@@ -288,7 +224,7 @@
                         </p>
                     </blockquote>
                 </div>
-                <div class="tab-pane fade" id="tab2Content1">
+                <div class="tab-pane fade" id="instruction">
                     <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
                         <span style="font-weight:700;"><strong>功能：</strong></span><br>
                         Gene Ontology（简称GO）是一个国际标准化的基因功能分类体系，提供了一套动态更新的标准词汇表（controlled vocabulary）来全面描述生物体中基因和基因产物的属性。GO总共有三个ontology（本体），分别描述基因的分子功能（molecular function）、细胞组分（cellular component）、参与的生物过程（biological process）。GO的基本单位是term（词条、节点），每个term都对应一个属性。GO功能分析一方面给出差异表达基因的GO功能分类注释；另一方面给出差异表达基因的GO功能显著性富集分析。 首先，我们将差异表达基因向GO数据库(http://www.geneontology.org/)的各term映射，并计算每个term的基因数，从而得到具有某个GO功能的基因列表及基因数目统计。然后应用超几何检验，找出与整个基因组背景相比，在差异表达基因中显著富集的GO条目。
@@ -336,86 +272,170 @@
                         ⑤out.level2.xls: GO第二级分类统计
                     </p>
                 </div>
+                <div id="history" class="form1_ins tab-pane fade">
+                    <a id="btn-refresh" class="btn_refresh mws-i-24 i-refresh-3" onclick="refresh()">刷新状态</a>
+                    <ul id="hisul" style="margin-top: 15px">
+                        <li id="hislist" class="hislist">
+                            <div class="his_name"><span>任务编号</span></div>
+                            <div class="his_time"><span>提交时间</span></div>
+                            <div class="his_time"><span style="margin-left: -20px;">结束时间</span></div>
+                            <div class="his_name"><span style="margin-left: -23px;">状态</span></div>
+                            <hr>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
 
     <script type="text/javascript" src="@routes.Assets.versioned("js/toolsAdjust.js")"></script>
+    <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/fileinput.min.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/locales/zh.js")" type="text/javascript"></script>
+
     <script type="text/javascript">
 
-        var difftype="nodiff";
-        var bool=false;
+            function getTaskName() {
+                let date = new Date();
+                let month = date.getMonth() + 1;
+                let day = date.getDate();
+                let h = date.getHours();
+                let m = date.getMinutes();
+                let s = date.getSeconds();
+                let name = "GO"+month + day + h + m + s ;
+                $("#mytaskname").val(name);
+                $("#GO").formValidation("revalidateField", "taskname");
+            }
 
-        function go() {
+            $("#mytaskname").keyup(function () {
+                checktaskname();
+            });
 
-            if($("#difftype1").is(':checked')) difftype=$("#difftype1").val();
-            else difftype=$("#difftype2").val();
+            function checktaskname() {
+                var val = $("#mytaskname").val();
+                var rule = /[()（）@@#$%^&*~`!|\/\\?;,.，。:"]/;
+                if (rule.test(val)) {
+                    alert('任务编号里不能有特殊字符，请重新填写!');
+                    return false;
+                }
+                if(val.toString().indexOf(" ")>0){
+                    alert('任务编号里不能有空格!');
+                    return false;
+                }
+                if(val.toString().length>13){
+                    alert('任务编号最长13位!');
+                    return false;
+                }
+                return true;
+            }
 
-            if($("#adddesc").is(':checked')) bool=true;
-            else  bool=false;
 
-            if(@session.get("userId").isEmpty){
-                swal({
-                    title: "尚未登录",
-                    text: "请先登录账号",
-                    type: "warning",
-                    confirmButtonText: "确认"
-                })
-            }else {
+            var running=false;
 
-                var form1 = new FormData($("#GO")[0]);
-                var element = "<div id='content'><span id='info'>运行中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;'></div>"
-                var index = layer.alert(element, {
-                    skin: 'layui-layer-lan',
-                    closeBtn: 0,
-                    title: "Info",
-                    btn: []
-                });
+            $(document).ready(function () {
+                let date = new Date();
+                let month = date.getMonth() + 1;
+                let day = date.getDate();
+                let h = date.getHours();
+                let m = date.getMinutes();
+                let s = date.getSeconds();
+                let name = "GO"+month + day + h + m + s ;
+                $("#mytaskname").val(name);
+                loadHistory();
+            });
 
-                $.ajax({
-                    url: "/CloudPlatform/SoftTool/runGo?id=@session.get("userId")"+"&difftype="+difftype+"&adddesc="+bool,
-                    type: "post",
-                    processData: false,
-                    contentType: false,
-                    data: form1,
-                    success: function (data) {
-                        if (data.valid === "false") {
-                            layer.close(index);
-                            swal("Error", data.message, "error");
+            var cur=true;
 
-                        } else {
+            function refresh() {
+                if(cur){
+                    cur=false;
+                    removeul();
+                    loadHistory();
+                    var count=5;
+                    $("#btn-refresh").text("00:"+count);
+                    var tim=setInterval(function () {
+                        $("#btn-refresh").text("00:"+count);
+                        if(count==0){
+                            cur=true;
+                            $("#btn-refresh").text("刷新状态");
+                            clearInterval(tim);
+                        }else count=count-1;
+                    },1000);
+                }else return;
+            }
 
-                            layer.close(index);
-                            $.ajax({
-                                url:"/CloudPlatform/SoftTool/getFiles?id=@session.get("userId")"+"&taskname="+data.taskname,
-                                type:"post",
-                                success:function (pics) {
-                                    var pic = "";
-                                    var html = "";
-                                    $.each(pics,function (i,v) {
-                                        pic +="<li><img class='img-rounded img-thumbnail img-responsive' src='/CloudPlatform/pic?path="+v+"' alt=\"生物云平台\"><li>"
-                                        html += "<li><a href='/CloudPlatform/SoftTool/download?path="+data.path+"&name=" + v.substring(v.lastIndexOf("\\")+1,v.length) + "' target='_blank'>" + v.substring(v.lastIndexOf("\\")+1,v.length) + "</a></li>"
-                                    });
-                                    $("#filesUrl").html(html);
-                                    $("#pics").html(pic);
-                                }
-                            })
-
-                            $("#result_tab1").show();
-                            $("#result_tab1").addClass("active")
-                            $("#out_tab1").removeClass("active")
-                            $("#ins_tab1").removeClass("active")
-                            $("#result1").addClass("active").addClass("in")
-                            $("#form1").removeClass("active");
-                            $("#instruction1").removeClass("active");
+            function loadHistory(){
+                var html="";
+                if(@session.get("userId").isEmpty){
+                    html+="<li class='hislist'><span>尚未登陆,暂无数据</span></li>"
+                    $("#hislist").after(html);
+                }else{
+                    $.ajax({
+                        url: "/CloudPlatform/MyTasks/getDutysByType?sabbrename=GOKEGG",
+                        type: "post",
+                        success: function (data) {
+                            if(data.run==true) running=true;
+                            else running=false;
+                            $.each(data.rows,function (i,v) {
+                                html += "<li class='hislist'><div class='his_name'><span>"+v.taskname+"</span></div><div class='his_time'><span>"+v.subtime+"</span></div><div class='his_time'><span>"+v.finitime+"</span></div><div class='his_name'>"+v.status+"</div><hr></li>";
+                            });
+                            $("#hislist").after(html);
+                            if(running==true){
+                                cur=false;
+                                var count=5;
+                                $("#btn-refresh").text("00:"+count);
+                                var timmer=setInterval(function () {
+                                    $("#btn-refresh").text("00:"+count);
+                                    if(count==0){
+                                        $("#btn-refresh").text("刷新状态");
+                                        if(running==false) {
+                                            removeul();
+                                            loadHistory();
+                                            cur=true;
+                                            clearInterval(timmer);
+                                        } else {
+                                            checkrunning();
+                                        }
+                                        count=5;
+                                    }else count=count-1;
+                                },1000);
+                            }
                         }
+                    });
+                }
+            }
+
+            function checkrunning() {
+                $.ajax({
+                    url: "/CloudPlatform/MyTasks/getDutysByType?sabbrename=Boxplot",
+                    type: "post",
+                    success: function (data) {
+                        if(data.run==true) running=true;
+                        else running=false;
                     }
                 });
             }
-        }
 
+            function removeul(){
+                $("#hisul li").remove();
+                $("#hisul").append("<li id=\"hislist\" class=\"hislist\">\n" +
+                        "                                    <div class=\"his_name\"><span>任务编号</span></div>\n" +
+                        "                                    <div class=\"his_time\"><span>提交时间</span></div>\n" +
+                        "                                    <div class=\"his_time\"><span style='margin-left: -20px;'>结束时间</span></div>\n" +
+                        "                                    <div class=\"his_name\"><span style='margin-left: -23px;'>状态</span></div>\n" +
+                        "                                    <hr>\n" +
+                        "                                </li>");
 
-            function choosefile($para) {
+            }
+
+            $(".file").fileinput({
+                showPreview: false,
+                showUpload:false,
+                showRemove:false,
+                showCancel: false,
+                browseLabel: "选择文件"
+            });
+
+            function go() {
                 if(@session.get("userId").isEmpty){
                     swal({
                         title: "尚未登录",
@@ -424,52 +444,238 @@
                         confirmButtonText: "确认"
                     })
                 }else {
-                    $number = $para.attr("data-id");
-                    $("#hideinput" + $number).click();
-                }
-
-            }
-
-            //上传文件判断，大小和格式 限制! 问题：云端文件判断不了。（云端文件上传时已经经过限制，可以大于5M，本地限制大小是因上传速度问题)
-            var maxsize = 5 * 1024 * 1024;//2M
-            var errMsg = '建议使用云端文件，本地文件上传最大为5M！';
-
-            function change(value, rowMax, colMax) {
-                $("#filepath" + $number).val(value);
-                var filepath = document.getElementById("hideinput" + $number);
-
-                var file_size = 0;
-
-
-                file_size = filepath.files[0].size;
-                let name = filepath.files[0].name;
-                let patt = /^[a-zA-Z0-9._]+$/;
-                if (!patt.test(name)) {
-                    alert("文件名只能由字母，数字，'_'和'.'组成");
-                    $("#filepath" + $number).val('');
-                    $("#hideinput" + $number).val('');
-                }
-                var size = file_size;
-                if (size > maxsize) {
-                    alert(errMsg);
-                    $("#filepath" + $number).val('');
-                    $("#hideinput" + $number).val('');
-                }
-
-            }
-
-            $(document).ready(function () {
-                $("#adddesc").click(function () {
-                    $("#para").toggle();
-                    var isSelected = this.checked;
-                    // alert(isSelected);
-                    if (isSelected == true) {
-                        $("#div2").hide();
-                    } else {
-                        $("#div2").show();
+                    var form = $("#GO");
+                    var fv = form.data("formValidation");
+                    fv.validate();
+                    if (fv.isValid()) {
+                        var form1 = new FormData($("#GO")[0]);
+                        $.ajax({
+                            url: "/CloudPlatform/SoftTool/runCCA?isgroup="+$("#isgroup").prop("checked"),
+                            type: "post",
+                            processData: false,
+                            contentType: false,
+                            data: form1,
+                            success: function (data) {
+                                removeul();
+                                loadHistory();
+                                $("#his_tab1").addClass("active");
+                                $("#out_tab1").removeClass("active");
+                                $("#ins_tab1").removeClass("active");
+                                $("#history").addClass("active").addClass("in");
+                                $("#example").removeClass("active");
+                                $("#instruction1").removeClass("active");
+                                getTaskName();
+                            }
+                        });
                     }
-                })
+                }
+            }
+
+            function formValidation() {
+            $('#GO').formValidation({
+                framework: 'bootstrap',
+                icon: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                fields: {
+                    taskname: {
+                        validators: {
+                            notEmpty: {
+                                message: '任务编号不能为空!'
+                            },
+                            remote:{
+                                type: 'POST',
+                                url: '@routes.DutyController.checktaskname()',
+                                message: "任务编号重复，请重新输入",
+                                delay: 1000
+                            }
+                        }
+                    },
+                    table1: {
+                        validators: {
+                            notEmpty: {
+                                message: '必须上传矩阵表格文件!'
+                            },
+                            file: {
+                                // extension: 'jpeg,jpg,png',
+                                // type: 'image/jpeg,image/png',
+                                maxSize: 5*1024*1024,
+                                message: '文件不得大于5M！'
+                            }
+                        }
+                    }
+                }
             });
+            $("#signinForm").formValidation({
+                framework: 'bootstrap',
+                icon: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                fields: {
+                    user: {
+                        validators: {
+                            notEmpty: {
+                                message: '请输入账号！'
+                            }
+                        }
+                    },
+                    password: {
+                        validators: {
+                            notEmpty: {
+                                message: '请输入密码！'
+                            }
+                        }
+                    },
+                    validnumber: {
+                        validators: {
+                            notEmpty: {
+                                message: '请输入验证码！'
+                            },
+                            callback: {
+                                message: '验证码错误！',
+                                callback: function () {
+                                    return $('#validnumber').val() === code;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            $('#signupForm').formValidation({
+                framework: 'bootstrap',
+                icon: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                fields: {
+                    phone: {
+                        validators: {
+                            notEmpty: {
+                                message: '请输入手机号！'
+                            },
+                            phone:{
+                                message: '请输入正确手机号',
+                                country: 'CN'
+                            }
+                        }
+                    },
+                    name: {
+                        validators: {
+                            notEmpty: {
+                                message: '请填写姓名！'
+                            }
+                        }
+                    },
+                    email: {
+                        validators: {
+                            notEmpty: {
+                                message: '请填写邮箱地址！'
+                            },
+                            emailAddress:{
+                                message:'请输入正确邮箱地址！'
+                            }
+                        }
+                    },
+                    password: {
+                        validators: {
+                            notEmpty: {
+                                message: '请输入密码！'
+                            },
+                            stringLength: {
+                                min: 6,
+                                message: '请输入至少六位密码！'
+                            }
+                        }
+                    },
+                    password1: {
+                        validators: {
+                            notEmpty: {
+                                message: '请输入确认密码！'
+                            },
+                            identical: {
+                                field: 'password',
+                                message: '两次密码不一致!'
+                            }
+                        }
+                    },
+                    validnumber: {
+                        validators: {
+                            notEmpty: {
+                                message: "请输入验证码！"
+                            },
+                            callback: {
+                                message: '验证码错误！',
+                                callback: function () {
+                                    return $('#validnumber1').val() === code;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            $('#passwordForm').formValidation({
+                framework: 'bootstrap',
+                icon: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                fields: {
+                    password: {
+                        validators: {
+                            notEmpty: {
+                                message: '请输入旧密码！'
+                            }
+                        }
+                    },
+                    password1: {
+                        validators: {
+                            notEmpty: {
+                                message: '请输入新密码！'
+                            },
+                            stringLength: {
+                                min: 6,
+                                message: '请输入至少六位密码！'
+                            }
+                        }
+                    },
+                    password2: {
+                        validators: {
+                            notEmpty: {
+                                message: '请输入确认密码！'
+                            },
+                            identical: {
+                                field: 'password1',
+                                message: '两次密码不一致!'
+                            }
+                        }
+                    },
+                    validnumber: {
+                        validators: {
+                            notEmpty: {
+                                message: "请输入验证码！"
+                            },
+                            callback: {
+                                message: '验证码错误！',
+                                callback: function () {
+                                    return $('#validnumber2').val() === code;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+        }
+
+
+
+
     </script>
 
 

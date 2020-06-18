@@ -1,0 +1,251 @@
+@()(implicit session: Session)
+@home.main("Net") {
+
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("mycss/index.css")" media="screen" />
+
+
+    <style>
+            .ui-widget-content, .ui-widget-content a:hover {
+                color: #333333;
+            }
+
+            ul#latelist li, ul#hotlist li {
+                float: left;
+                margin: 8px;
+                padding: 4px 11px;
+            }
+            div#mws-container {
+                margin-left: 206px;
+                padding-top: 70px;
+                min-height: 840px;
+
+            }
+    </style>
+
+    <div id="container" style="height: 840px">
+
+    </div>
+
+    <script type="text/javascript" src="/assets/enchart/echarts.min.js"></script>
+    <script type="text/javascript" src="/assets/enchart/echarts-gl.min.js"></script>
+    <script type="text/javascript" src="/assets/enchart/ecStat.min.js"></script>
+    <script type="text/javascript" src="/assets/enchart/dataTool.min.js"></script>
+    <script type="text/javascript">
+
+
+
+            var dom = document.getElementById("container");
+            var myChart = echarts.init(dom);
+            var app = {};
+            option = null;
+            myChart.showLoading();
+            $.get('/assets/test/webkit-dep.json', function (webkitDep) {
+                console.log(webkitDep);
+                myChart.hideLoading();
+                option = {
+                    legend: {
+                        data: ['HTMLElement', 'WebGL', 'SVG', 'CSS', 'Other']
+                    },
+                    toolbox: {
+                        feature: {
+                            saveAsImage: {}
+                        }
+                    },
+                    series: [{
+                        type: 'graph',
+                        layout: 'force',
+                        animation: false,
+                        label: {
+                            position: 'right',
+                            formatter: '{b}'
+                        },
+                        draggable: true,
+                        data: webkitDep.nodes.map(function (node, idx) {
+                            node.id = idx;
+                            return node;
+                        }),
+                        categories: webkitDep.categories,
+                        force: {
+                            edgeLength: 5,
+                            repulsion: 20,
+                            gravity: 0.2
+                        },
+                        edges: webkitDep.links
+                    }]
+                };
+
+                myChart.setOption(option);
+            });;
+            if (option && typeof option === "object") {
+                myChart.setOption(option, true);
+            }
+
+
+            function formValidation() {
+                $("#signinForm").formValidation({
+                    framework: 'bootstrap',
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        user: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入账号！'
+                                }
+                            }
+                        },
+                        password: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入密码！'
+                                }
+                            }
+                        },
+                        validnumber: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入验证码！'
+                                },
+                                callback: {
+                                    message: '验证码错误！',
+                                    callback: function () {
+                                        return $('#validnumber').val() === code;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+                $('#signupForm').formValidation({
+                    framework: 'bootstrap',
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        phone: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入手机号！'
+                                },
+                                phone: {
+                                    message: '请输入正确手机号',
+                                    country: 'CN'
+                                }
+                            }
+                        },
+                        name: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请填写姓名！'
+                                }
+                            }
+                        },
+                        email: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请填写邮箱地址！'
+                                },
+                                emailAddress: {
+                                    message: '请输入正确邮箱地址！'
+                                }
+                            }
+                        },
+                        password: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入密码！'
+                                },
+                                stringLength: {
+                                    min: 6,
+                                    message: '请输入至少六位密码！'
+                                }
+                            }
+                        },
+                        password1: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入确认密码！'
+                                },
+                                identical: {
+                                    field: 'password',
+                                    message: '两次密码不一致!'
+                                }
+                            }
+                        },
+                        validnumber: {
+                            validators: {
+                                notEmpty: {
+                                    message: "请输入验证码！"
+                                },
+                                callback: {
+                                    message: '验证码错误！',
+                                    callback: function () {
+                                        return $('#validnumber1').val() === code;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+                $('#passwordForm').formValidation({
+                    framework: 'bootstrap',
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        password: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入旧密码！'
+                                }
+                            }
+                        },
+                        password1: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入新密码！'
+                                },
+                                stringLength: {
+                                    min: 6,
+                                    message: '请输入至少六位密码！'
+                                }
+                            }
+                        },
+                        password2: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入确认密码！'
+                                },
+                                identical: {
+                                    field: 'password1',
+                                    message: '两次密码不一致!'
+                                }
+                            }
+                        },
+                        validnumber: {
+                            validators: {
+                                notEmpty: {
+                                    message: "请输入验证码！"
+                                },
+                                callback: {
+                                    message: '验证码错误！',
+                                    callback: function () {
+                                        return $('#validnumber2').val() === code;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
+            }
+    </script>
+
+}

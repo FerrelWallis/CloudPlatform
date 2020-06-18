@@ -1,0 +1,662 @@
+@import models.Tables.DutysRow
+@(row:DutysRow)(implicit session: Session)
+@home.main("Task Preview"){
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("font-awesome-4.7.0/css/font-awesome.min.css")" media="screen" />
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("bootstrap-fileinput-master/css/fileinput.css")" media="screen" />
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("palette/evol-colorpicker.min.css")" media="screen" />
+
+
+    <script src="@routes.Assets.versioned("layer-v3.0/layer/layer.js")" type="text/javascript"></script>
+    <script type="text/javascript" src="@routes.Assets.versioned("palette/evol-colorpicker.min.js")"></script>
+
+
+    <style>
+            .evo-pointer {
+                cursor: pointer;
+                margin-top: 7px;
+            }
+            .grid_8{
+                width: 100%;
+                margin: unset;
+            }
+            .mws-panel .mws-panel-content {
+                padding: 24px;
+                float: left;
+                background: white;
+            }
+            .grid_6{
+                width: 60%;
+            }
+            .grid_2{
+                width: 20%;
+            }
+            .title{
+                font-weight: 700;
+                font-family: "Helvetica Neue", Helvetica, 'Microsoft Yahei', 'Hiragino Sans GB', 'WenQuanYi Micro Hei', Tahoma, Arial, sans-serif;
+                margin-top: 20px;
+                margin-bottom: 10px;
+                margin-right: 0px;
+                line-height: 2.6;
+                color: inherit;
+                font-size: 16px;
+                color: #424141;
+            }
+            .content{
+                font-weight: 700;
+                font-family: "Helvetica Neue", Helvetica, 'Microsoft Yahei', 'Hiragino Sans GB', 'WenQuanYi Micro Hei', Tahoma, Arial, sans-serif;
+                font-size: 16px;
+                color: #827e7e;
+            }
+            .success{
+                color: white;
+                background: cadetblue;
+                padding: 8px 15px;
+                border-radius: 19px;
+            }
+            .failed{
+                color: white;
+                background: #bf4064;
+                padding: 8px 15px;
+                border-radius: 19px;
+            }
+            .running{
+                color: white;
+                background: #a08c5f;
+                padding: 8px 15px;
+                border-radius: 19px;
+            }
+            .list{
+                margin-left: 125px;
+                height: 33%;
+            }
+            .list:first-child{
+                margin-left: 0px;
+            }
+            .align{
+                padding-left: 50px;
+            }
+            .button{
+                /*background: #8fb2b3;*/
+                background: #434343;
+                border-radius: 6px;
+                color: white;
+                padding: 10px 30px;
+            }
+            .content a:hover{
+                color: white!important;
+                background-color: black;
+            }
+            #filesUrl a{
+                font-size: 17px;
+                color: gray;
+            }
+            #filesUrl a:hover{
+                color: cadetblue;
+            }
+            /*滚动条样式*/
+            .innerbox::-webkit-scrollbar {/*滚动条整体样式*/
+                width: 4px;     /*高宽分别对应横竖滚动条的尺寸*/
+                height: 4px;
+            }
+            .innerbox::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+                border-radius: 5px;
+                -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+                background: rgba(0,0,0,0.2);
+            }
+            .innerbox::-webkit-scrollbar-track {/*滚动条里面轨道*/
+                -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+                border-radius: 0;
+                background: rgba(0,0,0,0.1);
+            }
+            #prepic{
+                padding: 10px 20px 0 10px!important;
+            }
+            .img-thumbnail{
+                -webkit-transition: unset;
+                transition: unset;
+            }
+            .mws-table tbody tr.odd {
+                background-color: #fafafa;
+            }
+            .mws-table tbody tr.even {
+                background-color: white;
+            }
+            .mws-table thead tr {
+                background: white;
+            }
+            .mws-panel .mws-panel-header {
+                height: 25px;
+                position: relative;
+                padding: 12px;
+                font-size: 14px;
+                border-radius: 4px;
+                border: 1px solid #bebebe;
+                background: #fafafa;
+            }
+            table tr th, table tr td {
+                border-top: 1px solid #ccc !important;
+            }
+            input[type="text"], textarea {
+                background: #fff;
+                background: rgba(255, 255, 255, .4);
+                border: 1px solid #bebebe;
+                padding: 7px 9px;
+                border-radius: 3px;
+                color: #888;
+                box-shadow: unset;
+            }
+            .form-group{
+                float: left;
+            }
+            .right{
+                width: 70%;
+            }
+            .form-group-p{
+                display: inline-block;
+                width: 100%;
+            }
+            input,select{
+                line-height: 32px;
+                height: 32px;
+                width: 60%;
+                border-radius: 5px;
+                margin-left: 10px;
+            }
+            label {
+                display: inline-block;
+                margin-bottom: 5px;
+                margin-top: 5px;
+                font-weight: 700;
+            }
+            .form-group input:not([type="radio"]):not([type="checkbox"]),.form-group select,.form-group .form-control[readonly] {
+                border-radius: 5px;
+                background-color: #f7f7f7;
+                height: 32px;
+                border: 1px solid #e6e6e6;
+                box-shadow: none;
+            }
+            .form-group-extra {
+                display: inline-block;
+                vertical-align: top;
+                line-height: 32px;
+                /* max-width: 180px; */
+            }
+            .input-group .form-control {
+                position: relative;
+                z-index: 2;
+                float: left;
+                width: 80%;
+                margin-bottom: 0;
+                height: 22px;
+                border-radius: 4px;
+            }
+            .input-group .form-control:first-child, .input-group-addon:first-child, .input-group-btn:first-child > .btn, .input-group-btn:first-child > .btn-group > .btn, .input-group-btn:first-child > .dropdown-toggle, .input-group-btn:last-child > .btn:not(:last-child):not(.dropdown-toggle), .input-group-btn:last-child > .btn-group:not(:last-child) > .btn {
+                border-top-right-radius: 4px;
+                border-bottom-right-radius: 4px;
+                border-radius: 5px;
+                background-color: #f7f7f7;
+                height: 21px;
+                border: 1px solid #e6e6e6;
+                box-shadow: none;
+            }
+            .input-group .form-control:last-child, .input-group-addon:last-child, .input-group-btn:last-child > .btn, .input-group-btn:last-child > .btn-group > .btn, .input-group-btn:last-child > .dropdown-toggle, .input-group-btn:first-child > .btn:not(:first-child), .input-group-btn:first-child > .btn-group:not(:first-child) > .btn {
+                border-top-left-radius: 4px;
+                border-bottom-left-radius: 4px;
+            }
+            .fileinput-cancel-button{
+                display: none;
+            }
+            .file-input{
+                width: 330px;
+            }
+            .hidden-xs {
+                display: unset !important;
+            }
+            .redraw-right .form-group-p{
+                padding-left: 30px;
+            }
+            .must{
+                color: red;
+                font-size: large;
+                font-weight: bold;
+                position: relative;
+                left: -10px;
+            }
+            .redraw-head a:hover,.redraw-head a:focus{
+                background: black;
+                color: white;
+            }
+            .layui-layer {
+                -webkit-overflow-scrolling: touch;
+                top: 35%;
+                left: 41%;
+                margin: 0;
+                padding: 0;
+                background-color: #fff;
+                -webkit-background-clip: content;
+                box-shadow: 1px 1px 50px rgba(0,0,0,.3);
+            }
+            .layui-layer-lan .layui-layer-btn {
+                padding: 10px;
+                text-align: right;
+                border-top: unset;
+            }
+            .layui-layer-lan[type=dialog] {
+                min-width: 280px;
+                border-radius: 11.5px;
+            }
+            .layui-layer-lan .layui-layer-title {
+                background: #333;
+                color: #fff;
+                border: none;
+                border-top-left-radius: 11.5px;
+                border-top-right-radius: 11.5px;
+            }
+    </style>
+
+    <div class="container" style="width: 98.5%;margin: unset;max-width: unset;padding: 5px">
+        @task.preview(row)
+        <div class="mws-panel grid_8" style="background: white!important;">
+            <div class="mws-panel-body" style="border: unset">
+                <div class="mws-panel-content" style="width: 96%;padding-top: 0;padding-right: 0">
+                    <hr>
+                    <div class="redraw-head">
+                        <h3 style="display: inline-block">重新绘图：</h3>
+                        <a class="button" id="downPic" style="margin-left: 20px;">下载结果图</a>
+                    </div>
+                    <br>
+                    <form id="Heatmap" style="display: none" method="GET" enctype="multipart/form-data">
+                        <div style="width: 60%;float: left">
+                            <img id="redraw_pic" src="" style="width: 100%;height: auto" >
+                        </div>
+                        <div class="redraw-right" style="width: 40%;float: left;margin-bottom: 30px;">
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label>是否对行聚类：</label>
+                                </div>
+                                <div class="form-group right">
+                                    <select name="cluster_rows" style="width: 45%;">
+                                        <option value="FALSE">no</option>
+                                        <option value="TRUE">yes</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label>是否对列聚类：</label>
+                                </div>
+                                <div class="form-group right">
+                                    <select name="cluster_cols" style="width: 45%;">
+                                        <option value="FALSE">no</option>
+                                        <option value="TRUE">yes</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group-p">
+                                <div class="form-group" style="margin-top: 5px;">
+                                    <label for="">行 X 列聚类树高度：</label>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" name="rtree" class="form-control" placeholder="数字" value="50" style="width: 50px;float: left;margin-right: 5px;margin-top: 5px">
+                                    <label style="float: left;margin-top: 12px;">X</label>
+                                    <input type="text" name="ctree" class="form-control" placeholder="数字" value="50" onblur="ylim();" style="width: 50px;  margin-left: 5px;float: left;margin-top: 5px;margin-right: 20px">
+                                </div>
+                            </div>
+                            <div class="form-group-p">
+                                <div class="form-group" style="margin-top: 5px;">
+                                    <label for="">行聚类分割数(1-</label><label id="rnum"></label><label>)：</label>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" name="rp" class="form-control" placeholder="数字" value="1" style="width: 50px;float: left;margin-right: 5px;margin-top: 5px">
+                                </div>
+                                <div class="form-group" style="margin-left: 20px;margin-top: 5px;">
+                                    <label for="">列聚类分割数(1-</label><label id="cnum"></label><label>)：</label>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" name="cp" class="form-control" placeholder="数字" value="1" style="width: 50px;float: left;margin-right: 5px;margin-top: 5px">
+                                </div>
+                            </div>
+
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label>颜色：<span style="font-size:small;">&nbsp;(数值从小到大)</span></label>
+                                </div>
+                                <div class="form-group" style="width: 120px;">
+                                    <select name="color" id="color" onchange="inputcolor()" style="width: 100%;">
+                                        <option value="0">红,白,蓝</option>
+                                        <option value="1">手动输入</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" style="margin-left: 30px;">
+                                    <label for="">颜色数量：</label>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" name="cc" class="form-control" placeholder="数字" value="30" style="width: 50px;float: left;margin-right: 5px;">
+                                </div>
+                            </div>
+                            <div class="form-group-p" style="display:none;" id="mycolor">
+                                <div class="form-group">
+                                    <div  class="evo-cp-wrap">
+                                        <input id="color1"  name="color1" value=" " class="colorPicker evo-cp0" readonly="readonly">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div  class="evo-cp-wrap">
+                                        <input id="color2"  name="color2" value=" " class="colorPicker evo-cp1" readonly="readonly">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div  class="evo-cp-wrap">
+                                        <input id="color3"  name="color3" value=" " class="colorPicker evo-cp2" readonly="readonly">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group-p">
+                                <div class="form-group" style="margin-top: 5px;">
+                                    <label for="">XY 轴字体大小：</label>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" name="xfs" class="form-control" placeholder="数字" value="10" style="width: 50px;float: left;margin-right: 5px;margin-top: 5px">
+                                    <label style="float: left;margin-top: 12px;">：</label>
+                                    <input type="text" name="yfs" class="form-control" placeholder="数字" value="10" style="width: 50px;  margin-left: 5px;float: left;margin-top: 5px;margin-right: 20px">
+                                </div>
+                            </div>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label>是否画格子边界：</label>
+                                </div>
+                                <div class="form-group right">
+                                    <select name="hasborder" style="width: 45%;" id="hasborder" onchange="bordercolor()">
+                                        <option value="0">no</option>
+                                        <option value="1">yes</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group-p" style="display:none;" id="borcolor">
+                                <div class="form-group">
+                                    <label>边界颜色</label>
+                                </div>
+                                <div class="form-group">
+                                    <div  class="evo-cp-wrap">
+                                        <input id="color4"  name="color4" value=" " class="colorPicker evo-cp0" readonly="readonly">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label>在格子上显示数字：</label>
+                                </div>
+                                <div class="form-group right">
+                                    <select name="hasnum" style="width: 45%;">
+                                        <option value="FALSE">no</option>
+                                        <option value="TRUE">yes</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label>是否显示行名：</label>
+                                </div>
+                                <div class="form-group right">
+                                    <select name="hasrname" style="width: 45%;">
+                                        <option value="TRUE">yes</option>
+                                        <option value="FALSE">no</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label>是否显示列名：</label>
+                                </div>
+                                <div class="form-group right">
+                                    <select name="hascname" style="width: 45%;">
+                                        <option value="TRUE">yes</option>
+                                        <option value="FALSE">no</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <br>
+                            <br>
+                            <input type="button" value="绘&nbsp;&nbsp;制" name="submit" class="btn btn-primary" onclick="DrawHeat()" style="margin-left: 30px">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/fileinput.min.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/locales/zh.js")" type="text/javascript"></script>
+
+    <script>
+
+            $(".evo-cp-wrap").css("width", "90px");
+            $(".evo-cp-wrap").css("float", "left");
+
+
+            function formValidation() {
+                $("#signinForm").formValidation({
+                    framework: 'bootstrap',
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        user: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入账号！'
+                                }
+                            }
+                        },
+                        password: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入密码！'
+                                }
+                            }
+                        },
+                        validnumber: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入验证码！'
+                                },
+                                callback: {
+                                    message: '验证码错误！',
+                                    callback: function () {
+                                        return $('#validnumber').val() === code;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+                $('#signupForm').formValidation({
+                    framework: 'bootstrap',
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        phone: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入手机号！'
+                                },
+                                phone:{
+                                    message: '请输入正确手机号',
+                                    country: 'CN'
+                                }
+                            }
+                        },
+                        name: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请填写姓名！'
+                                }
+                            }
+                        },
+                        email: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请填写邮箱地址！'
+                                },
+                                emailAddress:{
+                                    message:'请输入正确邮箱地址！'
+                                }
+                            }
+                        },
+                        password: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入密码！'
+                                },
+                                stringLength: {
+                                    min: 6,
+                                    message: '请输入至少六位密码！'
+                                }
+                            }
+                        },
+                        password1: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入确认密码！'
+                                },
+                                identical: {
+                                    field: 'password',
+                                    message: '两次密码不一致!'
+                                }
+                            }
+                        },
+                        validnumber: {
+                            validators: {
+                                notEmpty: {
+                                    message: "请输入验证码！"
+                                },
+                                callback: {
+                                    message: '验证码错误！',
+                                    callback: function () {
+                                        return $('#validnumber1').val() === code;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
+                $('#passwordForm').formValidation({
+                    framework: 'bootstrap',
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        password: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入旧密码！'
+                                }
+                            }
+                        },
+                        password1: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入新密码！'
+                                },
+                                stringLength: {
+                                    min: 6,
+                                    message: '请输入至少六位密码！'
+                                }
+                            }
+                        },
+                        password2: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入确认密码！'
+                                },
+                                identical: {
+                                    field: 'password1',
+                                    message: '两次密码不一致!'
+                                }
+                            }
+                        },
+                        validnumber: {
+                            validators: {
+                                notEmpty: {
+                                    message: "请输入验证码！"
+                                },
+                                callback: {
+                                    message: '验证码错误！',
+                                    callback: function () {
+                                        return $('#validnumber2').val() === code;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
+            }
+
+            $(document).ready(function () {
+                if("@row.status"=="已完成"){
+                    $("#Heatmap").show();
+                    $.ajax({
+                        url:"/CloudPlatform/SoftTool/getHeatData?taskname=@row.taskname",
+                        type:"post",
+                        success:function (data) {
+                            $("#redraw_pic").attr("src","/CloudPlatform/pic?path="+data.pics[0]+"&num="+Math.random());
+                            $("#downPic").attr("href","/CloudPlatform/SoftTool/download?path="+data.downpics);
+                            $("#rnum").text(data.rnum);
+                            $("#cnum").text(data.cnum);
+                        }
+                    });
+                }
+            });
+
+            function DrawHeat() {
+                var element = "<div id='content'><span id='info'>绘图中，请耐心等待...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
+                var index = layer.alert(element, {
+                    skin: 'layui-layer-lan',
+                    closeBtn: 0,
+                    title: "提醒",
+                    btn: []
+                });
+                var form1 = new FormData($("#Heatmap")[0]);
+                $.ajax({
+                    url: "/CloudPlatform/SoftTool/redrawHeat?taskname=@row.taskname",
+                    type: "post",
+                    processData: false,
+                    contentType: false,
+                    data: form1,
+                    success: function (data) {
+                        $("#redraw_pic").attr("src","/CloudPlatform/pic?path="+data.pics+"&num="+Math.random());
+                        layer.close(index);
+                    }
+                });
+            }
+
+            $('#color1').colorpicker({color: '#E41A1C', showOn: 'button', defaultPalette: 'web'});
+            $('#color2').colorpicker({color: '#FFFFFF', showOn: 'button', defaultPalette: 'web'});
+            $('#color3').colorpicker({color: '#1E90FF', showOn: 'button', defaultPalette: 'web'});
+            $('#color4').colorpicker({color: '#000000', showOn: 'button', defaultPalette: 'web'});
+            $(".colorPicker").attr("readonly", "readonly");
+
+            function inputcolor() {
+                var colorparam = $("#color").val();
+                if (colorparam == 1) $("#mycolor").show();
+                else $("#mycolor").hide();
+            }
+
+            function bordercolor() {
+                var colorparam = $("#hasborder").val();
+                if (colorparam == 1) $("#borcolor").show();
+                else $("#borcolor").hide();
+            }
+    </script>
+
+}

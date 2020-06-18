@@ -25,7 +25,9 @@
 
         <!--登录注册formValidation-->
         <link rel="stylesheet" media="screen" href="/assets/FormValidation/dist/css/formValidation.min.css">
-        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("bootstrap-sweetalert-master/dist/sweetalert.css")">
+@*        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("bootstrap-sweetalert-master/dist/sweetalert.css")">*@
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("bootstrap-sweetalert-master/sweetalert.css")">
+
 
 
 
@@ -52,6 +54,7 @@
         <script src="@routes.Assets.versioned("bootstrap-sweetalert-master/dist/sweetalert.min.js")" type="text/javascript"></script>
 
 
+        <script type="text/javascript" src="@routes.Assets.versioned("enchart/echarts.all.js")"></script>
 
         <title>@title</title>
 
@@ -98,20 +101,18 @@
                         <li>
                             <a href="#" class="mws-i-24 i-blocks-images">软件中心</a>
                             <ul>
-                                <li><a href="form_elements.html" class="mws-ic-16 ic-star-1 collect">我的收藏</a></li>
-                                <li><a href="form_layouts.html">所有软件</a></li>
-                                <li><a href="form_elements.html">功能分析</a></li>
-                                <li><a href="form_elements.html">聚类分析</a></li>
-                                <li><a href="form_elements.html">统计检验与差异分析</a></li>
-                                <li><a href="form_elements.html">序列处理</a></li>
-                                <li><a href="form_elements.html">注释工具</a></li>
-                                <li><a href="form_elements.html">基础绘图</a></li>
-                                <li><a href="form_elements.html">表格与格式转化</a></li>
+                                <li><a href="/CloudPlatform/allsoft?types=li_like">我的收藏</a></li>
+                                <li><a href="/CloudPlatform/allsoft?types=li_allsoft">所有软件</a></li>
+                                <li><a href="/CloudPlatform/allsoft?types=li_function">功能分析</a></li>
+                                <li><a href="/CloudPlatform/allsoft?types=li_cluster">聚类分析</a></li>
+                                <li><a href="/CloudPlatform/allsoft?types=li_paint">基础绘图</a></li>
+                                <li><a href="/CloudPlatform/allsoft?types=li_checkdiff">统计检验与差异分析</a></li>
+                                <li><a href="/CloudPlatform/allsoft?types=li_sequence">序列处理</a></li>
+                                <li><a href="/CloudPlatform/allsoft?types=li_annotation">注释工具</a></li>
+                                <li><a href="/CloudPlatform/allsoft?types=li_chart">表格与格式转化</a></li>
                             </ul>
                         </li>
                         <li><a href="@routes.HomeController.mytask()" class="mws-i-24 i-clipboard-1">我的任务</a></li>
-                        <li><a href="#" class="mws-i-24 i-info-about">平台说明</a></li>
-                        <li><a href="#" class="mws-i-24 i-headphones">联系客服</a></li>
                     </ul>
                 </div>
             </div>
@@ -137,7 +138,7 @@
                             text: "请先登录账号",
                             type: "warning",
                             confirmButtonText: "确认"
-                        })
+                        });
                     }else {
                         window.location.href = "/CloudPlatform/PersonalCenter";
                     }

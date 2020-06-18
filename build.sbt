@@ -25,6 +25,8 @@ libraryDependencies ++=Seq(
   "com.typesafe.slick" %% "slick-codegen" % "3.3.2",
   "com.github.tototoshi" %% "slick-joda-mapper" % "2.4.1",
   "org.rosuda.REngine" % "Rserve" % "1.8.1",
-  "org.rosuda.REngine" % "REngine" % "2.1.0"
-
+  "org.rosuda.REngine" % "REngine" % "2.1.0",
+  "org.apache.commons" % "commons-compress" % "1.18",
+    // https://mvnrepository.com/artifact/org.apache.pdfbox/pdfbox
+  "org.apache.pdfbox" % "pdfbox" % "2.0.19"
 )

@@ -3,9 +3,12 @@ package utils
 import java.io.File
 
 import org.apache.commons.io.FileUtils
+import play.api.libs.json.Json
+import slick.ast.JoinType.Zip
 
 import scala.collection.mutable
 import scala.io.Source
+import scala.reflect.io.ZipArchive
 //允许java代码
 import scala.collection.JavaConverters._
 
@@ -13,19 +16,83 @@ object FilesUtils {
 
   def main(args: Array[String]): Unit = {
 
-    println(read)
+    val dutyDir="F:/CloudPlatform/users/1/gokegg"
 
-//    val newlist=takeLength.toList.sortBy{case(chr,num)=>chr}
-//    println(newlist)
-//    val writer= new PrintWriter(new File("F:\\Eggplant\\files\\length.txt"))
-//    writer.flush()
-//    writer.print("egg"+"\t")
-//    newlist.foreach{x=>
-//      writer.print(x._2+"\t")
+//    Utils.pdf2Png(dutyDir+"/out/gokegg.Go.enrich.pdf",dutyDir+"/temp/gokegg.Go.enrich.png")
+//    Utils.pdf2Png(dutyDir+"/out/gokegg.Ko.enrich.pdf",dutyDir+"/temp/gokegg.Ko.enrich.png")
+//    Utils.pdf2Png(dutyDir+"/out/ko_stack.pdf",dutyDir+"/temp/ko_stack.png")
+//    Utils.pdf2Png(dutyDir+"/out/ko_dodge.pdf",dutyDir+"/temp/ko_dodge.png")
+//    Utils.pdf2Png(dutyDir+"/out/go_stack.pdf",dutyDir+"/temp/go_stack.png")
+//    Utils.pdf2Png(dutyDir+"/out/go_dodge.pdf",dutyDir+"/temp/go_dodge.png")
+
+//    new File("F:\\CloudPlatform\\R\\pca\\test\\test_out\\table.zip").createNewFile()
+//    CompressUtil.zip("F:\\CloudPlatform\\R\\pca\\test\\test_out\\temp","F:\\CloudPlatform\\R\\pca\\test\\test_out\\table.zip")
+
+//    Utils.pdf2Png("F:\\CloudPlatform\\R\\pca\\test\\test_out\\pca.pdf","F:\\CloudPlatform\\R\\pca\\test\\test_out\\pca.png")
+
+//    val t=" -b A,C,D -c tt"
+//    System.out.println(t.substring(4,t.indexOf("-c")))
+
+//    val genus=FileUtils.readLines(new File("F:\\CloudPlatform\\R\\net\\data\\genus.txt")).asScala
+//    val g=genus.map{line=>
+//      line.trim.split("\t").head
 //    }
-//    writer.close()
+//
+//    val evi=FileUtils.readLines(new File("F:\\CloudPlatform\\R\\net\\data\\env.txt")).asScala
+//    val e=evi.map{line=>
+//      line.trim.split("\t").head
+//    }
+//
+//    val list=e.drop(1)++g.drop(1)
+//    var count=0;
+//    val nodes=list.map{x=>
+//      count=count+1
+//      val evi= if(count<=e.drop(1).length) "Environment" else "GeneId"
+//      Json.obj("name"->x,"value"->1,"category"->evi)
+//    }
+//
+//    val data=FileUtils.readLines(new File("F:\\CloudPlatform\\R\\net\\test\\result.xls")).asScala
+//    val links=data.map{x=>
+//      val e = x.split("\"").filter(_.trim!="")
+//      val source=list.indexOf(e(1))
+//      val target=list.indexOf(e(2))
+//      Json.obj("source"->source,"target"->target)
+//    }
+//
+//    val cat=(Json.obj("name"->"GeneId","base"->"GeneId"),Json.obj("name"->"Environment","base"->"Environment"))
+//
+//    val rows=Json.obj("type"->"force","categories"->cat,"nodes"->nodes,"links"->links)
+//    println(rows)
+
+//    val ge=FileUtils.readLines(new File("F:\\CloudPlatform\\R\\net\\data\\cytoscape-TF.txt")).asScala
+//    val source=ge.map{line=>
+//      line.trim.split("\t").filter(_.trim!="").head.trim
+//    }.drop(1).distinct
+//    val c=ge.map{line=>
+//      line.trim.split("\t").filter(_.trim!="")(1).trim
+//    }.drop(1).distinct
+//    val target=ge.map{line=>
+//      line.trim.split("\t").filter(_.trim!="").last
+//    }.drop(1).distinct
+//    val list2=(source++target).distinct
+//
+//    println(c)
 
 
+
+//    val head=FileUtils.readFileToString(new File("F:\\CloudPlatform\\R\\heatmap\\cluster.txt")).trim.split("\n")
+//    println("row="+(head.length-1))
+//    println("col="+(head(1).split("\t").length-1))
+  }
+
+  def test={
+    val test=FileUtils.readLines(new File("C:\\Users\\yingf\\Desktop\\学习文档\\云平台\\group.txt")).asScala
+    val name=test.map{line=>
+      val x=line.split('\t')
+
+      line.split('\t').last
+    }.distinct
+    name.toList
   }
 
 

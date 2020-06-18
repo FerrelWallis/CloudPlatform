@@ -59,6 +59,37 @@
                 border-top-left-radius: 11.5px;
                 border-top-right-radius: 11.5px;
             }
+        .success{
+            color: cadetblue;
+        }
+        .failed{
+            color: #bf4064;
+        }
+        .running{
+            color: #a08c5f;
+        }
+            /*滚动条样式*/
+            .innerbox::-webkit-scrollbar {/*滚动条整体样式*/
+                width: 4px;     /*高宽分别对应横竖滚动条的尺寸*/
+                height: 4px;
+            }
+            .innerbox::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+                border-radius: 5px;
+                -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+                background: rgba(0,0,0,0.2);
+            }
+            .innerbox::-webkit-scrollbar-track {/*滚动条里面轨道*/
+                -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+                border-radius: 0;
+                background: rgba(0,0,0,0.1);
+            }
+            #prepic{
+                padding: 10px 20px 0 10px!important;
+            }
+            .img-thumbnail{
+                -webkit-transition: unset;
+                transition: unset;
+            }
     </style>
 
 
@@ -73,7 +104,7 @@
                 <div class="mws-panel-toolbar top clearfix">
                     <ul>
                         <li><a class="mws-ic-16 ic-cloud-download-1" style="color: cadetblue" id="download">下载</a></li>
-                        <li><a class="mws-ic-16 ic-eye2" style="color: cadetblue" id="preview">预览</a></li>
+@*                        <li><a class="mws-ic-16 ic-eye2" style="color: cadetblue" id="preview">预览</a><a id="hidden" data-reveal-id="previewpage" style="display: none"></a></li>*@
                         <li><a class="mws-ic-16 ic-delete2" style="color: cadetblue" id="delete">删除</a></li>
                         <li><a class="mws-ic-16 ic-refresh2" style="color: cadetblue" id="refresh">刷新任务状态</a></li>
                     </ul>
@@ -96,6 +127,9 @@
         </div>
     </div>
 
+
+
+
     <script type="text/javascript" src="/assets/plugins/jquery.dataTables.js"></script>
     <script type="text/javascript" src="/assets/plugins/colorpicker/colorpicker.js"></script>
     <script type="text/javascript" src="/assets/plugins/spinner/ui.spinner.js"></script>
@@ -117,7 +151,7 @@
                         destroy:true,
                         bSort:true,
                         sPaginationType: "full_numbers",
-                        sAjaxSource:"/CloudPlatform/MyTasks/getDutys?uid=1",
+                        sAjaxSource:"/CloudPlatform/MyTasks/getDutys",
                         sAjaxDataProp:'rows',
                         fnServerData: function ( sSource, aoData, fnCallback ) {
                             $.ajax( {
@@ -138,6 +172,7 @@
                         contentType: "application/x-www-form-urlencoded"
 
                     });
+
                 }
 
                 function refresh() {
@@ -172,39 +207,100 @@
 
                 $("#delete").click(function () {
                     var taskname=$('tr.selected').find("#taskname").text();
-                    $.ajax({
-                        url:"/CloudPlatform/MyTasks/deleteDutys?uid=@session.get("userId")"+"&taskname="+taskname,
-                        type:"post",
-                        success:function (data) {
-                           if(data.valid==="false"){
-                               swal({
-                                   title: "错误",
-                                   text: "删除失败！"+data.message,
-                                   type: "error",
-                                   confirmButtonText: "确认"
-                               })
-                           }else{
+                    if(taskname==""){
+                        swal({
+                            title: "未选择任务",
+                            text: "请选择要删除的任务记录！",
+                            type: "warning",
+                            confirmButtonText: "确认"
+                        });
+                    }else{
+                        $.ajax({
+                            url:"/CloudPlatform/MyTasks/deleteDutys?uid=@session.get("userId")"+"&taskname="+taskname,
+                            type:"post",
+                            success:function (data) {
+                                if(data.valid==="false"){
+                                    swal({
+                                        title: "错误",
+                                        text: "删除失败！"+data.message,
+                                        type: "error",
+                                        confirmButtonText: "确认"
+                                    })
+                                }else{
 
-                               swal({
-                                   title: "删除成功",
-                                   text: "任务记录删除成功！",
-                                   type: "success",
-                                   confirmButtonText: "确认"
-                               })
-                               refresh();
-                           }
-                        }
-                    })
+                                    swal({
+                                        title: "删除成功",
+                                        text: "任务记录删除成功！",
+                                        type: "success",
+                                        confirmButtonText: "确认"
+                                    })
+                                    refresh();
+                                }
+                            }
+                        })
+                    }
+
 
                 });
 
 
-                $("#preview").click(function () {
-
-                });
+                // $("#preview").click(function () {
+                //     var taskname=$('tr.selected').find("#taskname").text();
+                //     if(taskname==""){
+                //         swal({
+                //             title: "未选择任务",
+                //             text: "请选择要预览的任务记录！",
+                //             type: "warning",
+                //             confirmButtonText: "确认"
+                //         });
+                //     }else{
+                //         if($('tr.selected').find("#status").text()=="已完成"){
+                //             $.ajax({
+                //                 url:"/CloudPlatform/SoftTool/getDownloadFiles?taskname="+taskname,
+                //                 type:"post",
+                //                 success:function (data) {
+                //                     var pics=""
+                //                     $.each(data.files,function (i,v) {
+                //                         pics +="<li><img class='img-rounded img-thumbnail img-responsive' src='/CloudPlatform/pic?path="+v+"' alt=\"生物云平台\"><li>"
+                //                     });
+                //                     $("#prepic").html(pics)
+                //                 }
+                //             });
+                //             $("#hidden").click();
+                //         }else{
+                //             swal({
+                //                 title: "无法预览",
+                //                 text: "任务未完成,无法预览！",
+                //                 type: "warning",
+                //                 confirmButtonText: "确认"
+                //             });
+                //         }
+                //
+                //     }
+                // });
 
                 $("#download").click(function () {
+                    var taskname=$('tr.selected').find("#taskname").text();
+                    if(taskname==""){
+                        swal({
+                            title: "未选择任务",
+                            text: "请选择要下载的任务记录！",
+                            type: "warning",
+                            confirmButtonText: "确认"
+                        });
+                    }else{
+                        if($('tr.selected').find("#status").text()=="已完成"){
+                            window.location.href = "/CloudPlatform/SoftTool/downloadZip?taskname="+taskname;
+                        }else{
+                            swal({
+                                title: "无法下载",
+                                text: "任务未完成,无法下载！",
+                                type: "warning",
+                                confirmButtonText: "确认"
+                            });
+                        }
 
+                    }
                 });
 
 
@@ -212,8 +308,171 @@
 
             });
 
+            function formValidation() {
+                $("#signinForm").formValidation({
+                    framework: 'bootstrap',
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        user: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入账号！'
+                                }
+                            }
+                        },
+                        password: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入密码！'
+                                }
+                            }
+                        },
+                        validnumber: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入验证码！'
+                                },
+                                callback: {
+                                    message: '验证码错误！',
+                                    callback: function () {
+                                        return $('#validnumber').val() === code;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+                $('#signupForm').formValidation({
+                    framework: 'bootstrap',
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        phone: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入手机号！'
+                                },
+                                phone:{
+                                    message: '请输入正确手机号',
+                                    country: 'CN'
+                                }
+                            }
+                        },
+                        name: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请填写姓名！'
+                                }
+                            }
+                        },
+                        email: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请填写邮箱地址！'
+                                },
+                                emailAddress:{
+                                    message:'请输入正确邮箱地址！'
+                                }
+                            }
+                        },
+                        password: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入密码！'
+                                },
+                                stringLength: {
+                                    min: 6,
+                                    message: '请输入至少六位密码！'
+                                }
+                            }
+                        },
+                        password1: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入确认密码！'
+                                },
+                                identical: {
+                                    field: 'password',
+                                    message: '两次密码不一致!'
+                                }
+                            }
+                        },
+                        validnumber: {
+                            validators: {
+                                notEmpty: {
+                                    message: "请输入验证码！"
+                                },
+                                callback: {
+                                    message: '验证码错误！',
+                                    callback: function () {
+                                        return $('#validnumber1').val() === code;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+                $('#passwordForm').formValidation({
+                    framework: 'bootstrap',
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        password: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入旧密码！'
+                                }
+                            }
+                        },
+                        password1: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入新密码！'
+                                },
+                                stringLength: {
+                                    min: 6,
+                                    message: '请输入至少六位密码！'
+                                }
+                            }
+                        },
+                        password2: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入确认密码！'
+                                },
+                                identical: {
+                                    field: 'password1',
+                                    message: '两次密码不一致!'
+                                }
+                            }
+                        },
+                        validnumber: {
+                            validators: {
+                                notEmpty: {
+                                    message: "请输入验证码！"
+                                },
+                                callback: {
+                                    message: '验证码错误！',
+                                    callback: function () {
+                                        return $('#validnumber2').val() === code;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
 
-
+            }
 
     </script>
 

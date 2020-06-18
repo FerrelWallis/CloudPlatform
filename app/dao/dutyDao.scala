@@ -20,8 +20,7 @@ class dutyDao @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)(
     db.run(Dutys += row).map(_=>())
   }
 
-  def updateFini(uid:String,taskname:String): Future[Unit]={
-    val finitime=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date)
+  def updateFini(uid:String,taskname:String,finitime:String): Future[Unit]={
     db.run(Dutys.filter(_.uid ===Integer.parseInt(uid)).filter(_.taskname === taskname).map(x=>(x.finitime,x.status)).update(finitime,"已完成")).map(_=>())
   }
 
@@ -34,11 +33,15 @@ class dutyDao @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)(
   }
 
   def getAllDutyById(uid:String):Future[Seq[DutysRow]]={
-    db.run(Dutys.filter(_.uid===Integer.parseInt(uid)).result)
+    db.run(Dutys.filter(_.uid===Integer.parseInt(uid)).sortBy(_.subtime.desc).result)
   }
 
   def getSingleDuty(uid:String,taskname:String):Future[DutysRow]={
     db.run(Dutys.filter(_.uid===Integer.parseInt(uid)).filter(_.taskname===taskname).result.head)
+  }
+
+  def getDutyByType(uid:String,sabbrename:String):Future[Seq[DutysRow]]={
+    db.run(Dutys.filter(_.uid===Integer.parseInt(uid)).filter(_.sabbrename===sabbrename).sortBy(_.subtime.desc).result)
   }
 
   def deleteDuty(uid:String,taskname:String):Future[Unit]={

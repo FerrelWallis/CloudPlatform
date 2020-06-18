@@ -34,6 +34,10 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
     Ok(views.html.task.myTask())
   }
 
+  def allsoft(types:String)=Action{implicit request=>
+    Ok(views.html.category.allsofts(types))
+  }
+
 
 
 

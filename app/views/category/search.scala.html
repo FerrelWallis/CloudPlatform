@@ -1,0 +1,358 @@
+@(types:String)(implicit session: Session)
+@home.main("SoftsCenter"){
+
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("mycss/index.css")" media="screen" />
+
+    <style>
+            .ui-widget-content, .ui-widget-content a:hover {
+                color: #333333;
+            }
+            ul#like li,ul#all li,ul#function li,ul#cluster li,ul#paint li,ul#check li,ul#sequence li,ul#annotation li,ul#chart li {
+                float: left;
+                margin: 8px;
+                padding: 4px 11px;
+            }
+            form {
+                position: relative;
+            }
+            .searchbox input {
+                width: 350px;
+                border-radius: 33px;
+                border: none;
+                height: 40px;
+                padding-left: 20px;
+                padding-right: 40px;
+                letter-spacing: 0;
+                background: #ffffff;
+            }
+            .searchbox i {
+                position: absolute;
+                right: 80px;
+                top: 20px;
+                font-size: 14px;
+                color: #b1a7a7;
+            }
+            [class^="ti-"], [class*=" ti-"] {
+                font-family: 'themify';
+                speak: none;
+                font-style: normal;
+                font-weight: normal;
+                font-variant: normal;
+                text-transform: none;
+                line-height: 1;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+            }
+    </style>
+
+    <div class="container" style="padding-top: 20px;">
+        <div class="mws-panel grid_8">
+            <div class="mws-tabs">
+                <div style="height: 50px">
+                    <div style="width: 75%;float: left">
+                        <ul>
+                            <li><a id="li_like" href="#likelist" onclick="loadSoft('like')">我的收藏</a></li>
+                            <li><a id="li_allsoft" href="#alllist" onclick="loadSoft('all')">所有软件</a></li>
+                            <li><a id="li_function" href="#funlist" onclick="loadSoft('function')">功能分析</a></li>
+                            <li><a id="li_cluster" href="#clulist" onclick="loadSoft('cluster')">聚类分析</a></li>
+                            <li><a id="li_paint" href="#paintlist" onclick="loadSoft('paint')">基础绘图</a></li>
+                            <li><a id="li_checkdiff" href="#checklist" onclick="loadSoft('check')">统计检验与差异</a></li>
+                            <li><a id="li_sequence" href="#seqlist" onclick="loadSoft('sequence')">序列处理</a></li>
+                            <li><a id="li_annotation" href="#annolist" onclick="loadSoft('annotation')">注释工具</a></li>
+                            <li><a id="li_chart" href="#chartlist" onclick="loadSoft('chart')">表格与格式转化</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="searchbox" style="width: 20%;float: left;margin-top: 5px">
+                        <input type="text" id="search" name="search" placeholder="请输入关键词" >
+                        <a onclick="searchsoft()"><i class="ti-search"></i></a>
+                    </div>
+                </div>
+
+                <div id="searchlist" style="padding: 1em 0em 1em 1em;display: none">
+                    <ul id="search" class="ui-widget ui-helper-clearfix">
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+            $(document).ready(function () {
+
+            });
+
+
+            function loadSoft(param,content){
+                $.ajax({
+                    url: "/CloudPlatform/Softwares/home/search"+url,
+                    type: "get",
+                    success: function (data) {
+                        var html="";
+                        if(param=="like" && JSON.stringify(data.rows)=="[]") html="<li><div>暂无收藏</div></li>";
+                        else if(param!="like" && JSON.stringify(data.rows)=="[]") html="<li><div>功能开发中，敬请期待！</div></li>";
+                        else
+                            $.each(data.rows,function (i,v) {
+                                html += "<li class='mws-report'>" +v.pics+ "<div class='mws-report-content'>" + v.description+
+                                        "<div class='likeable' style='float:right;'><div id='fmsg1' style='display:none;'>" +
+                                        "<div class='tooltip fade left in' style='width: 75px;bottom: 2px;right: 19px;display: block;'>" +
+                                        "<div class='tooltip-arrow'></div><div class='tooltip-inner'>点击收藏</div></div></div>" +
+                                        "<div id='fmsg2' style='display:none;'><div class='tooltip fade left in' style='width: 75px;bottom: 2px;right: 19px;display: block;'>" +
+                                        "<div class='tooltip-arrow'></div><div class='tooltip-inner'>取消收藏</div></div></div>" + v.like+ "</div></div></li>";
+                            });
+                        $("#"+param).html(html);
+                    }
+                });
+            }
+
+            function removeul(param){
+                $("#"+param+" li").remove();
+            }
+
+            function mover($para) {
+                if (($para).hasClass("yellow-icon")) {
+                    $para.prev().show();
+                } else {
+                    $para.removeClass('icon-star-empty');
+                    $para.addClass('icon-star');
+                    $para.prev().prev().show();
+                }
+            }
+
+            function mout($para) {
+                $para.prev().hide();
+                $para.prev().prev().hide();
+                if (!$para.hasClass("yellow-icon")) {
+                    $para.addClass('icon-star-empty');
+                    $para.removeClass('icon-star');
+                }
+
+            }
+
+            $('#search').keydown(function(e){
+                var curKey = e.which;
+                if (curKey == 13) {
+                    searchsoft();
+                }
+            });
+
+
+            function searchsoft(){
+                var parm=$("#search").val();
+                loadSoft("search",parm);
+                $("#searchlist").show();
+                console.log(parm);
+            }
+
+            //tab
+            $(".mws-tabs").tabs();
+
+            var islock = false;  //防止重复点击
+            function collect($para,sid) {
+                //没登陆的时候聚焦到登陆框
+                if (@session.get("userId").isEmpty) {
+                    openSignin();
+                    return;
+                }
+                if (islock) {
+                    alert(" =.=!!");
+                    return;
+                }
+                islock = true;
+                setTimeout(function () {
+                    islock = false;
+                }, 200);
+                if (($para).hasClass("yellow-icon")) {
+                    $.ajax({
+                        url: "/CloudPlatform/User/delLike?sid="+sid,
+                        type: "post",
+                        success: function (data) {
+                            alert('<i class="icon icon-exclamation-sign"></i>已取消收藏该软件', 1000);
+                            $para.removeClass("icon-star").removeClass("yellow-icon").addClass("icon-star-empty");
+                        }
+                    });
+                } else {
+                    $.ajax({
+                        url: "/CloudPlatform/User/addLike?sid="+sid,
+                        type: "post",
+                        success: function (data) {
+                            $para.removeClass("icon-heart-empty").addClass("icon-heart yellow-icon");
+                            alert('<i class="icon icon-exclamation-sign"></i>收藏该软件成功', 1000);
+                        }
+                    });
+                }
+            }
+
+            function formValidation() {
+                $("#signinForm").formValidation({
+                    framework: 'bootstrap',
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        user: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入账号！'
+                                }
+                            }
+                        },
+                        password: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入密码！'
+                                }
+                            }
+                        },
+                        validnumber: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入验证码！'
+                                },
+                                callback: {
+                                    message: '验证码错误！',
+                                    callback: function () {
+                                        return $('#validnumber').val() === code;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+                $('#signupForm').formValidation({
+                    framework: 'bootstrap',
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        phone: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入手机号！'
+                                },
+                                phone:{
+                                    message: '请输入正确手机号',
+                                    country: 'CN'
+                                }
+                            }
+                        },
+                        name: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请填写姓名！'
+                                }
+                            }
+                        },
+                        email: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请填写邮箱地址！'
+                                },
+                                emailAddress:{
+                                    message:'请输入正确邮箱地址！'
+                                }
+                            }
+                        },
+                        password: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入密码！'
+                                },
+                                stringLength: {
+                                    min: 6,
+                                    message: '请输入至少六位密码！'
+                                }
+                            }
+                        },
+                        password1: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入确认密码！'
+                                },
+                                identical: {
+                                    field: 'password',
+                                    message: '两次密码不一致!'
+                                }
+                            }
+                        },
+                        validnumber: {
+                            validators: {
+                                notEmpty: {
+                                    message: "请输入验证码！"
+                                },
+                                callback: {
+                                    message: '验证码错误！',
+                                    callback: function () {
+                                        return $('#validnumber1').val() === code;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+                $('#passwordForm').formValidation({
+                    framework: 'bootstrap',
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        password: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入旧密码！'
+                                }
+                            }
+                        },
+                        password1: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入新密码！'
+                                },
+                                stringLength: {
+                                    min: 6,
+                                    message: '请输入至少六位密码！'
+                                }
+                            }
+                        },
+                        password2: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入确认密码！'
+                                },
+                                identical: {
+                                    field: 'password1',
+                                    message: '两次密码不一致!'
+                                }
+                            }
+                        },
+                        validnumber: {
+                            validators: {
+                                notEmpty: {
+                                    message: "请输入验证码！"
+                                },
+                                callback: {
+                                    message: '验证码错误！',
+                                    callback: function () {
+                                        return $('#validnumber2').val() === code;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
+            }
+
+    </script>
+
+    @home.footer()
+
+
+}

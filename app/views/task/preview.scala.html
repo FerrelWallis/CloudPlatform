@@ -1,204 +1,135 @@
-@(taskname:String,sname:String,inputfile:String,param:String,submit:String,finish:String,status:String)(implicit session: Session)
-@home.main("Task Preview"){
-    <script src="@routes.Assets.versioned("layer-v3.0/layer/layer.js")" type="text/javascript"></script>
+@import models.Tables.DutysRow
+@(row:DutysRow)(implicit session: Session)
+<div class="mws-panel grid_8" style="background: white!important;">
+    <div class="mws-panel-body" style="border: unset">
+        <div class="mws-panel-content grid_3">
+            <h1>任务详情</h1>
+            <br>
+            <ul>
+                <li>
+                    <span class="title">任务编号:</span>
+                    <span class="content align">@row.taskname</span>
+                </li>
+                <li>
+                    <span class="title">使用软件:</span>
+                    <span class="content align">@row.sname</span>
+                </li>
+                <li>
 
-    <style>
-        .grid_8{
-            width: 100%;
-            margin: unset;
-        }
-        .mws-panel .mws-panel-content {
-            padding: 24px;
-            float: left;
-            background: white;
-        }
-        .grid_6{
-            width: 60%;
-        }
-        .grid_2{
-            width: 20%;
-        }
-        .title{
-            font-weight: 700;
-            font-family: "Helvetica Neue", Helvetica, 'Microsoft Yahei', 'Hiragino Sans GB', 'WenQuanYi Micro Hei', Tahoma, Arial, sans-serif;
-            margin-top: 20px;
-            margin-bottom: 10px;
-            margin-right: 36px;
-            line-height: 2.6;
-            color: inherit;
-            font-size: 16px;
-            color: #424141;
-        }
-        .content{
-            font-weight: 700;
-            font-family: "Helvetica Neue", Helvetica, 'Microsoft Yahei', 'Hiragino Sans GB', 'WenQuanYi Micro Hei', Tahoma, Arial, sans-serif;
-            font-size: 16px;
-            color: #827e7e;
-        }
-    .success{
-        color: white;
-        background: cadetblue;
-        padding: 8px 15px;
-        border-radius: 19px;
-    }
-    .failed{
-        color: white;
-        background: #bf4064;
-        padding: 8px 15px;
-        border-radius: 19px;
-    }
-    .running{
-        color: white;
-        background: #a08c5f;
-        padding: 8px 15px;
-        border-radius: 19px;
-    }
-    .list{
-        margin-left: 125px;
-            height: 33%;
-    }
-    .list:first-child{
-        margin-left: 0px;
-    }
-        .align{
-            padding-left: 15px;
-        }
-        .button{
-            /*background: #8fb2b3;*/
-            background: #434343;
-            border-radius: 6px;
-            color: white;
-            padding: 10px 30px;
-        }
-        .content a:hover{
-            color: white!important;
-            background-color: #6e9b76;
-        }
+                    <div style="width: 25%;float: left">
+                            <span class="title" >输入文件名:</span>
+                        </div>
+                        <div style="width: 75%;float: left">
+                            <div id="input" style="padding: 10px 0 0 30px;">
+                                    </div>
+                        </div>
 
-    </style>
+                </li>
+                <li>
 
-    <div class="container" style="width: 98.5%;margin: unset;max-width: unset;padding: 5px">
-        <div class="mws-panel grid_8" style="background: white!important;">
+                        <div style="width: 20%;float: left">
+                            <span class="title" >使用参数:</span>
+                        </div>
+                        <div style="width: 80%;float: left">
+                            <div id="para" style="padding-left: 50px;padding-top: 10px;">
+                            </div>
+                        </div>
 
-            <div class="mws-panel-body" style="border: unset">
-                <div class="mws-panel-content grid_6">
-                    <h1>任务详情</h1>
-                    <br>
-                    <ul>
-                        <li>
-                            <span class="title">任务编号:</span>
-                            <span class="content align">@taskname</span>
-                        </li>
-                        <li>
-                            <span class="title">使用软件:</span>
-                            <span class="content align">@sname</span>
-                        </li>
-                        <li>
-                            <span class="title">输入文件名:</span>
-                            <span class="content" id="input">@inputfile</span>
-                        </li>
-                        <li>
-                            <span class="title">使用参数:</span>
-                            <span class="content align" id="para">@param</span>
-                        </li>
-                        <li>
-                            <span class="title">提交时间:</span>
-                            <span class="content align">@submit</span>
-                        </li>
-                        <li>
-                            <span class="title">结束时间:</span>
-                            <span class="content align">@finish</span>
-                        </li>
-                        <li>
-                            <span class="title">任务状态:</span>
-                            <span id="status" class="content" style="margin-left: 15px">@status</span>
-                        </li>
-                        <br><br><br>
-                        <li>
-                            <span class="title">下载结果文件包:</span>
-                            <span class="content"><a class="button" id="download">下载</a></span>
-                        </li>
-                    </ul>
+                </li>
+                <li>
+
+                    <span class="title">提交时间:</span>
+                    <span class="content align">@row.subtime</span>
+                </li>
+                <li>
+                    <span class="title">结束时间:</span>
+                    <span class="content align">@row.finitime</span>
+                </li>
+                <li>
+                    <span class="title">任务状态:</span>
+                    <span id="status" class="content" style="margin-left: 50px">@row.status</span>
+                </li>
+
+            </ul>
+        </div>
+        <div class="mws-panel-content" style="width: 50%">
+            <h2><span class="content"><a href="/CloudPlatform/myTask" class="button mws-i-24 i-bended-arrow-left" style="font-weight: 200;padding-right: 44px;background-position: 134px center;background-repeat: no-repeat;">返回任务列表</a></span></h2>
+            <br>
+            <div class="mws-panel" style="width: 100%">
+                <h3 style="margin-top: 11px;margin-bottom: 10px;">结果列表:</h3>
+                <div class="mws-panel-body">
+                    <table class="mws-table">
+                        <thead>
+                            <tr>
+                                <th>文件</th>
+                                <th>说明</th>
+                                <th>下载</th>
+                            </tr>
+                        </thead>
+                        <tbody id="filesUrl">
+
+                                </tbody>
+                    </table>
                 </div>
-                <div class="mws-panel-content grid_2">
-                    <h2><span class="content"><a href="/CloudPlatform/myTask" class="button mws-i-24 i-bended-arrow-left" style="font-weight: 200;padding-right: 44px;background-position: 134px center;background-repeat: no-repeat;">返回任务列表</a></span></h2>
-                    <br>
-                    <ul>
-                        <li>
-                            <h3 style="margin-top: 11px;margin-bottom: 10px;">结果列表</h3>
-                            <div id="filesUrl"></div>
-                        </li>
-                        <br>
-                        <li>
-                            <span class="content"><a class="button" id="preview">结果预览</a></span>
-                        </li>
-                    </ul>
-                </div>
+                <br><br>
+                <span class="title">下载结果文件包:</span>
+                <span class="content align"><a class="button" id="download" onclick="downloadZip()">下载</a></span>
             </div>
+
         </div>
     </div>
+</div>
 
-<script>
+    <script>
 
-        $(document).ready(function () {
-            console.log(111)
-            list();
-            if("@status"==="已完成"){
-                $("#status").addClass('success');
-            } else if("@status"==="运行失败"){
-                $("#status").addClass('failed');
-            } else {
-                $("#status").addClass('running');
-            }
 
+        var input="@row.input";
+        var inp="";
+        $.each(input.split("/"),function (i,v) {
+            inp += "<p class='content'>"+v+"</p>";
         });
+        $("#input").html(inp);
 
-        function list() {
+        var param="@row.param";
+        var par="";
+        $.each(param.split("/"),function (i,v) {
+            par += "<p class='content'>"+v+"</p>";
+        });
+        $("#para").html(par);
+        if("@row.status"==="已完成"){
+            $("#status").addClass('success');
             $.ajax({
-
-                url:"/CloudPlatform/SoftTool/getFiles?id=@session.get("userId")"+"&taskname=@taskname",
+                url:"/CloudPlatform/SoftTool/getDownloadFiles?taskname=@row.taskname&soft=@row.sabbrename",
                 type:"post",
-                success:function (pics) {
+                success:function (data) {
                     var html = "";
-                    $.each(pics,function (i,v) {
-                        html += "<li><a href='/CloudPlatform/SoftTool/download?path="+ v +"' target='_blank'>" + v.substring(v.lastIndexOf("\\")+1,v.length) + "</a></li>"
-                        // html += "<li><a href='/CloudPlatform/SoftTool/download?path="+ v+"&name=" + v.substring(v.lastIndexOf("\\")+1,v.length) + "' target='_blank'>" + v.substring(v.lastIndexOf("\\")+1,v.length) + "</a></li>"
+                    $.each(data.files,function (i,v) {
+                        var colo="";
+                        if((i+1)%2==0) colo="even";
+                        else colo="odd";
+                        html += "<tr class='"+ colo +"'><td>" + v.substring(v.lastIndexOf("/")+1,v.length) + "</td><td>说明</td><td><a href='/CloudPlatform/SoftTool/download?path=" + v + "' target='_blank' class='fa fa-download'></a></td></tr>";
                     });
                     $("#filesUrl").html(html);
                 }
-            })
+            });
+        } else if("@row.status"==="运行失败"){
+            $("#status").addClass('failed');
+            $("#filesUrl").html("<span>运行失败，无结果！</span>");
+        } else {
+            $("#status").addClass('running');
+            $("#filesUrl").html("<span>运行中，暂无结果！</span>");
         }
 
-        $("#download").click(function () {
-            console.log($("#status").val())
-            if($("#status").val()!=="已完成"){
-                swal({
-                    title: "无法下载",
-                    text: "任务未完成，无法下载！",
-                    type: "warning",
-                    confirmButtonText: "确认"
-                })
-            }else{
-
+            function downloadZip(){
+                if("@row.status"!=="已完成"){
+                    swal({
+                        title: "无法下载",
+                        text: "任务未完成，无法下载！",
+                        type: "warning",
+                        confirmButtonText: "确认"
+                    });
+                }else{
+                    window.location.href = "/CloudPlatform/SoftTool/downloadZip?taskname=@row.taskname";
+                }
             }
-        });
-
-        $("#preview").click(function () {
-            if($("#status").val()!=="已完成"){
-                swal({
-                    title: "无法预览",
-                    text: "任务未完成，无法预览结果！",
-                    type: "warning",
-                    confirmButtonText: "确认"
-                })
-            }else{
-
-            }
-        });
-
-
-
-</script>
-
-
-}
+    </script>
