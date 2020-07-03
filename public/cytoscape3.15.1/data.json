@@ -1,0 +1,2425 @@
+[{
+  "data": {
+    "id": "605755",
+    "name": "PCNA",
+    "score": 0.006769776522008331,
+    "group": "gene"
+  },
+  "position": {
+    "x": 481.0169597039117,
+    "y": 384.8210888234145
+  },
+  "group": "nodes"
+}, {
+  "data": {
+    "id": "611408",
+    "idInt": 611408,
+    "name": "FEN1",
+    "score": 0.006769776522008331,
+    "group": "gene"
+  },
+  "position": {
+    "x": 531.9740635094307,
+    "y": 464.8210898234145
+  },
+  "group": "nodes"
+}, {
+  "data": {
+    "id": "600585",
+    "name": "POLD3",
+    "score": 0.006769776522008331,
+    "group": "gene"
+  },
+  "position": {
+    "x": 118.3562364528364,
+    "y": 384.3877516879044
+  },
+  "group": "nodes"
+}, {
+  "data": {
+    "id": "599889",
+    "name": "RAD51",
+    "score": 0.006769776522008331,
+    "group": "gene"
+  },
+  "position": {
+    "x": 759.7017646483837,
+    "y": 338.3207127700095
+  },
+  "group": "nodes"
+}, {
+  "data": {
+    "id": "602299",
+    "name": "LIG1",
+    "score": 0.0023873089881679688,
+    "group": "evi"
+  },
+  "position": {
+    "x": 264.10227893804523,
+    "y": 631.7198779917306
+  },
+  "group": "nodes"
+}, {
+  "data": {
+    "id": "603070",
+    "name": "RFC5",
+    "score": 0.0022841757103715943,
+    "group": "evi"
+  },
+  "position": {
+    "x": 282.21587939790476,
+    "y": 109.57476207336902
+  },
+  "group": "nodes"
+}, {
+  "data": {
+    "id": "610236",
+    "name": "RFC4",
+    "score": 0.002235382441847178,
+    "group": "evi"
+  },
+  "position": {
+    "x": 205.41323994659498,
+    "y": 122.2715768040765
+  },
+  "group": "nodes"
+}, {
+  "data": {
+    "source": "611408",
+    "target": "605755",
+    "weight": 0.8
+  },
+  "group": "edges"
+}, {
+  "data": {
+    "source": "602299",
+    "target": "600585",
+    "weight": 0.012590342,
+    "group": "coexp"
+  },
+  "group": "edges"
+}, {
+  "data": {
+    "source": "603070",
+    "target": "605755",
+    "weight": 0.0089772185,
+    "group": "coexp",
+    "networkId": 1133,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 4,
+    "id": "e2"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "605755",
+    "weight": 0.0055292076,
+    "group": "coexp",
+    "networkId": 1133,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 5,
+    "id": "e3"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "611408",
+    "weight": 0.005184464,
+    "group": "coexp",
+    "networkId": 1133,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 6,
+    "id": "e4"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "603070",
+    "weight": 0.0073378147,
+    "group": "coexp",
+    "networkId": 1133,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 8,
+    "id": "e6"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "600585",
+    "target": "611408",
+    "weight": 0.010655156,
+    "group": "coexp",
+    "networkId": 1228,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 23,
+    "id": "e21"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "611408",
+    "target": "605755",
+    "weight": 0.011872302,
+    "group": "coexp",
+    "networkId": 1094,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 26,
+    "id": "e24"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "602299",
+    "target": "611408",
+    "weight": 0.013897292,
+    "group": "coexp",
+    "networkId": 1094,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 27,
+    "id": "e25"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "603070",
+    "target": "605755",
+    "weight": 0.014308085,
+    "group": "coexp",
+    "networkId": 1094,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 28,
+    "id": "e26"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "605755",
+    "weight": 0.01631634,
+    "group": "coexp",
+    "networkId": 1094,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 29,
+    "id": "e27"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "611408",
+    "weight": 0.014722961,
+    "group": "coexp",
+    "networkId": 1094,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 30,
+    "id": "e28"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "611408",
+    "target": "605755",
+    "weight": 0.007181677,
+    "group": "coexp",
+    "networkId": 1205,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 37,
+    "id": "e35"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "600585",
+    "target": "605755",
+    "weight": 0.012193555,
+    "group": "coexp",
+    "networkId": 1205,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 38,
+    "id": "e36"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "600585",
+    "target": "611408",
+    "weight": 0.009036004,
+    "group": "coexp",
+    "networkId": 1205,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 39,
+    "id": "e37"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "602299",
+    "target": "605755",
+    "weight": 0.008944319,
+    "group": "coexp",
+    "networkId": 1205,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 40,
+    "id": "e38"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "602299",
+    "target": "600585",
+    "weight": 0.0140501885,
+    "group": "coexp",
+    "networkId": 1205,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 41,
+    "id": "e39"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "603070",
+    "target": "605755",
+    "weight": 0.014778332,
+    "group": "coexp",
+    "networkId": 1205,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 42,
+    "id": "e40"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "603070",
+    "target": "599889",
+    "weight": 0.023106916
+  },
+  "group": "edges"
+}, {
+  "data": {
+    "source": "603070",
+    "target": "602299",
+    "weight": 0.013864683,
+    "group": "coexp",
+    "networkId": 1205,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 44,
+    "id": "e42"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "605755",
+    "weight": 0.009235155,
+    "group": "coexp",
+    "networkId": 1205,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 45,
+    "id": "e43"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "611408",
+    "weight": 0.0070685484,
+    "group": "coexp",
+    "networkId": 1205,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 46,
+    "id": "e44"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "600585",
+    "weight": 0.011782279,
+    "group": "coexp",
+    "networkId": 1205,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 47,
+    "id": "e45"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "602299",
+    "weight": 0.009479035,
+    "group": "coexp",
+    "networkId": 1205,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 48,
+    "id": "e46"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "611408",
+    "target": "605755",
+    "weight": 0.006985158,
+    "group": "coexp",
+    "networkId": 1103,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 64,
+    "id": "e62"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "603070",
+    "target": "605755",
+    "weight": 0.0065989364,
+    "group": "coexp",
+    "networkId": 1103,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 65,
+    "id": "e63"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "605755",
+    "weight": 0.0046327286,
+    "group": "coexp",
+    "networkId": 1103,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 66,
+    "id": "e64"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "611408",
+    "weight": 0.0054441774,
+    "group": "coexp",
+    "networkId": 1103,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 67,
+    "id": "e65"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "600585",
+    "weight": 0.010655146,
+    "group": "coexp",
+    "networkId": 1103,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 68,
+    "id": "e66"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "599889",
+    "weight": 0.0053057605,
+    "group": "coexp",
+    "networkId": 1103,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 69,
+    "id": "e67"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "603070",
+    "weight": 0.005323636,
+    "group": "coexp",
+    "networkId": 1103,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 70,
+    "id": "e68"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "603070",
+    "target": "605755",
+    "weight": 0.0071786125,
+    "group": "coexp",
+    "networkId": 1147,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 83,
+    "id": "e81"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "605755",
+    "weight": 0.00930929,
+    "group": "coexp",
+    "networkId": 1147,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 84,
+    "id": "e82"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "603070",
+    "weight": 0.0065878476,
+    "group": "coexp",
+    "networkId": 1147,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 85,
+    "id": "e83"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "599889",
+    "target": "605755",
+    "weight": 0.00786129,
+    "group": "coexp",
+    "networkId": 1219,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 88,
+    "id": "e86"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "602299",
+    "weight": 0.0057260455,
+    "group": "coexp",
+    "networkId": 1219,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 89,
+    "id": "e87"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "600585",
+    "target": "611408",
+    "weight": 0.0050337426,
+    "group": "coexp",
+    "networkId": 991,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 96,
+    "id": "e94"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "602299",
+    "target": "605755",
+    "weight": 0.013028561,
+    "group": "coexp",
+    "networkId": 991,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 97,
+    "id": "e95"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "602299",
+    "target": "599889",
+    "weight": 0.0139607005,
+    "group": "coexp",
+    "networkId": 991,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 98,
+    "id": "e96"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "603070",
+    "target": "611408",
+    "weight": 0.00802425,
+    "group": "coexp",
+    "networkId": 991,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 99,
+    "id": "e97"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "611408",
+    "weight": 0.006611009,
+    "group": "coexp",
+    "networkId": 991,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 100,
+    "id": "e98"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "603070",
+    "target": "611408",
+    "weight": 0.018245377,
+    "group": "coexp",
+    "networkId": 948,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 108,
+    "id": "e106"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "603070",
+    "target": "600585",
+    "weight": 0.013878305,
+    "group": "coexp",
+    "networkId": 948,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 109,
+    "id": "e107"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "603070",
+    "target": "599889",
+    "weight": 0.014034339
+  },
+  "group": "edges"
+}, {
+  "data": {
+    "source": "610236",
+    "target": "611408",
+    "weight": 0.011003433,
+    "group": "coexp",
+    "networkId": 948,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 111,
+    "id": "e109"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "600585",
+    "weight": 0.011568223,
+    "group": "coexp",
+    "networkId": 948,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 112,
+    "id": "e110"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "603070",
+    "weight": 0.008862467,
+    "group": "coexp",
+    "networkId": 948,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 113,
+    "id": "e111"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "611408",
+    "target": "605755",
+    "weight": 0.006425211,
+    "group": "coexp",
+    "networkId": 1160,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 129,
+    "id": "e127"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "600585",
+    "target": "605755",
+    "weight": 0.009075253,
+    "group": "coexp",
+    "networkId": 1160,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 130,
+    "id": "e128"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "600585",
+    "target": "611408",
+    "weight": 0.013036429,
+    "group": "coexp",
+    "networkId": 1160,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 131,
+    "id": "e129"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "603070",
+    "target": "605755",
+    "weight": 0.005474452,
+    "group": "coexp",
+    "networkId": 1160,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 132,
+    "id": "e130"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "603070",
+    "target": "611408",
+    "weight": 0.0068840934,
+    "group": "coexp",
+    "networkId": 1160,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 133,
+    "id": "e131"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "605755",
+    "weight": 0.0038199152,
+    "group": "coexp",
+    "networkId": 1160,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 134,
+    "id": "e132"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "611408",
+    "weight": 0.0048849517,
+    "group": "coexp",
+    "networkId": 1160,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 135,
+    "id": "e133"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "599889",
+    "weight": 0.008408555,
+    "group": "coexp",
+    "networkId": 1160,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 136,
+    "id": "e134"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "603070",
+    "weight": 0.003905569,
+    "group": "coexp",
+    "networkId": 1160,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 137,
+    "id": "e135"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "603070",
+    "target": "605755",
+    "weight": 0.011469932,
+    "group": "coexp",
+    "networkId": 1112,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 154,
+    "id": "e152"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "605755",
+    "weight": 0.0065593245,
+    "group": "coexp",
+    "networkId": 1112,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 155,
+    "id": "e153"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "602299",
+    "weight": 0.008945865,
+    "group": "coexp",
+    "networkId": 1112,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 156,
+    "id": "e154"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "603070",
+    "weight": 0.0123492405,
+    "group": "coexp",
+    "networkId": 1112,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 157,
+    "id": "e155"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "602299",
+    "target": "599889",
+    "weight": 0.006426068,
+    "group": "coexp",
+    "networkId": 1058,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 164,
+    "id": "e162"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "605755",
+    "weight": 0.010584534,
+    "group": "coexp",
+    "networkId": 1058,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 165,
+    "id": "e163"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "611408",
+    "weight": 0.01746872,
+    "group": "coexp",
+    "networkId": 1058,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 166,
+    "id": "e164"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "599889",
+    "weight": 0.0071076,
+    "group": "coexp",
+    "networkId": 1058,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 167,
+    "id": "e165"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "602299",
+    "target": "605755",
+    "weight": 0.005950518,
+    "group": "coexp",
+    "networkId": 939,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 170,
+    "id": "e168"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "602299",
+    "target": "599889",
+    "weight": 0.010287272,
+    "group": "coexp",
+    "networkId": 939,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 171,
+    "id": "e169"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "603070",
+    "target": "605755",
+    "weight": 0.0073932544,
+    "group": "coexp",
+    "networkId": 939,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 172,
+    "id": "e170"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "605755",
+    "weight": 0.0036719772,
+    "group": "coexp",
+    "networkId": 939,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 173,
+    "id": "e171"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "611408",
+    "weight": 0.003859972,
+    "group": "coexp",
+    "networkId": 939,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 174,
+    "id": "e172"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "599889",
+    "weight": 0.0070424364,
+    "group": "coexp",
+    "networkId": 939,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 175,
+    "id": "e173"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "602299",
+    "weight": 0.0033553005,
+    "group": "coexp",
+    "networkId": 939,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 176,
+    "id": "e174"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "603070",
+    "weight": 0.00446657,
+    "group": "coexp",
+    "networkId": 939,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 177,
+    "id": "e175"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "611408",
+    "target": "605755",
+    "weight": 0.0046684104,
+    "group": "coexp",
+    "networkId": 987,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 191,
+    "id": "e189"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "599889",
+    "target": "611408",
+    "weight": 0.010843052,
+    "group": "coexp",
+    "networkId": 987,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 192,
+    "id": "e190"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "602299",
+    "target": "605755",
+    "weight": 0.007012607,
+    "group": "coexp",
+    "networkId": 987,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 193,
+    "id": "e191"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "603070",
+    "target": "605755",
+    "weight": 0.008355799,
+    "group": "coexp",
+    "networkId": 987,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 195,
+    "id": "e193"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "603070",
+    "target": "611408",
+    "weight": 0.008533838,
+    "group": "coexp",
+    "networkId": 987,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 196,
+    "id": "e194"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "605755",
+    "weight": 0.005761585,
+    "group": "coexp",
+    "networkId": 987,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 197,
+    "id": "e195"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "611408",
+    "weight": 0.005706919,
+    "group": "coexp",
+    "networkId": 987,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 198,
+    "id": "e196"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "603070",
+    "weight": 0.009086173,
+    "group": "coexp",
+    "networkId": 987,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 199,
+    "id": "e197"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "599889",
+    "target": "605755",
+    "weight": 0.0062426035,
+    "group": "coexp",
+    "networkId": 1211,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 213,
+    "id": "e211"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "605755",
+    "weight": 0.006246549,
+    "group": "coexp",
+    "networkId": 1211,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 214,
+    "id": "e212"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "602299",
+    "weight": 0.013894426,
+    "group": "coexp",
+    "networkId": 1211,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 215,
+    "id": "e213"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "611408",
+    "target": "605755",
+    "weight": 0.0032552993,
+    "group": "coexp",
+    "networkId": 1221,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 217,
+    "id": "e215"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "605755",
+    "weight": 0.0023748495,
+    "group": "coexp",
+    "networkId": 1221,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 218,
+    "id": "e216"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "611408",
+    "weight": 0.003535996,
+    "group": "coexp",
+    "networkId": 1221,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 219,
+    "id": "e217"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "611408",
+    "target": "605755",
+    "weight": 0.015407894,
+    "group": "coexp",
+    "networkId": 1141,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 228,
+    "id": "e226"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "602299",
+    "target": "605755",
+    "weight": 0.019584121,
+    "group": "coexp",
+    "networkId": 1141,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 229,
+    "id": "e227"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "602299",
+    "target": "611408",
+    "weight": 0.01921773,
+    "group": "coexp",
+    "networkId": 1141,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 230,
+    "id": "e228"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "603070",
+    "target": "605755",
+    "weight": 0.020896556,
+    "group": "coexp",
+    "networkId": 1141,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 231,
+    "id": "e229"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "603070",
+    "target": "611408",
+    "weight": 0.020604162,
+    "group": "coexp",
+    "networkId": 1141,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 232,
+    "id": "e230"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "599889",
+    "weight": 0.013262892,
+    "group": "coexp",
+    "networkId": 1040,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 238,
+    "id": "e236"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "611408",
+    "target": "605755",
+    "weight": 0.0032305722,
+    "group": "coexp",
+    "networkId": 1213,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 239,
+    "id": "e237"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "600585",
+    "target": "605755",
+    "weight": 0.008934008,
+    "group": "coexp",
+    "networkId": 1213,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 240,
+    "id": "e238"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "600585",
+    "target": "611408",
+    "weight": 0.0047838143,
+    "group": "coexp",
+    "networkId": 1213,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 241,
+    "id": "e239"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "599889",
+    "target": "605755",
+    "weight": 0.009817743,
+    "group": "coexp",
+    "networkId": 1213,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 242,
+    "id": "e240"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "605755",
+    "weight": 0.0035941477,
+    "group": "coexp",
+    "networkId": 1213,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 243,
+    "id": "e241"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "611408",
+    "weight": 0.0022027155,
+    "group": "coexp",
+    "networkId": 1213,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 244,
+    "id": "e242"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "600585",
+    "weight": 0.006635881,
+    "group": "coexp",
+    "networkId": 1213,
+    "networkGroupId": 18,
+    "intn": true,
+    "rIntnId": 245,
+    "id": "e243"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "599889",
+    "target": "605755",
+    "weight": 0.01022965,
+    "group": "coloc",
+    "networkId": 1215,
+    "networkGroupId": 19,
+    "intn": true,
+    "rIntnId": 255,
+    "id": "e253"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "605755",
+    "weight": 0.0019825348,
+    "group": "coloc",
+    "networkId": 1215,
+    "networkGroupId": 19,
+    "intn": true,
+    "rIntnId": 256,
+    "id": "e254"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "611408",
+    "weight": 0.0025504285,
+    "group": "coloc",
+    "networkId": 1215,
+    "networkGroupId": 19,
+    "intn": true,
+    "rIntnId": 257,
+    "id": "e255"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "599889",
+    "weight": 0.005680255,
+    "group": "coloc",
+    "networkId": 1215,
+    "networkGroupId": 19,
+    "intn": true,
+    "rIntnId": 259,
+    "id": "e257"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "611408",
+    "target": "605755",
+    "weight": 0.055505108,
+    "group": "path",
+    "networkId": 920,
+    "networkGroupId": 21,
+    "intn": true,
+    "rIntnId": 278,
+    "id": "e276"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "600585",
+    "target": "605755",
+    "weight": 0.036435686,
+    "group": "path",
+    "networkId": 920,
+    "networkGroupId": 21,
+    "intn": true,
+    "rIntnId": 279,
+    "id": "e277"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "600585",
+    "target": "611408",
+    "weight": 0.07736873,
+    "group": "path",
+    "networkId": 920,
+    "networkGroupId": 21,
+    "intn": true,
+    "rIntnId": 280,
+    "id": "e278"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "599889",
+    "target": "605755",
+    "weight": 0.07026827,
+    "group": "path",
+    "networkId": 920,
+    "networkGroupId": 21,
+    "intn": true,
+    "rIntnId": 281,
+    "id": "e279"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "602299",
+    "target": "611408",
+    "weight": 0.15814601,
+    "group": "path",
+    "networkId": 920,
+    "networkGroupId": 21,
+    "intn": true,
+    "rIntnId": 282,
+    "id": "e280"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "602299",
+    "target": "600585",
+    "weight": 0.10381311,
+    "group": "path",
+    "networkId": 920,
+    "networkGroupId": 21,
+    "intn": true,
+    "rIntnId": 283,
+    "id": "e281"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "603070",
+    "target": "605755",
+    "weight": 0.034838397,
+    "group": "path",
+    "networkId": 920,
+    "networkGroupId": 21,
+    "intn": true,
+    "rIntnId": 284,
+    "id": "e282"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "603070",
+    "target": "600585",
+    "weight": 0.048561342,
+    "group": "path",
+    "networkId": 920,
+    "networkGroupId": 21,
+    "intn": true,
+    "rIntnId": 287,
+    "id": "e285"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "605755",
+    "weight": 0.034838397,
+    "group": "path",
+    "networkId": 920,
+    "networkGroupId": 21,
+    "intn": true,
+    "rIntnId": 288,
+    "id": "e286"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "600585",
+    "weight": 0.048561342,
+    "group": "path",
+    "networkId": 920,
+    "networkGroupId": 21,
+    "intn": true,
+    "rIntnId": 291,
+    "id": "e289"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}, {
+  "data": {
+    "source": "610236",
+    "target": "603070",
+    "weight": 0.046432484,
+    "group": "path",
+    "networkId": 920,
+    "networkGroupId": 21,
+    "intn": true,
+    "rIntnId": 292,
+    "id": "e290"
+  },
+  "position": {},
+  "group": "edges",
+  "removed": false,
+  "selected": false,
+  "selectable": true,
+  "locked": false,
+  "grabbed": false,
+  "grabbable": true,
+  "classes": ""
+}]

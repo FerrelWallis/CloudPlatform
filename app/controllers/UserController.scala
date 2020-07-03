@@ -50,7 +50,7 @@ class UserController  @Inject()(cc: ControllerComponents,usersdao:usersDao,softd
   def signInSuccess(path:String,id:String) = Action.async{implicit request=>
     val session = new Session
     usersdao.getById(id).map{x=>
-      Redirect(path).withNewSession.withSession(session + ("userId" -> x.id.toString) + ("userPhone"->x.phone) + ("userName"->x.name) + ("userEmail"->x.email) + ("userCompany"->x.company))
+      Redirect(routes.HomeController.home()).withNewSession.withSession(session + ("userId" -> x.id.toString) + ("userPhone"->x.phone) + ("userName"->x.name) + ("userEmail"->x.email) + ("userCompany"->x.company))
     }
   }
 

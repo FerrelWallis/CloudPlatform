@@ -38,10 +38,16 @@ class PreviewController @Inject()(cc: ControllerComponents,dutydao:dutyDao) exte
     Ok(views.html.task.redrawNet(row))
   }
 
-  def preGoKEGG(taskname:String) = Action {implicit request=>
+  def preGo(taskname:String) = Action {implicit request=>
     val id=request.session.get("userId").get
     val row=Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf)
     Ok(views.html.task.redrawGokegg(row))
+  }
+
+  def preKegg(taskname:String) = Action {implicit request=>
+    val id=request.session.get("userId").get
+    val row=Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf)
+    Ok(views.html.task.redrawKegg(row))
   }
 
 

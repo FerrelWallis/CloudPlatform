@@ -1,600 +1,1659 @@
 @()(implicit session: Session)
-@home.main("KEGG"){
+    @home.main("KEGG"){
 
-    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("css/test/mysoft.css")" media="screen" />
-    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("bootstrap-fileinput-master/css/fileinput.css")" media="screen" />
-    <!--button弹出操作-->
-    <script src="@routes.Assets.versioned("layer-v3.0/layer/layer.js")" type="text/javascript"></script>
-    <script type="text/javascript" src="@routes.Assets.versioned("js/myzui.min.js")"></script>
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("css/test/mysoft.css")" media="screen" />
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("bootstrap-fileinput-master/css/fileinput.css")" media="screen" />
 
-    <style>
-            .checkbox-primary > label:after, .checkbox-primary > input, .radio-primary > label:after, .radio-primary > input {
-                color: #ffffff00;
-                margin: 0;
-                top: 7px;
-                left: -2px;
-                width: 13px;
-                height: 13px;
-            }
-            .mysoft-content-left .form-group-extra .btn-sm {
-                font-size: 14px;
-                background-color: #27b9d0;
-                border-color: #27b9d0;
-                border-radius: 4px;
-                padding: 5px 15px;
-                height: auto;
-            }
-            .mysoft-content-right .tab-content, .mysoft-content-left form {
-                box-shadow: unset;
-            }
-            .img-thumbnail {
-                display: inline-block;
-                max-width: 100%;
-                height: auto;
-                padding: 4px;
-                line-height: 1.53846154;
-                background-color: #fff;
-                border: unset;
-                border-radius: 4px;
-                -webkit-transition: all .2s ease-in-out;
-                -o-transition: all .2s ease-in-out;
-                transition: all .2s ease-in-out;
-            }
-            blockquote {
-                padding: 10px 20px;
-                margin: 0 0 20px;
-                border-left: unset;
-            }
-            /*file*/
-            .hidden-xs {
-                display: unset !important;
-            }
-            .input-group .form-control {
-                position: relative;
-                z-index: 2;
-                float: left;
-                width: 80%;
-                margin-bottom: 0;
-                height: 22px;
-                border-radius: 4px;
-            }
-            .input-group .form-control:first-child, .input-group-addon:first-child, .input-group-btn:first-child > .btn, .input-group-btn:first-child > .btn-group > .btn, .input-group-btn:first-child > .dropdown-toggle, .input-group-btn:last-child > .btn:not(:last-child):not(.dropdown-toggle), .input-group-btn:last-child > .btn-group:not(:last-child) > .btn {
-                border-top-right-radius: 4px;
-                border-bottom-right-radius: 4px;
-                border-radius: 5px;
-                background-color: #f7f7f7;
-                height: 21px;
-                border: 1px solid #e6e6e6;
-                box-shadow: none;
-            }
-            .input-group .form-control:last-child, .input-group-addon:last-child, .input-group-btn:last-child > .btn, .input-group-btn:last-child > .btn-group > .btn, .input-group-btn:last-child > .dropdown-toggle, .input-group-btn:first-child > .btn:not(:first-child), .input-group-btn:first-child > .btn-group:not(:first-child) > .btn {
-                border-top-left-radius: 4px;
-                border-bottom-left-radius: 4px;
-            }
-            /*历史任务*/
-            .his_name{
-                /*margin: 5px 10px;*/
-                width: 20%;
-                display: inline-block;
-                text-align: center;
-            }
-            .his_time{
-                /*margin: 5px 10px;*/
-                width: 28%;
-                display: inline-block;
-                text-align: center;
-            }
-            .hislist hr{
-                margin-top: 10px;
-                margin-bottom: 10px;
-            }
-            .btn_refresh{
-                padding: 7px 11px 7px 38px;
-                color: white!important;
-                background: #27b9d0;
-                border-radius: 6px;
-                background-repeat: no-repeat;
-                background-position: 9px 3px;
-                margin: 10px 10px;
-            }
-            .success{
-                padding: 6px 10px;
-                background: cadetblue;
-                border-radius: 16px;
-                color: white;
-            }
-            .failed{
-                padding: 6px 10px;
-                background: #bf4064;
-                border-radius: 16px;
-                color: white;
-            }
-    </style>
+            <!--button弹出操作-->
+        <script src="@routes.Assets.versioned("layer-v3.0/layer/layer.js")" type="text/javascript"></script>
+        <script type="text/javascript" src="@routes.Assets.versioned("js/myzui.min.js")"></script>
 
-    <div class="col-md-12 mysoft-content" style="width: 98%">
-        <div class=" whitebox mysoft-content-left" style="width: 720px;">
-            <form id="KEGG" method="GET" enctype="multipart/form-data" class="well form-inline" style="box-sizing: border-box!important;">
-                <img class="tools-img" src="/assets/images/softpic/pathwaygsea.png">
-                <h3 class="tools-title">KEGG富集分析</h3>
-                <br><br>
-                <div class="form-group-p">
+        <style>
+                .checkbox-primary > label:after, .checkbox-primary > input, .radio-primary > label:after, .radio-primary > input {
+                    color: #ffffff00;
+                    margin: 0;
+                    top: 7px;
+                    left: -2px;
+                    width: 13px;
+                    height: 13px;
+                }
+                .mysoft-content-left .form-group-extra .btn-sm {
+                    font-size: 14px;
+                    background-color: #27b9d0;
+                    border-color: #27b9d0;
+                    border-radius: 4px;
+                    padding: 5px 15px;
+                    height: auto;
+                }
+                .mysoft-content-right .tab-content, .mysoft-content-left form {
+                    box-shadow: unset;
+                }
+                .img-thumbnail {
+                    display: inline-block;
+                    max-width: 100%;
+                    height: auto;
+                    padding: 4px;
+                    line-height: 1.53846154;
+                    background-color: #fff;
+                    border: unset;
+                    border-radius: 4px;
+                    -webkit-transition: all .2s ease-in-out;
+                    -o-transition: all .2s ease-in-out;
+                    transition: all .2s ease-in-out;
+                }
+                blockquote {
+                    padding: 10px 20px;
+                    margin: 0 0 20px;
+                    border-left: unset;
+                }
+
+                /*file*/
+                .hidden-xs {
+                    display: unset !important;
+                }
+                .input-group .form-control {
+                    position: relative;
+                    z-index: 2;
+                    float: left;
+                    width: 80%;
+                    margin-bottom: 0;
+                    height: 22px;
+                    border-radius: 4px;
+                }
+                .input-group .form-control:first-child, .input-group-addon:first-child, .input-group-btn:first-child > .btn, .input-group-btn:first-child > .btn-group > .btn, .input-group-btn:first-child > .dropdown-toggle, .input-group-btn:last-child > .btn:not(:last-child):not(.dropdown-toggle), .input-group-btn:last-child > .btn-group:not(:last-child) > .btn {
+                    border-top-right-radius: 4px;
+                    border-bottom-right-radius: 4px;
+                    border-radius: 5px;
+                    background-color: #f7f7f7;
+                    height: 21px;
+                    border: 1px solid #e6e6e6;
+                    box-shadow: none;
+                }
+                .input-group .form-control:last-child, .input-group-addon:last-child, .input-group-btn:last-child > .btn, .input-group-btn:last-child > .btn-group > .btn, .input-group-btn:last-child > .dropdown-toggle, .input-group-btn:first-child > .btn:not(:first-child), .input-group-btn:first-child > .btn-group:not(:first-child) > .btn {
+                    border-top-left-radius: 4px;
+                    border-bottom-left-radius: 4px;
+                }
+                /*历史任务*/
+                .his_name{
+                    /*margin: 5px 10px;*/
+                    width: 20%;
+                    display: inline-block;
+                    text-align: center;
+                }
+                .his_time{
+                    /*margin: 5px 10px;*/
+                    width: 28%;
+                    display: inline-block;
+                    text-align: center;
+                }
+                .hislist hr{
+                    margin-top: 10px;
+                    margin-bottom: 10px;
+                }
+                .btn_refresh{
+                    padding: 7px 11px 7px 38px;
+                    color: white!important;
+                    background: #27b9d0;
+                    border-radius: 6px;
+                    background-repeat: no-repeat;
+                    background-position: 9px 3px;
+                    margin: 10px 10px;
+                }
+                .success{
+                    padding: 6px 10px;
+                    background: cadetblue;
+                    border-radius: 16px;
+                    color: white;
+                }
+                .failed{
+                    padding: 6px 10px;
+                    background: #bf4064;
+                    border-radius: 16px;
+                    color: white;
+                }
+        </style>
+
+        <div class="col-md-12 mysoft-content" style="width: 98%">
+            <div class="whitebox mysoft-content-left" style="width: 730px;">
+                <form id="KEGG" method="GET" enctype="multipart/form-data" class="well form-inline" style="box-sizing: border-box!important;">
+                    <img class="tools-img" src="/assets/images/softpic/kegg.jpg">
+                    <h3 class="tools-title">KEGG富集分析&nbsp;&nbsp;&nbsp;&nbsp;
+                    </h3>
                     <div class="form-group">
-                        <label for="mytaskname">任务编号：</label>
+                        <h2>
+                        </h2>
+                    </div><br><br>
+                    <div class="form-group-p">
+                        <div class="form-group">
+                            <label for="mytaskname">任务编号：</label>
+                        </div>
+                        <div class="form-group">
+                            <input id="mytaskname" type="text" class="form-control" name="taskname" placeholder="" value="">
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <input id="mytaskname" type="text" class="form-control" name="taskname" placeholder="" value="">
+
+                    <br><br>
+                    <div class="form-group-p" style="width: 100%">
+                        <label for="exampleInputName2">
+                            <em>1：</em><label><span>上传基因数据文件：</span></label>
+                        </label>
+                        <br>
+                        <div class="one-line">
+                            <div class="form-group-p" style="width: auto">
+                                <div class="form-group">
+                                    <ul class="nav nav-tabs" style="width: 240px">
+                                        <li class="active">
+                                            <a href="###" onclick="curtable(2)" data-target="#tab1Content1" data-toggle="tab">输入文件</a>
+                                        </li>
+                                        <li >
+                                            <a href="###" onclick="curtable(1)" data-target="#tab1Content2" data-toggle="tab">手动输入</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="form-group-p" style="width: auto">
+                                <div class="form-group" style="margin-right: 15px">
+                                    <em>
+                                        <a onclick="showexample('table',1)">示例文件1</a>
+                                    </em>
+                                </div>
+                                <div class="form-group">
+                                    <em>
+                                        <a onclick="showexample('table',2)">示例文件2</a>
+                                    </em>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-content">
+                            <div class="tab-pane fade active in" id="tab1Content1">
+                                <p><br></p>
+                                <div id="div1" class="one-line">
+                                    <div class="form-group-p">
+                                        <div class="form-group">
+                                            <label for="exampleInputName2">上传文件：</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="file" class="form-control file" id="table1" name="table1">
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <br>
+                                </div>
+                                <p></p>
+                            </div>
+                            <div class="tab-pane fade" id="tab1Content2">
+                                <p>
+                                </p>
+                                <div class="tab-pane form-group" id="tabContent2">
+                                    <textarea id="txdata1" name="txdata1" class="form-control kindeditorSimple" style="width: 100%;height:150px;" placeholder="手动输入时,点击示例文件，示例将导入文本框。上传文件时，点击示例文件，将直接下载文件。文本框右下角可调节文本框大小。"></textarea>
+                                </div>
+                                <br>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                    <br>
+                    <br>
+                    <div class="form-group-p">
+                        <div class="form-group">
+                            <label style="float: left;"><em>2： </em>使用已有参考</label>
+                            <input type="checkbox" name="refer" value="A" id="refer" class="form-control" style="height: 13px;width: auto;float: left;margin-top: 9px;margin-left: 5px">
+                        </div>
+                    </div>
+                    <div id="para" style="display: none">
+                        <div class="form-group-p">
+                            <div class="form-group">
+                                <label for="exampleInputName2">选择物种：</label>
+                            </div>
+                            <div class="form-group">
+                                <select name="species" id="species">
+                                    <option value="Agaricus_bisporus" selected="selected">Agaricus_bisporus</option>
+                                    <option value="Arabidopsis_thaliana">Arabidopsis_thaliana</option>
+                                    <option value="Beet">Beet</option>
+                                    <option value="Candida_albicans">Candida_albicans</option>
+                                    <option value="Chicken">Chicken</option>
+                                    <option value="Cow">Cow</option>
+                                    <option value="Goat">Goat</option>
+                                    <option value="Human_HG19">Human_HG19</option>
+                                    <option value="Human_HG38">Human_HG38</option>
+                                    <option value="Mouse">Mouse</option>
+                                    <option value="Rat">Rat</option>
+                                    <option value="Rice">Rice</option>
+                                    <option value="Sheep">Sheep</option>
+                                    <option value="Solanum_lycopersicum">Solanum_lycopersicum</option>
+                                    <option value="Solanum_tuberosum">Solanum_tuberosum</option>
+                                    <option value="Soybean">Soybean</option>
+                                    <option value="watermelon">watermelon</option>
+                                    <option value="White_pear">White_pear</option>
+                                    <option value="Zebrafish">Zebrafish</option>
+                                </select>
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                    <br>
+                    <br>
+                    <br>
+                    <div id="para2">
+                        <div class="form-group-p" style="width: 100%">
+                            <label for="exampleInputName2">
+                                <em>3：</em><label><span>背景基因文件：</span></label>
+                            </label>
+                            <div class="one-line">
+                                <div class="form-group" style="width: 400px;">
+                                    <input type="file" class="form-control file" id="table2" name="table2" >
+                                </div>
+                                <div class="form-group-extra" style="margin-left: 20px">
+                                    <em><a href="/CloudPlatform/SoftTool/downloadExamples?name=kolist.txt">示例文件</a></em>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                    <input type="button" value="提&nbsp;&nbsp;交" name="submit" class="btn btn-primary" onclick="kegg()">
+                </form>
 
-                <br><br>
+            </div>
 
-                <script type="text/javascript">
-                        $("#mytaskname").keyup(function () {
-                            var val = $("#mytaskname").val();
-                            var rule = /[()（）@@#$%^&*~`!|\/\\?;,.，。:"]/;
-                            if (rule.test(val)) {
-                                alert('任务编号里不能有特殊字符，请重新填写!');
-                            }
-                        })
-                </script>
-                <em>1：</em><label for="exampleInputName2">
-                <span>富集目的基因列表文件：</span>
-            </label>
-                <ul class="nav nav-tabs">
-                    <li class="active"><a href="###" data-target="#tab2Content3" data-toggle="tab">输入文件</a>
+            <div class="handler"></div>
+            <div class="mysoft-content-right" style="width: 320px;">
+                <ul class="nav nav-tabs nav-tabs-right">
+                    <li class="active">
+                        <a href="###" data-target="#example" data-toggle="tab">示例结果</a>
                     </li>
-                    <li><a href="###" data-target="#tab2Content4" data-toggle="tab">手动输入</a>
+                    <li class="">
+                        <a href="###" data-target="#instruction" data-toggle="tab">使用说明</a>
+                    </li>
+                    <li class="" id="his_tab1">
+                        <a href="#" data-target="#history" data-toggle="tab">KEGG历史任务</a>
                     </li>
                 </ul>
-                <div class="tab-content">
-                    <div class="tab-pane fade active in" id="tab2Content3">
+                <div class="tab-content" style="box-sizing: border-box!important;">
+                    <div class="tab-pane fade active in" id="example">
+                        <h5>输出结果：</h5>
+                        <blockquote>
+                            <p>
+                                ① out.[PFC].html 网页格式结果，3个分别对应GO的3个主要分类。结果如下图所示，
+                                包含两个部分:
+                                第一部分为GO富集结果统计表，包括GOid，GO功能描述，基因比例，背景基因比例，P值，Q值，P值Q值 小于0.05的显示红色。									<br>
+                                <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/newgo1.png" alt="生物云平台">
+                                <br>
+                                ② 第二部分为GO富集的具体基因，点击GOid可以链接到http://amigo.geneontology.org 官网，可以查看GO的具体信息。									<br>
+                                <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/newgo2.png" alt="生物云平台">
+
+                            </p>
+                            <p>
+                                ③ out.[PFC].png，out.[PFC].pdf,out.[PFC].xls
+                                GO富集的有向无环图，只显示富集的GO term（即p值小于0.05的），没有小于
+                                0.05的结果时，则没有这些文件。可以在xls结果从查看，结果与网页结果对应，包括GOid，GO功能描述，基因比例，背景基因比例，P值，Q值，以及相应的基因id.
+
+                            </p>
+                            <br>
+                            <p>
+                                ④ out.secLevel.svg/png
+                                图片结果如下图所示，为GO二级分类统计图，统计了用于富集的基因在GO 的二级分类中占各个分类的数量，统计结果在xls表中。表格内容包括，Ontology，Class（GO的二级分类），基因数，具体基因id.
+                                <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/newgo3.png" alt="生物云平台">
+                                <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/newgo4.png" alt="生物云平台">
+                            </p>
+                        </blockquote>
+                    </div>
+                    <div class="tab-pane fade" id="instruction">
+                        <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                            <span style="font-weight:700;"><strong>功能：</strong></span><br>
+                            Gene Ontology（简称GO）是一个国际标准化的基因功能分类体系，提供了一套动态更新的标准词汇表（controlled vocabulary）来全面描述生物体中基因和基因产物的属性。GO总共有三个ontology（本体），分别描述基因的分子功能（molecular function）、细胞组分（cellular component）、参与的生物过程（biological process）。GO的基本单位是term（词条、节点），每个term都对应一个属性。GO功能分析一方面给出差异表达基因的GO功能分类注释；另一方面给出差异表达基因的GO功能显著性富集分析。 首先，我们将差异表达基因向GO数据库(http://www.geneontology.org/)的各term映射，并计算每个term的基因数，从而得到具有某个GO功能的基因列表及基因数目统计。然后应用超几何检验，找出与整个基因组背景相比，在差异表达基因中显著富集的GO条目。
+                            <br>
+                            <strong> P的计算公式： </strong>
+                            <img class="img-rounded img-thumbnail img-responsive" src="https://www.omicshare.com/tools/Public/help/go_p.png" alt="生物云平台" style="height:auto;width:180px;">
+                            其中，N为所有Unigene中具有GO注释的基因数目；n为N中差异表达基因的数目；M为所有Unigene中注释为某特定GO term的基因数目；m为注释为某特定GO term的差异表达基因数目。计算得到的pvalue通过FDR校正之后，以corrected-pvalue≤0.05为阈值，满足此条件的GO term定义为在差异表达基因中显著富集的GO term。通过GO功能显著性富集分析能确定差异表达基因行使的主要生物学功能。
+                        </p>
                         <br>
-                        <div id="div1" class="one-line" >
-                            <div class="form-group-p" style="width: 500px">
-                                <div class="form-group">
-                                    <label for="exampleInputName2">上传基因文件：</label>
-                                </div>
-                                <div class="form-group">
-                                    <input type="file" class="form-control file" id="table1" name="table1" onchange="checkGroupfile()">
-                                </div>
-                            </div>
-                            <div class="form-group-extra">
-                                <em>
-                                    <a href="/tools/Public/help/example.gene" target="_blank">示例文件</a>
-                                </em>
-                            </div>
-                            <br><br>
-                        </div>
+                        <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                            <span style="font-weight:700;"><strong>输入：</strong></span>
+                        </p>
+                        <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                            ①输入的表格文件，必须为txt格式。可以选择在excel中将数据打开，然后另存为"文本文件(制表符分隔)(*.txt)"。
+                            <span style="color:red;">也可以输入两列，diff是差异结果，第二列为差异倍数取log2，大于0上调，小于0下调，此时参数应选择diff。</span>
+                        </p>
+                        <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                            ②富集的目的基因列表，即想要研究的基因列表，每行第一列为基因id，基因id要包含在背景基因表中。
+                        </p>
+                        <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                            ③背景基因总表，如果是有参考基因组的模式生物，可以直接使用已有参考基因作为背景基因文件。目前提供的物种有水稻、拟南芥、小鼠、大鼠、斑马鱼、鸡、秀丽线虫、果蝇、人。ID类型可选择基因ID或转录本ID，根据富集目的基因的ID类型决定。可以点击“预览参考文件”来查看具体ID。
+                            <br>
+                            如果所研究物种不在以上范围，则需要自行准备GO背景基因文件。现在支持两种格式。第一种：格式为第一列为基因id，第二列为GO注释结果。第二种：同一个基因的所有GO号会在同一行并列给出。任务提交后，程序会自动判断处理。如下图所示：
+                        </p>
+                        <img class="img-rounded img-thumbnail img-responsive" src="https://www.omicshare.com/tools/Public/help/go2_1.png" alt="生物云平台" style="height:auto;"><span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"> </span><img class="img-rounded img-thumbnail img-responsive" src="https://www.omicshare.com/tools/Public/help/go2_2.png" alt="生物云平台" style="height:auto;"><span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span><br>
+                        <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                            <br>
+                        </p>
+                        <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                            <span style="font-weight:700;"><strong>输出：</strong></span>
+                        </p>
+                        <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                            ①out.[PFC].html: 网页格式结果，3个分别对应GO的3个主要分类。
+                        </p>
+                        <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                            ②out.[PFC].xls： 基因的GO功能分类统计结果。
+                        </p>
+                        <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                            ③out.[PFC].png：基因的GO功能分类结果统计图
+                        </p>
+                        <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                            ④out.secLevel2.svg/png：为GO二级分类统计图，统计了用于富集的基因在GO 的二级分类中占各个分类的数量，统计结果在xls表中。表格内容包括，Ontology，Class（GO的二级分类），基因数，具体基因id。
+                        </p>
+                        <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                            ⑤out.level2.xls: GO第二级分类统计
+                        </p>
                     </div>
-                    <div class="tab-pane fade" id="tab2Content4">
-                        <p><br>
-                        </p><p><textarea id="" name="txdata" class="form-control kindeditorSimple" style="height:150px;width:100%;" placeholder="或手动输入文件"></textarea></p>
-                        <p></p>
+                    <div id="history" class="form1_ins tab-pane fade">
+                        <a id="btn-refresh" class="btn_refresh mws-i-24 i-refresh-3" onclick="refresh()">刷新状态</a>
+                        <ul id="hisul" style="margin-top: 15px">
+                            <li id="hislist" class="hislist">
+                                <div class="his_name"><span>任务编号</span></div>
+                                <div class="his_time"><span>提交时间</span></div>
+                                <div class="his_time"><span style="margin-left: -20px;">结束时间</span></div>
+                                <div class="his_name"><span style="margin-left: -23px;">状态</span></div>
+                                <hr>
+                            </li>
+                        </ul>
                     </div>
-                </div>
-                <br>
-
-                <div class="form-group">
-                    <em>2：</em>
-                    <label for="exampleInputName2">
-                        <input type="checkbox" name="userefer" value="A" id="userefer">&nbsp;&nbsp;
-                        <span>使用已有参考</span>
-                    </label>
-                </div>
-                <br><br>
-                <div id="para" style="display:none;">
-                    <label for="exampleInputName2">
-                        <span>物种/类型/版本</span>
-                    </label>
-                    <div class="form-group" style="display: block;">
-                        <select name="para22" id="para22">
-                            <option value="osa" selected="selected">Oryza sativa Japonica genes (IRGSP-1.0
-                                (IRGSP-1.0))
-                            </option>
-                            <option value="ath">Arabidopsis thaliana genes (TAIR10 (2010-09-TAIR10))</option>
-                            <option value="mmu">Mus musculus genes (GRCm38.p4)</option>
-                            <option value="rno">Rattus norvegicus genes (Rnor_6.0)</option>
-                            <option value="dre">Danio rerio genes (GRCz10)</option>
-                            <option value="gga">Gallus gallus genes (Galgal4) E</option>
-                            <option value="hsa">Homo sapiens genes (GRCh38.p5)</option>
-                            <option value="cel">Caenorhabditis elegans genes (WBcel235 (WS250))</option>
-                            <option value="dme">Drosophila melanogaster genes (BDGP6 (dmel_r6.02_FB2014_05)
-                            </option>
-                        </select>
-                        <select name="para33" id="para33">
-                            <option value="gene" selected="selected">基因</option>
-                            <option value="ts">转录本</option>
-                        </select>
-                        <select name="para44" id="para44">
-                            <option value="1" selected="selected">Ensemble_96 or 43</option>
-                        </select>
-                    </div >
-                    <br><br>
-                    <span id="preview" type="button" onclick="preview()" class="btn btn-sm btn-info ">预览参考文件</span>
-                </div>
-                <br>
-                <div id="nouserefer">
-                    <div id="div2" class="one-line">
-                        <div class="form-group-p" style="width: 500px">
-                            <div class="form-group">
-                                <em>3：</em>
-                                <label for="exampleInputName2">
-                                    <span>背景基因表：</span>
-                                </label>
-                            </div>
-                            <div class="form-group">
-                                <input type="file" class="form-control file" id="table2" name="table2" onchange="checkTable()">
-                            </div>
-                        </div>
-                        <div class="form-group-extra">
-                            <em><a href="/tools/Public/help/example.txt" target="_blank">示例文件</a></em>
-                        </div>
-                        <br><br>
-                    </div>
-                    <div class="one-line">
-                        <div class="form-group-p">
-                            <div class="form-group">
-                                <em>4：</em><label for="format">背景基因表类型：</label>
-                            </div>
-                            <div class="form-group">
-                                <select name="parameter4" id="parameter4">
-                                    <option value="1" selected="selected"> KO</option>
-                                    <option value="2">ncbi-geneid</option>
-                                    <option value="5">keggid</option>
-                                    <option value="6">kopath</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group-extra">
-                            <span class="must">*</span>
-                            <span style="font-size:smaller"><em>注意此类型选择要与上一项基因表对应</em></span>
-                        </div>
-                        <br><br>
-                    </div>
-                    <div>
-                        <div class="form-group-p">
-                            <div class="form-group">
-                                <em>5：</em><label for="format">物种类型：</label>
-                            </div>
-                            <div class="form-group">
-                                <select name="parameter3" id="parameter3">
-                                    <option value="1"> 动物</option>
-                                    <option value="2">植物</option>
-                                    <option value="3">微生物</option>
-                                    <option value="4">真菌</option>
-                                    <option value="5" selected="selected">全库</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group-extra">
-                            <span class="must">*</span>
-                        </div>
-                        <br><br>
-                    </div>
-                </div>
-
-                <div class="form-group-p">
-                    <div class="form-group">
-                        <input type="checkbox" name="desc" value="A" id="adddesc" style="margin-right: 10px">添加基因差异表达差异倍数
-                    </div>
-                </div>
-                <div class="form-group-p one-line" id="div3" style="display: none;">
-                    <div  class="form-group" style="padding-left: 10px;width: 300px">
-                        <input type="file" class="form-control file" id="table3" name="table3" onchange="checkTable()">
-                    </div>
-                    <div class="form-group-extra">
-                        <a href="/tools/Public/help/pathwayrpkm.txt" target="_blank" style="margin-left:10px;">
-                            <em>示例文件</em>
-                        </a>
-                    </div>
-                </div>
-                <br>
-                <br>
-
-                <br style="clear:both;">
-                <br style="clear:both;">
-                <input type="hidden" value="upload" name="act">
-                <input type="hidden" value="blastcmp" name="action">
-                <input type="button" value="提&nbsp;&nbsp;交" name="submit" class="btn btn-primary" onclick="kegg()">
-            </form>
-
-        </div>
-
-        <div class="handler"></div>
-        <div class="mysoft-content-right" style="width: 330px;">
-            <ul class="nav nav-tabs nav-tabs-right">
-                <li class="active">
-                    <a href="###" data-target="#tab2Content2" data-toggle="tab">示例结果</a>
-                </li>
-                <li class="">
-                    <a href="###" data-target="#tab2Content1" data-toggle="tab">使用说明</a>
-                </li>
-                <li class="" id="his_tab1">
-                    <a href="#" data-target="#history" data-toggle="tab">KEGG历史任务</a>
-                </li>
-            </ul>
-            <div class="tab-content" style="box-sizing: border-box!important;">
-                <div class="tab-pane fade active in" id="tab2Content2">
-                    <h5>输出结果：分两个部分，上面为pathway的富集信息（图1），包括pathway名，基因数，背景基因数，P值，Q值，pathwayID，下面为每个pathway具体的基因（图2），点击pathway名可以查看基因在pathway的信息（图3）：</h5>
-
-                    <br>图1: the page layout of out.html
-                    <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/path1.png" alt="生物云平台"> <br>
-                    <br>图2: kegg map of out_map
-                    <!-- <img class="img-rounded img-thumbnail img-responsive" src="/tools/Public/help/path2.png" alt="生物云平台"> -->
-                    <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/path3.png" alt="生物云平台"> <br>
-
-                    <br>图3：pathway classification of out.path.png
-
-                    <!-- <p>② out_map: 基因在各个pathway的位置图。</p>
-                            <p>③out.path.xls：pathway的富集统计表，与out.htm一致，包含：KEGGA级分类，B级分类，pathway名，基因数，背景基因数，P值，Q值，pathwayID，基因id。</p>
-                            <p>④out_path.png，out_path.svg：KEGGB级分类基因数量结果统计图.</p> -->
-                    <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/path4.png" alt="生物云平台">
-                </div>
-                <div class="tab-pane fade" id="tab2Content1">
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span><a href="" target="_blank"><i class="icon icon-question-sign" style="font-size: 14px!important;"></i><strong><span style="color:#337FE5;">了解该工具的原理与详细解析，请点击＞＞</span></strong></a></span>
-                    </p>
-                    <p>
-                        <b><br>
-                        </b>
-                    </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;">功能：</span><br>
-                        在生物体内，不同基因相互协调行使其生物学功能，基于Pathway的分析有助于更进一步了解基因的生物学功能。KEGG是有关Pathway的主要公共数据库。 Pathway显著性富集分析以KEGG Pathway为单位，应用超几何检验，找出与整个基因组背景相比，在差异表达基因中显著性富集的Pathway。<br>
-                        P的计算公式<img src="/assets/images/softpic/exampleResult/20191114110412_36169.png" alt="" width="180" height="100" title="" align="">其中，N为所有基因（背景基因）的数量，n为差异基因（目的基因）的数量，M为所有基因中该pathway的数量，i为差异基因中注释到该pathway的数量，计算得到的pvalue通过FDR校正之后，以corrected-pvalue≤0.05为阈值，满足此条件的pathway定义为在差异表达基因中显著富集的pathway。
-                    </p>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;">输入：</span>
-                    </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        ①输入的表格文件，必须为txt格式。可以选择在excel中将数据打开，然后另存为"文本文件(制表符分隔)(*.txt)"。
-                    </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        ②富集的目的基因列表，即想要研究的基因列表，每行第一列为基因id，要包含在背景基因表中.注意此文件不用加行名。<span style="color:red;">注意此文件第一行不是文字说明的行名，直接就是具体的基因ID号,请查看例子文件格式。</span>
-                    </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        ③背景基因总表，即所有基因的列表，第一列为基因id，第二列为用于获取pathway的一个id，有3种类型：<br>
-                        类型1：kegid，例如mmu:18053，即KEGG官网上的id，可以通过KEGG注释或者KEGG官网获得。<br>
-                        类型2：ncbi-geneid，例如18053，即ncbi上得到的geneid，一连串数字组成。<br>
-                        类型3：KO号，例如K10942，不同物种间相同KO号会有对应不同的pathway的情况，详情可以查看KEGG官网，直接通过KO号获取pathway会不准确。建议通过前两种类型来获取。<br>
-                        类型4：类型4，kopath，为本公司提供的类型文件，第一列为基因id，第二列为KO号，第三列为通路编号，以“，”分隔，第4列为kegid。
-                    </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        ④基因差异表达差异倍数表：第一列为基因ID，第二列为差异表达倍数log2(FC)。
-                    </p>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;">参数：</span>
-                    </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        ①背景基因表类型有3种，分别为：KO，ncbi-geneid、KEGGid。
-                    </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        ②数据库:当背景基因表类型为keggid和ncbi-geneid时，选择相应物种库和全库都可以，但选择相应物种库能缩短运行时间；当背景基因表类型为KO类型时，建议选择相应物种库进行注释。
-                    </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        ③可选参数：添加基因差异表达差异倍数表。
-                    </p>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;">输出：</span>
-                    </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        ①out.path.xls : 目的基因相对于背景基因的富集统计表。
-                    </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        ②out_map： 目的基因在各个pathway map的结果图。
-                    </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        ③out.path.png，out.path.svg：各个pathway的B级分类的统计图。
-                    </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        ④out.htm： 网页格式结果<span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">。</span>
-                    </p>                        </div>
-                <div id="history" class="form1_ins tab-pane fade">
-                    <a id="btn-refresh" class="btn_refresh mws-i-24 i-refresh-3" onclick="refresh()">刷新状态</a>
-                    <ul id="hisul" style="margin-top: 15px">
-                        <li id="hislist" class="hislist">
-                            <div class="his_name"><span>任务编号</span></div>
-                            <div class="his_time"><span>提交时间</span></div>
-                            <div class="his_time"><span style="margin-left: -20px;">结束时间</span></div>
-                            <div class="his_name"><span style="margin-left: -23px;">状态</span></div>
-                            <hr>
-                        </li>
-                    </ul>
                 </div>
             </div>
         </div>
-    </div>
 
-    <script type="text/javascript" src="@routes.Assets.versioned("js/toolsAdjust.js")"></script>
-    <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/fileinput.min.js")" type="text/javascript"></script>
-    <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/locales/zh.js")" type="text/javascript"></script>
+        <script type="text/javascript" src="@routes.Assets.versioned("js/toolsAdjust.js")"></script>
+        <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/fileinput.min.js")" type="text/javascript"></script>
+        <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/locales/zh.js")" type="text/javascript"></script>
 
-    <script type="text/javascript">
-            var running=false;
+        <script type="text/javascript">
 
-            $(document).ready(function () {
-                loadHistory();
-            });
+                function getTaskName() {
+                    let date = new Date();
+                    let month = date.getMonth() + 1;
+                    let day = date.getDate();
+                    let h = date.getHours();
+                    let m = date.getMinutes();
+                    let s = date.getSeconds();
+                    let name = "KEG"+month + day + h + m + s ;
+                    $("#mytaskname").val(name);
+                    $("#KEGG").formValidation("revalidateField", "taskname");
+                }
 
-            var cur=true;
+                $("#mytaskname").keyup(function () {
+                    checktaskname();
+                });
 
-            function refresh() {
-                if(cur){
-                    cur=false;
-                    removeul();
+                function checktaskname() {
+                    var val = $("#mytaskname").val();
+                    var rule = /[()（）@@#$%^&*~`!|\/\\?;,.，。:"]/;
+                    if (rule.test(val)) {
+                        alert('任务编号里不能有特殊字符，请重新填写!');
+                        return false;
+                    }
+                    if(val.toString().indexOf(" ")>0){
+                        alert('任务编号里不能有空格!');
+                        return false;
+                    }
+                    if(val.toString().length>13){
+                        alert('任务编号最长13位!');
+                        return false;
+                    }
+                    return true;
+                }
+
+
+                var running=false;
+
+                $(document).ready(function () {
+                    formValidation();
                     loadHistory();
-                    var count=5;
-                    $("#btn-refresh").text("00:"+count);
-                    var tim=setInterval(function () {
-                        $("#btn-refresh").text("00:"+count);
-                        if(count==0){
-                            cur=true;
-                            $("#btn-refresh").text("刷新状态");
-                            clearInterval(tim);
-                        }else count=count-1;
-                    },1000);
-                }else return;
-            }
+                    getTaskName();
+                });
 
-            function loadHistory(){
-                var html="";
-                if(@session.get("userId").isEmpty){
-                    html+="<li class='hislist'><span>尚未登陆,暂无数据</span></li>"
-                    $("#hislist").after(html);
-                }else{
+                var cur=true;
+
+                function refresh() {
+                    if(cur){
+                        cur=false;
+                        removeul();
+                        loadHistory();
+                        var count=5;
+                        $("#btn-refresh").text("00:"+count);
+                        var tim=setInterval(function () {
+                            $("#btn-refresh").text("00:"+count);
+                            if(count==0){
+                                cur=true;
+                                $("#btn-refresh").text("刷新状态");
+                                clearInterval(tim);
+                            }else count=count-1;
+                        },1000);
+                    }else return;
+                }
+
+                function loadHistory(){
+                    var html="";
+                    if(@session.get("userId").isEmpty){
+                        html+="<li class='hislist'><span>尚未登陆,暂无数据</span></li>"
+                        $("#hislist").after(html);
+                    }else{
+                        $.ajax({
+                            url: "/CloudPlatform/MyTasks/getDutysByType?sabbrename=KEGG",
+                            type: "post",
+                            success: function (data) {
+                                if(data.run==true) running=true;
+                                else running=false;
+                                $.each(data.rows,function (i,v) {
+                                    html += "<li class='hislist'><div class='his_name'><span>"+v.taskname+"</span></div><div class='his_time'><span>"+v.subtime+"</span></div><div class='his_time'><span>"+v.finitime+"</span></div><div class='his_name'>"+v.status+"</div><hr></li>";
+                                });
+                                $("#hislist").after(html);
+                                if(running==true){
+                                    cur=false;
+                                    var count=5;
+                                    $("#btn-refresh").text("00:"+count);
+                                    var timmer=setInterval(function () {
+                                        $("#btn-refresh").text("00:"+count);
+                                        if(count==0){
+                                            $("#btn-refresh").text("刷新状态");
+                                            if(running==false) {
+                                                removeul();
+                                                loadHistory();
+                                                cur=true;
+                                                clearInterval(timmer);
+                                            } else {
+                                                checkrunning();
+                                            }
+                                            count=5;
+                                        }else count=count-1;
+                                    },1000);
+                                }
+                            }
+                        });
+                    }
+                }
+
+                function checkrunning() {
                     $.ajax({
                         url: "/CloudPlatform/MyTasks/getDutysByType?sabbrename=KEGG",
                         type: "post",
                         success: function (data) {
                             if(data.run==true) running=true;
                             else running=false;
-                            $.each(data.rows,function (i,v) {
-                                html += "<li class='hislist'><div class='his_name'><span>"+v.taskname+"</span></div><div class='his_time'><span>"+v.subtime+"</span></div><div class='his_time'><span>"+v.finitime+"</span></div><div class='his_name'>"+v.status+"</div><hr></li>";
-                            });
-                            $("#hislist").after(html);
-                            if(running==true){
-                                cur=false;
-                                var count=5;
-                                $("#btn-refresh").text("00:"+count);
-                                var timmer=setInterval(function () {
-                                    $("#btn-refresh").text("00:"+count);
-                                    if(count==0){
-                                        $("#btn-refresh").text("刷新状态");
-                                        if(running==false) {
-                                            removeul();
-                                            loadHistory();
-                                            cur=true;
-                                            clearInterval(timmer);
-                                        } else {
-                                            checkrunning();
-                                        }
-                                        count=5;
-                                    }else count=count-1;
-                                },1000);
-                            }
                         }
                     });
                 }
-            }
 
-            function checkrunning() {
-                $.ajax({
-                    url: "/CloudPlatform/MyTasks/getDutysByType?sabbrename=Boxplot",
-                    type: "post",
-                    success: function (data) {
-                        if(data.run==true) running=true;
-                        else running=false;
+                function removeul(){
+                    $("#hisul li").remove();
+                    $("#hisul").append("<li id=\"hislist\" class=\"hislist\">\n" +
+                            "                                    <div class=\"his_name\"><span>任务编号</span></div>\n" +
+                            "                                    <div class=\"his_time\"><span>提交时间</span></div>\n" +
+                            "                                    <div class=\"his_time\"><span style='margin-left: -20px;'>结束时间</span></div>\n" +
+                            "                                    <div class=\"his_name\"><span style='margin-left: -23px;'>状态</span></div>\n" +
+                            "                                    <hr>\n" +
+                            "                                </li>");
+
+                }
+
+                $(".file").fileinput({
+                    showPreview: false,
+                    showUpload:false,
+                    showRemove:false,
+                    showCancel: false,
+                    browseLabel: "选择文件"
+                });
+
+                function kegg() {
+                    var form = $("#KEGG");
+                    var fv = form.data("formValidation");
+                    fv.validate();
+                    if (fv.isValid()) {
+                        var form1 = new FormData($("#KEGG")[0]);
+                        $.ajax({
+                            url: "/CloudPlatform/SoftTool/runGo?types=ko&refer="+ref+"&table="+table,
+                            type: "post",
+                            processData: false,
+                            contentType: false,
+                            data: form1,
+                            success: function (data) {
+                                removeul();
+                                loadHistory();
+                                $("#his_tab1").addClass("active");
+                                $("#out_tab1").removeClass("active");
+                                $("#ins_tab1").removeClass("active");
+                                $("#history").addClass("active").addClass("in");
+                                $("#example").removeClass("active");
+                                $("#instruction1").removeClass("active");
+                                getTaskName();
+                            }
+                        });
+                    }
+                }
+
+                var table=2;
+                var ref="FALSE";
+
+                function curtable(param) {
+                    table=param;
+                }
+
+
+                $("#refer").click(function () {
+                    var isSelected = this.checked;
+                    if (isSelected === true) {
+                        $("#para").show();
+                        $("#para2").hide();
+                        ref="TRUE";
+                    } else {
+                        $("#para").hide();
+                        $("#para2").show();
+                        ref="FALSE";
                     }
                 });
-            }
 
-            function removeul(){
-                $("#hisul li").remove();
-                $("#hisul").append("<li id=\"hislist\" class=\"hislist\">\n" +
-                        "                                    <div class=\"his_name\"><span>任务编号</span></div>\n" +
-                        "                                    <div class=\"his_time\"><span>提交时间</span></div>\n" +
-                        "                                    <div class=\"his_time\"><span style='margin-left: -20px;'>结束时间</span></div>\n" +
-                        "                                    <div class=\"his_name\"><span style='margin-left: -23px;'>状态</span></div>\n" +
-                        "                                    <hr>\n" +
-                        "                                </li>");
+                function showexample(type,param) {
+                    if(type=="table"){
+                        if(table==1) {
+                            if(param==1) $("#txdata1").val(ta1);
+                            else $("#txdata1").val(ta2);
+                        }
+                        else {
+                            if(param==1) window.location.href = "/CloudPlatform/SoftTool/downloadExamples?name=gokegg1.txt"
+                            else window.location.href = "/CloudPlatform/SoftTool/downloadExamples?name=gokegg2.txt"
+                        }
+                    }
+                }
 
-            }
 
-            $(".file").fileinput({
-                showPreview: false,
-                showUpload:false,
-                showRemove:false,
-                showCancel: false,
-                browseLabel: "选择文件"
-            });
-
-            var userefer=false;
-            var desc=false;
-
-            function kegg() {
-                if($("#userefer").is(':checked')) userefer=true;
-
-                if($("#adddesc").is(':checked')) desc=true;
-
-                if(@session.get("userId").isEmpty){
-                    swal({
-                        title: "尚未登录",
-                        text: "请先登录账号",
-                        type: "warning",
-                        confirmButtonText: "确认"
-                    })
-                }else {
-
-                    var form1 = new FormData($("#KEGG")[0]);
-                    var element = "<div id='content'><span id='info'>运行中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;'></div>"
-                    var index = layer.alert(element, {
-                        skin: 'layui-layer-lan',
-                        closeBtn: 0,
-                        title: "Info",
-                        btn: []
-                    });
-
-                    $.ajax({
-                        url: "/CloudPlatform/SoftTool/runKegg?id=@session.get("userId")"+"&userefer="+userefer+"&desc="+desc,
-                        type: "post",
-                        processData: false,
-                        contentType: false,
-                        data: form1,
-                        success: function (data) {
-                            if (data.valid === "false") {
-                                layer.close(index);
-                                swal("Error", data.message, "error");
-
-                            } else {
-
-                                layer.close(index);
-                                $.ajax({
-                                    url:"/CloudPlatform/SoftTool/getFiles?id=@session.get("userId")"+"&taskname="+data.taskname,
-                                    type:"post",
-                                    success:function (pics) {
-                                        var pic = "";
-                                        var html = "";
-                                        $.each(pics,function (i,v) {
-                                            pic +="<li><img class='img-rounded img-thumbnail img-responsive' src='/CloudPlatform/pic?path="+v+"' alt=\"生物云平台\"><li>"
-                                            html += "<li><a href='/CloudPlatform/SoftTool/download?path="+data.path+"&name=" + v.substring(v.lastIndexOf("\\")+1,v.length) + "' target='_blank'>" + v.substring(v.lastIndexOf("\\")+1,v.length) + "</a></li>"
-                                        });
-                                        $("#filesUrl").html(html);
-                                        $("#pics").html(pic);
+                function formValidation() {
+                    $('#KEGG').formValidation({
+                        framework: 'bootstrap',
+                        icon: {
+                            valid: 'glyphicon glyphicon-ok',
+                            invalid: 'glyphicon glyphicon-remove',
+                            validating: 'glyphicon glyphicon-refresh'
+                        },
+                        fields: {
+                            taskname: {
+                                validators: {
+                                    notEmpty: {
+                                        message: '任务编号不能为空!'
+                                    },
+                                    remote:{
+                                        type: 'POST',
+                                        url: '@routes.DutyController.checktaskname()',
+                                        message: "任务编号重复，请重新输入",
+                                        delay: 1000
                                     }
-                                })
-
-                                $("#result_tab1").show();
-                                $("#result_tab1").addClass("active")
-                                $("#out_tab1").removeClass("active")
-                                $("#ins_tab1").removeClass("active")
-                                $("#result1").addClass("active").addClass("in")
-                                $("#form1").removeClass("active");
-                                $("#instruction1").removeClass("active");
+                                }
+                            },
+                            table1: {
+                                validators: {
+                                    notEmpty: {
+                                        message: '必须上传矩阵表格文件!'
+                                    },
+                                    file: {
+                                        // extension: 'jpeg,jpg,png',
+                                        // type: 'image/jpeg,image/png',
+                                        maxSize: 5*1024*1024,
+                                        message: '文件不得大于5M！'
+                                    }
+                                }
+                            },
+                            table2: {
+                                validators: {
+                                    notEmpty: {
+                                        message: '必须上传背景基因文件!'
+                                    }
+                                }
                             }
                         }
                     });
+                    $("#signinForm").formValidation({
+                        framework: 'bootstrap',
+                        icon: {
+                            valid: 'glyphicon glyphicon-ok',
+                            invalid: 'glyphicon glyphicon-remove',
+                            validating: 'glyphicon glyphicon-refresh'
+                        },
+                        fields: {
+                            user: {
+                                validators: {
+                                    notEmpty: {
+                                        message: '请输入账号！'
+                                    }
+                                }
+                            },
+                            password: {
+                                validators: {
+                                    notEmpty: {
+                                        message: '请输入密码！'
+                                    }
+                                }
+                            },
+                            validnumber: {
+                                validators: {
+                                    notEmpty: {
+                                        message: '请输入验证码！'
+                                    },
+                                    callback: {
+                                        message: '验证码错误！',
+                                        callback: function () {
+                                            return $('#validnumber').val() === code;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                    $('#signupForm').formValidation({
+                        framework: 'bootstrap',
+                        icon: {
+                            valid: 'glyphicon glyphicon-ok',
+                            invalid: 'glyphicon glyphicon-remove',
+                            validating: 'glyphicon glyphicon-refresh'
+                        },
+                        fields: {
+                            phone: {
+                                validators: {
+                                    notEmpty: {
+                                        message: '请输入手机号！'
+                                    },
+                                    phone:{
+                                        message: '请输入正确手机号',
+                                        country: 'CN'
+                                    }
+                                }
+                            },
+                            name: {
+                                validators: {
+                                    notEmpty: {
+                                        message: '请填写姓名！'
+                                    }
+                                }
+                            },
+                            email: {
+                                validators: {
+                                    notEmpty: {
+                                        message: '请填写邮箱地址！'
+                                    },
+                                    emailAddress:{
+                                        message:'请输入正确邮箱地址！'
+                                    }
+                                }
+                            },
+                            password: {
+                                validators: {
+                                    notEmpty: {
+                                        message: '请输入密码！'
+                                    },
+                                    stringLength: {
+                                        min: 6,
+                                        message: '请输入至少六位密码！'
+                                    }
+                                }
+                            },
+                            password1: {
+                                validators: {
+                                    notEmpty: {
+                                        message: '请输入确认密码！'
+                                    },
+                                    identical: {
+                                        field: 'password',
+                                        message: '两次密码不一致!'
+                                    }
+                                }
+                            },
+                            validnumber: {
+                                validators: {
+                                    notEmpty: {
+                                        message: "请输入验证码！"
+                                    },
+                                    callback: {
+                                        message: '验证码错误！',
+                                        callback: function () {
+                                            return $('#validnumber1').val() === code;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                    $('#passwordForm').formValidation({
+                        framework: 'bootstrap',
+                        icon: {
+                            valid: 'glyphicon glyphicon-ok',
+                            invalid: 'glyphicon glyphicon-remove',
+                            validating: 'glyphicon glyphicon-refresh'
+                        },
+                        fields: {
+                            password: {
+                                validators: {
+                                    notEmpty: {
+                                        message: '请输入旧密码！'
+                                    }
+                                }
+                            },
+                            password1: {
+                                validators: {
+                                    notEmpty: {
+                                        message: '请输入新密码！'
+                                    },
+                                    stringLength: {
+                                        min: 6,
+                                        message: '请输入至少六位密码！'
+                                    }
+                                }
+                            },
+                            password2: {
+                                validators: {
+                                    notEmpty: {
+                                        message: '请输入确认密码！'
+                                    },
+                                    identical: {
+                                        field: 'password1',
+                                        message: '两次密码不一致!'
+                                    }
+                                }
+                            },
+                            validnumber: {
+                                validators: {
+                                    notEmpty: {
+                                        message: "请输入验证码！"
+                                    },
+                                    callback: {
+                                        message: '验证码错误！',
+                                        callback: function () {
+                                            return $('#validnumber2').val() === code;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+
                 }
-            }
 
-            $("#userefer").on("click", function () {
-                $("#para").toggle();
-                var isSelected = this.checked;
-                if (isSelected == true) {
-                    $("#nouserefer").hide();
-                } else {
-                    $("#nouserefer").show();
-                }
-            });
+                var ta1="Geneid\n" +
+                        "Glyma.01G006000\n" +
+                        "Glyma.01G011500\n" +
+                        "Glyma.01G011900\n" +
+                        "Glyma.01G012100\n" +
+                        "Glyma.01G021000\n" +
+                        "Glyma.01G032600\n" +
+                        "Glyma.01G036000\n" +
+                        "Glyma.01G053800\n" +
+                        "Glyma.01G062400\n" +
+                        "Glyma.01G096700\n" +
+                        "Glyma.01G099500\n" +
+                        "Glyma.01G105000\n" +
+                        "Glyma.01G115500\n" +
+                        "Glyma.01G120300\n" +
+                        "Glyma.01G121209\n" +
+                        "Glyma.01G133050\n" +
+                        "Glyma.01G142400\n" +
+                        "Glyma.01G172600\n" +
+                        "Glyma.01G187700\n" +
+                        "Glyma.01G198100\n" +
+                        "Glyma.01G204400\n" +
+                        "Glyma.01G215500\n" +
+                        "Glyma.01G217700\n" +
+                        "Glyma.01G221600\n" +
+                        "Glyma.01G223000\n" +
+                        "Glyma.01G239500\n" +
+                        "Glyma.01G242600\n" +
+                        "Glyma.01G242700\n" +
+                        "Glyma.01G242800\n" +
+                        "Glyma.02G001100\n" +
+                        "Glyma.02G002100\n" +
+                        "Glyma.02G007400\n" +
+                        "Glyma.02G022700\n" +
+                        "Glyma.02G028000\n" +
+                        "Glyma.02G029900\n" +
+                        "Glyma.02G038601\n" +
+                        "Glyma.02G052700\n" +
+                        "Glyma.02G053900\n" +
+                        "Glyma.02G054200\n" +
+                        "Glyma.02G073700\n" +
+                        "Glyma.02G104600\n" +
+                        "Glyma.02G121500\n" +
+                        "Glyma.02G125600\n" +
+                        "Glyma.02G128800\n" +
+                        "Glyma.02G156600\n" +
+                        "Glyma.02G184400\n" +
+                        "Glyma.02G186350\n" +
+                        "Glyma.02G195900\n" +
+                        "Glyma.02G205001\n" +
+                        "Glyma.02G227700\n" +
+                        "Glyma.02G242200\n" +
+                        "Glyma.02G265900\n" +
+                        "Glyma.02G282300\n" +
+                        "Glyma.02G309300\n" +
+                        "Glyma.03G005800\n" +
+                        "Glyma.03G018102\n" +
+                        "Glyma.03G018900\n" +
+                        "Glyma.03G028000\n" +
+                        "Glyma.03G040100\n" +
+                        "Glyma.03G041300\n" +
+                        "Glyma.03G042700\n" +
+                        "Glyma.03G042800\n" +
+                        "Glyma.03G057100\n" +
+                        "Glyma.03G068200\n" +
+                        "Glyma.03G078200\n" +
+                        "Glyma.03G098600\n" +
+                        "Glyma.03G101800\n" +
+                        "Glyma.03G104800\n" +
+                        "Glyma.03G113200\n" +
+                        "Glyma.03G122200\n" +
+                        "Glyma.03G132700\n" +
+                        "Glyma.03G141900\n" +
+                        "Glyma.03G148300";
+                var ta2="Geneid\tlogFC\n" +
+                        "Glyma.01G006000\t2.07822610607782\n" +
+                        "Glyma.01G011500\t2.4525737885893\n" +
+                        "Glyma.01G011900\t-3.30147399711293\n" +
+                        "Glyma.01G012100\t-3.66959375118833\n" +
+                        "Glyma.01G021000\t-8.86795188785606\n" +
+                        "Glyma.01G032600\t2.23610253960442\n" +
+                        "Glyma.01G036000\t-3.7753163271244\n" +
+                        "Glyma.01G053800\t-2.29886786779066\n" +
+                        "Glyma.01G062400\t-3.10778171636326\n" +
+                        "Glyma.01G096700\t-2.39273204989496\n" +
+                        "Glyma.01G099500\t2.35989594508638\n" +
+                        "Glyma.01G105000\t-3.72922147940937\n" +
+                        "Glyma.01G115500\t-4.44765933736886\n" +
+                        "Glyma.01G120300\t3.44666978730701\n" +
+                        "Glyma.01G121209\t-3.20299822364865\n" +
+                        "Glyma.01G133050\t-2.68459029745086\n" +
+                        "Glyma.01G142400\t-4.77957227853504\n" +
+                        "Glyma.01G172600\t-3.5619418690147\n" +
+                        "Glyma.01G187700\t-3.0494686762643\n" +
+                        "Glyma.01G198100\t-1.91278890218778\n" +
+                        "Glyma.01G204400\t-6.06822393155109\n" +
+                        "Glyma.01G215500\t-2.80972717360803\n" +
+                        "Glyma.01G217700\t-3.70054304455409\n" +
+                        "Glyma.01G221600\t-2.19999660541509\n" +
+                        "Glyma.01G223000\t-2.55065294850781\n" +
+                        "Glyma.01G239500\t-2.04607645063677\n" +
+                        "Glyma.01G242600\t-4.10992977500167\n" +
+                        "Glyma.01G242700\t-8.28183345779038\n" +
+                        "Glyma.01G242800\t-2.04840325905017\n" +
+                        "Glyma.02G001100\t-2.08922290765613\n" +
+                        "Glyma.02G002100\t-2.36507733105451\n" +
+                        "Glyma.02G007400\t-2.0915854842742\n" +
+                        "Glyma.02G022700\t-2.40267430356423\n" +
+                        "Glyma.02G028000\t-2.74257578273325\n" +
+                        "Glyma.02G029900\t-2.06237405299478\n" +
+                        "Glyma.02G038601\t-3.31663686112551\n" +
+                        "Glyma.02G052700\t-2.91717356887038\n" +
+                        "Glyma.02G053900\t-3.95683812588591\n" +
+                        "Glyma.02G054200\t-5.88471778544358\n" +
+                        "Glyma.02G073700\t-2.74599455996733\n" +
+                        "Glyma.02G104600\t-2.59225452744737\n" +
+                        "Glyma.02G121500\t3.31482223793319\n" +
+                        "Glyma.02G125600\t-2.77085205570627\n" +
+                        "Glyma.02G128800\t-2.66243688186728\n" +
+                        "Glyma.02G156600\t10.9250598580926\n" +
+                        "Glyma.02G184400\t2.7796965240175\n" +
+                        "Glyma.02G186350\t11.0557343368489\n" +
+                        "Glyma.02G195900\t-5.72981832158658\n" +
+                        "Glyma.02G205001\t-2.3671848805616\n" +
+                        "Glyma.02G227700\t-1.91863670119171\n" +
+                        "Glyma.02G242200\t-2.05985808673463\n" +
+                        "Glyma.02G265900\t-2.77397176358302\n" +
+                        "Glyma.02G282300\t-2.19799795985111\n" +
+                        "Glyma.02G309300\t-2.05313879570529\n" +
+                        "Glyma.03G005800\t-1.98007408718856\n" +
+                        "Glyma.03G018102\t-2.7630396328938\n" +
+                        "Glyma.03G018900\t2.06743086843184\n" +
+                        "Glyma.03G028000\t-4.30908225685566\n" +
+                        "Glyma.03G040100\t-2.01874840212948\n" +
+                        "Glyma.03G041300\t-1.97897521751507\n" +
+                        "Glyma.03G042700\t-2.32556437920911\n" +
+                        "Glyma.03G042800\t-2.34876427985968\n" +
+                        "Glyma.03G057100\t-3.73341919614339\n" +
+                        "Glyma.03G068200\t-4.32614258346403\n" +
+                        "Glyma.03G078200\t-1.93050184374347\n" +
+                        "Glyma.03G098600\t-4.03145290092495\n" +
+                        "Glyma.03G101800\t-2.08845313647803\n" +
+                        "Glyma.03G104800\t-2.03318381757067\n" +
+                        "Glyma.03G113200\t-8.0344714718168\n" +
+                        "Glyma.03G122200\t2.04916296338444\n" +
+                        "Glyma.03G132700\t-2.93885799346974\n" +
+                        "Glyma.03G141900\t-3.52849028712209\n" +
+                        "Glyma.03G148300\t-2.08297986032708\n" +
+                        "Glyma.03G159000\t-2.32976846073278\n" +
+                        "Glyma.03G167600\t-2.05159173243727\n" +
+                        "Glyma.03G181700\t-2.2482590531534\n" +
+                        "Glyma.03G198600\t-3.02836282201156\n" +
+                        "Glyma.03G202600\t-2.33701304831756\n" +
+                        "Glyma.03G206800\t-2.33576700235243\n" +
+                        "Glyma.03G222600\t-4.66285268391474";
 
-            $("#adddesc").click(function () {
-                $("#div3").toggle();
-                $("#div4").toggle();
-            });
+
+                var kko= "#Query\tKO ID\n" +
+                        "Glyma.03G001200\tK14808\n" +
+                        "Glyma.03G001400\tK14945\n" +
+                        "Glyma.03G001800\tK03671\n" +
+                        "Glyma.03G001900\tK03135\n" +
+                        "Glyma.03G002100\tK19355\n" +
+                        "Glyma.03G002400\tK03253\n" +
+                        "Glyma.03G002500\tK07748\n" +
+                        "Glyma.03G003400\tK14432\n" +
+                        "Glyma.03G004000\tK01209\n" +
+                        "Glyma.03G004100\tK02183\n" +
+                        "Glyma.03G004200\tK10583\n" +
+                        "Glyma.03G004400\tK12176\n" +
+                        "Glyma.03G004900\tK15559\n" +
+                        "Glyma.03G005200\tK03327\n" +
+                        "Glyma.03G005300\tK03327\n" +
+                        "Glyma.03G005400\tK03327\n" +
+                        "Glyma.03G005600\tK03327\n" +
+                        "Glyma.03G005700\tK01649\n" +
+                        "Glyma.03G005800\tK03327\n" +
+                        "Glyma.03G005900\tK03687\n" +
+                        "Glyma.03G006300\tK04505\n" +
+                        "Glyma.03G006600\tK09422\n" +
+                        "Glyma.03G006700\tK01738\n" +
+                        "Glyma.03G006900\tK00326\n" +
+                        "Glyma.03G007300\tK19054\n" +
+                        "Glyma.03G007500\tK09422\n" +
+                        "Glyma.03G007700\tK00430\n" +
+                        "Glyma.03G007800\tK00430\n" +
+                        "Glyma.03G008100\tK15398\n" +
+                        "Glyma.03G008200\tK08193\n" +
+                        "Glyma.03G008300\tK13508\n" +
+                        "Glyma.03G008600\tK09597\n" +
+                        "Glyma.03G009800\tK01068\n" +
+                        "Glyma.03G010700\tK11752\n" +
+                        "Glyma.03G011000\tK14500\n" +
+                        "Glyma.03G012800\tK13667\n" +
+                        "Glyma.03G012900\tK13667\n" +
+                        "Glyma.03G013000\tK12614\n" +
+                        "Glyma.03G013100\tK17411\n" +
+                        "Glyma.03G013200\tK12614\n" +
+                        "Glyma.03G013300\tK09422\n" +
+                        "Glyma.03G013900\tK09377\n" +
+                        "Glyma.03G014300\tK15095\n" +
+                        "Glyma.03G014400\tK15095\n" +
+                        "Glyma.03G014600\tK00028\n" +
+                        "Glyma.03G014900\tK14777\n" +
+                        "Glyma.03G015500\tK17362\n" +
+                        "Glyma.03G015600\tK03110\n" +
+                        "Glyma.03G016600\tK09338\n" +
+                        "Glyma.03G016800\tK12175\n" +
+                        "Glyma.03G017200\tK12893\n" +
+                        "Glyma.03G018102\tK15277\n" +
+                        "Glyma.03G018500\tK01551\n" +
+                        "Glyma.03G018600\tK12161\n" +
+                        "Glyma.03G018700\tK13335\n" +
+                        "Glyma.03G019200\tK13510\n" +
+                        "Glyma.03G019400\tK09264\n" +
+                        "Glyma.03G019600\tK14324\n" +
+                        "Glyma.03G019700\tK13648\n" +
+                        "Glyma.03G019800\tK05282\n" +
+                        "Glyma.03G020900\tK01598\n" +
+                        "Glyma.03G021000\tK00142\n" +
+                        "Glyma.03G021100\tK14795\n" +
+                        "Glyma.03G021700\tK08850\n" +
+                        "Glyma.03G021800\tK03952\n" +
+                        "Glyma.03G022052\tK12734\n" +
+                        "Glyma.03G022300\tK01714\n" +
+                        "Glyma.03G022900\tK18442\n" +
+                        "Glyma.03G024000\tK14780\n" +
+                        "Glyma.03G024100\tK15292\n" +
+                        "Glyma.03G025400\tK13127\n" +
+                        "Glyma.03G025500\tK18932\n" +
+                        "Glyma.03G026400\tK06110\n" +
+                        "Glyma.03G026900\tK06110\n" +
+                        "Glyma.03G027300\tK08679\n" +
+                        "Glyma.03G027400\tK00800\n" +
+                        "Glyma.03G027500\tK00615\n" +
+                        "Glyma.03G027600\tK10870\n" +
+                        "Glyma.03G027700\tK02493\n" +
+                        "Glyma.03G027900\tK01409\n" +
+                        "Glyma.03G028000\tK01476\n" +
+                        "Glyma.03G028800\tK01265\n" +
+                        "Glyma.03G028900\tK01051\n" +
+                        "Glyma.03G029000\tK01051\n" +
+                        "Glyma.03G029100\tK01051\n" +
+                        "Glyma.03G029200\tK01051\n" +
+                        "Glyma.03G029400\tK01051\n" +
+                        "Glyma.03G029600\tK14488\n" +
+                        "Glyma.03G029700\tK08495\n" +
+                        "Glyma.03G031900\tK09272\n" +
+                        "Glyma.03G033100\tK09833\n" +
+                        "Glyma.03G033200\tK07447\n" +
+                        "Glyma.03G034100\tK09481\n" +
+                        "Glyma.03G036200\tK03327\n" +
+                        "Glyma.03G036500\tK08867\n" +
+                        "Glyma.03G036800\tK03120\n" +
+                        "Glyma.03G037800\tK00430\n" +
+                        "Glyma.03G037900\tK00430\n" +
+                        "Glyma.03G038100\tK00430\n" +
+                        "Glyma.03G038200\tK00430\n" +
+                        "Glyma.03G038300\tK00430\n" +
+                        "Glyma.03G038500\tK00430\n" +
+                        "Glyma.03G038600\tK00430\n" +
+                        "Glyma.03G038700\tK00430\n" +
+                        "Glyma.03G039700\tK00430\n" +
+                        "Glyma.03G039800\tK00430\n" +
+                        "Glyma.03G040600\tK00827\n" +
+                        "Glyma.03G042200\tK11290\n" +
+                        "Glyma.03G042300\tK08241\n" +
+                        "Glyma.03G042400\tK14685\n" +
+                        "Glyma.03G042500\tK14685\n" +
+                        "Glyma.03G042600\tK10268\n" +
+                        "Glyma.03G042700\tK13424\n" +
+                        "Glyma.03G049700\tK02728\n" +
+                        "Glyma.03G050100\tK00522\n" +
+                        "Glyma.03G050300\tK02987\n" +
+                        "Glyma.03G050500\tK08059\n" +
+                        "Glyma.03G050700\tK08059\n" +
+                        "Glyma.03G052200\tK06910\n" +
+                        "Glyma.03G055100\tK01568\n" +
+                        "Glyma.03G055900\tK01490\n" +
+                        "Glyma.03G056400\tK00232\n" +
+                        "Glyma.03G056700\tK10257\n" +
+                        "Glyma.03G057500\tK09510\n" +
+                        "Glyma.03G057600\tK06100\n" +
+                        "Glyma.03G058100\tK14617\n" +
+                        "Glyma.03G058400\tK03062\n" +
+                        "Glyma.03G058500\tK07300\n" +
+                        "Glyma.03G059200\tK14684\n" +
+                        "Glyma.03G060100\tK08681\n" +
+                        "Glyma.03G060200\tK10802\n" +
+                        "Glyma.03G060300\tK08915\n" +
+                        "Glyma.03G063200\tK19033\n" +
+                        "Glyma.03G063600\tK13946\n" +
+                        "Glyma.03G063900\tK13946\n" +
+                        "Glyma.03G064400\tK05292\n" +
+                        "Glyma.03G065000\tK02709\n" +
+                        "Glyma.03G065100\tK04733\n" +
+                        "Glyma.03G066000\tK08998\n" +
+                        "Glyma.03G068900\tK18633\n" +
+                        "Glyma.03G069100\tK06911\n" +
+                        "Glyma.03G069200\tK18813\n" +
+                        "Glyma.03G069400\tK12657\n" +
+                        "Glyma.03G069600\tK00761\n" +
+                        "Glyma.03G069700\tK18932\n" +
+                        "Glyma.03G069800\tK08269\n" +
+                        "Glyma.03G070200\tK00167\n" +
+                        "Glyma.03G070300\tK09756\n" +
+                        "Glyma.03G070400\tK09562\n" +
+                        "Glyma.03G070500\tK14486\n" +
+                        "Glyma.03G070600\tK02552\n" +
+                        "Glyma.03G072100\tK14638\n" +
+                        "Glyma.03G072800\tK16302\n" +
+                        "Glyma.03G073300\tK02726\n" +
+                        "Glyma.03G073702\tK00799\n" +
+                        "Glyma.03G073704\tK00799\n" +
+                        "Glyma.03G073726\tK08241\n" +
+                        "Glyma.03G073774\tK09422\n" +
+                        "Glyma.03G073776\tK05909\n" +
+                        "Glyma.03G073778\tK05909\n" +
+                        "Glyma.03G074400\tK07375\n" +
+                        "Glyma.03G076100\tK15103\n" +
+                        "Glyma.03G076500\tK11863\n" +
+                        "Glyma.03G076800\tK13917\n" +
+                        "Glyma.03G077900\tK05909\n" +
+                        "Glyma.03G078300\tK06119\n" +
+                        "Glyma.03G078700\tK09872\n" +
+                        "Glyma.03G080300\tK15688\n" +
+                        "Glyma.03G081900\tK09422\n" +
+                        "Glyma.03G082300\tK17777\n" +
+                        "Glyma.03G082400\tK09422\n" +
+                        "Glyma.03G083100\tK05841\n" +
+                        "Glyma.03G084000\tK13456\n" +
+                        "Glyma.03G084100\tK17411\n" +
+                        "Glyma.03G085100\tK01495\n" +
+                        "Glyma.03G085500\tK01495\n" +
+                        "Glyma.03G085700\tK08829\n" +
+                        "Glyma.03G086000\tK17686\n" +
+                        "Glyma.03G086100\tK09569\n" +
+                        "Glyma.03G086200\tK09571\n" +
+                        "Glyma.03G086400\tK02995\n" +
+                        "Glyma.03G088400\tK09561\n" +
+                        "Glyma.03G088500\tK03012\n" +
+                        "Glyma.03G089300\tK01893\n" +
+                        "Glyma.03G089400\tK16904\n" +
+                        "Glyma.03G090100\tK16569\n" +
+                        "Glyma.03G091000\tK00454\n" +
+                        "Glyma.03G091100\tK17592\n" +
+                        "Glyma.03G091200\tK08237\n" +
+                        "Glyma.03G091600\tK14491\n" +
+                        "Glyma.03G091800\tK14006\n" +
+                        "Glyma.03G092700\tK00134\n" +
+                        "Glyma.03G092800\tK01114\n" +
+                        "Glyma.03G093200\tK13484\n" +
+                        "Glyma.03G093600\tK08472\n" +
+                        "Glyma.03G094400\tK02256\n" +
+                        "Glyma.03G096900\tK08657\n" +
+                        "Glyma.03G097000\tK17888\n" +
+                        "Glyma.03G097100\tK06442\n" +
+                        "Glyma.03G097900\tK01885\n" +
+                        "Glyma.03G098600\tK07119\n" +
+                        "Glyma.03G098700\tK01184\n" +
+                        "Glyma.03G098800\tK07119\n" +
+                        "Glyma.03G098900\tK07119\n" +
+                        "Glyma.03G100600\tK03439\n" +
+                        "Glyma.03G100700\tK09008\n" +
+                        "Glyma.03G100800\tK00948\n" +
+                        "Glyma.03G101200\tK15404\n" +
+                        "Glyma.03G101700\tK15404\n" +
+                        "Glyma.03G102700\tK13800\n" +
+                        "Glyma.03G102900\tK00028\n" +
+                        "Glyma.03G103600\tK04078\n" +
+                        "Glyma.03G103800\tK10663\n" +
+                        "Glyma.03G104500\tK08237\n" +
+                        "Glyma.03G104700\tK08237\n" +
+                        "Glyma.03G104800\tK08237\n" +
+                        "Glyma.03G105300\tK02134\n" +
+                        "Glyma.03G106500\tK03260\n" +
+                        "Glyma.03G107000\tK02921\n" +
+                        "Glyma.03G107300\tK11340\n" +
+                        "Glyma.03G108200\tK03847\n" +
+                        "Glyma.03G108600\tK11375\n" +
+                        "Glyma.03G108900\tK01867\n" +
+                        "Glyma.03G109000\tK04567\n" +
+                        "Glyma.03G109200\tK12877\n" +
+                        "Glyma.03G109300\tK02214\n" +
+                        "Glyma.03G109500\tK00940\n" +
+                        "Glyma.03G110100\tK02926\n" +
+                        "Glyma.03G110200\tK07874\n" +
+                        "Glyma.03G110300\tK13199\n" +
+                        "Glyma.03G110500\tK14164\n" +
+                        "Glyma.03G110600\tK16818\n" +
+                        "Glyma.03G110700\tK10640\n" +
+                        "Glyma.03G111000\tK14164\n" +
+                        "Glyma.03G111700\tK09286\n" +
+                        "Glyma.03G112400\tK09286\n" +
+                        "Glyma.03G113500\tK14137\n" +
+                        "Glyma.03G114200\tK05754\n" +
+                        "Glyma.03G114300\tK09338\n" +
+                        "Glyma.03G114600\tK08901\n" +
+                        "Glyma.03G115300\tK05917\n" +
+                        "Glyma.03G115400\tK09422\n" +
+                        "Glyma.03G115800\tK08237\n" +
+                        "Glyma.03G116100\tK08237\n" +
+                        "Glyma.03G116200\tK08237\n" +
+                        "Glyma.03G116600\tK09503\n" +
+                        "Glyma.03G117300\tK05605\n" +
+                        "Glyma.03G118200\tK12604\n" +
+                        "Glyma.03G118400\tK12604\n" +
+                        "Glyma.03G118800\tK12741\n" +
+                        "Glyma.03G119400\tK12663\n" +
+                        "Glyma.03G119500\tK04035\n" +
+                        "Glyma.03G119900\tK11420\n" +
+                        "Glyma.03G120000\tK01209\n" +
+                        "Glyma.03G120100\tK01209\n" +
+                        "Glyma.03G120300\tK19034\n" +
+                        "Glyma.03G120400\tK14320\n" +
+                        "Glyma.03G120800\tK03626\n" +
+                        "Glyma.03G120900\tK03626\n" +
+                        "Glyma.03G121000\tK11292\n" +
+                        "Glyma.03G121100\tK00705\n" +
+                        "Glyma.03G122000\tK09754\n" +
+                        "Glyma.03G122100\tK09571\n" +
+                        "Glyma.03G122400\tK11835\n" +
+                        "Glyma.03G123000\tK14638\n" +
+                        "Glyma.03G123800\tK05868\n" +
+                        "Glyma.03G124400\tK07375\n" +
+                        "Glyma.03G124900\tK15711\n" +
+                        "Glyma.03G125200\tK16297\n" +
+                        "Glyma.03G125400\tK16297\n" +
+                        "Glyma.03G125500\tK16297\n" +
+                        "Glyma.03G125600\tK16297\n" +
+                        "Glyma.03G125800\tK04078\n" +
+                        "Glyma.03G126000\tK13947\n" +
+                        "Glyma.03G126200\tK14819\n" +
+                        "Glyma.03G127000\tK13448\n" +
+                        "Glyma.03G127300\tK02470\n" +
+                        "Glyma.03G127600\tK14431\n" +
+                        "Glyma.03G128100\tK00889\n" +
+                        "Glyma.03G128200\tK14431\n" +
+                        "Glyma.03G128300\tK00284\n" +
+                        "Glyma.03G128600\tK14508\n" +
+                        "Glyma.03G128900\tK06443\n" +
+                        "Glyma.03G129100\tK00286\n" +
+                        "Glyma.03G129400\tK17969\n" +
+                        "Glyma.03G129500\tK03013\n" +
+                        "Glyma.03G129600\tK17479\n" +
+                        "Glyma.03G129700\tK01760\n" +
+                        "Glyma.03G130000\tK14492\n" +
+                        "Glyma.03G130800\tK13448\n" +
+                        "Glyma.03G130900\tK14674\n" +
+                        "Glyma.03G131100\tK06118\n" +
+                        "Glyma.03G131800\tK03860\n" +
+                        "Glyma.03G133100\tK11253\n" +
+                        "Glyma.03G133300\tK00279\n" +
+                        "Glyma.03G133500\tK09527\n" +
+                        "Glyma.03G133600\tK01674\n" +
+                        "Glyma.03G133700\tK11665\n" +
+                        "Glyma.03G133800\tK00006\n" +
+                        "Glyma.03G134200\tK01537\n" +
+                        "Glyma.03G134300\tK15414\n" +
+                        "Glyma.03G134500\tK13495\n" +
+                        "Glyma.03G134600\tK03124\n" +
+                        "Glyma.03G134700\tK11792\n" +
+                        "Glyma.03G134800\tK18134\n" +
+                        "Glyma.03G134900\tK10406\n" +
+                        "Glyma.03G135800\tK09419\n" +
+                        "Glyma.03G136000\tK05643\n" +
+                        "Glyma.03G136100\tK09285\n" +
+                        "Glyma.03G136800\tK17604\n" +
+                        "Glyma.03G136900\tK14169\n" +
+                        "Glyma.03G137000\tK03403\n" +
+                        "Glyma.03G137100\tK01408\n" +
+                        "Glyma.03G137900\tK06617\n" +
+                        "Glyma.03G138000\tK13412\n" +
+                        "Glyma.03G138200\tK00942\n" +
+                        "Glyma.03G139200\tK01939\n" +
+                        "Glyma.03G139700\tK13523\n" +
+                        "Glyma.03G140100\tK08857\n" +
+                        "Glyma.03G142200\tK02969\n" +
+                        "Glyma.03G142300\tK02969\n" +
+                        "Glyma.03G142400\tK14431\n" +
+                        "Glyma.03G142600\tK16810\n" +
+                        "Glyma.03G142700\tK16810\n" +
+                        "Glyma.03G143400\tK12741\n" +
+                        "Glyma.03G143700\tK13261\n" +
+                        "Glyma.03G144500\tK10256\n" +
+                        "Glyma.03G144600\tK02328\n" +
+                        "Glyma.03G144800\tK10355\n" +
+                        "Glyma.03G145000\tK18453\n" +
+                        "Glyma.03G145200\tK14692\n" +
+                        "Glyma.03G145600\tK00430\n" +
+                        "Glyma.03G145700\tK10666\n" +
+                        "Glyma.03G145800\tK09338\n" +
+                        "Glyma.03G146200\tK16570\n" +
+                        "Glyma.03G146300\tK04506\n" +
+                        "Glyma.03G146900\tK11498\n" +
+                        "Glyma.03G147400\tK03065\n" +
+                        "Glyma.03G148100\tK11251\n" +
+                        "Glyma.03G148300\tK14493\n" +
+                        "Glyma.03G148600\tK14490\n" +
+                        "Glyma.03G148800\tK04733\n" +
+                        "Glyma.03G149200\tK08145\n" +
+                        "Glyma.03G149400\tK14487\n" +
+                        "Glyma.03G150600\tK02358\n" +
+                        "Glyma.03G150800\tK10523\n" +
+                        "Glyma.03G150900\tK12621\n" +
+                        "Glyma.03G151800\tK10760\n" +
+                        "Glyma.03G152000\tK13917\n" +
+                        "Glyma.03G152100\tK11087\n" +
+                        "Glyma.03G153300\tK07870\n" +
+                        "Glyma.03G154400\tK04120\n" +
+                        "Glyma.03G154700\tK04120\n" +
+                        "Glyma.03G154800\tK17972\n" +
+                        "Glyma.03G155000\tK12817\n" +
+                        "Glyma.03G155100\tK10268\n" +
+                        "Glyma.03G155900\tK15443\n" +
+                        "Glyma.03G156700\tK17471\n" +
+                        "Glyma.03G156800\tK08857\n" +
+                        "Glyma.03G157300\tK09419\n" +
+                        "Glyma.03G157800\tK13448\n" +
+                        "Glyma.03G157900\tK09566\n" +
+                        "Glyma.03G158100\tK11251\n" +
+                        "Glyma.03G158300\tK06062\n" +
+                        "Glyma.03G158400\tK01695\n" +
+                        "Glyma.03G158600\tK14484\n" +
+                        "Glyma.03G158700\tK14484\n" +
+                        "Glyma.03G159100\tK02721\n" +
+                        "Glyma.03G159200\tK13648\n" +
+                        "Glyma.03G159400\tK16075\n" +
+                        "Glyma.03G159500\tK16277\n" +
+                        "Glyma.03G160000\tK13162\n" +
+                        "Glyma.03G160100\tK13407\n" +
+                        "Glyma.03G160300\tK13407\n" +
+                        "Glyma.03G161000\tK08504\n" +
+                        "Glyma.03G161100\tK06072\n" +
+                        "Glyma.03G161300\tK10798\n" +
+                        "Glyma.03G162100\tK17907\n" +
+                        "Glyma.03G162500\tK14516\n" +
+                        "Glyma.03G162700\tK14516\n" +
+                        "Glyma.03G162800\tK08176\n" +
+                        "Glyma.03G162900\tK05765\n" +
+                        "Glyma.03G163100\tK09422\n" +
+                        "Glyma.03G164400\tK12667\n" +
+                        "Glyma.03G164500\tK11130\n" +
+                        "Glyma.03G164600\tK08790\n" +
+                        "Glyma.03G164800\tK12192\n" +
+                        "Glyma.03G165000\tK05941\n" +
+                        "Glyma.03G165100\tK05941\n" +
+                        "Glyma.03G165200\tK17756\n" +
+                        "Glyma.03G165600\tK10683\n" +
+                        "Glyma.03G165900\tK14638\n" +
+                        "Glyma.03G166700\tK02894\n" +
+                        "Glyma.03G167000\tK13217\n" +
+                        "Glyma.03G167400\tK14484\n" +
+                        "Glyma.03G167900\tK01592\n" +
+                        "Glyma.03G168700\tK00121\n" +
+                        "Glyma.03G168800\tK15178\n" +
+                        "Glyma.03G169000\tK17985\n" +
+                        "Glyma.03G169500\tK10357\n" +
+                        "Glyma.03G169600\tK11816\n" +
+                        "Glyma.03G170000\tK16578\n" +
+                        "Glyma.03G170600\tK03062\n" +
+                        "Glyma.03G171100\tK03283\n" +
+                        "Glyma.03G171400\tK11254\n" +
+                        "Glyma.03G171800\tK12492\n" +
+                        "Glyma.03G172200\tK03254\n" +
+                        "Glyma.03G172500\tK11252\n" +
+                        "Glyma.03G172700\tK01507\n" +
+                        "Glyma.03G173400\tK01778\n" +
+                        "Glyma.03G173600\tK08287\n" +
+                        "Glyma.03G174300\tK07195\n" +
+                        "Glyma.03G174900\tK15728\n" +
+                        "Glyma.03G175200\tK01537\n" +
+                        "Glyma.03G175400\tK12896\n" +
+                        "Glyma.03G175600\tK12896\n" +
+                        "Glyma.03G175800\tK02069\n" +
+                        "Glyma.03G176100\tK01102\n" +
+                        "Glyma.03G176200\tK18732\n" +
+                        "Glyma.03G176300\tK00799\n" +
+                        "Glyma.03G176400\tK00765\n" +
+                        "Glyma.03G176800\tK00939\n" +
+                        "Glyma.03G177400\tK02930\n" +
+                        "Glyma.03G177500\tK09284\n" +
+                        "Glyma.03G178000\tK02973\n" +
+                        "Glyma.03G178500\tK14779\n" +
+                        "Glyma.03G178900\tK03000\n" +
+                        "Glyma.03G179200\tK08472\n" +
+                        "Glyma.03G179500\tK08506\n" +
+                        "Glyma.03G179800\tK09523\n" +
+                        "Glyma.03G180700\tK02152\n" +
+                        "Glyma.03G180900\tK09872\n" +
+                        "Glyma.03G181200\tK01586\n" +
+                        "Glyma.03G181300\tK06966\n" +
+                        "Glyma.03G181400\tK14513\n" +
+                        "Glyma.03G181600\tK10775\n" +
+                        "Glyma.03G181700\tK10775\n" +
+                        "Glyma.03G181900\tK00856\n" +
+                        "Glyma.03G182100\tK14488\n" +
+                        "Glyma.03G182800\tK13525\n" +
+                        "Glyma.03G183000\tK14488\n" +
+                        "Glyma.03G183100\tK14488\n" +
+                        "Glyma.03G183200\tK14488\n" +
+                        "Glyma.03G183400\tK01892\n" +
+                        "Glyma.03G183500\tK13680\n" +
+                        "Glyma.03G183600\tK05658\n" +
+                        "Glyma.03G183900\tK09422\n" +
+                        "Glyma.03G184000\tK00789\n" +
+                        "Glyma.03G184500\tK08235\n" +
+                        "Glyma.03G184600\tK15691\n" +
+                        "Glyma.03G184900\tK10532\n" +
+                        "Glyma.03G185200\tK11584\n" +
+                        "Glyma.03G185400\tK01728\n" +
+                        "Glyma.03G185500\tK01674\n" +
+                        "Glyma.03G185600\tK01674\n" +
+                        "Glyma.03G185700\tK10144\n" +
+                        "Glyma.03G185800\tK01803\n" +
+                        "Glyma.03G185900\tK09873\n" +
+                        "Glyma.03G186200\tK07910\n" +
+                        "Glyma.03G186300\tK00889\n" +
+                        "Glyma.03G186500\tK14556\n" +
+                        "Glyma.03G186900\tK13496\n" +
+                        "Glyma.03G187000\tK13496\n" +
+                        "Glyma.03G187200\tK13496\n" +
+                        "Glyma.03G187400\tK13496\n" +
+                        "Glyma.03G187500\tK13496\n" +
+                        "Glyma.03G187700\tK13496\n" +
+                        "Glyma.03G188100\tK12185\n" +
+                        "Glyma.03G188500\tK13126\n" +
+                        "Glyma.03G189300\tK02896\n" +
+                        "Glyma.03G189700\tK00873\n" +
+                        "Glyma.03G190200\tK13680\n" +
+                        "Glyma.03G190500\tK01689\n" +
+                        "Glyma.03G190600\tK12836\n" +
+                        "Glyma.03G190900\tK14797\n" +
+                        "Glyma.03G191000\tK14510\n" +
+                        "Glyma.03G191100\tK09419\n" +
+                        "Glyma.03G191200\tK14400\n" +
+                        "Glyma.03G191500\tK01623\n" +
+                        "Glyma.03G192300\tK00700\n" +
+                        "Glyma.03G193100\tK02943\n" +
+                        "Glyma.03G193800\tK01240\n" +
+                        "Glyma.03G194500\tK01166\n" +
+                        "Glyma.03G195000\tK13628\n" +
+                        "Glyma.03G195200\tK03531\n" +
+                        "Glyma.03G195600\tK10808\n" +
+                        "Glyma.03G195700\tK00419\n" +
+                        "Glyma.03G195900\tK00621\n" +
+                        "Glyma.03G196700\tK13161\n" +
+                        "Glyma.03G196800\tK10740\n" +
+                        "Glyma.03G196900\tK03106\n" +
+                        "Glyma.03G197100\tK11099\n" +
+                        "Glyma.03G197200\tK14488\n" +
+                        "Glyma.03G197300\tK10398\n" +
+                        "Glyma.03G197400\tK01193\n" +
+                        "Glyma.03G197500\tK02912\n" +
+                        "Glyma.03G197600\tK02927\n" +
+                        "Glyma.03G198200\tK12733\n" +
+                        "Glyma.03G198400\tK12611\n" +
+                        "Glyma.03G199100\tK01285\n" +
+                        "Glyma.03G199300\tK01285\n" +
+                        "Glyma.03G199400\tK01285\n" +
+                        "Glyma.03G199900\tK10704\n" +
+                        "Glyma.03G200000\tK12581\n" +
+                        "Glyma.03G200400\tK17338\n" +
+                        "Glyma.03G200800\tK06966\n" +
+                        "Glyma.03G201900\tK15170\n" +
+                        "Glyma.03G202100\tK09480\n" +
+                        "Glyma.03G202800\tK08486\n" +
+                        "Glyma.03G203000\tK08064\n" +
+                        "Glyma.03G203500\tK17479\n" +
+                        "Glyma.03G203700\tK11835\n" +
+                        "Glyma.03G203800\tK01633\n" +
+                        "Glyma.03G204100\tK13412\n" +
+                        "Glyma.03G204400\tK19043\n" +
+                        "Glyma.03G204700\tK03363\n" +
+                        "Glyma.03G205500\tK00102\n" +
+                        "Glyma.03G205700\tK14209\n" +
+                        "Glyma.03G205800\tK02979\n" +
+                        "Glyma.03G205900\tK01301\n" +
+                        "Glyma.03G206400\tK03252\n" +
+                        "Glyma.03G206500\tK12501\n" +
+                        "Glyma.03G206600\tK12830\n" +
+                        "Glyma.03G206900\tK04382\n" +
+                        "Glyma.03G207000\tK04716\n" +
+                        "Glyma.03G207300\tK12603\n" +
+                        "Glyma.03G207500\tK02889\n" +
+                        "Glyma.03G207600\tK06671\n" +
+                        "Glyma.03G207700\tK02979\n" +
+                        "Glyma.03G207900\tK14015\n" +
+                        "Glyma.03G208100\tK00430\n" +
+                        "Glyma.03G208200\tK00430\n" +
+                        "Glyma.03G208500\tK13207\n" +
+                        "Glyma.03G208900\tK11816\n" +
+                        "Glyma.03G209400\tK14485\n" +
+                        "Glyma.03G209600\tK15382\n" +
+                        "Glyma.03G209900\tK10144\n" +
+                        "Glyma.03G210100\tK03676\n" +
+                        "Glyma.03G210200\tK03676\n" +
+                        "Glyma.03G210300\tK18342\n" +
+                        "Glyma.03G210400\tK03676\n" +
+                        "Glyma.03G210500\tK03676\n" +
+                        "Glyma.03G210800\tK02835\n" +
+                        "Glyma.03G211000\tK02885\n" +
+                        "Glyma.03G211400\tK03347\n" +
+                        "Glyma.03G211900\tK06632\n" +
+                        "Glyma.03G212300\tK00859\n" +
+                        "Glyma.03G213200\tK03845\n" +
+                        "Glyma.03G213500\tK00949\n" +
+                        "Glyma.03G213600\tK12623\n" +
+                        "Glyma.03G214100\tK16275\n" +
+                        "Glyma.03G214400\tK12890\n" +
+                        "Glyma.03G214500\tK03938\n" +
+                        "Glyma.03G214700\tK08678\n" +
+                        "Glyma.03G214900\tK14567\n" +
+                        "Glyma.03G215300\tK02883\n" +
+                        "Glyma.03G215800\tK01051\n" +
+                        "Glyma.03G215900\tK01051\n" +
+                        "Glyma.03G216000\tK01051\n" +
+                        "Glyma.03G216300\tK00695\n" +
+                        "Glyma.03G216600\tK02885\n" +
+                        "Glyma.03G216700\tK14509\n" +
+                        "Glyma.03G217000\tK10406\n" +
+                        "Glyma.03G217100\tK15115\n" +
+                        "Glyma.03G217400\tK08489\n" +
+                        "Glyma.03G217500\tK00770\n" +
+                        "Glyma.03G218200\tK09422\n" +
+                        "Glyma.03G218300\tK09517\n" +
+                        "Glyma.03G218500\tK03022\n" +
+                        "Glyma.03G219200\tK02210\n" +
+                        "Glyma.03G219800\tK11430\n" +
+                        "Glyma.03G220600\tK12835\n" +
+                        "Glyma.03G221100\tK13508\n" +
+                        "Glyma.03G221200\tK12820\n" +
+                        "Glyma.03G221350\tK01897\n" +
+                        "Glyma.03G221350\tK13508\n" +
+                        "Glyma.03G221500\tK11324\n" +
+                        "Glyma.03G221600\tK04125\n" +
+                        "Glyma.03G221700\tK09422\n" +
+                        "Glyma.03G221900\tK09422\n" +
+                        "Glyma.03G222000\tK18819\n" +
+                        "Glyma.03G223000\tK00789\n" +
+                        "Glyma.03G223100\tK13436\n" +
+                        "Glyma.03G223251\tK17573\n" +
+                        "Glyma.03G223400\tK01051\n" +
+                        "Glyma.03G223500\tK02835\n" +
+                        "Glyma.03G223900\tK05389\n" +
+                        "Glyma.03G224100\tK05658\n" +
+                        "Glyma.03G224300\tK11430\n" +
+                        "Glyma.03G224500\tK01881\n" +
+                        "Glyma.03G224800\tK14484\n" +
+                        "Glyma.03G225000\tK12126\n" +
+                        "Glyma.03G225200\tK09422\n" +
+                        "Glyma.03G225500\tK18551\n" +
+                        "Glyma.03G226000\tK19355\n" +
+                        "Glyma.03G226100\tK00975\n" +
+                        "Glyma.03G226300\tK01363\n" +
+                        "Glyma.03G226500\tK12456\n" +
+                        "Glyma.03G227100\tK02519\n" +
+                        "Glyma.03G227500\tK14638\n" +
+                        "Glyma.03G227700\tK09422\n" +
+                        "Glyma.03G228200\tK08245\n" +
+                        "Glyma.03G228700\tK16315\n" +
+                        "Glyma.03G228900\tK01648\n" +
+                        "Glyma.03G229000\tK14007\n" +
+                        "Glyma.03G229100\tK19355\n" +
+                        "Glyma.03G229200\tK03083\n" +
+                        "Glyma.03G229300\tK01304\n" +
+                        "Glyma.03G229400\tK00036\n" +
+                        "Glyma.03G229800\tK18819\n" +
+                        "Glyma.03G230200\tK12398\n" +
+                        "Glyma.03G230500\tK15178\n" +
+                        "Glyma.03G231200\tK05953\n" +
+                        "Glyma.03G231800\tK07953\n" +
+                        "Glyma.03G231900\tK12848\n" +
+                        "Glyma.03G232000\tK09584\n" +
+                        "Glyma.03G233100\tK10406\n" +
+                        "Glyma.03G234000\tK10268\n" +
+                        "Glyma.03G234600\tK02883\n" +
+                        "Glyma.03G234700\tK06269\n" +
+                        "Glyma.03G234900\tK14843\n" +
+                        "Glyma.03G235000\tK02891\n" +
+                        "Glyma.03G235250\tK03065\n" +
+                        "Glyma.03G235250\tK10532\n" +
+                        "Glyma.03G235500\tK10364\n" +
+                        "Glyma.03G235600\tK13511\n" +
+                        "Glyma.03G236100\tK10994\n" +
+                        "Glyma.03G236300\tK13447\n" +
+                        "Glyma.03G236700\tK13116\n" +
+                        "Glyma.03G237200\tK02350\n" +
+                        "Glyma.03G237300\tK15718\n" +
+                        "Glyma.03G237700\tK18636\n" +
+                        "Glyma.03G237800\tK10406\n" +
+                        "Glyma.03G238100\tK18577\n" +
+                        "Glyma.03G239000\tK00869\n" +
+                        "Glyma.03G239400\tK08066\n" +
+                        "Glyma.03G239500\tK13754\n" +
+                        "Glyma.03G239600\tK12948\n" +
+                        "Glyma.03G239900\tK10664\n" +
+                        "Glyma.03G240600\tK01920\n" +
+                        "Glyma.03G241100\tK02955\n" +
+                        "Glyma.03G241300\tK02955\n" +
+                        "Glyma.03G241500\tK08145\n" +
+                        "Glyma.03G241600\tK04733\n" +
+                        "Glyma.03G241700\tK14490\n" +
+                        "Glyma.03G241800\tK11251\n" +
+                        "Glyma.03G242000\tK18932\n" +
+                        "Glyma.03G242400\tK13832\n" +
+                        "Glyma.03G242900\tK04565\n" +
+                        "Glyma.03G243100\tK03240\n" +
+                        "Glyma.03G243400\tK14289\n" +
+                        "Glyma.03G243500\tK08819\n" +
+                        "Glyma.03G243800\tK15361\n" +
+                        "Glyma.03G244500\tK15361\n" +
+                        "Glyma.03G244700\tK02736\n" +
+                        "Glyma.03G244800\tK01738\n" +
+                        "Glyma.03G245000\tK12619\n" +
+                        "Glyma.03G245300\tK02974\n" +
+                        "Glyma.03G245500\tK08867\n" +
+                        "Glyma.03G245900\tK06176\n" +
+                        "Glyma.03G246100\tK08857\n" +
+                        "Glyma.03G246300\tK01807\n" +
+                        "Glyma.03G246500\tK01456\n" +
+                        "Glyma.03G247000\tK10046\n" +
+                        "Glyma.03G247200\tK03116\n" +
+                        "Glyma.03G247300\tK15156\n" +
+                        "Glyma.03G247400\tK14484\n" +
+                        "Glyma.03G248200\tK13162\n" +
+                        "Glyma.03G249200\tK10357\n" +
+                        "Glyma.03G249900\tK17991\n" +
+                        "Glyma.03G250100\tK13345\n" +
+                        "Glyma.03G250600\tK09422\n" +
+                        "Glyma.03G250800\tK01620\n" +
+                        "Glyma.03G251300\tK11583\n" +
+                        "Glyma.03G251500\tK06269\n" +
+                        "Glyma.03G251600\tK01802\n" +
+                        "Glyma.03G251700\tK14509\n" +
+                        "Glyma.03G253000\tK05749\n" +
+                        "Glyma.03G253300\tK11091\n" +
+                        "Glyma.03G253500\tK09839\n" +
+                        "Glyma.03G253800\tK04733\n" +
+                        "Glyma.03G254300\tK01183\n" +
+                        "Glyma.03G254700\tK03236\n" +
+                        "Glyma.03G255100\tK01792\n" +
+                        "Glyma.03G255400\tK06689\n" +
+                        "Glyma.03G255600\tK15119\n" +
+                        "Glyma.03G255800\tK10389\n" +
+                        "Glyma.03G255900\tK15272\n" +
+                        "Glyma.03G256100\tK14684\n" +
+                        "Glyma.03G256200\tK14506\n" +
+                        "Glyma.03G256500\tK08237\n" +
+                        "Glyma.03G256800\tK17525\n" +
+                        "Glyma.03G257000\tK05391\n" +
+                        "Glyma.03G257700\tK04506\n" +
+                        "Glyma.03G258200\tK09286\n" +
+                        "Glyma.03G258300\tK14486\n" +
+                        "Glyma.03G258700\tK09422\n" +
+                        "Glyma.03G259000\tK05305\n" +
+                        "Glyma.03G259200\tK07904\n" +
+                        "Glyma.03G259300\tK08900\n" +
+                        "Glyma.03G259700\tK14488\n" +
+                        "Glyma.03G260000\tK18932\n" +
+                        "Glyma.03G260300\tK15397\n" +
+                        "Glyma.03G260500\tK13161\n" +
+                        "Glyma.03G260900\tK02942\n" +
+                        "Glyma.03G261000\tK00161\n" +
+                        "Glyma.03G261300\tK12130\n" +
+                        "Glyma.03G261800\tK12133\n" +
+                        "Glyma.03G262000\tK01507\n" +
+                        "Glyma.03G262100\tK11592\n" +
+                        "Glyma.03G262300\tK08908\n" +
+                        "Glyma.03G262600\tK01535\n" +
+                        "Glyma.03G262800\tK03061\n" +
+                        "Glyma.03G263200\tK14790\n" +
+                        "Glyma.03G263500\tK03239\n" +
+                        "Glyma.03G263700\tK09286\n" +
+                        "Glyma.03G264100\tK03549\n" +
+                        "Glyma.03G264300\tK00454\n" +
+                        "Glyma.03G264400\tK14288\n" +
+                        "Glyma.03G264600\tK15191\n" ;
+
+        </script>
 
 
-    </script>
 
-}
+    }

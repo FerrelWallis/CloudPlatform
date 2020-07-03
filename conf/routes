@@ -9,8 +9,8 @@ GET           /CloudPlatform/PersonalCenter                          controllers
 GET           /CloudPlatform/myTask                                  controllers.HomeController.mytask
 GET           /CloudPlatform/allsoft                                 controllers.HomeController.allsoft(types:String)
 
-GET           /CloudPlatform/SoftPage/GOKEGG                         controllers.SoftController.gokegg
-#GET           /CloudPlatform/SoftPage/KEGG                           controllers.SoftController.kegg
+GET           /CloudPlatform/SoftPage/GO                             controllers.SoftController.go
+GET           /CloudPlatform/SoftPage/KEGG                           controllers.SoftController.kegg
 GET           /CloudPlatform/SoftPage/PCA                            controllers.SoftController.pca
 GET           /CloudPlatform/SoftPage/CCA                            controllers.SoftController.cca
 GET           /CloudPlatform/SoftPage/Heatmap                        controllers.SoftController.heatmap
@@ -18,6 +18,7 @@ GET           /CloudPlatform/SoftPage/Boxplot                        controllers
 GET           /CloudPlatform/SoftPage/NetWeight                      controllers.SoftController.netWeight
 GET           /CloudPlatform/SoftPage/NetDirected                    controllers.SoftController.netDirected
 GET           /CloudPlatform/SoftPage/Net                            controllers.SoftController.net
+GET           /CloudPlatform/SoftPage/Venn                           controllers.SoftController.venn
 
 GET           /CloudPlatform/Softwares/home/latest                   controllers.SoftController.getlatestSix
 GET           /CloudPlatform/Softwares/home/hotest                   controllers.SoftController.gethotestSix
@@ -34,11 +35,11 @@ GET          /CloudPlatform/Mytask/teskPreview/PCA                   controllers
 GET          /CloudPlatform/Mytask/teskPreview/Boxplot               controllers.PreviewController.preBoxplot(taskname:String)
 GET          /CloudPlatform/Mytask/teskPreview/Heatmap               controllers.PreviewController.preHeatmap(taskname:String)
 GET          /CloudPlatform/Mytask/teskPreview/CCA                   controllers.PreviewController.preCCA(taskname:String)
-GET          /CloudPlatform/Mytask/teskPreview/Net                   controllers.PreviewController.preNet(taskname:String)
-GET          /CloudPlatform/Mytask/teskPreview/GOKEGG                controllers.PreviewController.preGoKEGG(taskname:String)
+GET          /CloudPlatform/Mytask/teskPreview/NetWeight             controllers.PreviewController.preNet(taskname:String)
+GET          /CloudPlatform/Mytask/teskPreview/GO                    controllers.PreviewController.preGo(taskname:String)
+GET          /CloudPlatform/Mytask/teskPreview/KEGG                  controllers.PreviewController.preKegg(taskname:String)
 
-
-POST          /CloudPlatform/SoftTool/runPCA                         controllers.RService.doPCA(isgroup:Boolean)
+POST          /CloudPlatform/SoftTool/runPCA                         controllers.RService.doPCA(isgroup:Boolean,table:String,group:String)
 POST          /CloudPlatform/SoftTool/getPCAData                     controllers.RService.readPCAData(taskname:String)
 POST          /CloudPlatform/SoftTool/redrawPCA                      controllers.RService.redrawPCA(taskname:String)
 
@@ -56,12 +57,16 @@ POST          /CloudPlatform/SoftTool/redrawCCA                      controllers
 
 POST          /CloudPlatform/SoftTool/runNet                         controllers.RService.doNet
 POST          /CloudPlatform/SoftTool/getNetData                     controllers.RService.readNetData(taskname:String)
+POST          /CloudPlatform/SoftTool/redrawNet                      controllers.RService.redrawNet(taskname:String)
 
-POST          /CloudPlatform/SoftTool/runGo                          controllers.RService.doGo
-POST          /CloudPlatform/SoftTool/getGOData                      controllers.RService.readGoData(taskname:String)
-POST          /CloudPlatform/SoftTool/redrawGO                       controllers.RService.redrawGO(taskname:String,types:String,kogo:String)
 
-POST          /CloudPlatform/SoftTool/runKegg                        controllers.RService.doKegg(id:String,userefer:Boolean,desc:Boolean)
+POST          /CloudPlatform/SoftTool/runGo                          controllers.RService.doGo(types:String,refer:String,table:String)
+POST          /CloudPlatform/SoftTool/getGOData                      controllers.RService.readGoData(types:String,taskname:String)
+POST          /CloudPlatform/SoftTool/redrawGO                       controllers.RService.redrawGO(taskname:String,types:String)
+
+POST          /CloudPlatform/SoftTool/getJvennData                   controllers.RService.getJvennData
+
+#POST          /CloudPlatform/SoftTool/runKegg                        controllers.RService.doKegg(id:String,userefer:Boolean,desc:Boolean)
 
 #POST          /CloudPlatform/SoftTool/runDirected                    controllers.RService.doDirected(id:String)
 
@@ -69,6 +74,7 @@ POST          /CloudPlatform/SoftTool/runKegg                        controllers
 POST          /CloudPlatform/SoftTool/getDownloadFiles               controllers.RService.getDownloadFiles(taskname:String,soft:String)
 GET           /CloudPlatform/SoftTool/downloadZip                    controllers.RService.downloadZip(taskname:String)
 GET           /CloudPlatform/SoftTool/download                       controllers.RService.download(path:String)
+#GET           /CloudPlatform/SoftTool/download                       controllers.RService.download(taskname:String,filename:String)
 GET           /CloudPlatform/SoftTool/downloadExamples               controllers.RService.downloadExamples(name:String)
 GET           /CloudPlatform/pic                                     controllers.RService.getPic(path:String,num:Double)
 
@@ -98,6 +104,7 @@ GET     /testindex                  controllers.HomeController.testindex
 GET     /personal                   controllers.HomeController.testperson
 GET     /table                      controllers.HomeController.testtable
 GET     /testsoft                   controllers.SoftController.testsoft
+GET     /cynet                      controllers.SoftController.testcynet
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

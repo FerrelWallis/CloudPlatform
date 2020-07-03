@@ -18,9 +18,9 @@ object Utils{
   val windowsPath="F:/CloudPlatform/"
   val linuxPath="/mnt/sdb/ww/CloudPlatform/"
 
-  val RPath : String= {
-    if (new File(windowsPath).exists()) "\"C:/Program Files/R/R-3.6.3/bin/Rscript.exe\" " else linuxPath+""
-  }
+//  val RPath : String= {
+//    if (new File(windowsPath).exists()) "\"C:/Program Files/R/R-3.6.3/bin/Rscript.exe\" " else linuxPath+""
+//  }
 
   val path : String= {
     if (new File(windowsPath).exists()) windowsPath else linuxPath

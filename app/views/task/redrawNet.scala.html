@@ -4,275 +4,222 @@
     <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("font-awesome-4.7.0/css/font-awesome.min.css")" media="screen" />
     <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("palette/evol-colorpicker.min.css")" media="screen" />
     <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("mycss/index.css")" media="screen" />
+    <link href="@routes.Assets.versioned("cytoscape3.15.1/style.css")" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("mycss/redraw.css")" media="screen" />
+
+    <script type="text/javascript" src="@routes.Assets.versioned("js/jquery-ui.js")"></script>
+    <script src="@routes.Assets.versioned("cytoscape3.15.1/cytoscape.min.js")"></script>
 
     <script src="@routes.Assets.versioned("layer-v3.0/layer/layer.js")" type="text/javascript"></script>
     <script type="text/javascript" src="@routes.Assets.versioned("palette/evol-colorpicker.min.js")"></script>
 
     <style>
-            .grid_8{
-                width: 100%;
-                margin: unset;
-            }
-            .mws-panel .mws-panel-content {
-                padding: 24px;
-                float: left;
-                background: white;
-            }
-            .grid_6{
-                width: 60%;
-            }
-            .grid_2{
-                width: 20%;
-            }
-            .title{
-                font-weight: 700;
-                font-family: "Helvetica Neue", Helvetica, 'Microsoft Yahei', 'Hiragino Sans GB', 'WenQuanYi Micro Hei', Tahoma, Arial, sans-serif;
-                margin-top: 20px;
-                margin-bottom: 10px;
-                margin-right: 0px;
-                line-height: 2.6;
-                color: inherit;
-                font-size: 16px;
-                color: #424141;
-            }
-            .content{
-                font-weight: 700;
-                font-family: "Helvetica Neue", Helvetica, 'Microsoft Yahei', 'Hiragino Sans GB', 'WenQuanYi Micro Hei', Tahoma, Arial, sans-serif;
-                font-size: 16px;
-                color: #827e7e;
-            }
-            .success{
-                color: white;
-                background: cadetblue;
-                padding: 8px 15px;
-                border-radius: 19px;
-            }
-            .failed{
-                color: white;
-                background: #bf4064;
-                padding: 8px 15px;
-                border-radius: 19px;
-            }
-            .running{
-                color: white;
-                background: #a08c5f;
-                padding: 8px 15px;
-                border-radius: 19px;
-            }
-            .list{
-                margin-left: 125px;
-                height: 33%;
-            }
-            .list:first-child{
-                margin-left: 0px;
-            }
-            .align{
-                padding-left: 50px;
-            }
-            .button{
-                /*background: #8fb2b3;*/
-                background: #434343;
-                border-radius: 6px;
-                color: white;
-                padding: 10px 30px;
-            }
-            .content a:hover{
-                color: white!important;
-                background-color: black;
-            }
-            #filesUrl a{
-                font-size: 17px;
-                color: gray;
-            }
-            #filesUrl a:hover{
-                color: cadetblue;
-            }
-            /*滚动条样式*/
-            .innerbox::-webkit-scrollbar {/*滚动条整体样式*/
-                width: 4px;     /*高宽分别对应横竖滚动条的尺寸*/
-                height: 4px;
-            }
-            .innerbox::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
-                border-radius: 5px;
-                -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-                background: rgba(0,0,0,0.2);
-            }
-            .innerbox::-webkit-scrollbar-track {/*滚动条里面轨道*/
-                -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-                border-radius: 0;
-                background: rgba(0,0,0,0.1);
-            }
-            #prepic{
-                padding: 10px 20px 0 10px!important;
-            }
-            .img-thumbnail{
-                -webkit-transition: unset;
-                transition: unset;
-            }
-            .mws-table tbody tr.odd {
-                background-color: #fafafa;
-            }
-            .mws-table tbody tr.even {
-                background-color: white;
-            }
-            .mws-table thead tr {
-                background: white;
-            }
-            .mws-panel .mws-panel-header {
-                height: 25px;
+            #cy {
                 position: relative;
-                padding: 12px;
-                font-size: 14px;
-                border-radius: 4px;
-                border: 1px solid #bebebe;
-                background: #fafafa;
+                left: 0;
+                top: 0;
+                z-index: 999;
             }
-            table tr th, table tr td {
-                border-top: 1px solid #ccc !important;
-            }
-            input[type="text"], textarea {
-                background: #fff;
-                background: rgba(255, 255, 255, .4);
-                border: 1px solid #bebebe;
-                padding: 7px 9px;
-                border-radius: 3px;
-                color: #888;
-                box-shadow: unset;
-            }
-            .form-group{
-                float: left;
-            }
-            .right{
-                width: 70%;
-            }
-            .form-group-p{
-                display: inline-block;
-                width: 100%;
-            }
-            input,select{
-                line-height: 32px;
-                height: 32px;
-                width: 60%;
-                border-radius: 5px;
-                margin-left: 10px;
-            }
-            label {
-                display: inline-block;
-                margin-bottom: 5px;
-                margin-top: 5px;
-                font-weight: 700;
-            }
-            .form-group input:not([type="radio"]):not([type="checkbox"]),.form-group select,.form-group .form-control[readonly] {
-                border-radius: 5px;
-                background-color: #f7f7f7;
-                height: 32px;
-                border: 1px solid #e6e6e6;
-                box-shadow: none;
-            }
-            .form-group-extra {
-                display: inline-block;
-                vertical-align: top;
-                line-height: 32px;
-                /* max-width: 180px; */
-            }
-            .input-group .form-control {
-                position: relative;
-                z-index: 2;
-                float: left;
-                width: 80%;
-                margin-bottom: 0;
-                height: 22px;
-                border-radius: 4px;
-            }
-            .input-group .form-control:first-child, .input-group-addon:first-child, .input-group-btn:first-child > .btn, .input-group-btn:first-child > .btn-group > .btn, .input-group-btn:first-child > .dropdown-toggle, .input-group-btn:last-child > .btn:not(:last-child):not(.dropdown-toggle), .input-group-btn:last-child > .btn-group:not(:last-child) > .btn {
-                border-top-right-radius: 4px;
-                border-bottom-right-radius: 4px;
-                border-radius: 5px;
-                background-color: #f7f7f7;
-                height: 21px;
-                border: 1px solid #e6e6e6;
-                box-shadow: none;
-            }
-            .input-group .form-control:last-child, .input-group-addon:last-child, .input-group-btn:last-child > .btn, .input-group-btn:last-child > .btn-group > .btn, .input-group-btn:last-child > .dropdown-toggle, .input-group-btn:first-child > .btn:not(:first-child), .input-group-btn:first-child > .btn-group:not(:first-child) > .btn {
-                border-top-left-radius: 4px;
-                border-bottom-left-radius: 4px;
-            }
-            .fileinput-cancel-button{
-                display: none;
-            }
-            .file-input{
-                width: 330px;
-            }
-            .hidden-xs {
-                display: unset !important;
-            }
-            .redraw-right .form-group-p{
-                padding-left: 30px;
-            }
-            .must{
-                color: red;
-                font-size: large;
-                font-weight: bold;
-                position: relative;
-                left: -10px;
-            }
-            .redraw-head a:hover,.redraw-head a:focus{
-                background: black;
-                color: white;
-            }
-            .layui-layer {
-                -webkit-overflow-scrolling: touch;
-                top: 35%;
-                left: 41%;
-                margin: 0;
-                padding: 0;
-                background-color: #fff;
-                -webkit-background-clip: content;
-                box-shadow: 1px 1px 50px rgba(0,0,0,.3);
-            }
-            .layui-layer-lan .layui-layer-btn {
-                padding: 10px;
-                text-align: right;
-                border-top: unset;
-            }
-            .layui-layer-lan[type=dialog] {
-                min-width: 280px;
-                border-radius: 11.5px;
-            }
-            .layui-layer-lan .layui-layer-title {
-                background: #333;
-                color: #fff;
-                border: none;
-                border-top-left-radius: 11.5px;
-                border-top-right-radius: 11.5px;
-            }
+
     </style>
 
     <div class="container" style="width: 98.5%;margin: unset;max-width: unset;padding: 5px">
-        @task.preview(row)
+        @task.preview(row,"Net")
         <div class="mws-panel grid_8" style="background: white!important;">
             <div class="mws-panel-body" style="border: unset">
                 <div class="mws-panel-content" style="width: 96%;padding-top: 0;padding-right: 0">
                     <hr>
                     <div class="redraw-head">
                         <h3 style="display: inline-block">结果图：</h3>
+                        <div class="dropdown" style="display: inline-block">
+                            <button class="btn btn-dark dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false" style="padding: 7px 30px;text-shadow: unset;border-radius: 7px;">
+                                下载结果图
+                            </button>
+                            <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 35px, 0px); top: 0px; left: 0px; will-change: transform;width: 150px">
+                                <a class="dropdown-item" onclick="down('jpg')">下载 jpg</a>
+                                <a class="dropdown-item" onclick="down('png')">下载 png</a>
+                                <a class="dropdown-item" onclick="downJson()">下载 json</a>
+                            </div>
+                        </div>
+@*                        <a class="button" style="margin-left: 20px;" onclick="refresh()">刷新网络图</a>*@
+@*                        <input type="text" id="search" onchange="search()" style="display: inline-block;width: 300px;margin-left: 100px"/>*@
                     </div>
                     <br>
-                    <div id="container" style="height: 840px">
-
-                    </div>
+                    <form id="Net" style="display: none" method="GET" enctype="multipart/form-data">
+                        <div id="cy" style="height: 600px;border:1px solid #8b8b8b9c;margin: 10px 0px 10px 0px;width: 67%;float: left;"></div>
+                        <div style="width: 26%;margin-left: 40px;display: inline-block">
+                            <hr>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label for="">基因节点形状：</label>
+                                </div>
+                                <div class="form-group">
+                                    <select name="gshape" id="gshape" style="width: 100%;">
+                                        <option value="ellipse">圆形</option>
+                                        <option value="triangle">三角形</option>
+                                        <option value="round-triangle">圆角三角形</option>
+                                        <option value="rectangle">矩形</option>
+                                        <option value="round-rectangle">圆角矩形</option>
+                                        <option value="bottom-round-rectangle">底部圆角矩形</option>
+                                        <option value="cut-rectangle">切角矩形</option>
+                                        <option value="barrel">桶形</option>
+                                        <option value="rhomboid">长斜方形</option>
+                                        <option value="diamond">菱形</option>
+                                        <option value="round-diamond">圆角菱形</option>
+                                        <option value="pentagon">五角形</option>
+                                        <option value="round-pentagon">圆角五角形</option>
+                                        <option value="hexagon">六边形</option>
+                                        <option value="round-hexagon">圆角六边形</option>
+                                        <option value="concave-hexagon">凹面六边形</option>
+                                        <option value="heptagon">七边形</option>
+                                        <option value="round-heptagon">圆角七边形</option>
+                                        <option value="octagon">八边形</option>
+                                        <option value="round-octagon">圆角八边形</option>
+                                        <option value="star">星形</option>
+                                        <option value="tag">标签</option>
+                                        <option value="round-tag">圆角标签</option>
+                                        <option value="vee">V型</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group-p" id="borcolor">
+                                <div class="form-group">
+                                    <label>基因节点颜色：</label>
+                                </div>
+                                <div class="form-group">
+                                    <div  class="evo-cp-wrap">
+                                        <input id="color1"  name="color1" value="" class="colorPicker evo-cp0" readonly="readonly">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label>基因节点透明度：</label>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="gopa" name="gopa" class="form-control" placeholder="数字" value="1" style="width: 65px;float: left;margin-right: 5px;margin-left: 10px;">
+                                </div>
+                            </div>
+                            <div id="showgfont">
+                                <div class="form-group-p">
+                                    <div class="form-group">
+                                        <label>基因名大小(0-不显示)：</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" id="gfont" name="gfont" class="form-control" placeholder="数字" value="12" style="width: 65px;float: left;margin-right: 5px;margin-left: 10px;">
+                                    </div>
+                                </div>
+                                <div class="form-group-p">
+                                    <div class="form-group">
+                                        <label>基因名颜色：</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <div  class="evo-cp-wrap">
+                                            <input id="color2"  name="color2" value="" class="colorPicker evo-cp0" readonly="readonly">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr style="margin-top: 0px;">
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label for="">环境因子节点形状：</label>
+                                </div>
+                                <div class="form-group">
+                                    <select name="eshape" id="eshape" style="width: 100%">
+                                        <option value="diamond">菱形</option>
+                                        <option value="ellipse">圆形</option>
+                                        <option value="triangle">三角形</option>
+                                        <option value="round-triangle">圆角三角形</option>
+                                        <option value="rectangle">矩形</option>
+                                        <option value="round-rectangle">圆角矩形</option>
+                                        <option value="bottom-round-rectangle">底部圆角矩形</option>
+                                        <option value="cut-rectangle">切角矩形</option>
+                                        <option value="barrel">桶形</option>
+                                        <option value="rhomboid">长斜方形</option>
+                                        <option value="round-diamond">圆角菱形</option>
+                                        <option value="pentagon">五角形</option>
+                                        <option value="round-pentagon">圆角五角形</option>
+                                        <option value="hexagon">六边形</option>
+                                        <option value="round-hexagon">圆角六边形</option>
+                                        <option value="concave-hexagon">凹面六边形</option>
+                                        <option value="heptagon">七边形</option>
+                                        <option value="round-heptagon">圆角七边形</option>
+                                        <option value="octagon">八边形</option>
+                                        <option value="round-octagon">圆角八边形</option>
+                                        <option value="star">星形</option>
+                                        <option value="tag">标签</option>
+                                        <option value="round-tag">圆角标签</option>
+                                        <option value="vee">V型</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group-p" id="borcolor">
+                                <div class="form-group">
+                                    <label>环境因子节点颜色：</label>
+                                </div>
+                                <div class="form-group">
+                                    <div  class="evo-cp-wrap">
+                                        <input id="color3"  name="color3" value="" class="colorPicker evo-cp0" readonly="readonly" >
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label>环境因子节点透明度：</label>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="eopa" name="eopa" class="form-control" placeholder="数字" value="1" style="width: 65px;float: left;margin-right: 5px;margin-left: 10px;">
+                                </div>
+                            </div>
+                            <div id="showefont">
+                                <div class="form-group-p">
+                                    <div class="form-group">
+                                        <label>环境因子名大小(0-不显示)：</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" id="efont" name="efont" class="form-control" placeholder="数字" value="12" style="width: 60px;float: left;margin-right: 5px;margin-left: 10px;">
+                                    </div>
+                                </div>
+                                <div class="form-group-p">
+                                    <div class="form-group">
+                                        <label>环境因子名颜色：</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <div  class="evo-cp-wrap">
+                                            <input id="color4"  name="color4" value="" class="colorPicker evo-cp0" readonly="readonly">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr style="margin-top: 0px;">
+                            <div class="form-group-p" id="borcolor">
+                                <div class="form-group">
+                                    <label>连线颜色：</label>
+                                </div>
+                                <div class="form-group">
+                                    <div  class="evo-cp-wrap">
+                                        <input id="color5"  name="color5" value="" class="colorPicker evo-cp0" readonly="readonly">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label>连线透明度：</label>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="opacity" name="opacity" class="form-control" placeholder="数字" value="0.4" style="width: 65px;float: left;margin-right: 5px;margin-left: 10px;">
+                                </div>
+                            </div>
+                            <input type="button" value="绘&nbsp;&nbsp;制" name="submit" class="btn btn-primary btn-dark" onclick="saveNet()" style="margin-left: 30px">
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 
-
-    <script type="text/javascript" src="/assets/enchart/echarts.min.js"></script>
-    <script type="text/javascript" src="/assets/enchart/echarts-gl.min.js"></script>
-    <script type="text/javascript" src="/assets/enchart/ecStat.min.js"></script>
-    <script type="text/javascript" src="/assets/enchart/dataTool.min.js"></script>
     <script>
-
 
             function formValidation() {
                 $("#signinForm").formValidation({
@@ -441,79 +388,110 @@
 
             }
 
+            function down(param) {
+                var pic="";
+                if(param=="jpg") pic=cy.jpg();
+                else pic=cy.png({"bg":"#fff"});
+                var a = document.createElement('a');          // 创建一个a节点插入的document
+                var event = new MouseEvent('click');          // 模拟鼠标click点击事件
+                a.download = 'netPic';                 // 设置a节点的download属性值
+                a.href = pic;                                 // 将图片的src赋值给a节点的href
+                a.dispatchEvent(event);
+            }
+
+            function downJson() {
+                var ele = document.createElement('a');
+                ele.download = "test.json";
+                var blob = new Blob([JSON.stringify(cy.json(), null, 2)],{type:'application/json,charset=utf-8;'});
+                var blob = new Blob([JSON.stringify(cy.json())]);
+                ele.href = URL.createObjectURL(blob);
+                document.body.appendChild(ele);
+                ele.click();
+                document.body.removeChild(ele);
+                console.log(JSON.stringify(cy.json()));
+            }
+
+
+            // function refresh() {
+            //     window.cy.elements().remove();
+            //     loading();
+            // }
+            var cy;
+
+            function loading(){
+                $.ajax({
+                    url:"/CloudPlatform/SoftTool/getNetData?taskname=@row.taskname",
+                    type:"post",
+                    success:function (data) {
+
+                        cy = window.cy = cytoscape({
+                            container: document.getElementById('cy'),
+                            layout: {
+                                name: 'cose',
+                                idealEdgeLength: 100,
+                                nodeOverlap: 20,
+                                refresh: 20,
+                                fit: true,
+                                padding: 30,
+                                randomize: false,
+                                componentSpacing: 100,
+                                nodeRepulsion: 400000,
+                                edgeElasticity: 100,
+                                nestingFactor: 5,
+                                gravity: 80,
+                                numIter: 1000,
+                                initialTemp: 200,
+                                coolingFactor: 0.95,
+                                minTemp: 1.0
+                            },
+                            style: data.selector,
+                            elements: data.rows,
+                            minZoom: 1e-1,
+                            maxZoom: 5,
+                            wheelSensitivity: 0.05
+                        });
+                        cy.unbind('click');
+                        cy.bind('click', function(e){
+                            if (e.target === cy)  {
+                                cy.edges().removeClass('highlighted');
+                            }
+                            else if(e.target.group() == "nodes") {
+                                if(cy.edges("[target='" + e.target.id() + "']").hasClass('highlighted')||cy.edges("[source='" + e.target.id() + "']").hasClass('highlighted')){
+                                    cy.edges().removeClass('highlighted');
+                                }else{
+                                    cy.edges().removeClass('highlighted');
+                                    cy.edges("[target='" + e.target.id() + "']").addClass('highlighted');
+                                    cy.edges("[source='" + e.target.id() + "']").addClass('highlighted');
+                                }
+                            }else {
+                                if(cy.edges("[id='" + e.target.id() + "']").hasClass('highlighted'))
+                                    cy.edges("[id='" + e.target.id() + "']").removeClass('highlighted');
+                                else cy.edges("[id='" + e.target.id() + "']").addClass('highlighted');
+                            }
+                        });
+                        $.each(data.elements,function (i,v) {
+                            if(i.indexOf("color")>=0) $("#"+i).colorpicker({color: v, defaultPalette: 'web'});
+                            else $("#"+i).val(v);
+                        });
+                        $(".evo-cp-wrap").css("width", "120px");
+                        $(".evo-cp-wrap").css("float", "left");
+                        $(".colorPicker").attr("readonly", "readonly");
+                    }
+                });
+            }
+
+
+
 
             $(document).ready(function () {
                 if("@row.status"=="已完成"){
-                    $("#container").show();
-                    $.ajax({
-                        url:"/CloudPlatform/SoftTool/getNetData?taskname=@row.taskname",
-                        type:"post",
-                        success:function (data) {
-                            var dom = document.getElementById("container");
-                            var myChart = echarts.init(dom);
-                            var app = {};
-                            option = null;
-                            myChart.showLoading();
-                            console.log(data.rows);
-
-                            // $.get('/assets/test/webkit-dep.json', function (webkitDep) {
-                            //     console.log(webkitDep);
-                                myChart.hideLoading();
-                                option = {
-                                    legend: {
-                                        data: ['GeneId', 'Environment']
-                                    },
-                                    toolbox: {
-                                        feature: {
-                                            saveAsImage: {}
-                                        }
-                                    },
-                                    series: [{
-                                        type: 'graph',
-                                        layout: 'force',
-                                        animation: false,
-                                        label: {
-                                            position: 'right',
-                                            formatter: '{b}'
-                                        },
-                                        draggable: true,
-                                        data: data.rows.nodes.map(function (node, idx) {
-                                            node.id = idx;
-                                            return node;
-                                        }),
-                                        categories: data.rows.categories,
-                                        force: {
-                                            edgeLength: 5,
-                                            repulsion: 20,
-                                            gravity: 0.2
-                                        },
-                                        edges: data.rows.links
-                                    }]
-                                };
-
-                                myChart.setOption(option);
-                            // }
-                            // );
-                            if (option && typeof option === "object") {
-                                myChart.setOption(option, true);
-                            }
-                        }
-                    });
+                    $("#Net").show();
+                    loading();
                 }
             });
 
 
-            function DrawBox() {
-                var num=checkcolor();
-                if(num>0){
-                    swal({
-                        title: "颜色数量必须与分组一致",
-                        text: "分组数量为"+colornum+",当前选择颜色数量为"+num,
-                        type: "warning",
-                        confirmButtonText: "确认"
-                    });
-                    return;
-                }
+            function saveNet() {
                 var element = "<div id='content'><span id='info'>绘图中，请耐心等待...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
                 var index = layer.alert(element, {
                     skin: 'layui-layer-lan',
@@ -521,22 +499,19 @@
                     title: "提醒",
                     btn: []
                 });
-                var form1 = new FormData($("#Boxplot")[0]);
+                var form1 = new FormData($("#Net")[0]);
                 $.ajax({
-                    url: "/CloudPlatform/SoftTool/redrawBox?taskname=@row.taskname",
+                    url: "/CloudPlatform/SoftTool/redrawNet?taskname=@row.taskname",
                     type: "post",
                     processData: false,
                     contentType: false,
                     data: form1,
                     success: function (data) {
-                        $("#redraw_pic").attr("src","/CloudPlatform/pic?path="+data.pics+"&num="+Math.random());
+                        loading();
                         layer.close(index);
                     }
                 });
             }
-
-
-
 
 
     </script>

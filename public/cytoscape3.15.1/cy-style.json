@@ -1,0 +1,57 @@
+[{
+  "selector": "node",
+  "style": {
+    "width": "mapData(score, 0, 0.006769776522008331, 20, 60)",
+    "height": "mapData(score, 0, 0.006769776522008331, 20, 60)",
+    "content": "data(name)",
+    "font-size": "12px",
+    "text-valign": "center",
+    "text-halign": "center",
+    "text-outline-width": "2px"
+  }
+}, {
+  "selector": "node[group='gene']",
+  "style": {
+    "background-color": "#555",
+    "text-outline-color": "#555",
+    "color": "#fff"
+  }
+}, {
+  "selector": "node[group='evi']",
+  "style": {
+    "background-color": "#5da5fb",
+    "text-outline-color": "#5da5fb",
+    "shape": "diamond",
+    "color": "#fff"
+  }
+}, {
+  "selector": "node:selected",
+  "style": {
+    "border-width": "6px",
+    "border-color": "#AAD8FF",
+    "border-opacity": "0.5",
+    "background-color": "#993399",
+    "text-outline-color": "#993399"
+  }
+}, {
+  "selector": "edge",
+  "style": {
+    "curve-style": "haystack",
+    "haystack-radius": "0.5",
+    "opacity": "0.4",
+    "line-color": "#d0b7d5",
+    "width": "mapData(weight, 0, 1, 1, 8)",
+    "overlay-padding": "3px",
+    "font-size": "12px"
+  }
+}, {
+  "selector": "edge[label].highlighted",
+  "style": {
+    "line-color": "#2a6cd6",
+    "target-arrow-color": "#2a6cd6",
+    "opacity": 0.7,
+    "label": "data(label)",
+    "color": "#000",
+    "edge-text-rotation": "autorotate"
+  }
+}]

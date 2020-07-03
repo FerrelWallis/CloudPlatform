@@ -236,44 +236,23 @@
                         <strong>
                             功能：</strong>
                         <br>
-                        用一个带有表头的，且以tab符分隔的表格数据绘制一个盒型图                            </p>
+                        用一个带有表头的，且以tab符分隔的表格数据绘制一个盒型图
+                    </p>
                     <br>
-                    <p>
-                        <strong>
-                            输入：</strong>
-                        <br>
-                        上传文件格式说明：格式如下，数据与数据之间务必用制表符隔开(tab符)，不能用空格，制图时将以第一行为x轴                            </p>
-                    <blockquote>
-                        <pre>y1	y2	y3
-                            1	2	3
-                            3	4	3
-                            99	88	66
-                            7	5	6
-                            7	8	9
-                            66	88	99
-                            7	9	3
-                            12	8	15
-                            13	20	5
-                        </pre>
-                    </blockquote>
+                    <p><strong>输入：</strong><br>上传文件格式说明：格式如下，数据与数据之间务必用制表符隔开(tab符)，不能用空格，制图时将以第一行为x轴</p>
                     <br>
-                    <strong>
-                        参数：</strong>
+                    <strong>参数：</strong>
+                    <p></p>
                     <p>
-                    </p><p>
                     ①自定义颜色：不填的话用系统默认颜色。填写的话，要注意颜色数量要与文件个数相等，①添加/修改颜色用十六进制格式或英文书写(如有三个输入文件，那么可以定义black,green,red或#000000,#008000,#FF0000，注意每个颜色要用逗号隔开)， ② 还有另外一种添加颜色的方法：右边有调色板可以选取需要的颜色，点击带颜色小方格，选中需要的颜色后然后点击添加改颜色按钮就增加了一个颜色。                            </p>
-                    <p>
-                        ②y取值范围：最小值--最大值                            </p>
+                    <p>②y取值范围：最小值--最大值</p>
                     <p></p>
                     <br>
-                    <p>
-                        <strong>
-                            输出：</strong>
-                    </p>
-                    <p>
-                        程序将输出盒型图，提供常见图片格式的图片下载                            </p>
+                    <p><strong>输出：</strong></p>
+                    <p>程序将输出盒型图，提供常见图片格式的图片下载</p>
                     <br>
-                    <p></p>                          </div>
+                    <p></p>
+                </div>
                 <div id="history" class="form1_ins tab-pane fade">
                     <a id="btn-refresh" class="btn_refresh mws-i-24 i-refresh-3" onclick="refresh()">刷新状态</a>
                     <ul id="hisul" style="margin-top: 15px">
@@ -333,15 +312,9 @@
             var running=false;
 
             $(function () {
+                formValidation();
                 loadHistory();
-                let date = new Date();
-                let month = date.getMonth() + 1;
-                let day = date.getDate();
-                let h = date.getHours();
-                let m = date.getMinutes();
-                let s = date.getSeconds();
-                let name = "BOX"+month + day + h + m + s ;
-                $("#mytaskname").val(name);
+                getTaskName();
             });
 
             var cur=true;
@@ -504,49 +477,41 @@
             }
 
             function checkRate(input) {
-                var re = /^(-?\d+)(\.\d+)?$/; //判断字符串是否为浮点数
+                // var re = /^(-?\d+)(\.\d+)?$/;
+                var re=/^[+-]?[\d]+([\.][\d]+)?([Ee][+-]?[\d]+)?$/;//判断字符串是否为浮点数或科学计数法
                 if (!re.test(input)) {
                     return false;
                 }else return true;
             }
 
             function boxplot() {
-                if(@session.get("userId").isEmpty){
-                    swal({
-                        title: "尚未登录",
-                        text: "请先登录账号",
-                        type: "warning",
-                        confirmButtonText: "确认"
-                    })
-                }else {
-                    var form = $("#Boxplot")
-                    var fv = form.data("formValidation");
-                    fv.validate();
-                    if (fv.isValid()) {
-                        checkTable();
-                        if(flagtable&&checktaskname()){
-                            var form1 = new FormData($("#Boxplot")[0]);
-                            $.ajax({
-                                url: "/CloudPlatform/SoftTool/runBoxplot",
-                                type: "post",
-                                processData: false,
-                                contentType: false,
-                                data: form1,
-                                success: function (data) {
-                                    removeul();
-                                    loadHistory();
-                                    $("#his_tab1").addClass("active");
-                                    $("#out_tab1").removeClass("active");
-                                    $("#ins_tab1").removeClass("active");
-                                    $("#history").addClass("active").addClass("in");
-                                    $("#example").removeClass("active");
-                                    $("#instruction").removeClass("active");
-                                    getTaskName();
-                                }
-                            });
-                        }
-
+                var form = $("#Boxplot")
+                var fv = form.data("formValidation");
+                fv.validate();
+                if (fv.isValid()) {
+                    checkTable();
+                    if(flagtable&&checktaskname()){
+                        var form1 = new FormData($("#Boxplot")[0]);
+                        $.ajax({
+                            url: "/CloudPlatform/SoftTool/runBoxplot",
+                            type: "post",
+                            processData: false,
+                            contentType: false,
+                            data: form1,
+                            success: function (data) {
+                                removeul();
+                                loadHistory();
+                                $("#his_tab1").addClass("active");
+                                $("#out_tab1").removeClass("active");
+                                $("#ins_tab1").removeClass("active");
+                                $("#history").addClass("active").addClass("in");
+                                $("#example").removeClass("active");
+                                $("#instruction").removeClass("active");
+                                getTaskName();
+                            }
+                        });
                     }
+
                 }
             }
 
@@ -570,7 +535,7 @@
                                     type: 'POST',
                                     url: '@routes.DutyController.checktaskname()',
                                     message: "任务编号重复，请重新输入",
-                                    delay: 1000
+                                    // delay: 1000
                                 }
                             }
                         },

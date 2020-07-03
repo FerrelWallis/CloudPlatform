@@ -1,8 +1,10 @@
 package filters
 
 import akka.stream.Materializer
+import controllers.routes
 import javax.inject._
 import play.api.mvc._
+
 import scala.concurrent.{ExecutionContext, Future}
 
 /**
@@ -29,5 +31,13 @@ class ExampleFilter @Inject()(
       result.withHeaders("X-ExampleFilter" -> "foo")
     }
   }
+
+//  override def apply(f: (RequestHeader) => Future[Result])(rh: RequestHeader): Future[Result] = {
+//    if (rh.session.get("userId").isEmpty && rh.path != "/" && !rh.path.contains("home") && !rh.path.contains("allsoft") && !rh.path.contains("/assets/") ) {
+//      Future.successful(Results.Redirect(routes.HomeController.home()))
+//    } else {
+//      f(rh)
+//    }
+//  }
 
 }

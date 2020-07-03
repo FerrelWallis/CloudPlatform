@@ -30,18 +30,19 @@ trait Tables {
    *  @param finitime Database column finitime SqlType(TEXT)
    *  @param status Database column status SqlType(TEXT)
    *  @param input Database column input SqlType(TEXT)
-   *  @param param Database column param SqlType(TEXT) */
-  case class DutysRow(id: Int, taskname: String, uid: Int, sabbrename: String, sname: String, subtime: String, finitime: String, status: String, input: String, param: String)
+   *  @param param Database column param SqlType(TEXT)
+   *  @param elements Database column elements SqlType(TEXT) */
+  case class DutysRow(id: Int, taskname: String, uid: Int, sabbrename: String, sname: String, subtime: String, finitime: String, status: String, input: String, param: String, elements: String)
   /** GetResult implicit for fetching DutysRow objects using plain SQL queries */
   implicit def GetResultDutysRow(implicit e0: GR[Int], e1: GR[String]): GR[DutysRow] = GR{
     prs => import prs._
-    DutysRow.tupled((<<[Int], <<[String], <<[Int], <<[String], <<[String], <<[String], <<[String], <<[String], <<[String], <<[String]))
+    DutysRow.tupled((<<[Int], <<[String], <<[Int], <<[String], <<[String], <<[String], <<[String], <<[String], <<[String], <<[String], <<[String]))
   }
   /** Table description of table dutys. Objects of this class serve as prototypes for rows in queries. */
   class Dutys(_tableTag: Tag) extends profile.api.Table[DutysRow](_tableTag, Some("cloudplatform"), "dutys") {
-    def * = (id, taskname, uid, sabbrename, sname, subtime, finitime, status, input, param) <> (DutysRow.tupled, DutysRow.unapply)
+    def * = (id, taskname, uid, sabbrename, sname, subtime, finitime, status, input, param, elements) <> (DutysRow.tupled, DutysRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = ((Rep.Some(id), Rep.Some(taskname), Rep.Some(uid), Rep.Some(sabbrename), Rep.Some(sname), Rep.Some(subtime), Rep.Some(finitime), Rep.Some(status), Rep.Some(input), Rep.Some(param))).shaped.<>({r=>import r._; _1.map(_=> DutysRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get, _8.get, _9.get, _10.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = ((Rep.Some(id), Rep.Some(taskname), Rep.Some(uid), Rep.Some(sabbrename), Rep.Some(sname), Rep.Some(subtime), Rep.Some(finitime), Rep.Some(status), Rep.Some(input), Rep.Some(param), Rep.Some(elements))).shaped.<>({r=>import r._; _1.map(_=> DutysRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get, _8.get, _9.get, _10.get, _11.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column id SqlType(INT), AutoInc, PrimaryKey */
     val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
@@ -63,6 +64,8 @@ trait Tables {
     val input: Rep[String] = column[String]("input")
     /** Database column param SqlType(TEXT) */
     val param: Rep[String] = column[String]("param")
+    /** Database column elements SqlType(TEXT) */
+    val elements: Rep[String] = column[String]("elements")
   }
   /** Collection-like TableQuery object for table Dutys */
   lazy val Dutys = new TableQuery(tag => new Dutys(tag))

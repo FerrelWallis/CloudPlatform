@@ -16,7 +16,54 @@ object FilesUtils {
 
   def main(args: Array[String]): Unit = {
 
-    val dutyDir="F:/CloudPlatform/users/1/gokegg"
+
+    val files = new File("F:\\CloudPlatform\\users\\1\\PCA624165229\\out").listFiles().map(_.getAbsolutePath)
+    val name=new File("F:\\CloudPlatform\\users\\1\\PCA624165229\\out").listFiles().map(_.getName)
+    println(files.toList)
+    println(name.toList)
+
+//    val genus=FileUtils.readLines(new File("F:\\CloudPlatform\\R\\net\\data\\net_genus.txt")).asScala
+//    val g=genus.map{line=>
+//      line.trim.split("\t").head
+//    }
+//    println(g.length)
+//
+//    val evi=FileUtils.readLines(new File("F:\\CloudPlatform\\R\\net\\data\\net_env.txt")).asScala
+//    val e=evi.map{line=>
+//      line.trim.split("\t").head
+//    }
+//
+//    val list=e.drop(1)++g.drop(1)
+//    var count=0;
+//    val nodes=list.map{x=>
+//      count=count+1
+//      val id=list.indexOf(x).toString
+//      val xy=Json.obj("x"->Math.random()*500,"y"->Math.random()*500)
+//      val (group,score)=
+//        if(count<=e.drop(1).length) ("evi",0.006769776522008331) //环境node
+//        else ("gene",0.0022841757103715943) //基因node
+//      val data=Json.obj("id"->id,"name"->x,"score"->score,"group"->group)
+//      Json.obj("data"->data,"position"->xy,"group"->"nodes")
+//    }
+//
+//    val result=FileUtils.readLines(new File("F:\\CloudPlatform\\R\\net\\test\\result.xls")).asScala
+//    val edges=result.drop(1).map{x=>
+//      val e = x.split("\"").filter(_.trim!="")
+//      val source=list.indexOf(e(1))
+//      val target=list.indexOf(e(2))
+//      val weight=e(3).trim.split("\t").last.toDouble
+//      val data=Json.obj("source"->source,"target"->target,"weight"->weight)
+//      Json.obj("data"->data,"group"->"edges")
+//    }
+//
+//    val row=nodes++edges
+//
+//
+//
+//    println(Json.obj("rows"->row).toString())
+
+
+//    val dutyDir="F:/CloudPlatform/users/1/gokegg"
 
 //    Utils.pdf2Png(dutyDir+"/out/gokegg.Go.enrich.pdf",dutyDir+"/temp/gokegg.Go.enrich.png")
 //    Utils.pdf2Png(dutyDir+"/out/gokegg.Ko.enrich.pdf",dutyDir+"/temp/gokegg.Ko.enrich.png")

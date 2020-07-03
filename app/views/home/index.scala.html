@@ -3,82 +3,69 @@
 
     <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("mycss/index.css")" media="screen" />
 
+    <script type="text/javascript" src="@routes.Assets.versioned("js/jquery-ui.js")"></script>
+
     <style>
             .ui-widget-content, .ui-widget-content a:hover {
                 color: #333333;
             }
-            ul#latelist li,ul#hotlist li {
+            .mws-report .mws-report-content {
+                width: 65%;
+                height: 80%;
+                position: relative;
+                margin-left: 30%;
+                margin-top: 25px;
+                display: block;
+                padding: 3px 0px 8px 10px;
+            }
+            ul#latelist li, ul#hotlist li {
                 float: left;
                 margin: 8px;
-                padding: 4px 11px;
+                padding: 4px 0px 4px 11px;
             }
     </style>
 
-@*    <div class="container" style="height: 400px">*@
-@*        <div class="container-fluid" style="padding: 0 0 0 ;background: #ffffff;height: 100%">*@
-@*            <div id="myNiceCarousel" class="carousel slide" data-ride="carousel" style="height: 100%">*@
-@*                    <!-- 圆点指示器 -->*@
-@*                <ol class="carousel-indicators">*@
-@*                    <li data-target="#myNiceCarousel" data-slide-to="0" class="active"></li>*@
-@*                    <li data-target="#myNiceCarousel" data-slide-to="1" class=""></li>*@
-@*                    <li data-target="#myNiceCarousel" data-slide-to="2" class=""></li>*@
-@*                    <li data-target="#myNiceCarousel" data-slide-to="3" class=""></li>*@
-@*                    <li data-target="#myNiceCarousel" data-slide-to="4" class=""></li>*@
-@*                </ol>*@
-@*                    <!-- 轮播项目 -->*@
-@*                <div class="carousel-inner" style="height: 100%">*@
-@*                    <div class="item active" style="height: 100%">*@
-@*                        <a href="#">*@
-@*                            <img alt="First slide" src="/assets/images/main/mianpic1.jpg" style="height:100%;width:100%;">*@
-@*                        </a>*@
-@*                        <div class="carousel-caption">*@
-@*                        </div>*@
-@*                    </div>*@
-@*                    <div class="item" style="height: 100%">*@
-@*                        <a href="#">*@
-@*                            <img alt="First slide" src="/assets/images/main/mianpic2.jpg" style="height:100%;width:100%;">*@
-@*                        </a>*@
-@*                        <div class="carousel-caption">*@
-@*                        </div>*@
-@*                    </div>*@
-@*                    <div class="item" style="height: 100%">*@
-@*                        <a href="#">*@
-@*                            <img alt="First slide" src="/assets/images/main/mainpic3.jpg" style="height:100%;width:100%;">*@
-@*                        </a>*@
-@*                        <div class="carousel-caption">*@
-@*                        </div>*@
-@*                    </div>*@
-@*                    <div class="item" style="height: 100%">*@
-@*                        <a href="#">*@
-@*                            <img alt="First slide" src="/assets/images/main/mainpic4.jpg" style="height:100%;width:100%;">*@
-@*                        </a>*@
-@*                        <div class="carousel-caption">*@
-@*                        </div>*@
-@*                    </div>*@
-@*                    <div class="item" style="height: 100%">*@
-@*                        <a href="#">*@
-@*                            <img alt="First slide" src="/assets/images/main/mianpic1.jpg" style="height:100%;width:100%;">*@
-@*                        </a>*@
-@*                        <div class="carousel-caption">*@
-@*                        </div>*@
-@*                    </div>*@
-@*                </div>*@
-@*                    <!-- 项目切换按钮 -->*@
-@*                <a class="left carousel-control left_arrow" href="#myNiceCarousel" data-slide="prev"></a>*@
-@*                <a class="right carousel-control right_arrow" href="#myNiceCarousel" data-slide="next"></a>*@
-@*            </div>*@
-@*        </div>*@
-@*    </div>*@
+
 
     <div class="container" style="padding-top: 20px;">
         <div class="mws-panel grid_8">
             <div class="mws-tabs">
-                <ul>
-                    <li><a href="#hotest" onclick="loadhot()">热门工具</a></li>
-                    <li><a href="#latest" onclick="loadlate()">最新工具</a></li>
-                </ul>
+                <div style="padding: 1em 0em 1em 1em;">
+                    <ul style="margin-left: 12px">
+                        <li><a href="#hotest" onclick="loadhot()">热门工具</a></li>
+                        <li><a href="#latest" onclick="loadlate()">最新工具</a></li>
+                    </ul>
+                </div>
+
                 <div id="hotest" style="padding: 1em 0em 1em 1em;">
                     <ul id="hotlist" class="ui-widget ui-helper-clearfix">
+                        <li class="mws-report">
+                            <a onclick="checklog('/CloudPlatform/SoftPage/GO')">
+                                <div class="mws-report-icon mws-ic GO"></div>
+                            </a>
+                            <div class="mws-report-content">
+                                <div class="likeable" style="float:right;">
+                                    <div id="fmsg1" style="display:none;">
+                                        <div class="tooltip fade left in" style="width: 75px;bottom: 2px;right: 19px;display: block;">
+                                            <div class="tooltip-arrow"></div><div class="tooltip-inner">点击收藏</div>
+                                        </div>
+                                    </div>
+                                    <div id="fmsg2" style="display:none;">
+                                        <div class="tooltip fade left in" style="width: 75px;bottom: 2px;right: 19px;display: block;">
+                                            <div class="tooltip-arrow"></div>
+                                            <div class="tooltip-inner">取消收藏</div>
+                                        </div>
+                                    </div>
+                                    <i class="icon icon-star yellow-icon" onmouseover="mover($(this))" onmouseout="mout($(this))" onclick="collect($(this),1)"></i>
+                                </div>
+                                <div style="height: 115px" onclick="checklog('/CloudPlatform/SoftPage/GO')">
+                                    <a>
+                                        <h4>GO富集分析</h4>
+                                        <p style="padding-right: 10px">应用超几何检验，找出与整个基因组背景相比，在差异表达基因中显著富集的GO/KO条目</p>
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
                     </ul>
                 </div>
                 <div id="latest" style="padding: 1em 0em 1em 1em;">
@@ -94,6 +81,7 @@
             $(document).ready(function () {
                 loadhot();
                 loadlate();
+                @*if("@login"=="false") openSignin();*@
             });
 
             function loadlate() {
@@ -104,12 +92,15 @@
                     success: function (data) {
                         var html="";
                         $.each(data.rows,function (i,v) {
-                            html += "<li class='mws-report'>" +v.pics+ "<div class='mws-report-content'>" + v.description+
+                            html += "<li class='mws-report'>" + v.pics + "<div class='mws-report-content'>" +
                                     "<div class='likeable' style='float:right;'><div id='fmsg1' style='display:none;'>" +
                                     "<div class='tooltip fade left in' style='width: 75px;bottom: 2px;right: 19px;display: block;'>" +
-                                    "<div class='tooltip-arrow'></div><div class='tooltip-inner'>点击收藏</div></div></div>" +
-                                    "<div id='fmsg2' style='display:none;'><div class='tooltip fade left in' style='width: 75px;bottom: 2px;right: 19px;display: block;'>" +
-                                    "<div class='tooltip-arrow'></div><div class='tooltip-inner'>取消收藏</div></div></div>" + v.like+ "</div></div></li>";
+                                    "<div class='tooltip-arrow'></div><div class='tooltip-inner'>点击收藏</div>" +
+                                    "</div></div><div id='fmsg2' style='display:none;'>" +
+                                    "<div class='tooltip fade left in' style='width: 75px;bottom: 2px;right: 19px;display: block;'>" +
+                                    "<div class='tooltip-arrow'></div><div class='tooltip-inner'>取消收藏</div></div></div>" + v.like +
+                                    "</div>"+v.description+"</div></li>";
+
                         });
                         $("#latelist").html(html);
                     }
@@ -124,12 +115,14 @@
                     success: function (data) {
                         var html="";
                         $.each(data.rows,function (i,v) {
-                            html += "<li class='mws-report'>" +v.pics+ "<div class='mws-report-content'>" + v.description+
+                            html += "<li class='mws-report'>" + v.pics + "<div class='mws-report-content'>" +
                                     "<div class='likeable' style='float:right;'><div id='fmsg1' style='display:none;'>" +
                                     "<div class='tooltip fade left in' style='width: 75px;bottom: 2px;right: 19px;display: block;'>" +
-                                    "<div class='tooltip-arrow'></div><div class='tooltip-inner'>点击收藏</div></div></div>" +
-                                    "<div id='fmsg2' style='display:none;'><div class='tooltip fade left in' style='width: 75px;bottom: 2px;right: 19px;display: block;'>" +
-                                    "<div class='tooltip-arrow'></div><div class='tooltip-inner'>取消收藏</div></div></div>" + v.like+ "</div></div></li>";
+                                    "<div class='tooltip-arrow'></div><div class='tooltip-inner'>点击收藏</div>" +
+                                    "</div></div><div id='fmsg2' style='display:none;'>" +
+                                    "<div class='tooltip fade left in' style='width: 75px;bottom: 2px;right: 19px;display: block;'>" +
+                                    "<div class='tooltip-arrow'></div><div class='tooltip-inner'>取消收藏</div></div></div>" + v.like +
+                                    "</div>"+v.description+"</div></li>";
                         });
                         $("#hotlist").html(html);
                     }

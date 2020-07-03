@@ -35,7 +35,7 @@
     background: url(../images/softpic/heatmap.jpg)50% center no-repeat;
     background-size: contain;
 }
-.GOKEGG{
+.GO{
     background: url(../images/softpic/go.jpg)50% center no-repeat;
     background-size: contain;
 }
@@ -45,6 +45,10 @@
 }
 .PCA{
     background: url(../images/softpic/pca.jpg)50% center no-repeat;
+    background-size: contain;
+}
+.Venn{
+    background: url(../images/softpic/Jvenn.png) 50% center no-repeat;
     background-size: contain;
 }
 
@@ -661,7 +665,8 @@
 }
 
 .yellow-icon{
-    color: #fcf811;
+    /*color: #fcf811;*/
+    color: #ff4d17;
 }
 
 

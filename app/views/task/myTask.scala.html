@@ -90,6 +90,30 @@
                 -webkit-transition: unset;
                 transition: unset;
             }
+            div.dataTables_wrapper {
+                background: #1f3851;
+            }
+            .mws-panel .mws-panel-header {
+                /*background: url(../../images/core/mws-panel-header-bg.png) repeat-x;*/
+                height: 25px;
+                position: relative;
+                padding: 12px;
+                font-size: 14px;
+                -webkit-border-radius: 4px;
+                -moz-border-radius: 4px;
+                -o-border-radius: 4px;
+                -khtml-border-radius: 4px;
+                border-radius: 4px;
+                background: #1f3851;
+            }
+            .mws-panel .mws-panel-header span.mws-i-24 {
+                padding-left: 40px;
+                background-position: 8px center;
+                color: white;
+            }
+            div.dataTables_wrapper .dataTables_paginate span.paginate_button{
+                background: #1f3851;
+            }
     </style>
 
 
@@ -137,6 +161,20 @@
     <script type="text/javascript" src="/assets/js/jquery-ui.js"></script>
 
     <script>
+
+
+            function toRedraw(url) {
+                console.log(url);
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    contentType:"application/json",
+                    success: function(result){
+                        //请求正确之后的操作
+                    }
+                });
+            }
+
             $(document).ready(function () {
 
                 var mytask;
@@ -169,6 +207,7 @@
                             {mDataProp:"finish"},
                             {mDataProp:"status"}
                         ],
+                        aaSorting:[[2,"desc"]], //设置默认排序
                         contentType: "application/x-www-form-urlencoded"
 
                     });
@@ -243,7 +282,6 @@
 
                 });
 
-
                 // $("#preview").click(function () {
                 //     var taskname=$('tr.selected').find("#taskname").text();
                 //     if(taskname==""){
@@ -304,9 +342,10 @@
                 });
 
 
-
-
             });
+
+
+
 
             function formValidation() {
                 $("#signinForm").formValidation({

@@ -2,7 +2,6 @@
 @home.main("CCA/RDA"){
 
     <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("css/test/mysoft.css")" media="screen" />
-    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("palette/evol-colorpicker.min.css")" media="screen" />
     <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("bootstrap-fileinput-master/css/fileinput.css")" media="screen" />
 
     <!--button弹出操作-->
@@ -20,6 +19,13 @@
             }
             .mysoft-content-right .tab-content, .mysoft-content-left form {
                 box-shadow: unset;
+            }
+            .mysoft-content-left form {
+                margin-top: 0;
+                height: 100%;
+                overflow-y: unset;
+                scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.2);
+                scrollbar-width: thin;
             }
             .img-thumbnail {
                 display: inline-block;
@@ -124,7 +130,7 @@
     </style>
 
     <div class="col-md-12 mysoft-content" style="width: 98%;">
-        <div class=" mysoft-content-left   whitebox" style="width: 785px;">
+        <div class=" mysoft-content-left whitebox" style="width: 771px;overflow-y: auto">
             <form id="CCA" method="GET" enctype="multipart/form-data" class="well form-inline" style="box-sizing: border-box!important;">
                 <img class="tools-img" src="/assets/images/softpic/cca.jpg">
                 <h3 class="tools-title">CCA/RDA分析</h3>
@@ -149,7 +155,7 @@
                             </div>
                         </div>
                         <div class="form-group-extra">
-                            <em><a href="/CloudPlatform/SoftTool/downloadExamples?name=CCA_otu.txt" target="_blank">示例文件</a></em>
+                            <em><a href="/CloudPlatform/SoftTool/downloadExamples?name=CCA_otu.txt">示例文件</a></em><span class="must">&nbsp;&nbsp;*</span>
                         </div>
                         <br>
                         <br>
@@ -166,7 +172,7 @@
                             </div>
                         </div>
                         <div class="form-group-extra">
-                            <em><a href="/CloudPlatform/SoftTool/downloadExamples?name=CCA_env.txt" target="_blank">示例文件</a></em>
+                            <em><a href="/CloudPlatform/SoftTool/downloadExamples?name=CCA_env.txt">示例文件</a></em>
                         </div>
                         <br>
                         <br>
@@ -212,7 +218,7 @@
                             </div>
                         </div>
                         <div class="form-group-extra">
-                            <em><a href="/CloudPlatform/SoftTool/downloadExamples?name=CCA_group.txt" target="_blank">示例文件</a></em>
+                            <em><a href="/CloudPlatform/SoftTool/downloadExamples?name=CCA_group.txt">示例文件</a></em>
                         </div>
                         <br>
                         <br>
@@ -447,6 +453,7 @@
             }
 
             $("#mytaskname").keyup(function () {
+
                 checktaskname();
             });
 
@@ -471,15 +478,9 @@
             var running=false;
 
             $(document).ready(function () {
+                formValidation();
                 loadHistory();
-                let date = new Date();
-                let month = date.getMonth() + 1;
-                let day = date.getDate();
-                let h = date.getHours();
-                let m = date.getMinutes();
-                let s = date.getSeconds();
-                let name = "CCA"+month + day + h + m + s ;
-                $("#mytaskname").val(name);
+                getTaskName();
             });
 
             var cur=true;
@@ -545,7 +546,7 @@
 
             function checkrunning() {
                 $.ajax({
-                    url: "/CloudPlatform/MyTasks/getDutysByType?sabbrename=Boxplot",
+                    url: "/CloudPlatform/MyTasks/getDutysByType?sabbrename=CCA",
                     type: "post",
                     success: function (data) {
                         if(data.run==true) running=true;
@@ -694,8 +695,6 @@
                                 }else name.push(row[j]);
                             }
                         }
-
-
                     }
                     flagtable=true;
                     return true;
@@ -826,7 +825,8 @@
             }
 
             function checkRate(input) {
-                var re = /^(-?\d+)(\.\d+)?$/; //判断字符串是否为浮点数
+                // var re = /^(-?\d+)(\.\d+)?$/;
+                var re=/^[+-]?[\d]+([\.][\d]+)?([Ee][+-]?[\d]+)?$/;//判断字符串是否为浮点数或科学计数法
                 if (!re.test(input)) {
                     return false;
                 }else return true;

@@ -24,10 +24,10 @@ import utils.FilesUtils.test
 
 class DutyController @Inject()(cc: ControllerComponents,dutydao:dutyDao)(implicit exec: ExecutionContext) extends AbstractController(cc) {
 
-  def insertDuty(taskname:String,uid:String,sabbrename:String,sname:String,input:String,param:String) ={
+  def insertDuty(taskname:String,uid:String,sabbrename:String,sname:String,input:String,param:String,elements:String) ={
     val time=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date)
 
-    val row = DutysRow(0,taskname,Integer.parseInt(uid),sabbrename,sname,time,"","运行中",input,param)
+    val row = DutysRow(0,taskname,Integer.parseInt(uid),sabbrename,sname,time,"","运行中",input,param,elements)
     Await.result(dutydao.addDuty(row),Duration.Inf)
     time
   }

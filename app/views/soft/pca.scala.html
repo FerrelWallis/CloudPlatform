@@ -148,145 +148,186 @@
     <div class="col-md-12 mysoft-content" style="width: 98%">
         <div class="mysoft-content-left whitebox" style="width: 771px;overflow-y: auto">
             <form id="PCA1" method="GET" enctype="multipart/form-data" class="form1 well form-inline tab-pane fade active in" style="box-sizing: border-box!important;">
-                    <img class="tools-img" src="/assets/images/softpic/pca.jpg">
-                    <h3 class="tools-title">主成分分析PCA</h3>
+                <img class="tools-img" src="/assets/images/softpic/pca.jpg">
+                <h3 class="tools-title">主成分分析PCA</h3>
+                <div class="form-group">
+                    <h2>
+                    </h2>
+                </div><br><br>
+                <div class="form-group-p">
                     <div class="form-group">
-                        <h2>
-                        </h2>
-                    </div><br><br>
-                    <div class="form-group-p">
-                        <div class="form-group">
-                            <label for="mytaskname">任务编号：</label>
-                        </div>
-                        <div class="form-group">
-                            <input id="mytaskname" type="text" class="form-control" name="taskname">
-                        </div>
+                        <label for="mytaskname">任务编号：</label>
                     </div>
-                    <br><br>
-
-                    <div id="div1" class="one-line">
-                        <div class="form-group-p">
+                    <div class="form-group">
+                        <input id="mytaskname" type="text" class="form-control" name="taskname">
+                    </div>
+                </div>
+                <br><br>
+                <div class="form-group-p" style="width: 100%">
+                    <label for="exampleInputName2">
+                        <em>1： </em>上传矩阵表格文件：<span class="must">&nbsp;&nbsp;*</span>
+                    </label>
+                    <br>
+                    <div class="one-line">
+                        <div class="form-group-p" style="width: auto">
                             <div class="form-group">
-                                <label for="exampleInputName2">
-                                    <em>1： </em>上传矩阵表格文件：
-                                </label>
+                                <ul class="nav nav-tabs" style="width: 300px">
+                                    <li class="active">
+                                        <a href="###" onclick="curtable(1)" data-target="#tab1Content2" data-toggle="tab">手动输入</a>
+                                    </li>
+                                    <li>
+                                        <a href="###" onclick="curtable(2)" data-target="#tab1Content1" data-toggle="tab">输入文件</a>
+                                    </li>
+                                </ul>
                             </div>
+                        </div>
+                        <div class="form-group-p" style="width: auto">
                             <div class="form-group">
-                                <input type="file" class="form-control file" id="table1" name="table1" onchange="checkTable()">
+                                <em>
+                                    <a onclick="showexample('table')">示例文件</a>
+                                </em>
                             </div>
                         </div>
-                        <div class="form-group-extra">
-
-                            <em>
-                                <a href='/CloudPlatform/SoftTool/downloadExamples?name=PCA_table.txt' target='_blank' style="margin-left: 107px;">示例文件</a>
-                            </em>
-                            <span class="must">&nbsp;&nbsp;*</span>
-                        </div>
-                        <br>
-                        <br>
                     </div>
-                    <hr>
-                    <br>
-                    <h4>可选输入：</h4>
-                    <br>
-                    <div class="form-group-p">
-                        <div class="form-group">
-                            <input type="checkbox" name="isgroup" value="A" id="isgroup" class="form-control" style="height: 13px;width: auto;float: left;margin-top: 3px;">&nbsp;&nbsp;
-                        </div>
-                        <span class="pointer" >是否分组绘图</span>
-                    </div>
-                    <br>
-                    <div id="group" style="display: none;">
-                        <div class="form-group-p">
-                            <label>上传或输入分组文件</label>
-                            <br>
-                            <ul class="nav nav-tabs">
-                                <li class="active">
-                                    <a href="###" data-target="#tab2Content1" data-toggle="tab">输入文件</a>
-                                </li>
-                                <li>
-                                    <a href="###" data-target="#tab2Content2" data-toggle="tab">手动输入</a>
-                                </li>
-                            </ul>
-                            <div class="tab-content">
-                                <div class="tab-pane fade active in" id="tab2Content1">
-                                    <p><br></p>
-                                    <div id="div2" class="one-line">
-                                        <div class="form-group-p" style="width: auto">
-                                            <div class="form-group">
-                                                <label for="exampleInputName2">输入分组文件：</label>
-                                            </div>
 
-                                            <div class="form-group">
-                                                <input type="file" class="form-control file" id="table2" name="table2" onchange="checkGroupfile()">
-                                                <img id="tempimg2" dynsrc="" src="" style="display:none">
-                                            </div>
-                                        </div>
-                                        <div class="form-group-extra">
-                                            <em><a href='/CloudPlatform/SoftTool/downloadExamples?name=PCA_group.txt' target='_blank' style="margin-left: 20px;">示例文件</a></em>
-                                        </div>
-                                        <br>
+                    <div class="tab-content">
+                        <div class="tab-pane fade" id="tab1Content1">
+                            <p><br></p>
+                            <div id="div1" class="one-line">
+                                <div class="form-group-p">
+                                    <div class="form-group">
+                                        <label for="exampleInputName2">上传文件：</label>
                                     </div>
-                                    <p></p>
+                                    <div class="form-group">
+                                        <input type="file" class="form-control file" id="table1" name="table1" onchange="checkTablefile()">
+                                    </div>
                                 </div>
-                                <div class="tab-pane fade" id="tab2Content2">
-                                    <p>
-                                    </p>
-                                    <div class="tab-pane form-group" id="tabContent2">
-                                    <textarea id="txdata1" name="txdata1" class="form-control kindeditorSimple" style="width: 100%;height:150px;" placeholder="分组文件：筛选用来做主成分分析的样本名称。如果不填，则使用上传的表格文件中的所有样本做主成分分析。列表中的第一列代表样本名称（样本名称必须在表达量的表格文件中存在），第二列代表样本所在的实验组名称。"></textarea>
+                                <br>
+                                <br>
+                            </div>
+                            <p></p>
+                        </div>
+                        <div class="tab-pane fade active in" id="tab1Content2">
+                            <p>
+                            </p>
+                            <div class="tab-pane form-group" id="tabContent2">
+                                <textarea id="txdata1" name="txdata1" class="form-control kindeditorSimple" style="width: 100%;height:150px;" placeholder="手动输入时,点击示例文件，示例将导入文本框。上传文件时，点击示例文件，将直接下载文件。文本框右下角可调节文本框大小。"></textarea>
+                            </div>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+                <br>
+                <h4>可选输入：</h4>
+                <br>
+                <div class="form-group-p">
+                    <div class="form-group ">
+                        <label><em>2： </em>是否显示样本名：</label>
+                    </div>
+                    <div class="form-group right">
+                        <select id="showname" name="showname" style="width: 30%;" onchange="shown()">
+                            <option value="FALSE">no</option>
+                            <option value="TRUE">yes</option>
+                        </select>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <div class="form-group-p" id="showerro" style="display: none">
+                    <div class="form-group" style="margin-left: 25px">
+                        <label>是否显示箭头：</label>
+                    </div>
+                    <div class="form-group right">
+                        <select name="showerro" style="width: 30%;">
+                            <option value="TRUE">yes</option>
+                            <option value="FALSE">no</option>
+                        </select>
+                    </div>
+                    <br>
+                </div>
+                <div class="form-group-p">
+                    <div class="form-group">
+                        <label style="float: left;"><em>3： </em>是否分组绘图</label>
+                        <input type="checkbox" name="isgroup" value="A" id="isgroup" class="form-control" style="height: 13px;width: auto;float: left;margin-top: 9px;margin-left: 5px">
+                    </div>
+                </div>
+                <br>
+                <div id="group" style="display: none;">
+                    <div class="form-group-p">
+                        <label>上传或输入分组文件</label>
+                        <br>
+                        <div class="one-line">
+                            <div class="form-group-p" style="width: auto">
+                                <div class="form-group">
+                                    <ul class="nav nav-tabs" style="width: 300px">
+                                        <li class="active">
+                                            <a href="###" onclick="curgroup(1)" data-target="#tab2Content2" data-toggle="tab">手动输入</a>
+                                        </li>
+                                        <li>
+                                            <a href="###" onclick="curgroup(2)" data-target="#tab2Content1" data-toggle="tab">输入文件</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="form-group-p" style="width: auto">
+                                <div class="form-group">
+                                    <em>
+                                        <a onclick="showexample('group')">示例文件</a>
+                                    </em>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-content">
+                            <div class="tab-pane fade" id="tab2Content1">
+                                <p><br></p>
+                                <div id="div2" class="one-line">
+                                    <div class="form-group-p" style="width: auto">
+                                        <div class="form-group">
+                                            <label for="exampleInputName2">输入分组文件：</label>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <input type="file" class="form-control file" id="table2" name="table2" onchange="checkGroupfile()">
+                                            <img id="tempimg2" dynsrc="" src="" style="display:none">
+                                        </div>
                                     </div>
                                     <br>
                                 </div>
+                                <p></p>
                             </div>
-                        </div>
-                        <br>
-                        <br>
-                        <div class="form-group-p">
-                            <div class="form-group ">
-                                <label>是否显示样本名：</label>
-                            </div>
-                            <div class="form-group right">
-                                <select name="showname" style="width: 30%;">
-                                    <option value="FALSE">no</option>
-                                    <option value="TRUE">yes</option>
-                                </select>
-                            </div>
-                        </div>
-                        <br>
-                        <br>
-                        <div class="form-group-p">
-                            <div class="form-group">
-                                <label>是否绘制分组圈：</label>
-                            </div>
-                            <div class="form-group right">
-                                <select name="drawcircle" style="width: 30%;">
-                                    <option value="FALSE">no</option>
-                                    <option value="TRUE">yes</option>
-                                </select>
+                            <div class="tab-pane fade active in" id="tab2Content2">
+                                <p>
+                                </p>
+                                <div class="tab-pane form-group" id="tabContent2">
+                                    <textarea id="txdata2" name="txdata2" class="form-control kindeditorSimple" style="width: 100%;height:150px;" placeholder="手动输入时,点击示例文件，示例将导入文本框。上传文件时，点击示例文件，将直接下载文件。文本框右下角可调节文本框大小。"></textarea>
+                                </div>
+                                <br>
                             </div>
                         </div>
                     </div>
                     <br>
-
+                    <br>
                     <div class="form-group-p">
                         <div class="form-group">
-                            <label>归一化：</label>
+                            <label>是否绘制分组圈：</label>
                         </div>
-                        <div class="form-group">
-                            <select name="scale" style="width: 45%;">
+                        <div class="form-group right">
+                            <select name="drawcircle" style="width: 30%;">
                                 <option value="FALSE">no</option>
                                 <option value="TRUE">yes</option>
                             </select>
                         </div>
                     </div>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <input type="hidden" value="upload" name="act">
-                    <input type="hidden" value="pca" name="action">
-                    <input type="button" value="提&nbsp;&nbsp;交" name="submit" class="btn btn-primary" onclick="PCA('PCA1')">
-                </form>
+                </div>
+                <br>
+                <br>
+                <br>
+                <input type="hidden" value="upload" name="act">
+                <input type="hidden" value="pca" name="action">
+                <input type="button" value="提&nbsp;&nbsp;交" name="submit" class="btn btn-primary" style="margin-bottom: 20px" onclick="PCA('PCA1')">
+            </form>
         </div>
 
         <div class="handler"></div>
@@ -403,175 +444,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="form2 tab-pane fade">
-                    <ul class="nav nav-tabs">
-                        <li class="active">
-                            <a href="#" data-target="#form2" data-toggle="tab" id="outcome" onclick="getoutcomeForm()">示例结果</a>
-                        </li>
-                        <li class="">
-                            <a href="#" data-target="#instruction2" data-toggle="tab">说明</a>
-                        </li>
-                    </ul>
-                    <div class="tab-content" style="box-sizing: border-box!important;">
-                        <div id="form2" class="tab-pane fade active in">
-                            <h5>form2输出结果：</h5>
-                            <br>
-                            <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/pca_result.png" alt="生物云平台">
-                        </div>
-                        <div id="instruction2" class="form1_ins tab-pane fade">
-                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                                <span><a href="https://www.omicshare.com/forum/thread-631-1-1.html" target="_blank"><i class="icon icon-question-sign" style="font-size: 14px!important;"></i><strong><span style="color:#337FE5;">了解该工具的原理与详细解析，请点击＞＞</span></strong></a></span>
-                            </p>
-                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                                <br>
-                            </p>
-                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                                <span style="font-weight:700;">form2功能：</span><br>
-                                将多个变量通过线性变换，筛选出数个比较重要的变量。
-                            </p>
-                            <br>
-                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                                <span style="font-weight:700;">输入：</span>
-                            </p>
-                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                                ① 矩阵文件:文件为二维矩阵文件，第一行一般为样本，第一列为基因名。
-                            </p>
-                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                                ② 列的ID:筛选用来做聚类分析的列，一般为样本名。如果不填即默认用上传矩阵文件中的全部列做聚类分析。列表中的每一行表示一个列名，且列名必须在矩阵文件中存在。
-                            </p>
-                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                                ③ 行的ID:筛选用来做聚类分析的行，一般为基因名。如果不填即默认用上传矩阵文件中的全部行做聚类分析。列表中的每一行表示一个行名，且行名必须在矩阵文件中存在.
-                            </p>
-                            <br>
-                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                                <span style="font-weight:700;">参数：</span>
-                            </p>
-                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                                归一化：我们利用z-score进行数据的归一化，即将每个基因的表达量减去这个基因在所有样本中表达量的均值，然后除以其标准差。对数据进行归一化，可消除表达量异常高的基因的影响，减少数据间的“贫富差距”。我们推荐对数据进行归一化。
-                            </p>
-                            <br>
-                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                                <span style="font-weight:700;">输出：</span>
-                            </p>
-                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                                程序将输出主成分分析结果图
-                            </p>
-                            <br>						</div>
-                    </div>
-                </div>
-                <div class="form3 tab-pane fade">
-                    <ul class="nav nav-tabs">
-                        <li class="active">
-                            <a href="#" data-target="#form3" data-toggle="tab" id="outcome" onclick="getoutcomeForm()">示例结果</a>
-                        </li>
-                        <li class="">
-                            <a href="#" data-target="#instruction3" data-toggle="tab">说明</a>
-                        </li>
-                    </ul>
-                    <div class="tab-content" style="box-sizing: border-box!important;">
-                        <div id="form3" class="tab-pane fade active in">
-                            <h5>form3输出结果：</h5>
-                            <br>
-                            <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/heatmap2.png" alt="生物云平台">
-                        </div>
-                        <div id="instruction3" class="form1_ins tab-pane fade">
-                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                                <span><a href="https://www.omicshare.com/forum/thread-631-1-1.html" target="_blank"><i class="icon icon-question-sign" style="font-size: 14px!important;"></i><strong><span style="color:#337FE5;">了解该工具的原理与详细解析，请点击＞＞</span></strong></a></span>
-                            </p>
-                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                                <br>
-                            </p>
-                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                                <span style="font-weight:700;">form3功能：</span><br>
-                                将多个变量通过线性变换，筛选出数个比较重要的变量。
-                            </p>
-                            <br>
-                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                                <span style="font-weight:700;">输入：</span>
-                            </p>
-                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                                ① 矩阵文件:文件为二维矩阵文件，第一行一般为样本，第一列为基因名。
-                            </p>
-                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                                ② 列的ID:筛选用来做聚类分析的列，一般为样本名。如果不填即默认用上传矩阵文件中的全部列做聚类分析。列表中的每一行表示一个列名，且列名必须在矩阵文件中存在。
-                            </p>
-                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                                ③ 行的ID:筛选用来做聚类分析的行，一般为基因名。如果不填即默认用上传矩阵文件中的全部行做聚类分析。列表中的每一行表示一个行名，且行名必须在矩阵文件中存在.
-                            </p>
-                            <br>
-                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                                <span style="font-weight:700;">参数：</span>
-                            </p>
-                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                                归一化：我们利用z-score进行数据的归一化，即将每个基因的表达量减去这个基因在所有样本中表达量的均值，然后除以其标准差。对数据进行归一化，可消除表达量异常高的基因的影响，减少数据间的“贫富差距”。我们推荐对数据进行归一化。
-                            </p>
-                            <br>
-                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                                <span style="font-weight:700;">输出：</span>
-                            </p>
-                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                                程序将输出主成分分析结果图
-                            </p>
-                            <br>						</div>
-                    </div>
-                </div>
-                <div class="form4 tab-pane fade">
-                    <ul class="nav nav-tabs">
-                        <li class="active">
-                            <a href="#" data-target="#form4" data-toggle="tab" id="outcome" onclick="getoutcomeForm()">示例结果</a>
-                        </li>
-                        <li class="">
-                            <a href="#" data-target="#instruction4" data-toggle="tab">说明</a>
-                        </li>
-                    </ul>
-                    <div class="tab-content" style="box-sizing: border-box!important;">
-                        <div id="form4" class="tab-pane fade active in">
-                            <h5>form4输出结果：</h5>
-                            <br>
-                            <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/pca_result.png" alt="生物云平台">
-                        </div>
-                        <div id="instruction4" class="form1_ins tab-pane fade">
-                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                                <span><a href="https://www.omicshare.com/forum/thread-631-1-1.html" target="_blank"><i class="icon icon-question-sign" style="font-size: 14px!important;"></i><strong><span style="color:#337FE5;">了解该工具的原理与详细解析，请点击＞＞</span></strong></a></span>
-                            </p>
-                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                                <br>
-                            </p>
-                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                                <span style="font-weight:700;">form4功能：</span><br>
-                                将多个变量通过线性变换，筛选出数个比较重要的变量。
-                            </p>
-                            <br>
-                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                                <span style="font-weight:700;">输入：</span>
-                            </p>
-                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                                ① 矩阵文件:文件为二维矩阵文件，第一行一般为样本，第一列为基因名。
-                            </p>
-                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                                ② 列的ID:筛选用来做聚类分析的列，一般为样本名。如果不填即默认用上传矩阵文件中的全部列做聚类分析。列表中的每一行表示一个列名，且列名必须在矩阵文件中存在。
-                            </p>
-                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                                ③ 行的ID:筛选用来做聚类分析的行，一般为基因名。如果不填即默认用上传矩阵文件中的全部行做聚类分析。列表中的每一行表示一个行名，且行名必须在矩阵文件中存在.
-                            </p>
-                            <br>
-                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                                <span style="font-weight:700;">参数：</span>
-                            </p>
-                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                                归一化：我们利用z-score进行数据的归一化，即将每个基因的表达量减去这个基因在所有样本中表达量的均值，然后除以其标准差。对数据进行归一化，可消除表达量异常高的基因的影响，减少数据间的“贫富差距”。我们推荐对数据进行归一化。
-                            </p>
-                            <br>
-                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                                <span style="font-weight:700;">输出：</span>
-                            </p>
-                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                                程序将输出主成分分析结果图
-                            </p>
-                            <br>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -582,6 +454,8 @@
     <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/fileinput.min.js")" type="text/javascript"></script>
     <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/locales/zh.js")" type="text/javascript"></script>
     <script type="text/javascript">
+
+
 
             function getTaskName() {
                 let date = new Date();
@@ -620,15 +494,9 @@
         var running=false;
 
         $(document).ready(function () {
+            formValidation();
             loadHistory();
-            let date = new Date();
-            let month = date.getMonth() + 1;
-            let day = date.getDate();
-            let h = date.getHours();
-            let m = date.getMinutes();
-            let s = date.getSeconds();
-            let name = "PCA"+month + day + h + m + s ;
-            $("#mytaskname").val(name);
+            getTaskName();
         });
 
         var cur=true;
@@ -733,60 +601,34 @@
             });
 
         function PCA(formId) {
-            if(@session.get("userId").isEmpty){
-                swal({
-                    title: "尚未登录",
-                    text: "请先登录账号",
-                    type: "warning",
-                    confirmButtonText: "确认"
-                })
-            }else {
-                var form = $("#PCA1");
-                var fv = form.data("formValidation");
-                fv.validate();
-                if (fv.isValid()) {
-                    var bool=false;
-                    checkTable();
-                    if($("#isgroup").prop("checked")){
-                        if($("#table2").val()==""&&$("#txdata1").val()==""){
-                            swal({
-                                title: "请上传分组文件",
-                                text: "请上传或输入分组，或取消分组绘图！",
-                                type: "warning",
-                                confirmButtonText: "确认"
-                            });
-                            return;
-                        }else{
-                            checkGroupfile();
-                            if(flagtable&&flaggroupfile&&checkGrouptext())
-                                bool=true;
-                            else bool=false;
+
+            var form = $("#PCA1");
+            var fv = form.data("formValidation");
+            fv.validate();
+            if (fv.isValid()) {
+                checkTablefile();
+                checkGroupfile();
+                var bool=flagtable&&flaggroupfile;
+                if(bool&&checktaskname()){
+                    var form1 = new FormData($("#PCA1")[0]);
+                    $.ajax({
+                        url: "/CloudPlatform/SoftTool/runPCA?isgroup="+$("#isgroup").prop("checked")+"&table="+table+"&group="+group,
+                        type: "post",
+                        processData: false,
+                        contentType: false,
+                        data: form1,
+                        success: function (data) {
+                            removeul();
+                            loadHistory();
+                            $("#his_tab1").addClass("active");
+                            $("#out_tab1").removeClass("active");
+                            $("#ins_tab1").removeClass("active");
+                            $("#history").addClass("active").addClass("in");
+                            $("#form1").removeClass("active");
+                            $("#instruction1").removeClass("active");
+                            getTaskName();
                         }
-                    } else {
-                        if(flagtable) bool=true;
-                        else bool=false;
-                    }
-                    if(bool&&checktaskname()){
-                        var form1 = new FormData($("#PCA1")[0]);
-                        $.ajax({
-                            url: "/CloudPlatform/SoftTool/runPCA?isgroup="+$("#isgroup").prop("checked"),
-                            type: "post",
-                            processData: false,
-                            contentType: false,
-                            data: form1,
-                            success: function (data) {
-                                removeul();
-                                loadHistory();
-                                $("#his_tab1").addClass("active");
-                                $("#out_tab1").removeClass("active");
-                                $("#ins_tab1").removeClass("active");
-                                $("#history").addClass("active").addClass("in");
-                                $("#form1").removeClass("active");
-                                $("#instruction1").removeClass("active");
-                                getTaskName();
-                            }
-                        });
-                    }
+                    });
                 }
             }
         }
@@ -795,154 +637,249 @@
         var flaggroupfile=true;
         var flagtable=true;
 
-        function checkTable() {
-            var reader=new FileReader();
-            reader.readAsText(document.getElementById('table1').files[0],"UTF-8");
-            reader.onload=function () {
-                let text=reader.result;
-                let line=text.trim().split('\n');
-                sample=line[0].trim().split('\t');
-                var length=sample.length;
-                for(let i in line){
-                    var r=parseInt(i)+1;
-                    let row=line[i].trim().split('\t');
-                    var name=[];
-                    if(row.length!=length){
-                        flagtable=false;
-                        swal({
-                            title: "矩阵文件格式错误",
-                            text: "矩阵文件第"+r+"行数据数量不一致",
-                            type: "warning",
-                            confirmButtonText: "确认"
-                        });
-                        return false;
-                    }
-                    for(let j in row){
-                        var c=parseInt(j)+1;
-                        if(i!=0){
-                            if(j!=0 && !checkRate(row[j].trim())){
-                                flagtable=false;
-                                swal({
-                                    title: "矩阵文件格式错误",
-                                    text: "矩阵文件第"+r+"行,第"+c+"列数据不是数字",
-                                    type: "warning",
-                                    confirmButtonText: "确认"
-                                });
-                                return false;
-                            }
-                        }else {
-                            if(name.indexOf(row[j])>=0){
-                                flagtable=false;
-                                swal({
-                                    title: "矩阵文件错误",
-                                    text: "矩阵文件第1行,第"+c+"列样品名重复存在，请核实！",
-                                    type: "warning",
-                                    confirmButtonText: "确认"
-                                });
-                                return false;
-                            }else name.push(row[j]);
-                        }
-                    }
+        function checkTablefile() {
+            if(table==2 && $("#table1").val()==""){
+                flagtable=false;
+                swal({
+                    title: "矩阵文件错误",
+                    text: "请上传矩阵文件！",
+                    type: "warning",
+                    confirmButtonText: "确认"
+                });
+                return;
+            }
+            else if(table==2 && $("#table1").val()!=""){
+                var reader=new FileReader();
+                reader.readAsText(document.getElementById('table1').files[0],"UTF-8");
+                reader.onload=function () {
+                    let text=reader.result;
+                    let line=text.trim().split('\n');
+                    checktable(line);
+                };
+                return;
+            }
+            else if(table==1 && $("#txdata1").val()==""){
+                flagtable=false;
+                swal({
+                    title: "矩阵文件错误",
+                    text: "请上传矩阵文件！",
+                    type: "warning",
+                    confirmButtonText: "确认"
+                });
+                return;
+            }
+            else if(table==1 && $("#txdata1").val()!=""){
+                let line=$("#txdata1").val().trim().split('\n');
+                checktable(line);
+                return;
+            }
+        }
 
+        function checktable(line) {
+            sample=line[0].trim().split('\t');
+            var length=sample.length;
+            for(let i in line){
+                var r=parseInt(i)+1;
+                let row=line[i].trim().split('\t');
+                var name=[];
+                if(row.length!=length){
+                    flagtable=false;
+                    swal({
+                        title: "矩阵文件格式错误",
+                        text: "矩阵文件第"+r+"行数据数量不一致",
+                        type: "warning",
+                        confirmButtonText: "确认"
+                    });
 
+                    return false;
                 }
-                flagtable=true;
-                return true;
-            };
+                for(let j in row){
+                    var c=parseInt(j)+1;
+                    if(i!=0){
+                        if(j!=0 && !checkRate(row[j].trim())){
+                            flagtable=false;
+                            console.log("tavle="+flagtable);
+                            swal({
+                                title: "矩阵文件格式错误",
+                                text: "矩阵文件第"+r+"行,第"+c+"列数据不是数字",
+                                type: "warning",
+                                confirmButtonText: "确认"
+                            });
+                            return false;
+                        }
+                    }else {
+                        if(name.indexOf(row[j])>=0){
+                            flagtable=false;
+                            swal({
+                                title: "矩阵文件错误",
+                                text: "矩阵文件第1行,第"+c+"列样品名重复存在，请核实！",
+                                type: "warning",
+                                confirmButtonText: "确认"
+                            });
+                            return false;
+                        }else name.push(row[j]);
+                    }
+                }
+            }
+            flagtable=true;
+            return true;
         }
 
         function checkGroupfile() {
-            if($("#table2").val()!=""){
+            if($("#table1").val()==""&&$("#txdata1").val()==""){
+                flaggroupfile=false;
+                var file = document.getElementById('table2');
+                file.value = '';
+                $(".file-caption-name").attr("title","");
+                swal({
+                    title: "请先上传矩阵文件",
+                    text: "请先上传矩阵文件！",
+                    type: "warning",
+                    confirmButtonText: "确认"
+                });
+                return;
+            }
+            if(!$("#isgroup").prop("checked")) {
+                flaggroupfile=true;
+                return;
+            }else if(group==2 && $("#table2").val()==""){
+                flaggroupfile=false;
+                swal({
+                    title: "分组文件错误",
+                    text: "请上传分组，或取消分组绘图！",
+                    type: "warning",
+                    confirmButtonText: "确认"
+                });
+                return;
+            }
+            else if(group==2 && $("#table2").val()!=""){
                 var reader=new FileReader();
                 reader.readAsText(document.getElementById('table2').files[0],"UTF-8");
                 reader.onload=function () {
                     let text=reader.result;
                     let line=text.trim().split('\n');
-                    var name=[];
-                    for(let i in line) {
-                        let row=line[i].trim().split('\t');
-                        var r=parseInt(i)+1;
-                        if(row.length!=2){
-                            flaggroupfile=false;
-                            swal({
-                                title: "分组文件格式错误",
-                                text: "分组文件第"+r+"行格式错误，必须为两列！",
-                                type: "warning",
-                                confirmButtonText: "确认"
-                            });
-                            return;
-                        }
-                        if(sample.indexOf(row[0])<0){
-                            flaggroupfile=false;
-                            swal({
-                                title: "分组文件格式错误",
-                                text: "分组文件第"+r+"行样品名不存在，请核对矩阵文件！",
-                                type: "warning",
-                                confirmButtonText: "确认"
-                            });
-                            return;
-                        }
-                        if(name.indexOf(row[0])>=0){
-                            flaggroupfile=false;
-                            swal({
-                                title: "分组文件错误",
-                                text: "分组文件第"+r+"行样品名重复存在，请核实！",
-                                type: "warning",
-                                confirmButtonText: "确认"
-                            });
-                            return;
-                        }else name.push(row[0]);
-                    }
-                    flaggroupfile=true;
+                    checkgroup(line);
                 };
-            }else flaggroupfile=true;
+                return;
+            }
+            else if(group==1 && $("#txdata2").val()==""){
+                flaggroupfile=false;
+                swal({
+                    title: "分组文件错误",
+                    text: "请上传分组，或取消分组绘图！",
+                    type: "warning",
+                    confirmButtonText: "确认"
+                });
+                return;
+            }
+            else if(group==1 && $("#txdata2").val()!=""){
+                let line=$("#txdata2").val().trim().split('\n');
+                checkgroup(line);
+                return;
+            }
         }
 
-        function checkGrouptext() {
-             if($("#txdata1").val()!=""){
-                let line=$("#txdata1").val().trim().split('\n');
-                var name=[];
-                for(let i in line) {
-                    let row=line[i].trim().split('\t');
-                    var r=parseInt(i)+1;
-                    if(row.length!=2){
-                        swal({
-                            title: "分组文件格式错误",
-                            text: "分组文件第"+r+"行格式错误，必须为两列！",
-                            type: "warning",
-                            confirmButtonText: "确认"
-                        });
-                        return false
-                    }
-                    if(sample.indexOf(row[0])<0){
-                        swal({
-                            title: "分组文件格式错误",
-                            text: "分组文件第"+r+"行样品名不存在，请核对矩阵文件！",
-                            type: "warning",
-                            confirmButtonText: "确认"
-                        });
-                        return false;
-                    }
-                    if(name.indexOf(row[0])>=0){
-                        swal({
-                            title: "分组文件错误",
-                            text: "分组文件第"+r+"行样品名重复存在，请核实！",
-                            type: "warning",
-                            confirmButtonText: "确认"
-                        });
-                        return false;
-                    }else name.push(row[0]);
+        function checkgroup(line) {
+            var name=[];
+            console.log(line.length);
+            for(let i in line) {
+                let row=line[i].trim().split('\t');
+                var r=parseInt(i)+1;
+                if(row.length!=2){
+                    flaggroupfile=false;
+                    swal({
+                        title: "分组文件格式错误",
+                        text: "分组文件第"+r+"行格式错误，必须为两列！",
+                        type: "warning",
+                        confirmButtonText: "确认"
+                    });
+                    return false;
                 }
-                return true;
-            }else return true;
-
+                if(sample.indexOf(row[0])<0){
+                    flaggroupfile=false;
+                    console.log("flag="+flaggroupfile);
+                    swal({
+                        title: "分组文件格式错误",
+                        text: "分组文件第"+r+"行样品名不存在，请核对矩阵文件！",
+                        type: "warning",
+                        confirmButtonText: "确认"
+                    });
+                    return false;
+                }
+                if(name.indexOf(row[0])>=0){
+                    flaggroupfile=false;
+                    swal({
+                        title: "分组文件错误",
+                        text: "分组文件第"+r+"行样品名重复存在，请核实！",
+                        type: "warning",
+                        confirmButtonText: "确认"
+                    });
+                    return false;
+                }else name.push(row[0]);
+            }
+            flaggroupfile=true;
+            return true;
         }
 
         function checkRate(input) {
-            var re = /^(-?\d+)(\.\d+)?$/; //判断字符串是否为浮点数
-            if (!re.test(input)) {
-                return false;
-            }else return true;
+                // var re = /^(-?\d+)(\.\d+)?$/;
+                var re=/^[+-]?[\d]+([\.][\d]+)?([Ee][+-]?[\d]+)?$/;//判断字符串是否为浮点数或科学计数法
+                if (!re.test(input)) {
+                    return false;
+                }else return true;
+            }
+
+        function shown() {
+            var param = $("#showname").val();
+            if (param == "TRUE") $("#showerro").show();
+            else $("#showerro").hide();
+        }
+
+        var table=1;
+        var group=1;
+
+        function curtable(param) {
+            table=param;
+        }
+        function curgroup(param) {
+            group=param;
+        }
+
+        var ta="Geneid\tB17-12-1\tB17-12-2\tB17-12-3\tC17-16-2\tC17-16-3\tC17-16\n" +
+                "Vigun01g000100\t8.717\t9.396\t8.672\t4.085\t5.641\t5.046\n" +
+                "Vigun01g000200\t10.467\t10.685\t11.422\t8.531\t11.062\t11.066\n" +
+                "Vigun01g000300\t16.308\t16.841\t17.236\t30.494\t34.638\t35.111\n" +
+                "Vigun01g000400\t27.537\t27.958\t27.525\t42.391\t47.891\t50.474\n" +
+                "Vigun01g000500\t7.538\t6.593\t6.077\t4.069\t4.976\t4.795\n" +
+                "Vigun01g000600\t0.305\t0.447\t0.279\t0.133\t0.101\t0.000\n" +
+                "Vigun01g000700\t11.620\t10.681\t12.147\t15.832\t18.059\t18.884\n" +
+                "Vigun01g000800\t7.057\t7.785\t8.059\t5.200\t6.554\t6.817\n" +
+                "Vigun01g000900\t0.082\t0.107\t0.075\t0.048\t0.018\t0.027\n" +
+                "Vigun01g001000\t3.992\t4.609\t4.939\t7.347\t9.265\t8.387\n" +
+                "Vigun01g001200\t7.539\t6.793\t6.746\t5.438\t5.743\t6.066\n" +
+                "Vigun01g001300\t63.648\t64.109\t63.713\t44.927\t49.558\t48.204\n" +
+                "Vigun01g001400\t1.727\t1.370\t1.935\t1.994\t1.334\t1.858\n" +
+                "Vigun01g001500\t8.154\t7.808\t7.316\t4.559\t6.772\t7.583\n" +
+                "Vigun01g001600\t8.900\t8.778\t9.117\t8.872\t9.403\t8.702\n" +
+                "Vigun01g001700\t0.399\t0.488\t0.593\t0.000\t0.016\t0.000\n" +
+                "Vigun01g001800\t8.952\t8.166\t8.179\t4.220\t4.183\t3.692";
+
+        var go= "B17-12-1\tB\n" +
+                "B17-12-2\tB\n" +
+                "B17-12-3\tB\n" +
+                "C17-16-2\tC\n" +
+                "C17-16-3\tC\n" +
+                "C17-16\tC";
+
+        function showexample(type) {
+            if(type=="table"){
+                if(table==1) $("#txdata1").val(ta);
+                else window.location.href = "/CloudPlatform/SoftTool/downloadExamples?name=PCA_table.txt"
+            }
+            if(type=="group"){
+                if(group==1) $("#txdata2").val(go);
+                else window.location.href = "/CloudPlatform/SoftTool/downloadExamples?name=PCA_group.txt"
+            }
         }
 
         function formValidation() {

@@ -22,7 +22,8 @@ html, body {height:100%;}
 
 body {
 	position: relative;
-	background:#fcfdf9 url(../images/pattern.gif);
+	/*background:#fcfdf9 url(../images/pattern.gif);*/
+	background: #e1e2f5!important;
 	font: 12px/20px 'MuseoSans500Regular', Arial, sans-serif;
 	/*color: #888;*/
 	color: #474848;

@@ -5,6 +5,7 @@
     <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("palette/evol-colorpicker.min.css")" media="screen" />
     <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("bootstrap-fileinput-master/css/fileinput.css")" media="screen" />
 
+    <script type="text/javascript" src="@routes.Assets.versioned("js/jquery-ui.js")"></script>
     <!--button弹出操作-->
     <script type="text/javascript" src="@routes.Assets.versioned("js/myzui.min.js")"></script>
 
@@ -20,6 +21,13 @@
             .mysoft-content-right .tab-content, .mysoft-content-left form {
                 box-shadow: unset;
             }
+            .mysoft-content-left form {
+                margin-top: 0;
+                height: 100%;
+                overflow-y: unset;
+                scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.2);
+                scrollbar-width: thin;
+            }
             .img-thumbnail {
                 display: inline-block;
                 max-width: 100%;
@@ -29,9 +37,9 @@
                 background-color: #fff;
                 border: unset;
                 border-radius: 4px;
-                -webkit-transition: all .2s ease-in-out;
-                -o-transition: all .2s ease-in-out;
-                transition: all .2s ease-in-out;
+                -webkit-transition: unset;
+                -o-transition: unset;
+                transition: unset;
             }
             blockquote {
                 padding: 10px 20px;
@@ -104,8 +112,8 @@
             }
     </style>
 
-    <div class="col-md-12 mysoft-content" style="width: 98%">
-        <div class="mysoft-content-left whitebox" style="width: 776px;">
+    <div class="col-md-12 mysoft-content" style="width: 98%;">
+        <div class="mysoft-content-left whitebox" style="width: 771px;overflow-y: auto">
             <form id="heatmap" method="GET" novalidate="novalidate" enctype="multipart/form-data" class="well form-inline" style="box-sizing: border-box!important;">
                 <img class="tools-img" src="/assets/images/softpic/heatmap.jpg">
                 <h3 class="tools-title">热图</h3>
@@ -124,17 +132,16 @@
 
                 <br><br>
                 <div id="div1" class="one-line">
-                    <div class="form-group-p" style="width: 500px">
+                    <div class="form-group-p" style="width: 465px">
                         <div class="form-group">
-                            <label for="exampleInputName2">上传矩阵表格文件：</label>
+                            <label for="exampleInputName2">上传矩阵文件：</label>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" style="width: 350px">
                             <input type="file" class="form-control file" id="table1" name="table1" onchange="checkTable()">
                         </div>
                     </div>
                     <div class="form-group-extra">
-                        <span class="must">*</span>&nbsp;&nbsp;
-                        <em><a href="/CloudPlatform/SoftTool/downloadExamples?name=Heatmap.data" target="_blank">示例文件</a></em>
+                        <em><a href="/CloudPlatform/SoftTool/downloadExamples?name=Heatmap.data">示例文件</a></em><span class="must" style="margin-left: 10px">*</span>&nbsp;&nbsp;
                     </div>
                     <br>
                     <br>
@@ -173,12 +180,13 @@
                             <br>
                             <div class="form-group-p">
                                 <div class="form-group">
-                                    <label>是否取lg2：</label>
+                                    <label>是否取lg：</label>
                                 </div>
                                 <div class="form-group">
-                                    <select name="lg2">
-                                        <option value="FALSE">no</option>
-                                        <option value="TRUE">yes</option>
+                                    <select name="lg">
+                                        <option value="none">none</option>
+                                        <option value="lg2">lg2</option>
+                                        <option value="lg10">lg10</option>
                                     </select>
                                 </div>
                             </div>
@@ -314,7 +322,7 @@
 
                 <input type="hidden" value="upload" name="act">
                 <input type="hidden" value="heatmap" name="action">
-                <input type="button" value="提&nbsp;&nbsp;交" name="submit" class="btn btn-primary" onclick="runheatmap()">
+                <input type="button" value="提&nbsp;&nbsp;交" name="submit" class="btn btn-primary" onclick="runheatmap()" style="margin-bottom: 20px">
             </form>
 
         </div>
@@ -350,15 +358,6 @@
                     <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
                         ① 矩阵文件:文件为二维矩阵文件，第一行一般为样本，第一列为基因名
                     </p>
-                    <blockquote style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <pre>GeneID  JI2822Dp  JI2822Big JI2822Small JI2822Lp
-                            Unigene0021981  1300.99832695328  1665.09778769998  1352.56038153151
-                            Unigene0009129  3454.18444497397  355.800462393868  440.799944750064
-                            Unigene0040921  1873.7233808357 551.402956075232  1529.66491348639
-                            Unigene0034573  1567.1476372343 1073.13647863848  1053.63141860243
-                            .     .     .       .
-                        </pre>
-                    </blockquote>
                     <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
                         ② 列的参数:即选择用哪几列画图。
                     </p>
@@ -433,7 +432,7 @@
                 let s = date.getSeconds();
                 let name = "Heat"+month + day + h + m + s ;
                 $("#mytaskname").val(name);
-                $("#Heatmap").formValidation("revalidateField", "taskname");
+                $("#heatmap").formValidation("revalidateField", "taskname");
             }
 
             $("#mytaskname").keyup(function () {
@@ -459,17 +458,12 @@
             }
             var running=false;
 
-            $(function () {
+            $(document).ready(function () {
+                formValidation();
                 loadHistory();
-                let date = new Date();
-                let month = date.getMonth() + 1;
-                let day = date.getDate();
-                let h = date.getHours();
-                let m = date.getMinutes();
-                let s = date.getSeconds();
-                let name = "Heat"+month + day + h + m + s ;
-                $("#mytaskname").val(name);
+                getTaskName();
             });
+
 
             var cur=true;
 
@@ -534,7 +528,7 @@
 
             function checkrunning() {
                 $.ajax({
-                    url: "/CloudPlatform/MyTasks/getDutysByType?sabbrename=Boxplot",
+                    url: "/CloudPlatform/MyTasks/getDutysByType?sabbrename=Heatmap",
                     type: "post",
                     success: function (data) {
                         if(data.run==true) running=true;
@@ -622,7 +616,8 @@
             }
 
             function checkRate(input) {
-                var re = /^(-?\d+)(\.\d+)?$/; //判断字符串是否为浮点数
+                // var re = /^(-?\d+)(\.\d+)?$/;
+                var re=/^[+-]?[\d]+([\.][\d]+)?([Ee][+-]?[\d]+)?$/;//判断字符串是否为浮点数或科学计数法
                 if (!re.test(input)) {
                     return false;
                 }else return true;
@@ -696,8 +691,7 @@
                                 remote:{
                                     type: 'POST',
                                     url: '@routes.DutyController.checktaskname()',
-                                    message: "任务编号重复，请重新输入",
-                                    delay: 1000
+                                    message: "任务编号重复，请重新输入"
                                 }
                             }
                         },

@@ -247,7 +247,7 @@ body, h1, h2, h3, h4, h5, h6, hr, img, p, blockquote, dl, dt, dd, ul, ol, li, pr
 }
 
 body, button, input, select, textarea {
-    font-size: 14px;
+    /*font-size: 14px;*/
 
     background-color: #fff;
     /*line-height: 18px;*/
@@ -1085,7 +1085,8 @@ div.handler {
 
 .mysoft-content-right .nav-tabs {
     border: 0;
-    background: #f2f2f2;
+    /*background: #f2f2f2;*/
+    background: #e1e2f5;
 }
 
 .mysoft-content-right .tab-content, .mysoft-content-left form {

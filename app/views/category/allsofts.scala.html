@@ -3,14 +3,11 @@
 
     <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("mycss/index.css")" media="screen" />
 
+    <script type="text/javascript" src="@routes.Assets.versioned("js/jquery-ui.js")"></script>
+
     <style>
             .ui-widget-content, .ui-widget-content a:hover {
                 color: #333333;
-            }
-            ul#like li,ul#all li,ul#function li,ul#cluster li,ul#paint li,ul#check li,ul#sequence li,ul#annotation li,ul#chart li {
-                float: left;
-                margin: 8px;
-                padding: 4px 11px;
             }
             form {
                 position: relative;
@@ -43,13 +40,27 @@
                 -webkit-font-smoothing: antialiased;
                 -moz-osx-font-smoothing: grayscale;
             }
+            .mws-report .mws-report-content {
+                width: 65%;
+                height: 80%;
+                position: relative;
+                margin-left: 30%;
+                margin-top: 25px;
+                display: block;
+                padding: 3px 0px 8px 10px;
+            }
+            ul#all li, ul#like li, ul#function li, ul#cluster li, ul#paint li, ul#check li, ul#sequence li, ul#annotation li, ul#chart li, ul#search li {
+                float: left;
+                margin: 8px;
+                padding: 4px 0px 4px 11px;
+            }
     </style>
 
     <div class="container" style="padding-top: 20px;">
         <div class="mws-panel grid_8">
             <div class="mws-tabs">
                 <div style="height: 50px">
-                    <div style="width: 75%;float: left">
+                    <div style="width: 100%;float: left">
                         <ul>
                             <li><a id="li_like" href="#likelist" onclick="loadSoft('like')">我的收藏</a></li>
                             <li><a id="li_allsoft" href="#alllist" onclick="loadSoft('all')">所有软件</a></li>
@@ -62,11 +73,6 @@
                             <li><a id="li_chart" href="#chartlist" onclick="loadSoft('chart')">表格与格式转化</a></li>
                         </ul>
                     </div>
-
-@*                    <div class="searchbox" style="width: 20%;float: left;margin-top: 5px">*@
-@*                        <input type="text" id="search" name="search" placeholder="请输入关键词" >*@
-@*                        <a onclick="searchsoft()"><i class="ti-search"></i></a>*@
-@*                    </div>*@
                 </div>
 
                 <div id="likelist" style="padding: 1em 0em 1em 1em;">
@@ -145,12 +151,14 @@
                         else if(param!="like" && JSON.stringify(data.rows)=="[]") html="<li><div>功能开发中，敬请期待！</div></li>";
                         else
                             $.each(data.rows,function (i,v) {
-                                html += "<li class='mws-report'>" +v.pics+ "<div class='mws-report-content'>" + v.description+
+                                html += "<li class='mws-report'>" + v.pics + "<div class='mws-report-content'>" +
                                         "<div class='likeable' style='float:right;'><div id='fmsg1' style='display:none;'>" +
                                         "<div class='tooltip fade left in' style='width: 75px;bottom: 2px;right: 19px;display: block;'>" +
-                                        "<div class='tooltip-arrow'></div><div class='tooltip-inner'>点击收藏</div></div></div>" +
-                                        "<div id='fmsg2' style='display:none;'><div class='tooltip fade left in' style='width: 75px;bottom: 2px;right: 19px;display: block;'>" +
-                                        "<div class='tooltip-arrow'></div><div class='tooltip-inner'>取消收藏</div></div></div>" + v.like+ "</div></div></li>";
+                                        "<div class='tooltip-arrow'></div><div class='tooltip-inner'>点击收藏</div>" +
+                                        "</div></div><div id='fmsg2' style='display:none;'>" +
+                                        "<div class='tooltip fade left in' style='width: 75px;bottom: 2px;right: 19px;display: block;'>" +
+                                        "<div class='tooltip-arrow'></div><div class='tooltip-inner'>取消收藏</div></div></div>" + v.like +
+                                        "</div>"+v.description+"</div></li>";
                             });
                         $("#"+param).html(html);
                     }
@@ -181,20 +189,6 @@
 
             }
 
-            // $('#search').keydown(function(e){
-            //     var curKey = e.which;
-            //     if (curKey == 13) {
-            //         searchsoft();
-            //     }
-            // });
-            //
-            //
-            // function searchsoft(){
-            //     var parm=$("#search").val();
-            //     loadSoft("search",parm);
-            //     $("#searchlist").show();
-            //     console.log(parm);
-            // }
 
             //tab
             $(".mws-tabs").tabs();

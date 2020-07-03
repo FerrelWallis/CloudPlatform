@@ -108,7 +108,7 @@
         <div class="mysoft-content-left whitebox" style="width: 715px;">
             <form id="Net" method="GET" enctype="multipart/form-data" class="well form-inline" style="box-sizing: border-box!important;">
                 <img class="tools-img" src="/assets/images/softpic/net.jpg">
-                <h3 class="tools-title">网络图</h3>
+                <h3 class="tools-title">权重网络图</h3>
                 <div class="form-group">
                     <h2>
                     </h2>
@@ -295,15 +295,9 @@
             var running=false;
 
             $(document).ready(function () {
-                let date = new Date();
-                let month = date.getMonth() + 1;
-                let day = date.getDate();
-                let h = date.getHours();
-                let m = date.getMinutes();
-                let s = date.getSeconds();
-                let name = "NET"+month + day + h + m + s ;
-                $("#mytaskname").val(name);
+                formValidation();
                 loadHistory();
+                getTaskName();
             });
 
             var cur=true;
@@ -333,7 +327,7 @@
                     $("#hislist").after(html);
                 }else{
                     $.ajax({
-                        url: "/CloudPlatform/MyTasks/getDutysByType?sabbrename=Net",
+                        url: "/CloudPlatform/MyTasks/getDutysByType?sabbrename=NetWeight",
                         type: "post",
                         success: function (data) {
                             if(data.run==true) running=true;
@@ -369,7 +363,7 @@
 
             function checkrunning() {
                 $.ajax({
-                    url: "/CloudPlatform/MyTasks/getDutysByType?sabbrename=Boxplot",
+                    url: "/CloudPlatform/MyTasks/getDutysByType?sabbrename=NetWeight",
                     type: "post",
                     success: function (data) {
                         if(data.run==true) running=true;
@@ -399,41 +393,32 @@
             });
 
         function netweight() {
-            if(@session.get("userId").isEmpty){
-                swal({
-                    title: "尚未登录",
-                    text: "请先登录账号",
-                    type: "warning",
-                    confirmButtonText: "确认"
-                })
-            }else {
-                var form = $("#Net");
-                var fv = form.data("formValidation");
-                fv.validate();
-                if (fv.isValid()) {
-                    checkTable();
-                    checkEvi();
-                    if(flagtable&&flagevi&&checktaskname()){
-                        var form1 = new FormData($("#Net")[0]);
-                        $.ajax({
-                            url: "/CloudPlatform/SoftTool/runNet",
-                            type: "post",
-                            processData: false,
-                            contentType: false,
-                            data: form1,
-                            success: function (data) {
-                                removeul();
-                                loadHistory();
-                                $("#his_tab1").addClass("active");
-                                $("#out_tab1").removeClass("active");
-                                $("#ins_tab1").removeClass("active");
-                                $("#history").addClass("active").addClass("in");
-                                $("#example").removeClass("active");
-                                $("#instruction1").removeClass("active");
-                                getTaskName();
-                            }
-                        });
-                    }
+            var form = $("#Net");
+            var fv = form.data("formValidation");
+            fv.validate();
+            if (fv.isValid()) {
+                checkTable();
+                checkEvi();
+                if(flagtable&&flagevi&&checktaskname()){
+                    var form1 = new FormData($("#Net")[0]);
+                    $.ajax({
+                        url: "/CloudPlatform/SoftTool/runNet",
+                        type: "post",
+                        processData: false,
+                        contentType: false,
+                        data: form1,
+                        success: function (data) {
+                            removeul();
+                            loadHistory();
+                            $("#his_tab1").addClass("active");
+                            $("#out_tab1").removeClass("active");
+                            $("#ins_tab1").removeClass("active");
+                            $("#history").addClass("active").addClass("in");
+                            $("#example").removeClass("active");
+                            $("#instruction1").removeClass("active");
+                            getTaskName();
+                        }
+                    });
                 }
             }
         }

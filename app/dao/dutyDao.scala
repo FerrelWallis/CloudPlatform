@@ -20,6 +20,10 @@ class dutyDao @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)(
     db.run(Dutys += row).map(_=>())
   }
 
+  def updateElements(uid:String,taskname:String,elements:String): Future[Unit]={
+    db.run(Dutys.filter(_.uid ===Integer.parseInt(uid)).filter(_.taskname === taskname).map(_.elements).update(elements)).map(_=>())
+  }
+
   def updateFini(uid:String,taskname:String,finitime:String): Future[Unit]={
     db.run(Dutys.filter(_.uid ===Integer.parseInt(uid)).filter(_.taskname === taskname).map(x=>(x.finitime,x.status)).update(finitime,"已完成")).map(_=>())
   }

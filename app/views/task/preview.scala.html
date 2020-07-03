@@ -1,5 +1,5 @@
 @import models.Tables.DutysRow
-@(row:DutysRow)(implicit session: Session)
+@(row:DutysRow,types:String)(implicit session: Session)
 <div class="mws-panel grid_8" style="background: white!important;">
     <div class="mws-panel-body" style="border: unset">
         <div class="mws-panel-content grid_3">
@@ -37,7 +37,6 @@
 
                 </li>
                 <li>
-
                     <span class="title">提交时间:</span>
                     <span class="content align">@row.subtime</span>
                 </li>
@@ -67,8 +66,7 @@
                             </tr>
                         </thead>
                         <tbody id="filesUrl">
-
-                                </tbody>
+                        </tbody>
                     </table>
                 </div>
                 <br><br>
@@ -81,7 +79,6 @@
 </div>
 
     <script>
-
 
         var input="@row.input";
         var inp="";
@@ -107,7 +104,7 @@
                         var colo="";
                         if((i+1)%2==0) colo="even";
                         else colo="odd";
-                        html += "<tr class='"+ colo +"'><td>" + v.substring(v.lastIndexOf("/")+1,v.length) + "</td><td>说明</td><td><a href='/CloudPlatform/SoftTool/download?path=" + v + "' target='_blank' class='fa fa-download'></a></td></tr>";
+                        html += "<tr class='"+ colo +"'><td>" + data.name[i] + "</td><td>" + data.ins[i] + "</td><td><a href='/CloudPlatform/SoftTool/download?path=" + v + "' class='fa fa-download'></a></td></tr>";
                     });
                     $("#filesUrl").html(html);
                 }

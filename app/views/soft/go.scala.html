@@ -1,5 +1,5 @@
 @()(implicit session: Session)
-@home.main("GOKEGG"){
+@home.main("GO"){
 
     <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("css/test/mysoft.css")" media="screen" />
     <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("bootstrap-fileinput-master/css/fileinput.css")" media="screen" />
@@ -117,7 +117,7 @@
         <div class="whitebox mysoft-content-left" style="width: 730px;">
             <form id="GO" method="GET" enctype="multipart/form-data" class="well form-inline" style="box-sizing: border-box!important;">
                 <img class="tools-img" src="/assets/images/softpic/go.jpg">
-                <h3 class="tools-title">GO/KEGG富集分析&nbsp;&nbsp;&nbsp;&nbsp;
+                <h3 class="tools-title">GO富集分析&nbsp;&nbsp;&nbsp;&nbsp;
                 </h3>
                 <div class="form-group">
                     <h2>
@@ -131,55 +131,126 @@
                         <input id="mytaskname" type="text" class="form-control" name="taskname" placeholder="" value="">
                     </div>
                 </div>
-
                 <br><br>
-                <div class="form-group-p" style="width: 100%;">
-                    <div class="form-group-p" style="width: 500px">
-                        <div class="form-group">
-                            <em>1：</em><label><span>上传基因数据文件：</span></label>
+                <div class="form-group-p" style="width: 100%">
+                    <label for="exampleInputName2">
+                        <em>1：</em><label><span>上传基因数据文件：</span></label>
+                    </label>
+                    <br>
+                    <div class="one-line">
+                        <div class="form-group-p" style="width: auto">
+                            <div class="form-group">
+                                <ul class="nav nav-tabs" style="width: 240px">
+                                    <li class="active">
+                                        <a href="###" onclick="curtable(2)" data-target="#tab1Content1" data-toggle="tab">输入文件</a>
+                                    </li>
+                                    <li >
+                                        <a href="###" onclick="curtable(1)" data-target="#tab1Content2" data-toggle="tab">手动输入</a>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <input type="file" class="form-control file" id="table1" name="table1" onchange="checkGroupfile()">
+                        <div class="form-group-p" style="width: auto">
+                            <div class="form-group" style="margin-right: 15px">
+                                <em>
+                                    <a onclick="showexample('table',1)">示例文件1</a>
+                                </em>
+                            </div>
+                            <div class="form-group">
+                                <em>
+                                    <a onclick="showexample('table',2)">示例文件2</a>
+                                </em>
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group-extra">
-                        <em><a href='/CloudPlatform/SoftTool/downloadExamples?name=Gokegg.txt' target='_blank' style="margin-left: 20px;">示例文件</a></em>
+                    <div class="tab-content">
+                        <div class="tab-pane fade active in" id="tab1Content1">
+                            <p><br></p>
+                            <div id="div1" class="one-line">
+                                <div class="form-group-p">
+                                    <div class="form-group">
+                                        <label for="exampleInputName2">上传文件：</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="file" class="form-control file" id="table1" name="table1">
+                                    </div>
+                                </div>
+                                <br>
+                                <br>
+                            </div>
+                            <p></p>
+                        </div>
+                        <div class="tab-pane fade" id="tab1Content2">
+                            <p>
+                            </p>
+                            <div class="tab-pane form-group" id="tabContent2">
+                                <textarea id="txdata1" name="txdata1" class="form-control kindeditorSimple" style="width: 100%;height:150px;" placeholder="手动输入时,点击示例文件，示例将导入文本框。上传文件时，点击示例文件，将直接下载文件。文本框右下角可调节文本框大小。"></textarea>
+                            </div>
+                            <br>
+                        </div>
                     </div>
                 </div>
                 <br>
                 <br>
-                <div id="para" >
+                <div class="form-group-p">
+                    <div class="form-group">
+                        <label style="float: left;"><em>2： </em>使用已有参考</label>
+                        <input type="checkbox" name="refer" value="A" id="refer" class="form-control" style="height: 13px;width: auto;float: left;margin-top: 9px;margin-left: 5px">
+                    </div>
+                </div>
+                <div id="para" style="display: none">
                     <div class="form-group-p">
                         <div class="form-group">
-                            <em>2：</em><label for="exampleInputName2">选择物种：</label>
+                            <label for="exampleInputName2">选择物种：</label>
                         </div>
                         <div class="form-group">
                             <select name="species" id="species">
-                                <option value="Glyma" selected="selected">Glyma</option>
-                                <option value="ENSG">ENSG</option>
+                                <option value="Agaricus_bisporus" selected="selected">Agaricus_bisporus</option>
+                                <option value="Arabidopsis_thaliana">Arabidopsis_thaliana</option>
+                                <option value="Beet">Beet</option>
+                                <option value="Candida_albicans">Candida_albicans</option>
+                                <option value="Chicken">Chicken</option>
+                                <option value="Cow">Cow</option>
+                                <option value="Goat">Goat</option>
+                                <option value="Human_HG19">Human_HG19</option>
+                                <option value="Human_HG38">Human_HG38</option>
+                                <option value="Mouse">Mouse</option>
+                                <option value="Rat">Rat</option>
+                                <option value="Rice">Rice</option>
+                                <option value="Sheep">Sheep</option>
+                                <option value="Solanum_lycopersicum">Solanum_lycopersicum</option>
+                                <option value="Solanum_tuberosum">Solanum_tuberosum</option>
+                                <option value="Soybean">Soybean</option>
+                                <option value="watermelon">watermelon</option>
+                                <option value="White_pear">White_pear</option>
+                                <option value="Zebrafish">Zebrafish</option>
                             </select>
                         </div>
-
                     </div>
                     <br>
-                    <br>
-                    <div class="form-group-p">
-                        <div class="form-group">
-                            <label>是否为人类：</label>
-                        </div>
-                        <div class="form-group">
-                            <select name="human">
-                                <option value="no">no</option>
-                                <option value="yes">yes</option>
-                            </select>
+                </div>
+                <br>
+                <br>
+                <br>
+                <div id="para2">
+                    <div class="form-group-p" style="width: 100%">
+                        <label for="exampleInputName2">
+                            <em>3：</em><label><span>背景基因文件：</span></label>
+                        </label>
+                        <div class="one-line">
+                            <div class="form-group" style="width: 400px;">
+                                <input type="file" class="form-control file" id="table2" name="table2" >
+                            </div>
+                            <div class="form-group-extra" style="margin-left: 20px">
+                                <em><a href="/CloudPlatform/SoftTool/downloadExamples?name=CCA_env.txt">示例文件</a></em>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <br>
                 <br>
-                <input type="button" value="提&nbsp;&nbsp;交" name="submit" class="btn btn-primary" onclick="go()">
+                <input type="button" value="提&nbsp;&nbsp;交" name="submit" class="btn btn-primary" onclick="dogo()">
             </form>
-
         </div>
 
         <div class="handler"></div>
@@ -328,19 +399,12 @@
                 return true;
             }
 
-
             var running=false;
 
             $(document).ready(function () {
-                let date = new Date();
-                let month = date.getMonth() + 1;
-                let day = date.getDate();
-                let h = date.getHours();
-                let m = date.getMinutes();
-                let s = date.getSeconds();
-                let name = "GO"+month + day + h + m + s ;
-                $("#mytaskname").val(name);
+                formValidation();
                 loadHistory();
+                getTaskName();
             });
 
             var cur=true;
@@ -370,7 +434,7 @@
                     $("#hislist").after(html);
                 }else{
                     $.ajax({
-                        url: "/CloudPlatform/MyTasks/getDutysByType?sabbrename=GOKEGG",
+                        url: "/CloudPlatform/MyTasks/getDutysByType?sabbrename=GO",
                         type: "post",
                         success: function (data) {
                             if(data.run==true) running=true;
@@ -406,7 +470,7 @@
 
             function checkrunning() {
                 $.ajax({
-                    url: "/CloudPlatform/MyTasks/getDutysByType?sabbrename=Boxplot",
+                    url: "/CloudPlatform/MyTasks/getDutysByType?sabbrename=GO",
                     type: "post",
                     success: function (data) {
                         if(data.run==true) running=true;
@@ -435,38 +499,62 @@
                 browseLabel: "选择文件"
             });
 
-            function go() {
-                if(@session.get("userId").isEmpty){
-                    swal({
-                        title: "尚未登录",
-                        text: "请先登录账号",
-                        type: "warning",
-                        confirmButtonText: "确认"
-                    })
-                }else {
-                    var form = $("#GO");
-                    var fv = form.data("formValidation");
-                    fv.validate();
-                    if (fv.isValid()) {
-                        var form1 = new FormData($("#GO")[0]);
-                        $.ajax({
-                            url: "/CloudPlatform/SoftTool/runCCA?isgroup="+$("#isgroup").prop("checked"),
-                            type: "post",
-                            processData: false,
-                            contentType: false,
-                            data: form1,
-                            success: function (data) {
-                                removeul();
-                                loadHistory();
-                                $("#his_tab1").addClass("active");
-                                $("#out_tab1").removeClass("active");
-                                $("#ins_tab1").removeClass("active");
-                                $("#history").addClass("active").addClass("in");
-                                $("#example").removeClass("active");
-                                $("#instruction1").removeClass("active");
-                                getTaskName();
-                            }
-                        });
+            function dogo() {
+                var form = $("#GO");
+                var fv = form.data("formValidation");
+                fv.validate();
+                if (fv.isValid()) {
+                    var form1 = new FormData($("#GO")[0]);
+                    $.ajax({
+                        url: "/CloudPlatform/SoftTool/runGo?types=go&refer="+ref+"&table="+table,
+                        type: "post",
+                        processData: false,
+                        contentType: false,
+                        data: form1,
+                        success: function (data) {
+                            removeul();
+                            loadHistory();
+                            $("#his_tab1").addClass("active");
+                            $("#out_tab1").removeClass("active");
+                            $("#ins_tab1").removeClass("active");
+                            $("#history").addClass("active").addClass("in");
+                            $("#example").removeClass("active");
+                            $("#instruction1").removeClass("active");
+                            getTaskName();
+                        }
+                    });
+                }
+            }
+
+            var table=2;
+            var ref="FALSE";
+
+            function curtable(param) {
+                table=param;
+            }
+
+            $("#refer").click(function () {
+                var isSelected = this.checked;
+                if (isSelected === true) {
+                    $("#para").show();
+                    $("#para2").hide();
+                    ref="TRUE";
+                } else {
+                    $("#para").hide();
+                    $("#para2").show();
+                    ref="FALSE";
+                }
+            });
+
+            function showexample(type,param) {
+                if(type=="table"){
+                    if(table==1) {
+                        if(param==1) $("#txdata1").val(ta1);
+                        else $("#txdata1").val(ta2);
+                    }
+                    else {
+                        if(param==1) window.location.href = "/CloudPlatform/SoftTool/downloadExamples?name=gokegg1.txt"
+                        else window.location.href = "/CloudPlatform/SoftTool/downloadExamples?name=gokegg2.txt"
                     }
                 }
             }
@@ -503,6 +591,13 @@
                                 // type: 'image/jpeg,image/png',
                                 maxSize: 5*1024*1024,
                                 message: '文件不得大于5M！'
+                            }
+                        }
+                    },
+                    table2: {
+                        validators: {
+                            notEmpty: {
+                                message: '必须上传背景基因文件!'
                             }
                         }
                     }
@@ -673,6 +768,115 @@
 
         }
 
+            var ta1="Geneid\n" + "Glyma.01G006000\n" + "Glyma.01G011500\n" + "Glyma.01G011900\n" + "Glyma.01G012100\n" +
+                    "Glyma.01G021000\n" + "Glyma.01G032600\n" + "Glyma.01G036000\n" + "Glyma.01G053800\n" +
+                    "Glyma.01G062400\n" + "Glyma.01G096700\n" + "Glyma.01G099500\n" + "Glyma.01G105000\n" +
+                    "Glyma.01G115500\n" + "Glyma.01G120300\n" + "Glyma.01G121209\n" + "Glyma.01G133050\n" +
+                    "Glyma.01G142400\n" + "Glyma.01G172600\n" + "Glyma.01G187700\n" + "Glyma.01G198100\n" +
+                    "Glyma.01G204400\n" + "Glyma.01G215500\n" + "Glyma.01G217700\n" + "Glyma.01G221600\n" +
+                    "Glyma.01G223000\n" + "Glyma.01G239500\n" + "Glyma.01G242600\n" + "Glyma.01G242700\n" +
+                    "Glyma.01G242800\n" + "Glyma.02G001100\n" + "Glyma.02G002100\n" + "Glyma.02G007400\n" +
+                    "Glyma.02G022700\n" + "Glyma.02G028000\n" + "Glyma.02G029900\n" + "Glyma.02G038601\n" +
+                    "Glyma.02G052700\n" + "Glyma.02G053900\n" + "Glyma.02G054200\n" + "Glyma.02G073700\n" +
+                    "Glyma.02G104600\n" + "Glyma.02G121500\n" + "Glyma.02G125600\n" + "Glyma.02G128800\n" +
+                    "Glyma.02G156600\n" + "Glyma.02G184400\n" + "Glyma.02G186350\n" + "Glyma.02G195900\n" +
+                    "Glyma.02G205001\n" + "Glyma.02G227700\n" + "Glyma.02G242200\n" + "Glyma.02G265900\n" +
+                    "Glyma.02G282300\n" + "Glyma.02G309300\n" + "Glyma.03G005800\n" + "Glyma.03G018102\n" +
+                    "Glyma.03G018900\n" + "Glyma.03G028000\n" + "Glyma.03G040100\n" + "Glyma.03G041300\n" +
+                    "Glyma.03G042700\n" + "Glyma.03G042800\n" + "Glyma.03G057100\n" + "Glyma.03G068200\n" +
+                    "Glyma.03G078200\n" + "Glyma.03G098600\n" + "Glyma.03G101800\n" + "Glyma.03G104800\n" +
+                    "Glyma.03G113200\n" + "Glyma.03G122200\n" + "Glyma.03G132700\n" + "Glyma.03G141900\n" +
+                    "Glyma.03G148300\n" + "Glyma.03G159000\n" + "Glyma.03G167600\n" + "Glyma.03G181700\n" +
+                    "Glyma.03G198600\n" + "Glyma.03G202600\n" + "Glyma.03G206800\n" + "Glyma.03G222600\n";
+            var ta2="Geneid\tlogFC\n" +
+                    "Glyma.01G006000\t2.07822610607782\n" +
+                    "Glyma.01G011500\t2.4525737885893\n" +
+                    "Glyma.01G011900\t-3.30147399711293\n" +
+                    "Glyma.01G012100\t-3.66959375118833\n" +
+                    "Glyma.01G021000\t-8.86795188785606\n" +
+                    "Glyma.01G032600\t2.23610253960442\n" +
+                    "Glyma.01G036000\t-3.7753163271244\n" +
+                    "Glyma.01G053800\t-2.29886786779066\n" +
+                    "Glyma.01G062400\t-3.10778171636326\n" +
+                    "Glyma.01G096700\t-2.39273204989496\n" +
+                    "Glyma.01G099500\t2.35989594508638\n" +
+                    "Glyma.01G105000\t-3.72922147940937\n" +
+                    "Glyma.01G115500\t-4.44765933736886\n" +
+                    "Glyma.01G120300\t3.44666978730701\n" +
+                    "Glyma.01G121209\t-3.20299822364865\n" +
+                    "Glyma.01G133050\t-2.68459029745086\n" +
+                    "Glyma.01G142400\t-4.77957227853504\n" +
+                    "Glyma.01G172600\t-3.5619418690147\n" +
+                    "Glyma.01G187700\t-3.0494686762643\n" +
+                    "Glyma.01G198100\t-1.91278890218778\n" +
+                    "Glyma.01G204400\t-6.06822393155109\n" +
+                    "Glyma.01G215500\t-2.80972717360803\n" +
+                    "Glyma.01G217700\t-3.70054304455409\n" +
+                    "Glyma.01G221600\t-2.19999660541509\n" +
+                    "Glyma.01G223000\t-2.55065294850781\n" +
+                    "Glyma.01G239500\t-2.04607645063677\n" +
+                    "Glyma.01G242600\t-4.10992977500167\n" +
+                    "Glyma.01G242700\t-8.28183345779038\n" +
+                    "Glyma.01G242800\t-2.04840325905017\n" +
+                    "Glyma.02G001100\t-2.08922290765613\n" +
+                    "Glyma.02G002100\t-2.36507733105451\n" +
+                    "Glyma.02G007400\t-2.0915854842742\n" +
+                    "Glyma.02G022700\t-2.40267430356423\n" +
+                    "Glyma.02G028000\t-2.74257578273325\n" +
+                    "Glyma.02G029900\t-2.06237405299478\n" +
+                    "Glyma.02G038601\t-3.31663686112551\n" +
+                    "Glyma.02G052700\t-2.91717356887038\n" +
+                    "Glyma.02G053900\t-3.95683812588591\n" +
+                    "Glyma.02G054200\t-5.88471778544358\n" +
+                    "Glyma.02G073700\t-2.74599455996733\n" +
+                    "Glyma.02G104600\t-2.59225452744737\n" +
+                    "Glyma.02G121500\t3.31482223793319\n" +
+                    "Glyma.02G125600\t-2.77085205570627\n" +
+                    "Glyma.02G128800\t-2.66243688186728\n" +
+                    "Glyma.02G156600\t10.9250598580926\n" +
+                    "Glyma.02G184400\t2.7796965240175\n" +
+                    "Glyma.02G186350\t11.0557343368489\n" +
+                    "Glyma.02G195900\t-5.72981832158658\n" +
+                    "Glyma.02G205001\t-2.3671848805616\n" +
+                    "Glyma.02G227700\t-1.91863670119171\n" +
+                    "Glyma.02G242200\t-2.05985808673463\n" +
+                    "Glyma.02G265900\t-2.77397176358302\n" +
+                    "Glyma.02G282300\t-2.19799795985111\n" +
+                    "Glyma.02G309300\t-2.05313879570529\n" +
+                    "Glyma.03G005800\t-1.98007408718856\n" +
+                    "Glyma.03G018102\t-2.7630396328938\n" +
+                    "Glyma.03G018900\t2.06743086843184\n" +
+                    "Glyma.03G028000\t-4.30908225685566\n" +
+                    "Glyma.03G040100\t-2.01874840212948\n" +
+                    "Glyma.03G041300\t-1.97897521751507\n" +
+                    "Glyma.03G042700\t-2.32556437920911\n" +
+                    "Glyma.03G042800\t-2.34876427985968\n" +
+                    "Glyma.03G057100\t-3.73341919614339\n" +
+                    "Glyma.03G068200\t-4.32614258346403\n" +
+                    "Glyma.03G078200\t-1.93050184374347\n" +
+                    "Glyma.03G098600\t-4.03145290092495\n" +
+                    "Glyma.03G101800\t-2.08845313647803\n" +
+                    "Glyma.03G104800\t-2.03318381757067\n" +
+                    "Glyma.03G113200\t-8.0344714718168\n" +
+                    "Glyma.03G122200\t2.04916296338444\n" +
+                    "Glyma.03G132700\t-2.93885799346974\n" +
+                    "Glyma.03G141900\t-3.52849028712209\n" +
+                    "Glyma.03G148300\t-2.08297986032708\n" +
+                    "Glyma.03G159000\t-2.32976846073278\n" +
+                    "Glyma.03G167600\t-2.05159173243727\n" +
+                    "Glyma.03G181700\t-2.2482590531534\n" +
+                    "Glyma.03G198600\t-3.02836282201156\n" +
+                    "Glyma.03G202600\t-2.33701304831756\n" +
+                    "Glyma.03G206800\t-2.33576700235243\n" +
+                    "Glyma.03G222600\t-4.66285268391474";
+
+
+            var ggo= "B17-12-1\tB\n" +
+                    "B17-12-2\tB\n" +
+                    "B17-12-3\tB\n" +
+                    "C17-16-2\tC\n" +
+                    "C17-16-3\tC\n" +
+                    "C17-16\tC";
 
 
 
