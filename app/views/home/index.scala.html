@@ -39,33 +39,6 @@
 
                 <div id="hotest" style="padding: 1em 0em 1em 1em;">
                     <ul id="hotlist" class="ui-widget ui-helper-clearfix">
-                        <li class="mws-report">
-                            <a onclick="checklog('/CloudPlatform/SoftPage/GO')">
-                                <div class="mws-report-icon mws-ic GO"></div>
-                            </a>
-                            <div class="mws-report-content">
-                                <div class="likeable" style="float:right;">
-                                    <div id="fmsg1" style="display:none;">
-                                        <div class="tooltip fade left in" style="width: 75px;bottom: 2px;right: 19px;display: block;">
-                                            <div class="tooltip-arrow"></div><div class="tooltip-inner">点击收藏</div>
-                                        </div>
-                                    </div>
-                                    <div id="fmsg2" style="display:none;">
-                                        <div class="tooltip fade left in" style="width: 75px;bottom: 2px;right: 19px;display: block;">
-                                            <div class="tooltip-arrow"></div>
-                                            <div class="tooltip-inner">取消收藏</div>
-                                        </div>
-                                    </div>
-                                    <i class="icon icon-star yellow-icon" onmouseover="mover($(this))" onmouseout="mout($(this))" onclick="collect($(this),1)"></i>
-                                </div>
-                                <div style="height: 115px" onclick="checklog('/CloudPlatform/SoftPage/GO')">
-                                    <a>
-                                        <h4>GO富集分析</h4>
-                                        <p style="padding-right: 10px">应用超几何检验，找出与整个基因组背景相比，在差异表达基因中显著富集的GO/KO条目</p>
-                                    </a>
-                                </div>
-                            </div>
-                        </li>
                     </ul>
                 </div>
                 <div id="latest" style="padding: 1em 0em 1em 1em;">
@@ -151,7 +124,6 @@
                     $para.addClass('icon-star-empty');
                     $para.removeClass('icon-star');
                 }
-
             }
 
             //tab
@@ -204,6 +176,30 @@
             }
 
             function formValidation() {
+                $("#mailSigninForm").formValidation({
+                    framework: 'bootstrap',
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        phone: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入账号！'
+                                }
+                            }
+                        },
+                        code: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入验证码！'
+                                }
+                            }
+                        }
+                    }
+                });
                 $("#signinForm").formValidation({
                     framework: 'bootstrap',
                     icon: {
@@ -277,6 +273,13 @@
                                 }
                             }
                         },
+                        company: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请填写单位！'
+                                }
+                            }
+                        },
                         password: {
                             validators: {
                                 notEmpty: {
@@ -303,12 +306,6 @@
                             validators: {
                                 notEmpty: {
                                     message: "请输入验证码！"
-                                },
-                                callback: {
-                                    message: '验证码错误！',
-                                    callback: function () {
-                                        return $('#validnumber1').val() === code;
-                                    }
                                 }
                             }
                         }
@@ -322,13 +319,6 @@
                         validating: 'glyphicon glyphicon-refresh'
                     },
                     fields: {
-                        password: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入旧密码！'
-                                }
-                            }
-                        },
                         password1: {
                             validators: {
                                 notEmpty: {
@@ -355,18 +345,11 @@
                             validators: {
                                 notEmpty: {
                                     message: "请输入验证码！"
-                                },
-                                callback: {
-                                    message: '验证码错误！',
-                                    callback: function () {
-                                        return $('#validnumber2').val() === code;
-                                    }
                                 }
                             }
                         }
                     }
                 });
-
             }
 
     </script>

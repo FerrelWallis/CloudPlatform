@@ -2,6 +2,10 @@ package utils
 
 import java.io.File
 
+import com.aliyuncs.DefaultAcsClient
+import com.aliyuncs.dysmsapi.model.v20170525.SendSmsRequest
+import com.aliyuncs.http.MethodType
+import com.aliyuncs.profile.DefaultProfile
 import dao.softDao
 import javax.imageio.ImageIO
 import models.Tables.SoftRow
@@ -12,6 +16,7 @@ import play.api.libs.json.Json
 
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
+import scala.util.Random
 
 object Utils{
 
@@ -26,6 +31,43 @@ object Utils{
     if (new File(windowsPath).exists()) windowsPath else linuxPath
   }
 
+  //验证码
+
+
+  //短信验证
+  def sendMessage(phone: String,akid:String,aksecret:String) = {
+    System.setProperty("sun.net.client.defaultConnectTimeout", "10000")
+    System.setProperty("sun.net.client.defaultReadTimeout", "10000")
+    val product = "Dysmsapi"
+    val domain = "dysmsapi.aliyuncs.com"
+    val profile = DefaultProfile.getProfile("cn-hangzhou", akid, aksecret)
+    DefaultProfile.addEndpoint("cn-hangzhou", "cn-hangzhou", product, domain)
+    val acsClient = new DefaultAcsClient(profile)
+    val request = new SendSmsRequest
+    request.setMethod(MethodType.POST)
+    request.setPhoneNumbers(phone)
+    request.setSignName("微课云")
+    request.setTemplateCode("SMS_195705252")
+    val code = productValidCode
+    val json = Json.obj("code" -> code)
+    val jsonString = Json.stringify(json)
+    request.setTemplateParam(jsonString)
+    val sendSmsResponse = acsClient.getAcsResponse(request)
+    val responseCode = sendSmsResponse.getCode
+    if (sendSmsResponse.getCode != null && sendSmsResponse.getCode.equals("OK")) {
+      (true, code, responseCode)
+    } else {
+      println(sendSmsResponse.getCode)
+      (false, code, responseCode)
+    }
+  }
+
+  def productValidCode = {
+    "000000".map { i =>
+      (Random.nextInt(10) + '0').toChar
+    }
+  }
+
 
   def pdf2Png(pdfPath: String,file:String): Unit = {
     if (new File(windowsPath).exists()) pdfPng(pdfPath,file)
@@ -38,7 +80,8 @@ object Utils{
     val outFile = new File(file)
     val document = PDDocument.load(pdfFiles)
     val renderer = new PDFRenderer(document)
-    ImageIO.write(renderer.renderImage(0, 3), "png", outFile)
+    if(file.indexOf("png")>=0) ImageIO.write(renderer.renderImage(0, 3), "png", outFile)
+    else ImageIO.write(renderer.renderImage(0, 3), "tiff", outFile)
     document.close()
   }
 
@@ -50,6 +93,7 @@ object Utils{
     //exec需要指定结果输出路径的时候，不指定默认本地任务路径
     execCommand.exec(command)
   }
+
 
 
 

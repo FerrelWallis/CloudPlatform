@@ -43,6 +43,7 @@
                                     <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 35px, 0px); top: 0px; left: 0px; will-change: transform;width: 150px">
                                         <a class="dropdown-item" id="downPic1">下载 pdf</a>
                                         <a class="dropdown-item" id="downPng1">下载 png</a>
+                                        <a class="dropdown-item" id="downTiff1">下载 tiff</a>
                                     </div>
                                 </div>
                             </div>
@@ -163,6 +164,7 @@
                                     <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 35px, 0px); top: 0px; left: 0px; will-change: transform;width: 150px">
                                         <a class="dropdown-item" id="downPic2">下载 pdf</a>
                                         <a class="dropdown-item" id="downPng2">下载 png</a>
+                                        <a class="dropdown-item" id="downTiff2">下载 tiff</a>
                                     </div>
                                 </div>
                             </div>
@@ -183,6 +185,120 @@
 
     <script>
             function formValidation() {
+                $('#kododge').formValidation({
+                    framework: 'bootstrap',
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        n: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        br: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        sm: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        width: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        height: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        xts: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        yts: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        lts: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        }
+                    }
+                });
+                $("#mailSigninForm").formValidation({
+                    framework: 'bootstrap',
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        phone: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入账号！'
+                                }
+                            }
+                        },
+                        code: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入验证码！'
+                                }
+                            }
+                        }
+                    }
+                });
                 $("#signinForm").formValidation({
                     framework: 'bootstrap',
                     icon: {
@@ -256,6 +372,13 @@
                                 }
                             }
                         },
+                        company: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请填写单位！'
+                                }
+                            }
+                        },
                         password: {
                             validators: {
                                 notEmpty: {
@@ -282,18 +405,11 @@
                             validators: {
                                 notEmpty: {
                                     message: "请输入验证码！"
-                                },
-                                callback: {
-                                    message: '验证码错误！',
-                                    callback: function () {
-                                        return $('#validnumber1').val() === code;
-                                    }
                                 }
                             }
                         }
                     }
                 });
-
                 $('#passwordForm').formValidation({
                     framework: 'bootstrap',
                     icon: {
@@ -302,13 +418,6 @@
                         validating: 'glyphicon glyphicon-refresh'
                     },
                     fields: {
-                        password: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入旧密码！'
-                                }
-                            }
-                        },
                         password1: {
                             validators: {
                                 notEmpty: {
@@ -335,12 +444,6 @@
                             validators: {
                                 notEmpty: {
                                     message: "请输入验证码！"
-                                },
-                                callback: {
-                                    message: '验证码错误！',
-                                    callback: function () {
-                                        return $('#validnumber2').val() === code;
-                                    }
                                 }
                             }
                         }
@@ -368,6 +471,10 @@
                             $.each(data.downpng,function (i,v) {
                                 var num=i+1;
                                 $("#downPng"+num).attr("href","/CloudPlatform/SoftTool/download?path="+v);
+                            });
+                            $.each(data.downtiffs,function (i,v) {
+                                var num=i+1;
+                                $("#downTiff"+num).attr("href","/CloudPlatform/SoftTool/download?path="+v);
                             });
                             $.each(data.elements,function (i,v) {
                                 $("#"+i).val(v);
@@ -400,25 +507,30 @@
             $(".evo-cp-wrap").css("float", "left");
 
             function DrawGokegg() {
-                var element = "<div id='content'><span id='info'>绘图中，请耐心等待...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
-                var index = layer.alert(element, {
-                    skin: 'layui-layer-lan',
-                    closeBtn: 0,
-                    title: "提醒",
-                    btn: []
-                });
-                var form1 = new FormData($("#kododge")[0]);
-                $.ajax({
-                    url: "/CloudPlatform/SoftTool/redrawGO?types=ko&taskname=@row.taskname",
-                    type: "post",
-                    processData: false,
-                    contentType: false,
-                    data: form1,
-                    success: function (data) {
-                        $("#redraw_pic1").attr("src","/CloudPlatform/pic?path="+data.pics+"&num="+Math.random());
-                        layer.close(index);
-                    }
-                });
+                var form = $("#kododge");
+                var fv = form.data("formValidation");
+                fv.validate();
+                if (fv.isValid()) {
+                    var element = "<div id='content'><span id='info'>绘图中，请耐心等待...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
+                    var index = layer.alert(element, {
+                        skin: 'layui-layer-lan',
+                        closeBtn: 0,
+                        title: "提醒",
+                        btn: []
+                    });
+                    var form1 = new FormData($("#kododge")[0]);
+                    $.ajax({
+                        url: "/CloudPlatform/SoftTool/redrawGO?types=ko&taskname=@row.taskname",
+                        type: "post",
+                        processData: false,
+                        contentType: false,
+                        data: form1,
+                        success: function (data) {
+                            $("#redraw_pic1").attr("src","/CloudPlatform/pic?path="+data.pics+"&num="+Math.random());
+                            layer.close(index);
+                        }
+                    });
+                }
             }
 
     </script>

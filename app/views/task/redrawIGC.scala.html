@@ -12,7 +12,7 @@
     <script type="text/javascript" src="@routes.Assets.versioned("palette/evol-colorpicker.min.js")"></script>
 
     <div class="container" style="width: 98.5%;margin: unset;max-width: unset;padding: 5px">
-        @task.preview(row,"Heatmap")
+        @task.preview(row,"IGC")
         <div class="mws-panel grid_8" style="background: white!important;">
             <div class="mws-panel-body" style="border: unset">
                 <div class="mws-panel-content" style="width: 96%;padding-top: 0;padding-right: 0">
@@ -33,7 +33,7 @@
                     <br>
                     <form id="Heatmap" style="display: none" method="GET" enctype="multipart/form-data">
                         <div style="width: 60%;float: left">
-                            <img id="redraw_pic" src="" style="width: 100%;height: auto" >
+                            <img id="redraw_pic" src="" style="width: 100%;height: auto">
                         </div>
                         <div class="redraw-right" style="width: 40%;float: left;margin-bottom: 30px;">
                             <div class="form-group-p">
@@ -153,7 +153,6 @@
                                         <input type="button" value="增加颜色" class="btn btn-primary btn-dark" onclick="addcolor()" style="width: 100px;">
                                         <input type="button" value="删除颜色" class="btn btn-primary btn-dark" onclick="delcolor()" style="width: 100px;">
                                     </div>
-
                                 </div>
                                 <br>
                             </div>
@@ -237,89 +236,9 @@
 
     <script>
 
-        var colornum=0;
+            var colornum=0;
 
             function formValidation() {
-                $('#Heatmap').formValidation({
-                    framework: 'bootstrap',
-                    icon: {
-                        valid: 'glyphicon glyphicon-ok',
-                        invalid: 'glyphicon glyphicon-remove',
-                        validating: 'glyphicon glyphicon-refresh'
-                    },
-                    fields: {
-                        rtree: {
-                            validators: {
-                                notEmpty: {
-                                    message: '不能为空!'
-                                },
-                                numeric: {
-                                    message: '必须为数字！'
-                                }
-                            }
-                        },
-                        ctree: {
-                            validators: {
-                                notEmpty: {
-                                    message: '不能为空!'
-                                },
-                                numeric: {
-                                    message: '必须为数字！'
-                                }
-                            }
-                        },
-                        rp: {
-                            validators: {
-                                notEmpty: {
-                                    message: '不能为空!'
-                                },
-                                numeric: {
-                                    message: '必须为数字！'
-                                }
-                            }
-                        },
-                        cp: {
-                            validators: {
-                                notEmpty: {
-                                    message: '不能为空!'
-                                },
-                                numeric: {
-                                    message: '必须为数字！'
-                                }
-                            }
-                        },
-                        cc: {
-                            validators: {
-                                notEmpty: {
-                                    message: '不能为空!'
-                                },
-                                numeric: {
-                                    message: '必须为数字！'
-                                }
-                            }
-                        },
-                        xfs: {
-                            validators: {
-                                notEmpty: {
-                                    message: '不能为空!'
-                                },
-                                numeric: {
-                                    message: '必须为数字！'
-                                }
-                            }
-                        },
-                        yfs: {
-                            validators: {
-                                notEmpty: {
-                                    message: '不能为空!'
-                                },
-                                numeric: {
-                                    message: '必须为数字！'
-                                }
-                            }
-                        }
-                    }
-                });
                 $("#mailSigninForm").formValidation({
                     framework: 'bootstrap',
                     icon: {
@@ -525,10 +444,10 @@
                 }
             });
 
-        $("#colorborder").colorpicker({color: '#000000', defaultPalette: 'web'});
-        $(".colorPicker").attr("readonly", "readonly");
-        $("#borcolor .evo-cp-wrap").css("float", "left");
-        $("#borcolor .evo-cp-wrap").css("width", "120px");
+            $("#colorborder").colorpicker({color: '#000000', defaultPalette: 'web'});
+            $(".colorPicker").attr("readonly", "readonly");
+            $("#borcolor .evo-cp-wrap").css("float", "left");
+            $("#borcolor .evo-cp-wrap").css("width", "120px");
 
             function splitcolor(param) {
                 console.log("split="+param);
@@ -556,12 +475,12 @@
                 return false;
             }
 
-        function show() {
-            var param = $("#color").val();
-            if(param=="0") $("#inputcolor").show();
-            else $("#inputcolor").hide();
+            function show() {
+                var param = $("#color").val();
+                if(param=="0") $("#inputcolor").show();
+                else $("#inputcolor").hide();
 
-        }
+            }
 
             function addcolor() {
                 if(colornum==5){
@@ -598,34 +517,29 @@
             }
 
             function DrawHeat() {
-                var form = $("#Heatmap");
-                var fv = form.data("formValidation");
-                fv.validate();
-                if (fv.isValid()) {
-                    var element = "<div id='content'><span id='info'>绘图中，请耐心等待...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
-                    var index = layer.alert(element, {
-                        skin: 'layui-layer-lan',
-                        closeBtn: 0,
-                        title: "提醒",
-                        btn: []
-                    });
-                    var colors=[];
-                    for(var i=0;i<colornum;i++)
-                        colors.push($("#color"+i).val());
-                    $("#designcolor").val(colors.join(":"));
-                    var form1 = new FormData($("#Heatmap")[0]);
-                    $.ajax({
-                        url: "/CloudPlatform/SoftTool/redrawHeat?taskname=@row.taskname",
-                        type: "post",
-                        processData: false,
-                        contentType: false,
-                        data: form1,
-                        success: function (data) {
-                            $("#redraw_pic").attr("src","/CloudPlatform/pic?path="+data.pics+"&num="+Math.random());
-                            layer.close(index);
-                        }
-                    });
-                }
+                var element = "<div id='content'><span id='info'>绘图中，请耐心等待...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
+                var index = layer.alert(element, {
+                    skin: 'layui-layer-lan',
+                    closeBtn: 0,
+                    title: "提醒",
+                    btn: []
+                });
+                var colors=[];
+                for(var i=0;i<colornum;i++)
+                    colors.push($("#color"+i).val());
+                $("#designcolor").val(colors.join(":"));
+                var form1 = new FormData($("#Heatmap")[0]);
+                $.ajax({
+                    url: "/CloudPlatform/SoftTool/redrawHeat?taskname=@row.taskname",
+                    type: "post",
+                    processData: false,
+                    contentType: false,
+                    data: form1,
+                    success: function (data) {
+                        $("#redraw_pic").attr("src","/CloudPlatform/pic?path="+data.pics+"&num="+Math.random());
+                        layer.close(index);
+                    }
+                });
             }
 
 
@@ -634,6 +548,12 @@
                 if (colorparam == "TRUE") $("#borcolor").show();
                 else $("#borcolor").hide();
             }
+
+
+
+
+
+
     </script>
 
 }

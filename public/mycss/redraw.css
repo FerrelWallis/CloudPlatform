@@ -297,3 +297,23 @@ a, a:visited {
     background-color: transparent;
     border: 0;
 }
+
+.login-form-body .form-gp input {
+    width: 100%;
+    height: 30px!important;
+    border: none!important;
+    border-bottom-color: currentcolor!important;
+    border-bottom-style: none!important;
+    border-bottom-width: medium!important;
+    border-bottom: 1px solid #e6e6e6!important;
+    background-color: transparent!important;
+    border-radius: 3px!important;
+    color: #888;
+    outline: none;
+    font-family: 'MuseoSans500Regular', Arial, sans-serif;
+    margin: 0;
+    width: 210px;
+    max-width: 100%;
+    display: block;
+    box-sizing: border-box;
+}

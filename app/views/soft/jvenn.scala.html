@@ -279,14 +279,14 @@
                             <b>Step2</b> - Browse to select a file
                             <div class="row-fluid" style="margin-top: 5px;">
                                 <div class="control-group">
-                                    <div id="progress" class="span8 progress" style="width: 93%;height: 33px;">
+                                    <div id="progress" class="span8 progress" style="width: 80%;height: 33px;">
                                         <div class="bar progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="padding-top: 5px;min-width: 2em;">
                                             <span class="sr-only">0%</span>
                                         </div>
                                     </div>
                                     <div class="input-append">
                                         <input style="display: none;" name="browse_upload" id="browse_upload" type="file" data-url="/CloudPlatform/SoftTool/getJvennData" >
-                                        <span id="upload_and_draw" class="add-on btn btn-default" style="border-radius: 0 4px 4px 0;"><i class="fa fa-folder-open"></i></span>
+                                        <span id="upload_and_draw" class="add-on btn btn-default" style="border-radius: 0 4px 4px 0;">Browse  <i class="fa fa-folder-open"></i></span>
                                     </div>
                                 </div>
                             </div>
@@ -387,80 +387,33 @@
 
     <hr>
     <script>
-            // !function ($) {
-            //     $(function () {
-            //         window.prettyPrint && prettyPrint()
-            //     })
-            // }(window.jQuery)
-            //
-            // $(function () {
-            //     $('#mycp').colorpicker();
-            // });
-            // $(function () {
-            //     $('#cp2, #cp3a, #cp3b').colorpicker();
-            //     $('#cp4').colorpicker({"color": "#16813D"});
-            //     $('#cp5').colorpicker({
-            //         format: "rgba"
-            //     });
-            //     $('#cp6').colorpicker({
-            //         horizontal: true
-            //     });
-            //     $('#cp9').colorpicker({
-            //         useAlpha: false
-            //     });
-            //     $('#cp10').colorpicker({
-            //         useHashPrefix: false
-            //     });
-            //
-            //     $("#upload_and_draw").click(function(){
-            //         $('.progress-bar').removeClass("bar-danger");
-            //         $('.bar').css('width', '0%');
-            //         $('.sr-only').html('0%');
-            //         $("#browse_upload").click();
-            //     });
-            //
-            //     $('#browse_upload').fileupload({
-            //         dataType: 'json',
-            //         add: function (e, data) {
-            //             data.submit();
-            //         },
-            //         done: function (e, data) {
-            //             var vennData = jQuery.extend(true, {}, data);
-            //             if ("error" in data.result[0]) {
-            //                 $('.progress-bar').addClass("bar-danger");
-            //                 $('.sr-only').html("100% - " + data.result[0].error);
-            //             }
-            //             else {
-            //                 $('.sr-only').html("100% - Upload file: " + vennData.files[0].name);
-            //                 uploadSeries = new Array({name: data.result[0].name, data: data.result[0].data, values: data.result[0].values});
-            //                 if(vennData.result[0].name["A"]) { switchListOn(1, true, vennData.result[0].name["A"]); }
-            //                 else                             { switchListOn(1, false, ""); }
-            //                 if(vennData.result[0].name["B"]) { switchListOn(2, true, vennData.result[0].name["B"]); }
-            //                 else                             { switchListOn(2, false, ""); }
-            //                 if(vennData.result[0].name["C"]) { switchListOn(3, true, vennData.result[0].name["C"]); }
-            //                 else                             { switchListOn(3, false, ""); }
-            //                 if(vennData.result[0].name["D"]) { switchListOn(4, true, vennData.result[0].name["D"]); }
-            //                 else                             { switchListOn(4, false, ""); }
-            //                 if(vennData.result[0].name["E"]) { switchListOn(5, true, vennData.result[0].name["E"]); }
-            //                 else                             { switchListOn(5, false, ""); }
-            //                 if(vennData.result[0].name["F"]) { switchListOn(6, true, vennData.result[0].name["F"]); }
-            //                 else                             { switchListOn(6, false, ""); }
-            //                 updateJvenn();
-            //             }
-            //         },
-            //         progressall: function (e, data) {
-            //             var progress = parseInt(data.loaded / data.total * 100, 10);
-            //             $('.bar').css('width', progress + '%');
-            //             $('.sr-only').html(progress + '%');
-            //         }
-            //     });
-            //     $('#browse_upload').bind('fileuploadsubmit', function (e, data) {
-            //         data.formData = {delimiter: $('[id^="sep_"].active').attr("name"), header: $('[id^="header_"].active').attr("name")};
-            //     });
-            //
-            // });
+
 
             function formValidation() {
+                $("#mailSigninForm").formValidation({
+                    framework: 'bootstrap',
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        phone: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入账号！'
+                                }
+                            }
+                        },
+                        code: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入验证码！'
+                                }
+                            }
+                        }
+                    }
+                });
                 $("#signinForm").formValidation({
                     framework: 'bootstrap',
                     icon: {
@@ -534,6 +487,13 @@
                                 }
                             }
                         },
+                        company: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请填写单位！'
+                                }
+                            }
+                        },
                         password: {
                             validators: {
                                 notEmpty: {
@@ -560,12 +520,6 @@
                             validators: {
                                 notEmpty: {
                                     message: "请输入验证码！"
-                                },
-                                callback: {
-                                    message: '验证码错误！',
-                                    callback: function () {
-                                        return $('#validnumber1').val() === code;
-                                    }
                                 }
                             }
                         }
@@ -579,13 +533,6 @@
                         validating: 'glyphicon glyphicon-refresh'
                     },
                     fields: {
-                        password: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入旧密码！'
-                                }
-                            }
-                        },
                         password1: {
                             validators: {
                                 notEmpty: {
@@ -612,18 +559,11 @@
                             validators: {
                                 notEmpty: {
                                     message: "请输入验证码！"
-                                },
-                                callback: {
-                                    message: '验证码错误！',
-                                    callback: function () {
-                                        return $('#validnumber2').val() === code;
-                                    }
                                 }
                             }
                         }
                     }
                 });
-
             }
     </script>
 

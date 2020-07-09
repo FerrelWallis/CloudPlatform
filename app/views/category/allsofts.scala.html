@@ -240,6 +240,30 @@
             }
 
             function formValidation() {
+                $("#mailSigninForm").formValidation({
+                    framework: 'bootstrap',
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        phone: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入账号！'
+                                }
+                            }
+                        },
+                        code: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入验证码！'
+                                }
+                            }
+                        }
+                    }
+                });
                 $("#signinForm").formValidation({
                     framework: 'bootstrap',
                     icon: {
@@ -313,6 +337,13 @@
                                 }
                             }
                         },
+                        company: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请填写单位！'
+                                }
+                            }
+                        },
                         password: {
                             validators: {
                                 notEmpty: {
@@ -339,12 +370,6 @@
                             validators: {
                                 notEmpty: {
                                     message: "请输入验证码！"
-                                },
-                                callback: {
-                                    message: '验证码错误！',
-                                    callback: function () {
-                                        return $('#validnumber1').val() === code;
-                                    }
                                 }
                             }
                         }
@@ -358,13 +383,6 @@
                         validating: 'glyphicon glyphicon-refresh'
                     },
                     fields: {
-                        password: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入旧密码！'
-                                }
-                            }
-                        },
                         password1: {
                             validators: {
                                 notEmpty: {
@@ -391,18 +409,11 @@
                             validators: {
                                 notEmpty: {
                                     message: "请输入验证码！"
-                                },
-                                callback: {
-                                    message: '验证码错误！',
-                                    callback: function () {
-                                        return $('#validnumber2').val() === code;
-                                    }
                                 }
                             }
                         }
                     }
                 });
-
             }
 
     </script>

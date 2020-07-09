@@ -25,6 +25,7 @@
                             <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 35px, 0px); top: 0px; left: 0px; will-change: transform;width: 150px">
                                 <a class="dropdown-item" id="downPic">下载 pdf</a>
                                 <a class="dropdown-item" id="downPng">下载 png</a>
+                                <a class="dropdown-item" id="downTiff">下载 tiff</a>
                             </div>
                         </div>
                     </div>
@@ -57,7 +58,7 @@
                                     <label>是否显示样本名：</label>
                                 </div>
                                 <div class="form-group right">
-                                    <select id="showname" name="showname" style="width: 30%;" onchange="shown()">
+                                    <select id="showname" name="showname" style="width: 40%;" onchange="shown()">
                                         <option value="FALSE">no</option>
                                         <option value="TRUE">yes</option>
                                     </select>
@@ -170,6 +171,110 @@
     <script>
 
             function formValidation() {
+                $('#PCA').formValidation({
+                    framework: 'bootstrap',
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        width: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        length: {
+                            notEmpty: {
+                                message: '不能为空!'
+                            },
+                            validators: {
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        xts: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        yts: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        xls: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        yls: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        lts: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        }
+                    }
+                });
+                $("#mailSigninForm").formValidation({
+                    framework: 'bootstrap',
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        phone: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入账号！'
+                                }
+                            }
+                        },
+                        code: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入验证码！'
+                                }
+                            }
+                        }
+                    }
+                });
                 $("#signinForm").formValidation({
                     framework: 'bootstrap',
                     icon: {
@@ -243,6 +348,13 @@
                                 }
                             }
                         },
+                        company: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请填写单位！'
+                                }
+                            }
+                        },
                         password: {
                             validators: {
                                 notEmpty: {
@@ -269,18 +381,11 @@
                             validators: {
                                 notEmpty: {
                                     message: "请输入验证码！"
-                                },
-                                callback: {
-                                    message: '验证码错误！',
-                                    callback: function () {
-                                        return $('#validnumber1').val() === code;
-                                    }
                                 }
                             }
                         }
                     }
                 });
-
                 $('#passwordForm').formValidation({
                     framework: 'bootstrap',
                     icon: {
@@ -289,13 +394,6 @@
                         validating: 'glyphicon glyphicon-refresh'
                     },
                     fields: {
-                        password: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入旧密码！'
-                                }
-                            }
-                        },
                         password1: {
                             validators: {
                                 notEmpty: {
@@ -322,18 +420,11 @@
                             validators: {
                                 notEmpty: {
                                     message: "请输入验证码！"
-                                },
-                                callback: {
-                                    message: '验证码错误！',
-                                    callback: function () {
-                                        return $('#validnumber2').val() === code;
-                                    }
                                 }
                             }
                         }
                     }
                 });
-
             }
 
             var colornum=0;
@@ -349,6 +440,7 @@
                             $("#redraw_pic").attr("src","/CloudPlatform/pic?path="+data.pics[0]+"&num="+Math.random());
                             $("#downPic").attr("href","/CloudPlatform/SoftTool/download?path="+data.downpics);
                             $("#downPng").attr("href","/CloudPlatform/SoftTool/download?path="+data.downpng);
+                            $("#downTiff").attr("href","/CloudPlatform/SoftTool/download?path="+data.downtiffs);
                             var cols="";
                             $.each(data.cols,function (i,v) {
                                 cols +="<option value='"+v+"'>"+v+"</option>";
@@ -371,46 +463,51 @@
                             });
                             $(".colorPicker").attr("readonly", "readonly");
                             $(".evo-cp-wrap").css("float", "left");
-                            $(".evo-cp-wrap").css("width", "200px");
+                            $(".evo-cp-wrap").css("width", "180px");
                         }
                     });
                 }
             });
 
             function DrawPCA() {
-                if(checkXYCol()){
-                    swal({
-                        title: "请检查xy轴数据",
-                        text: "x轴数据与y轴数据不可为同一个！",
-                        type: "warning",
-                        confirmButtonText: "确认"
-                    });
-                    return;
-                }
-                var element = "<div id='content'><span id='info'>绘图中，请耐心等待...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>";
-                var index = layer.alert(element, {
-                    skin: 'layui-layer-lan',
-                    closeBtn: 0,
-                    title: "提醒",
-                    btn: []
-                });
-                var c=[];
-                for(let i=0;i<colornum;i++){
-                    c.push($("#color"+i).val());
-                }
-                $("#color").val(c.join(":"));
-                var form1 = new FormData($("#PCA")[0]);
-                $.ajax({
-                    url: "/CloudPlatform/SoftTool/redrawPCA?taskname=@row.taskname",
-                    type: "post",
-                    processData: false,
-                    contentType: false,
-                    data: form1,
-                    success: function (data) {
-                        $("#redraw_pic").attr("src","/CloudPlatform/pic?path="+data.pics+"&num="+Math.random());
-                        layer.close(index);
+                var form = $("#PCA");
+                var fv = form.data("formValidation");
+                fv.validate();
+                if (fv.isValid()) {
+                    if(checkXYCol()){
+                        swal({
+                            title: "请检查xy轴数据",
+                            text: "x轴数据与y轴数据不可为同一个！",
+                            type: "warning",
+                            confirmButtonText: "确认"
+                        });
+                        return;
                     }
-                });
+                    var element = "<div id='content'><span id='info'>绘图中，请耐心等待...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>";
+                    var index = layer.alert(element, {
+                        skin: 'layui-layer-lan',
+                        closeBtn: 0,
+                        title: "提醒",
+                        btn: []
+                    });
+                    var c=[];
+                    for(let i=0;i<colornum;i++){
+                        c.push($("#color"+i).val());
+                    }
+                    $("#color").val(c.join(":"));
+                    var form1 = new FormData($("#PCA")[0]);
+                    $.ajax({
+                        url: "/CloudPlatform/SoftTool/redrawPCA?taskname=@row.taskname",
+                        type: "post",
+                        processData: false,
+                        contentType: false,
+                        data: form1,
+                        success: function (data) {
+                            $("#redraw_pic").attr("src","/CloudPlatform/pic?path="+data.pics+"&num="+Math.random());
+                            layer.close(index);
+                        }
+                    });
+                }
             }
 
 

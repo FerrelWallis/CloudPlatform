@@ -1,16 +1,25 @@
 @()(implicit session: Session)
-@home.main("Heatmap"){
+@home.main("Inner-group Correlation Analysis"){
 
     <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("css/test/mysoft.css")" media="screen" />
-    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("palette/evol-colorpicker.min.css")" media="screen" />
     <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("bootstrap-fileinput-master/css/fileinput.css")" media="screen" />
-
-    <script type="text/javascript" src="@routes.Assets.versioned("js/jquery-ui.js")"></script>
-    <!--button弹出操作-->
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("palette/evol-colorpicker.min.css")" media="screen" />
+        <!--button弹出操作-->
     <script src="@routes.Assets.versioned("layer-v3.0/layer/layer.js")" type="text/javascript"></script>
     <script type="text/javascript" src="@routes.Assets.versioned("js/myzui.min.js")"></script>
 
     <style>
+            .messager.top {
+                top: 20px;
+                height: auto;
+            }
+            .messager-content {
+                text-align: center;
+                float: left;
+                height: 31px;
+                display: inline-flex;
+                padding: 9px 0 0 0;
+            }
             .mysoft-content-left .form-group-extra .btn-sm {
                 font-size: 14px;
                 background-color: #27b9d0;
@@ -22,13 +31,6 @@
             .mysoft-content-right .tab-content, .mysoft-content-left form {
                 box-shadow: unset;
             }
-            .mysoft-content-left form {
-                margin-top: 0;
-                height: 100%;
-                overflow-y: unset;
-                scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.2);
-                scrollbar-width: thin;
-            }
             .img-thumbnail {
                 display: inline-block;
                 max-width: 100%;
@@ -38,19 +40,26 @@
                 background-color: #fff;
                 border: unset;
                 border-radius: 4px;
-                -webkit-transition: unset;
-                -o-transition: unset;
-                transition: unset;
+                -webkit-transition: all .2s ease-in-out;
+                -o-transition: all .2s ease-in-out;
+                transition: all .2s ease-in-out;
             }
             blockquote {
                 padding: 10px 20px;
                 margin: 0 0 20px;
-                 border-left: unset;
+                border-left: unset;
             }
+            .mysoft-content-left .form-group-p .right-form-group input:not([type="radio"]):not([type="checkbox"]), .mysoft-content-left .form-group-p .right-form-group select, .mysoft-content-left .form-group-p .form-group:nth-child(2) input:not([type="radio"]):not([type="checkbox"]), .mysoft-content-left .form-group-p .form-group:nth-child(2) select {
+                width: 100%;
+                height: 32px;
+            }
+            .mysoft-content-left .form-group-extra .input-sm {
+                width: 40%;
+                height: 35px;
+                border-bottom: 1px solid #dfe0de;
+            }
+
             /*file*/
-            .hidden-xs {
-                display: unset !important;
-            }
             .input-group .form-control {
                 position: relative;
                 z-index: 2;
@@ -73,6 +82,10 @@
                 border-top-left-radius: 4px;
                 border-bottom-left-radius: 4px;
             }
+            .hidden-xs {
+                display: unset !important;
+            }
+
             /*历史任务*/
             .his_name{
                 /*margin: 5px 10px;*/
@@ -141,11 +154,11 @@
             }
     </style>
 
-    <div class="col-md-12 mysoft-content" style="width: 98%;">
-        <div class="mysoft-content-left whitebox" style="width: 771px;overflow-y: auto">
-            <form id="heatmap" method="GET" novalidate="novalidate" enctype="multipart/form-data" class="well form-inline" style="box-sizing: border-box!important;">
-                <img class="tools-img" src="/assets/images/softpic/heatmap.jpg">
-                <h3 class="tools-title">Heatmap 热图</h3>
+    <div class="col-md-12 mysoft-content" style="width: 98%">
+        <div class="  mysoft-content-left  whitebox" style="width: 590px;">
+            <form id="IGC" method="GET" enctype="multipart/form-data" class="well form-inline" style="box-sizing: border-box!important;">
+                <img class="tools-img" src="/assets/images/softpic/box.jpg">
+                <h3 class="tools-title">组内相关性分析</h3>
                 <div class="form-group">
                     <h2>
                     </h2>
@@ -158,256 +171,222 @@
                         <input id="mytaskname" type="text" class="form-control" name="taskname" placeholder="" value="">
                     </div>
                 </div>
-
                 <br><br>
-                <div id="div1" class="one-line">
-                    <div class="form-group-p" style="width: 465px">
-                        <div class="form-group">
-                            <label for="exampleInputName2">上传矩阵文件：</label>
-                        </div>
-                        <div class="form-group" style="width: 350px">
-                            <input type="file" class="form-control file" id="table1" name="table1" onchange="checkTable()">
-                        </div>
-                    </div>
-                    <div class="form-group-extra">
-                        <em><a href="/CloudPlatform/SoftTool/downloadExamples?name=Heatmap.data">示例文件</a></em><span class="must" style="margin-left: 10px">*</span>&nbsp;&nbsp;
-                    </div>
-                    <br>
-                    <br>
-                </div>
-
-                <div class="panel panel-default">
-                    <div class="panel-heading" data-toggle="collapse" href="#collapseOne">
-                        <h4 class="panel-title">
-                            <a id="pos1">
-                                <span style="font-size:12px;">选填参数（Optional）：</span>
-                            </a>
-                        </h4>
-                    </div>
-                    <div id="collapseOne" class="panel-collapse collapse in">
-                        <div class="panel-body">
-                            <div class="form-group-p">
-                                <div class="form-group">
-                                    <label for="format">选择用于作图的列：</label>
-                                    <input type="text" name="col" id="col" value="" placeholder="如1,2,3,4,5" class="form-control input-sm" style="width:200px;">
-                                </div>
-                            </div>
-                            <br><br>
-                            <div class="form-group-p">
-                                <div class="form-group">
-                                    <label>归一化：</label>
-                                </div>
-                                <div class="form-group">
-                                    <select name="scale">
-                                        <option value="column">column</option>
-                                        <option value="row">row</option>
-                                        <option value="none">none</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <br>
-                            <br>
-                            <div class="form-group-p">
-                                <div class="form-group">
-                                    <label>是否取lg：</label>
-                                </div>
-                                <div class="form-group">
-                                    <select name="lg">
-                                        <option value="none">none</option>
-                                        <option value="lg2">lg2</option>
-                                        <option value="lg10">lg10</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <br>
-                            <br>
-                            <div class="form-group-p">
-                                <div class="form-group">
-                                    <label>是否对行聚类：</label>
-                                </div>
-                                <div class="form-group">
-                                    <select name="cluster_rows">
-                                        <option value="FALSE">no</option>
-                                        <option value="TRUE">yes</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <br>
-                            <br>
-                            <div class="form-group-p">
-                                <div class="form-group">
-                                    <label>是否对列聚类：</label>
-                                </div>
-                                <div class="form-group">
-                                    <select name="cluster_cols">
-                                        <option value="FALSE">no</option>
-                                        <option value="TRUE">yes</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <br>
-                            <br>
-
+                <div id="myform">
+                    <div id="div1" class="one-line">
+                        <div class="form-group-p">
                             <div class="form-group">
-                                <label>颜色：<span style="font-size:small;">&nbsp;(从左到右，代表数值越来越大)</span>
-                                </label>
+                                <label for="filepath1">上传文件：</label>
                             </div>
                             <div class="form-group">
-                                <select name="color" id="color">
-                                    <option value="#1E90FF:#FFFFFF:#E41A1C">蓝,白,红</option>
-                                    <option value="#1E90FF:#FFFFFF:#E41A1C">蓝,白,红</option>
-                                    <option value="#1E90FF:#FFFFFF:#E41A1C">蓝,白,红</option>
-                                    <option value="#1E90FF:#FFFFFF:#E41A1C">蓝,白,红</option>
-                                </select>
+                                <input type="file" class="form-control file" id="table1" name="table1" onchange="checkTable()">
                             </div>
-                            <br>
-                            <br>
-                            <div class="form-group-p">
-                                <div class="form-group">
-                                    <label for="format">XY轴字体大小：</label>
-                                    <input type="text" name="xfs" id="xfs" value="10" placeholder="" class="form-control input-sm" style="width:40px;">
-                                    :
-                                    <input type="text" name="yfs" id="yfs" value="10" placeholder="" class="form-control input-sm" style="width:40px;">
-                                </div>
-                            </div>
-                            <br>
-                            <br>
-                            <div class="form-group-p">
-                                <div class="form-group">
-                                    <label>在格子上显示数字：</label>
-                                </div>
-                                <div class="form-group">
-                                    <select name="hasnum">
-                                        <option value="FALSE">no</option>
-                                        <option value="TRUE">yes</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <br>
-                            <br>
-                            <div class="form-group-p">
-                                <div class="form-group">
-                                    <label>画出格子的边界：</label>
-                                </div>
-                                <div class="form-group">
-                                    <select id="hasborder" name="hasborder">
-                                        <option value="FALSE">no</option>
-                                        <option value="TRUE">yes</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <br>
-                            <br>
-                            <div class="form-group-p">
-                                <div class="form-group">
-                                    <label>是否显示行名：</label>
-                                </div>
-                                <div class="form-group">
-                                    <select name="hasrname">
-                                        <option value="TRUE">yes</option>
-                                        <option value="FALSE">no</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <br>
-                            <br>
-                            <div class="form-group-p">
-                                <div class="form-group">
-                                    <label>是否显示列名：</label>
-                                </div>
-                                <div class="form-group">
-                                    <select name="hascname">
-                                        <option value="TRUE">yes</option>
-                                        <option value="FALSE">no</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <br>
-                            <br>
+                        </div>
+                        <div class="form-group-extra">
+                            <em>
+                                <a href='/CloudPlatform/SoftTool/downloadExamples?name=Boxplot.txt' target='_blank' style="margin-left: 20px;">示例文件</a>
+                            </em>
+                            <span class="must" style="margin-left: 10px">*</span>
                         </div>
                     </div>
                 </div>
-                <input type="hidden" value="upload" name="act">
-                <input type="hidden" value="heatmap" name="action">
-                <input type="button" value="提&nbsp;&nbsp;交" name="submit" class="btn btn-primary" onclick="runheatmap()" style="margin-bottom: 20px">
+                <br>
+                <div class="form-group-p">
+                    <div class="form-group">
+                        <label for="qushi">
+                            分析类型：
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <select name="anatype" id="anatype">
+                            <option value="pearson">pearson</option>
+                            <option value="kendall">kendall</option>
+                            <option value="spearman">spearman</option>
+                        </select>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <div class="form-group-p">
+                    <div class="form-group">
+                        <label for="qushi">
+                            选择计算向量：
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <select name="vector" id="vector">
+                            <option value="col">column</option>
+                            <option value="row">row</option>
+                        </select>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <div class="form-group-p">
+                    <div class="form-group">
+                        <label>颜色(从左到右，代表数值越来越大)：</label>
+                    </div>
+                    <div class="form-group">
+                        <select name="color" id="color">
+                            <option value="#1E90FF:#FFFFFF:#E41A1C">蓝,白,红</option>
+                            <option value="#1E90FF:#FFFFFF:#E41A1C">蓝,白,红</option>
+                            <option value="#1E90FF:#FFFFFF:#E41A1C">蓝,白,红</option>
+                            <option value="#1E90FF:#FFFFFF:#E41A1C">蓝,白,红</option>
+                        </select>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <div class="form-group-p">
+                    <div class="form-group">
+                        <label>在格子上显示数字：</label>
+                    </div>
+                    <div class="form-group">
+                        <select name="hasnum">
+                            <option value="FALSE">no</option>
+                            <option value="TRUE">yes</option>
+                        </select>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <div class="form-group-p">
+                    <div class="form-group">
+                        <label>画出格子的边界：</label>
+                    </div>
+                    <div class="form-group">
+                        <select id="hasborder" name="hasborder">
+                            <option value="FALSE">no</option>
+                            <option value="TRUE">yes</option>
+                        </select>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <div class="form-group-p">
+                    <div class="form-group">
+                        <label>是否显示行名：</label>
+                    </div>
+                    <div class="form-group">
+                        <select name="hasrname">
+                            <option value="TRUE">yes</option>
+                            <option value="FALSE">no</option>
+                        </select>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <div class="form-group-p">
+                    <div class="form-group">
+                        <label>是否显示列名：</label>
+                    </div>
+                    <div class="form-group">
+                        <select name="hascname">
+                            <option value="TRUE">yes</option>
+                            <option value="FALSE">no</option>
+                        </select>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <input type="button" value="提&nbsp;&nbsp;交" name="submit" class="btn btn-primary" onclick="innergroup()">
             </form>
-
         </div>
-
         <div class="handler"></div>
-
-        <div class="mysoft-content-right" style="width: 279px;box-sizing: border-box!important;">
+        <div class="mysoft-content-right" style="width: 460px;">
             <ul class="nav nav-tabs">
-                <li class="active" id="out_tab1">
+                <li class="active">
                     <a href="###" data-target="#example" data-toggle="tab">示例结果</a>
                 </li>
-                <li class="" id="ins_tab1">
+                <li class="">
                     <a href="###" data-target="#instruction" data-toggle="tab">使用说明</a>
                 </li>
                 <li class="" id="his_tab1">
-                    <a href="#" data-target="#history" data-toggle="tab">Heatmap历史任务</a>
+                    <a href="#" data-target="#history" data-toggle="tab">组内相关性历史任务</a>
                 </li>
             </ul>
             <div class="tab-content" style="box-sizing: border-box!important;">
-
                 <div class="tab-pane fade active in" id="example">
-                    <h5>输出结果：heatmap热图</h5>
-                    <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/heatmap_example.png" alt="生物云平台">
+                    <h3 style="margin-bottom: 10px;">输出类型1:</h3>
+                    <h5 style="margin-bottom: 2px">示例参数: </h5>
+                    <p>1. 是否绘制数据点：no</p>
+                    <br>
+                    <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/boxplot_example1.png" alt="生物云平台">
+                    <br>
+                    <br>
+                    <h3 style="margin-bottom: 10px;">输出类型2:</h3>
+                    <h5 style="margin-bottom: 2px">示例参数: </h5>
+                    <p>1. 是否绘制数据点：yes</p>
+                    <br>
+                    <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/boxplot_example2.png" alt="生物云平台">
+
                 </div>
                 <div class="tab-pane fade" id="instruction">
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;">功能：</span><br>
-                        用一个带有表头的以tab分隔的表格数据绘制一个热图。
-                    </p>
+                    <p><strong>功能：</strong><br>计算表格内所有元素的两两相关性。</p><br>
+                    <p><strong>输入：</strong><br>
+                    </p><p>（1）表格包含分析数据及表头信息，如示例文件中的基因表达量表格，表头为样本名称，列名为基因ID，每行数据为对应基因在各样本中表达量的FPKM值</p>
+                    <p>（2）输入文件为tab-delimited所保存的txt格式</p>
+                    <p></p>
                     <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;">输入：</span>
-                    </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        ① 矩阵文件:文件为二维矩阵文件，第一行一般为样本，第一列为基因名
-                    </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        ② 列的参数:即选择用哪几列画图。
-                    </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        ③ 行的参数:可以数字输入前多少行作为绘图数据或输入基因名文件。
-                    </p>
-                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">上传文件格式说明：格式如下，数据与数据之间务必用制表符(tab符)隔开,可以选择在Excel中打开，然后另存为以tab键分隔的.txt文件。</span><br>
-                    <img class="img-rounded img-thumbnail img-responsive" src="https://www.omicshare.com/tools/Public/help/heatmapfilein.png" alt="生物云平台" style="height:auto;"><span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span><br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;">参数：</span>
-                    </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        可选输入
-                    </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        ① 归一化（z-score）处理，选择列，或者行，或者不处理，一般选择行。
-                    </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        ② 颜色选择，一般选择green,black,red或者navy,white,firebrick3。也可以在调色板里选择任意颜色。
-                    </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        ③ 字体大小选择，默认为10px。
-                    </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        ④ 矩阵格子的长度和高度，默认为自适应，也可以设置为25X12。
-                    </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        ⑤ 是否在格子上显示数字，默认不显示。
-                    </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        ⑥ 是否在格子上显示边界，默认不显示。
-                    </p>
+                    <p><strong>参数：</strong></p>
+                    <p>（1）分析类型：包含两种，pearson和spearman，1）pearson系数，通常用于计算连续数据的相关性；2）spearman系数，专门用于计算等级数据的相关性。</p>
+                    <p>（2）计算向量：默认列向量col。如示例文件中，若选择列向量，则以列为基础，计算每两列数据的相关性，即样本之间的相关性，可用于评估样本分组差异、样本重复性等；若选择行向量，则以行为基础，计算每两行数据的相关性，即基因之间的相关性，可用于评估基因的关联特征等。 </p>
+                    <p>（3）颜色，可根据数据量大小、相关性系数波动范围等选择2种或3种颜色，默认2种， white,green。</p>
+                    <p>（4）字体大小：默认为10 </p>
+                    <p>（5）在格子上显示数字：默认为no，不显示 </p>
+                    <p>（6）画出格子边界：默认为no,不显示 </p>
+                    <p>（7）结果是否显示行名：默认为yes,显示 </p>
+                    <p>（8）结果是否显示列名：默认为yes,显示</p>
+
                     <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;">输出：</span>
-                    </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        程序将按要求输出热图，提供PNG和PDF格式的文件下载
-                    </p>
+                    <p><strong>输出：</strong></p>
+                    <p>all.cor.matrix.xls：相关系数矩阵，绘制热图的数据格式</p><br>
+                    <p>all.pvalue.matrix.xls：相关显著性p值矩阵</p><br>
+                    <p>all.cor_pvalue.list.xls：相关系数及p值列表，云平台工具绘制网络图的数据格式（<a href="http://www.omicshare.com/tools/Home/Soft/cytoscape" target="_blank">网络图链接 </a>)</p><br>
+                    <p>all.cor_heatmap.png/pdf: 默认输出两种格式的结果图</p><br>
+
+                    <p></p>
+                    <p><strong>结果说明：</strong></p>
+                    <p>相关系数为正表示正相关，为负表示负相关。常用的相关性强弱判断标准如下图：</p>
                     <p>
-                        <br>
-                    </p>						</div>
+                    </p><blockquote style="width:50%">
+                    <table class="table datatable">
+                        <thead>
+                            <tr><th></th>
+                                <th></th>
+                            </tr></thead>
+                        <tbody>
+                            <tr>
+                                <td>相关系数绝范围 </td>
+                                <td>相关性强弱程度</td>
+                            </tr>
+                            <tr>
+                                <td>0.8-1.0</td>
+                                <td>极强相关</td>
+                            </tr>
+                            <tr>
+                                <td>0.6-0.8</td>
+                                <td>强相关</td>
+                            </tr>
+                            <tr>
+                                <td>0.4-0.6</td>
+                                <td>中等程度相关</td>
+                            </tr>
+                            <tr>
+                                <td>0.2-0.4</td>
+                                <td>弱相关</td>
+                            </tr>
+                            <tr>
+                                <td>0.0-0.2</td>
+                                <td>极弱相关或无相关</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </blockquote>
+                    <p></p>
+                    <p>相关显著性p &lt;0.05，代表显著相关；p &lt;0.01，代表极显著相关</p>
+
+                </div>
                 <div id="history" class="form1_ins tab-pane fade">
                     <a id="btn-refresh" class="btn_refresh mws-i-24 i-refresh-3" onclick="refresh()">刷新状态</a>
                     <ul id="hisul" style="margin-top: 15px">
@@ -424,13 +403,12 @@
         </div>
     </div>
 
-
     <script type="text/javascript" src="@routes.Assets.versioned("js/toolsAdjust.js")"></script>
-    <script type="text/javascript" src="@routes.Assets.versioned("palette/evol-colorpicker.min.js")"></script>
     <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/fileinput.min.js")" type="text/javascript"></script>
     <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/locales/zh.js")" type="text/javascript"></script>
-
+    <script type="text/javascript" src="@routes.Assets.versioned("palette/evol-colorpicker.min.js")"></script>
     <script type="text/javascript">
+
             function getTaskName() {
                 let date = new Date();
                 let month = date.getMonth() + 1;
@@ -438,9 +416,9 @@
                 let h = date.getHours();
                 let m = date.getMinutes();
                 let s = date.getSeconds();
-                let name = "Heat"+month + day + h + m + s ;
+                let name = "IGC"+month + day + h + m + s ;
                 $("#mytaskname").val(name);
-                $("#heatmap").formValidation("revalidateField", "taskname");
+                $("#IGC").formValidation("revalidateField", "taskname");
             }
 
             $("#mytaskname").keyup(function () {
@@ -464,9 +442,10 @@
                 }
                 return true;
             }
+
             var running=false;
 
-            $(document).ready(function () {
+            $(function () {
                 formValidation();
                 loadHistory();
                 getTaskName();
@@ -499,7 +478,7 @@
                     $("#hislist").after(html);
                 }else{
                     $.ajax({
-                        url: "/CloudPlatform/MyTasks/getDutysByType?sabbrename=Heatmap",
+                        url: "/CloudPlatform/MyTasks/getDutysByType?sabbrename=IGC",
                         type: "post",
                         success: function (data) {
                             if(data.run==true) running=true;
@@ -535,7 +514,7 @@
 
             function checkrunning() {
                 $.ajax({
-                    url: "/CloudPlatform/MyTasks/getDutysByType?sabbrename=Heatmap",
+                    url: "/CloudPlatform/MyTasks/getDutysByType?sabbrename=IGC",
                     type: "post",
                     success: function (data) {
                         if(data.run==true) running=true;
@@ -564,7 +543,7 @@
                 browseLabel: "选择文件"
             });
 
-            var flagtable=true;
+            var flagtable=false;
 
             function checkTable() {
                 var reader=new FileReader();
@@ -581,8 +560,8 @@
                         if(row.length!=length){
                             flagtable=false;
                             swal({
-                                title: "矩阵文件格式错误",
-                                text: "矩阵文件第"+r+"行数据数量不一致",
+                                title: "文件格式错误",
+                                text: "输入文件第"+r+"行数据数量不一致",
                                 type: "warning",
                                 confirmButtonText: "确认"
                             });
@@ -594,8 +573,8 @@
                                 if(j!=0 && !checkRate(row[j].trim())){
                                     flagtable=false;
                                     swal({
-                                        title: "矩阵文件格式错误",
-                                        text: "矩阵文件第"+r+"行,第"+c+"列数据不是数字",
+                                        title: "文件格式错误",
+                                        text: "输入文件第"+r+"行,第"+c+"列数据不是数字",
                                         type: "warning",
                                         confirmButtonText: "确认"
                                     });
@@ -605,8 +584,8 @@
                                 if(name.indexOf(row[j])>=0){
                                     flagtable=false;
                                     swal({
-                                        title: "矩阵文件错误",
-                                        text: "矩阵文件第1行,第"+c+"列样品名重复存在，请核实！",
+                                        title: "文件格式错误",
+                                        text: "输入文件第1行,第"+c+"列样品名重复存在，请核实！",
                                         type: "warning",
                                         confirmButtonText: "确认"
                                     });
@@ -614,8 +593,6 @@
                                 }else name.push(row[j]);
                             }
                         }
-
-
                     }
                     flagtable=true;
                     return true;
@@ -630,7 +607,7 @@
                 }else return true;
             }
 
-            function runheatmap(formId) {
+            function innergroup() {
                 var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
                 var index = layer.alert(element, {
                     skin: 'layui-layer-lan',
@@ -638,7 +615,7 @@
                     title: "提醒",
                     btn: []
                 });
-                var form = $("#heatmap");
+                var form = $("#IGC");
                 var fv = form.data("formValidation");
                 fv.validate();
                 if (fv.isValid()) {
@@ -646,9 +623,9 @@
                     setTimeout(function () {
                         layer.close(index);
                         if(flagtable&&checktaskname()){
-                            var form1 = new FormData($("#heatmap")[0]);
+                            var form1 = new FormData($("#IGC")[0]);
                             $.ajax({
-                                url: "/CloudPlatform/SoftTool/runHeatmap",
+                                url: "/CloudPlatform/SoftTool/runIGC",
                                 type: "post",
                                 processData: false,
                                 contentType: false,
@@ -661,7 +638,7 @@
                                     $("#ins_tab1").removeClass("active");
                                     $("#history").addClass("active").addClass("in");
                                     $("#example").removeClass("active");
-                                    $("#instruction1").removeClass("active");
+                                    $("#instruction").removeClass("active");
                                     getTaskName();
                                 }
                             });
@@ -672,7 +649,7 @@
 
 
             function formValidation() {
-                $('#heatmap').formValidation({
+                $('#ScaPlot').formValidation({
                     framework: 'bootstrap',
                     icon: {
                         valid: 'glyphicon glyphicon-ok',
@@ -688,7 +665,8 @@
                                 remote:{
                                     type: 'POST',
                                     url: '@routes.DutyController.checktaskname()',
-                                    message: "任务编号重复，请重新输入"
+                                    message: "任务编号重复，请重新输入",
+                                    // delay: 1000
                                 }
                             }
                         },
@@ -702,26 +680,6 @@
                                     // type: 'image/jpeg,image/png',
                                     maxSize: 5*1024*1024,
                                     message: '文件不得大于5M！'
-                                }
-                            }
-                        },
-                        xfs: {
-                            validators: {
-                                notEmpty: {
-                                    message: '不能为空!'
-                                },
-                                numeric: {
-                                    message: '必须为数字！'
-                                }
-                            }
-                        },
-                        yfs: {
-                            validators: {
-                                notEmpty: {
-                                    message: '不能为空!'
-                                },
-                                numeric: {
-                                    message: '必须为数字！'
                                 }
                             }
                         }
@@ -905,7 +863,6 @@
 
 
     </script>
-
 
 
 }

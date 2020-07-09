@@ -111,6 +111,34 @@
                     border-radius: 16px;
                     color: white;
                 }
+
+                /*running*/
+                .layui-layer {
+                    -webkit-overflow-scrolling: touch;
+                    top: 35%;
+                    left: 41%;
+                    margin: 0;
+                    padding: 0;
+                    background-color: #fff;
+                    -webkit-background-clip: content;
+                    box-shadow: 1px 1px 50px rgba(0,0,0,.3);
+                }
+                .layui-layer-lan .layui-layer-btn {
+                    padding: 10px;
+                    text-align: right;
+                    border-top: unset;
+                }
+                .layui-layer-lan[type=dialog] {
+                    min-width: 280px;
+                    border-radius: 11.5px;
+                }
+                .layui-layer-lan .layui-layer-title {
+                    background: #1f3851;
+                    color: #fff;
+                    border: none;
+                    border-top-left-radius: 11.5px;
+                    border-top-right-radius: 11.5px;
+                }
         </style>
 
         <div class="col-md-12 mysoft-content" style="width: 98%">
@@ -270,81 +298,66 @@
                 </ul>
                 <div class="tab-content" style="box-sizing: border-box!important;">
                     <div class="tab-pane fade active in" id="example">
+                        <span style="color:red;">示例文件1，示例文件2 皆为大豆基因数据</span>
+                        <br><br>
                         <h5>输出结果：</h5>
-                        <blockquote>
-                            <p>
-                                ① out.[PFC].html 网页格式结果，3个分别对应GO的3个主要分类。结果如下图所示，
-                                包含两个部分:
-                                第一部分为GO富集结果统计表，包括GOid，GO功能描述，基因比例，背景基因比例，P值，Q值，P值Q值 小于0.05的显示红色。									<br>
-                                <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/newgo1.png" alt="生物云平台">
-                                <br>
-                                ② 第二部分为GO富集的具体基因，点击GOid可以链接到http://amigo.geneontology.org 官网，可以查看GO的具体信息。									<br>
-                                <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/newgo2.png" alt="生物云平台">
-
-                            </p>
-                            <p>
-                                ③ out.[PFC].png，out.[PFC].pdf,out.[PFC].xls
-                                GO富集的有向无环图，只显示富集的GO term（即p值小于0.05的），没有小于
-                                0.05的结果时，则没有这些文件。可以在xls结果从查看，结果与网页结果对应，包括GOid，GO功能描述，基因比例，背景基因比例，P值，Q值，以及相应的基因id.
-
-                            </p>
-                            <br>
-                            <p>
-                                ④ out.secLevel.svg/png
-                                图片结果如下图所示，为GO二级分类统计图，统计了用于富集的基因在GO 的二级分类中占各个分类的数量，统计结果在xls表中。表格内容包括，Ontology，Class（GO的二级分类），基因数，具体基因id.
-                                <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/newgo3.png" alt="生物云平台">
-                                <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/newgo4.png" alt="生物云平台">
-                            </p>
-                        </blockquote>
+                        <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/ko_example1.png">
+                        <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/ko_example2.png">
                     </div>
                     <div class="tab-pane fade" id="instruction">
                         <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                            <span style="font-weight:700;"><strong>功能：</strong></span><br>
-                            Gene Ontology（简称GO）是一个国际标准化的基因功能分类体系，提供了一套动态更新的标准词汇表（controlled vocabulary）来全面描述生物体中基因和基因产物的属性。GO总共有三个ontology（本体），分别描述基因的分子功能（molecular function）、细胞组分（cellular component）、参与的生物过程（biological process）。GO的基本单位是term（词条、节点），每个term都对应一个属性。GO功能分析一方面给出差异表达基因的GO功能分类注释；另一方面给出差异表达基因的GO功能显著性富集分析。 首先，我们将差异表达基因向GO数据库(http://www.geneontology.org/)的各term映射，并计算每个term的基因数，从而得到具有某个GO功能的基因列表及基因数目统计。然后应用超几何检验，找出与整个基因组背景相比，在差异表达基因中显著富集的GO条目。
-                            <br>
-                            <strong> P的计算公式： </strong>
-                            <img class="img-rounded img-thumbnail img-responsive" src="https://www.omicshare.com/tools/Public/help/go_p.png" alt="生物云平台" style="height:auto;width:180px;">
-                            其中，N为所有Unigene中具有GO注释的基因数目；n为N中差异表达基因的数目；M为所有Unigene中注释为某特定GO term的基因数目；m为注释为某特定GO term的差异表达基因数目。计算得到的pvalue通过FDR校正之后，以corrected-pvalue≤0.05为阈值，满足此条件的GO term定义为在差异表达基因中显著富集的GO term。通过GO功能显著性富集分析能确定差异表达基因行使的主要生物学功能。
+                            <span style="font-weight:700;">功能：</span><br>
+                            在生物体内，不同基因相互协调行使其生物学功能，基于Pathway的分析有助于更进一步了解基因的生物学功能。KEGG是有关Pathway的主要公共数据库。 Pathway显著性富集分析以KEGG Pathway为单位，应用超几何检验，找出与整个基因组背景相比，在差异表达基因中显著性富集的Pathway。<br>
                         </p>
                         <br>
                         <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                            <span style="font-weight:700;"><strong>输入：</strong></span>
+                            <span style="font-weight:700;">输入：</span>
                         </p>
                         <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
                             ①输入的表格文件，必须为txt格式。可以选择在excel中将数据打开，然后另存为"文本文件(制表符分隔)(*.txt)"。
-                            <span style="color:red;">也可以输入两列，diff是差异结果，第二列为差异倍数取log2，大于0上调，小于0下调，此时参数应选择diff。</span>
                         </p>
                         <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                            ②富集的目的基因列表，即想要研究的基因列表，每行第一列为基因id，基因id要包含在背景基因表中。
+                            ②富集的目的基因列表，即想要研究的基因列表，每行第一列为基因id，要包含在背景基因表中.注意此文件不用加行名。<span style="color:red;">注意此文件第一行不是文字说明的行名，直接就是具体的基因ID号,请查看例子文件格式。</span>
                         </p>
                         <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                            ③背景基因总表，如果是有参考基因组的模式生物，可以直接使用已有参考基因作为背景基因文件。目前提供的物种有水稻、拟南芥、小鼠、大鼠、斑马鱼、鸡、秀丽线虫、果蝇、人。ID类型可选择基因ID或转录本ID，根据富集目的基因的ID类型决定。可以点击“预览参考文件”来查看具体ID。
-                            <br>
-                            如果所研究物种不在以上范围，则需要自行准备GO背景基因文件。现在支持两种格式。第一种：格式为第一列为基因id，第二列为GO注释结果。第二种：同一个基因的所有GO号会在同一行并列给出。任务提交后，程序会自动判断处理。如下图所示：
-                        </p>
-                        <img class="img-rounded img-thumbnail img-responsive" src="https://www.omicshare.com/tools/Public/help/go2_1.png" alt="生物云平台" style="height:auto;"><span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"> </span><img class="img-rounded img-thumbnail img-responsive" src="https://www.omicshare.com/tools/Public/help/go2_2.png" alt="生物云平台" style="height:auto;"><span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span><br>
-                        <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                            <br>
+                            ③背景基因总表，即所有基因的列表，第一列为基因id，第二列为用于获取pathway的一个id，有3种类型：<br>
+                            类型1：kegid，例如mmu:18053，即KEGG官网上的id，可以通过KEGG注释或者KEGG官网获得。<br>
+                            类型2：ncbi-geneid，例如18053，即ncbi上得到的geneid，一连串数字组成。<br>
+                            类型3：KO号，例如K10942，不同物种间相同KO号会有对应不同的pathway的情况，详情可以查看KEGG官网，直接通过KO号获取pathway会不准确。建议通过前两种类型来获取。<br>
+                            类型4：类型4，kopath，为本公司提供的类型文件，第一列为基因id，第二列为KO号，第三列为通路编号，以“，”分隔，第4列为kegid。
                         </p>
                         <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                            <span style="font-weight:700;"><strong>输出：</strong></span>
+                            ④基因差异表达差异倍数表：第一列为基因ID，第二列为差异表达倍数log2(FC)。
+                        </p>
+                        <br>
+                        <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                            <span style="font-weight:700;">参数：</span>
                         </p>
                         <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                            ①out.[PFC].html: 网页格式结果，3个分别对应GO的3个主要分类。
+                            ①背景基因表类型有3种，分别为：KO，ncbi-geneid、KEGGid。
                         </p>
                         <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                            ②out.[PFC].xls： 基因的GO功能分类统计结果。
+                            ②数据库:当背景基因表类型为keggid和ncbi-geneid时，选择相应物种库和全库都可以，但选择相应物种库能缩短运行时间；当背景基因表类型为KO类型时，建议选择相应物种库进行注释。
                         </p>
                         <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                            ③out.[PFC].png：基因的GO功能分类结果统计图
+                            ③可选参数：添加基因差异表达差异倍数表。
+                        </p>
+                        <br>
+                        <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                            <span style="font-weight:700;">输出：</span>
                         </p>
                         <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                            ④out.secLevel2.svg/png：为GO二级分类统计图，统计了用于富集的基因在GO 的二级分类中占各个分类的数量，统计结果在xls表中。表格内容包括，Ontology，Class（GO的二级分类），基因数，具体基因id。
+                            ①out.path.xls : 目的基因相对于背景基因的富集统计表。
                         </p>
                         <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                            ⑤out.level2.xls: GO第二级分类统计
+                            ②out_map： 目的基因在各个pathway map的结果图。
                         </p>
-                    </div>
+                        <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                            ③out.path.png，out.path.svg：各个pathway的B级分类的统计图。
+                        </p>
+                        <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                            ④out.htm： 网页格式结果<span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">。</span>
+                        </p>                        </div>
                     <div id="history" class="form1_ins tab-pane fade">
                         <a id="btn-refresh" class="btn_refresh mws-i-24 i-refresh-3" onclick="refresh()">刷新状态</a>
                         <ul id="hisul" style="margin-top: 15px">
@@ -503,29 +516,39 @@
                 });
 
                 function kegg() {
+                    var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
+                    var index = layer.alert(element, {
+                        skin: 'layui-layer-lan',
+                        closeBtn: 0,
+                        title: "提醒",
+                        btn: []
+                    });
                     var form = $("#KEGG");
                     var fv = form.data("formValidation");
                     fv.validate();
                     if (fv.isValid()) {
-                        var form1 = new FormData($("#KEGG")[0]);
-                        $.ajax({
-                            url: "/CloudPlatform/SoftTool/runGo?types=ko&refer="+ref+"&table="+table,
-                            type: "post",
-                            processData: false,
-                            contentType: false,
-                            data: form1,
-                            success: function (data) {
-                                removeul();
-                                loadHistory();
-                                $("#his_tab1").addClass("active");
-                                $("#out_tab1").removeClass("active");
-                                $("#ins_tab1").removeClass("active");
-                                $("#history").addClass("active").addClass("in");
-                                $("#example").removeClass("active");
-                                $("#instruction1").removeClass("active");
-                                getTaskName();
-                            }
-                        });
+                        setTimeout(function () {
+                            layer.close(index);
+                            var form1 = new FormData($("#KEGG")[0]);
+                            $.ajax({
+                                url: "/CloudPlatform/SoftTool/runGo?types=ko&refer="+ref+"&table="+table,
+                                type: "post",
+                                processData: false,
+                                contentType: false,
+                                data: form1,
+                                success: function (data) {
+                                    removeul();
+                                    loadHistory();
+                                    $("#his_tab1").addClass("active");
+                                    $("#out_tab1").removeClass("active");
+                                    $("#ins_tab1").removeClass("active");
+                                    $("#history").addClass("active").addClass("in");
+                                    $("#example").removeClass("active");
+                                    $("#instruction1").removeClass("active");
+                                    getTaskName();
+                                }
+                            });
+                        }, 2000);
                     }
                 }
 
@@ -608,6 +631,30 @@
                             }
                         }
                     });
+                    $("#mailSigninForm").formValidation({
+                        framework: 'bootstrap',
+                        icon: {
+                            valid: 'glyphicon glyphicon-ok',
+                            invalid: 'glyphicon glyphicon-remove',
+                            validating: 'glyphicon glyphicon-refresh'
+                        },
+                        fields: {
+                            phone: {
+                                validators: {
+                                    notEmpty: {
+                                        message: '请输入账号！'
+                                    }
+                                }
+                            },
+                            code: {
+                                validators: {
+                                    notEmpty: {
+                                        message: '请输入验证码！'
+                                    }
+                                }
+                            }
+                        }
+                    });
                     $("#signinForm").formValidation({
                         framework: 'bootstrap',
                         icon: {
@@ -681,6 +728,13 @@
                                     }
                                 }
                             },
+                            company: {
+                                validators: {
+                                    notEmpty: {
+                                        message: '请填写单位！'
+                                    }
+                                }
+                            },
                             password: {
                                 validators: {
                                     notEmpty: {
@@ -707,12 +761,6 @@
                                 validators: {
                                     notEmpty: {
                                         message: "请输入验证码！"
-                                    },
-                                    callback: {
-                                        message: '验证码错误！',
-                                        callback: function () {
-                                            return $('#validnumber1').val() === code;
-                                        }
                                     }
                                 }
                             }
@@ -726,13 +774,6 @@
                             validating: 'glyphicon glyphicon-refresh'
                         },
                         fields: {
-                            password: {
-                                validators: {
-                                    notEmpty: {
-                                        message: '请输入旧密码！'
-                                    }
-                                }
-                            },
                             password1: {
                                 validators: {
                                     notEmpty: {
@@ -759,18 +800,11 @@
                                 validators: {
                                     notEmpty: {
                                         message: "请输入验证码！"
-                                    },
-                                    callback: {
-                                        message: '验证码错误！',
-                                        callback: function () {
-                                            return $('#validnumber2').val() === code;
-                                        }
                                     }
                                 }
                             }
                         }
                     });
-
                 }
 
                 var ta1="Geneid\n" +

@@ -16,9 +16,32 @@ trait Tables {
   import slick.jdbc.{GetResult => GR}
 
   /** DDL for all tables. Call .create to execute. */
-  lazy val schema: profile.SchemaDescription = Dutys.schema ++ Soft.schema ++ Users.schema
+  lazy val schema: profile.SchemaDescription = Ak.schema ++ Dutys.schema ++ Soft.schema ++ Users.schema
   @deprecated("Use .schema instead of .ddl", "3.0")
   def ddl = schema
+
+  /** Entity class storing rows of table Ak
+   *  @param accesskeyid Database column AccessKeyId SqlType(TEXT)
+   *  @param accesskeysecret Database column AccessKeySecret SqlType(TEXT) */
+  case class AkRow(accesskeyid: String, accesskeysecret: String)
+  /** GetResult implicit for fetching AkRow objects using plain SQL queries */
+  implicit def GetResultAkRow(implicit e0: GR[String]): GR[AkRow] = GR{
+    prs => import prs._
+    AkRow.tupled((<<[String], <<[String]))
+  }
+  /** Table description of table ak. Objects of this class serve as prototypes for rows in queries. */
+  class Ak(_tableTag: Tag) extends profile.api.Table[AkRow](_tableTag, Some("cloudplatform"), "ak") {
+    def * = (accesskeyid, accesskeysecret) <> (AkRow.tupled, AkRow.unapply)
+    /** Maps whole row to an option. Useful for outer joins. */
+    def ? = ((Rep.Some(accesskeyid), Rep.Some(accesskeysecret))).shaped.<>({r=>import r._; _1.map(_=> AkRow.tupled((_1.get, _2.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+
+    /** Database column AccessKeyId SqlType(TEXT) */
+    val accesskeyid: Rep[String] = column[String]("AccessKeyId")
+    /** Database column AccessKeySecret SqlType(TEXT) */
+    val accesskeysecret: Rep[String] = column[String]("AccessKeySecret")
+  }
+  /** Collection-like TableQuery object for table Ak */
+  lazy val Ak = new TableQuery(tag => new Ak(tag))
 
   /** Entity class storing rows of table Dutys
    *  @param id Database column id SqlType(INT), AutoInc, PrimaryKey

@@ -19,6 +19,8 @@ GET           /CloudPlatform/SoftPage/NetWeight                      controllers
 GET           /CloudPlatform/SoftPage/NetDirected                    controllers.SoftController.netDirected
 GET           /CloudPlatform/SoftPage/Net                            controllers.SoftController.net
 GET           /CloudPlatform/SoftPage/Venn                           controllers.SoftController.venn
+GET           /CloudPlatform/SoftPage/InnerGroupCorrelation          controllers.SoftController.innergroup
+GET           /CloudPlatform/SoftPage/ScatterPlot                    controllers.SoftController.scaplot
 
 GET           /CloudPlatform/Softwares/home/latest                   controllers.SoftController.getlatestSix
 GET           /CloudPlatform/Softwares/home/hotest                   controllers.SoftController.gethotestSix
@@ -59,12 +61,20 @@ POST          /CloudPlatform/SoftTool/runNet                         controllers
 POST          /CloudPlatform/SoftTool/getNetData                     controllers.RService.readNetData(taskname:String)
 POST          /CloudPlatform/SoftTool/redrawNet                      controllers.RService.redrawNet(taskname:String)
 
-
 POST          /CloudPlatform/SoftTool/runGo                          controllers.RService.doGo(types:String,refer:String,table:String)
 POST          /CloudPlatform/SoftTool/getGOData                      controllers.RService.readGoData(types:String,taskname:String)
 POST          /CloudPlatform/SoftTool/redrawGO                       controllers.RService.redrawGO(taskname:String,types:String)
 
 POST          /CloudPlatform/SoftTool/getJvennData                   controllers.RService.getJvennData
+
+POST          /CloudPlatform/SoftTool/runIGC                         controllers.RService.doIGC
+POST          /CloudPlatform/SoftTool/getIGCData                     controllers.RService.readIGC(taskname:String)
+POST          /CloudPlatform/SoftTool/redrawIGC                      controllers.RService.redrawIGC(taskname:String)
+
+
+
+POST          /CloudPlatform/Utils/sendMSG                           controllers.UtilsController.sendMSG(phone:String)
+
 
 #POST          /CloudPlatform/SoftTool/runKegg                        controllers.RService.doKegg(id:String,userefer:Boolean,desc:Boolean)
 
@@ -86,6 +96,7 @@ POST          /CloudPlatform/MyTasks/checkTaskname                   controllers
 
 
 POST          /CloudPlatform/User/signIn                             controllers.UserController.signIn
+POST          /CloudPlatform/User/mailSignIn                         controllers.UserController.mailSignIn
 GET           /CloudPlatform/User/signInSuccess                      controllers.UserController.signInSuccess(path:String,id:String)
 POST          /CloudPlatform/User/changePassword                     controllers.UserController.changePassword
 GET           /CloudPlatform/User/signout                            controllers.UserController.signout

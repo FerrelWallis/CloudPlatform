@@ -17,10 +17,19 @@ object FilesUtils {
   def main(args: Array[String]): Unit = {
 
 
-    val files = new File("F:\\CloudPlatform\\users\\1\\PCA624165229\\out").listFiles().map(_.getAbsolutePath)
-    val name=new File("F:\\CloudPlatform\\users\\1\\PCA624165229\\out").listFiles().map(_.getName)
-    println(files.toList)
-    println(name.toList)
+
+//    val(valid,code,responsecode)=Utils.sendMessage("12345678911")
+//    println(valid)
+//    println(code)
+//    println(responsecode)
+//    val verify: mutable.HashMap[String, String] = mutable.HashMap()
+//    System.out.println(verify.get("13774463227"))
+
+
+//    val files = new File("F:\\CloudPlatform\\users\\1\\PCA624165229\\out").listFiles().map(_.getAbsolutePath)
+//    val name=new File("F:\\CloudPlatform\\users\\1\\PCA624165229\\out").listFiles().map(_.getName)
+//    println(files.toList)
+//    println(name.toList)
 
 //    val genus=FileUtils.readLines(new File("F:\\CloudPlatform\\R\\net\\data\\net_genus.txt")).asScala
 //    val g=genus.map{line=>

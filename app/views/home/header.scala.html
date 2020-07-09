@@ -2,6 +2,50 @@
 
 <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("mycss/header.css")" media="screen" />
 
+<style>
+        .login-form-body .form-group {
+            margin-bottom: 20px;
+        }
+        .form-gp.focused label {
+            top: unset;
+            color: #4f8385;
+        }
+        .reveal-modal form input[type="text"]:focus,.reveal-modal form input[type="password"]:focus,.reveal-modal form input[type="email"]:focus {
+            border-color:#66b9e3;
+            box-shadow:inset 0 0 0 rgba(0, 0, 0, .1), 0 0 3px rgba(102, 185, 227, 1);
+        }
+        .reveal-modal form label {
+            float: left;
+            line-height: 27px;
+            color: #4f4b4b;
+            width: 128px;
+            font-size: 14px;
+            font-weight: normal;
+        }
+    .log_re_chan{
+        padding: 7px 9px 7px 9px!important;
+        margin-left: 10px!important;
+        width: 300px!important;
+    }
+        .logleft{
+            width: 20%;
+            height: 32px;
+            float: left;
+        }
+        .logright{
+            width: 80%;
+            height: 32px;
+            float: left;
+        }
+        .reveal-modal form label{
+            margin-bottom: 0px!important;
+            width: auto!important;
+            float: right;
+            position: relative;
+            top: unset;
+            left: unset;
+        }
+</style>
 
 <div id="mws-header" class="clearfix fix">
     <div id="mws-logo-container">
@@ -17,6 +61,8 @@
                     <div class="rss social-nav_li">
                         <a href="#" class="signin ti-user" data-reveal-id="signin" title="Sign in">
                             登录
+                        </a>
+                        <a href="#" class="mailsignin ti-user" data-reveal-id="mail_signin" title="Sign in" style="display: none">
                         </a>
                     </div>
                     <div class="rss social-nav_li">
@@ -51,51 +97,46 @@
 
 
 <div id="signin" class="reveal-modal">
-
     <div class="cont">
         <div class="login-form-head">
             <h4 style="font-size: 2.5rem!important;font-family: 'Poppins', sans-serif">账号登录</h4>
-            <p style="font-size: 15px;margin-top: 10px;">你好, 欢迎使用云平台</p>
+            <p style="font-size: 15px;margin-top: 10px;">你好, 欢迎使用微课云</p>
         </div>
         <form action="#" class="signup form-horizontal" id="signinForm">
             <div class="login-form-body">
                 <div class="form-gp form-group">
-                    <label for="exampleInputEmail1">账号(注册手机/邮箱)</label>
-                    <input type="text" id="login-user" name="user">
-                    <i class="ti-email"></i>
-                </div>
-                <div class="form-gp form-group">
-                    <label for="InputPassword1">密码</label>
-                    <input type="password" id="login-pas" name="password">
-                    <i class="ti-lock"></i>
-                </div>
-                <div class="form-gp form-group">
-                    <label for="validnumber">验证码</label>
-                    <input type = "text" id = "validnumber" name="validnumber" autofocus="autofocus" style="float: left;
-                        width: 241px;
-                        margin-left: 2px;" required />
-                    <input type = "button" class="code" onclick="createCode()"
-                    style="width: 89px;
-                        height: 30px;
-                        margin-left: 18px;
-                        border: 1px solid #d8d8d8;
-                        background: white;" />
-                </div>
-
-                <div class="row mb-4 rmber-area">
-                    <div class="col-6">
-
+                    <div class="logleft">
+                        <label for="login-user" style="width: 100px">手机/邮箱：</label>
                     </div>
-                    <div class="col-6 text-right">
-                        <a href="#" style="font-size: 14px;">忘记密码?</a>
+                    <div class="logright">
+                        <input type="text" id="login-user" name="user" class="log_re_chan">
+                        <i class="ti-email"></i>
                     </div>
                 </div>
-                <div class="submit-btn-area">
+                <div class="form-gp form-group">
+                    <div class="logleft">
+                        <label for="login-pas">密码：</label>
+                    </div>
+                    <div class="logright">
+                        <input type="password" id="login-pas" name="password" class="log_re_chan">
+                        <i class="ti-lock"></i>
+                    </div>
+                </div>
+                <div class="form-gp form-group">
+                    <div class="logleft">
+                        <label for="validnumber">验证码：</label>
+                    </div>
+                    <div class="logright">
+                        <input type = "text" id = "validnumber" name="validnumber" autofocus="autofocus" style="float: left; width: 170px;margin-left: 10px;padding: 7px 9px 7px 9px;" required />
+                        <input type = "button" class="code" id="signincode" value="发送短信" onclick="createCode()" style="width: 89px;  height: 30px;  margin-left: 18px; border: 1px solid #d8d8d8;  background: white;" />
+                    </div>
+                </div>
+                <div class="submit-btn-area" style="margin-top: 35px">
                     <button id="form_submit" type="submit" onclick="Signin()">登录 <i class="ti-arrow-right"></i></button>
                     <a class="signup" data-reveal-id="signup"></a>
                 </div>
                 <div class="form-footer text-center mt-5">
-                    <p class="text-muted" style="margin-top: 33px;font-size: 14px;">还没有账号? <a onclick="openSignup()" style="cursor: pointer;">立即注册</a></p>
+                    <p class="text-muted" style="margin-top: 33px;font-size: 14px;">其他登录方式：<a onclick="openMailSignin()" style="cursor: pointer;margin-right: 25px;margin-left: 0px">短信登录</a>      还没有账号? <a onclick="openSignup()" style="cursor: pointer;">立即注册</a></p>
                 </div>
             </div>
         </form>
@@ -108,51 +149,71 @@
     <div class="cont">
         <div class="login-form-head">
             <h4 style="font-size: 2.5rem!important;font-family: 'Poppins', sans-serif">账号注册</h4>
-            <p style="font-size: 16px;margin-top: 10px">你好, 欢迎加入我们生物云平台</p>
+            <p style="font-size: 16px;margin-top: 10px">你好, 欢迎加入我们微课云</p>
         </div>
         <form action="" class="signup form-horizontal" id="signupForm">
             <div class="login-form-body">
                 <div class="form-gp form-group">
-                    <label for="exampleInputName1">手机号</label><i class="ti-mobile"></i>
-                    <input type="text" id="exampleIFnputName1" name="phone">
-
+                    <div class="logleft">
+                        <label for="upphone">手机号：</label>
+                    </div>
+                    <div class="logright">
+                        <input type="text" id="upphone" name="phone" class="log_re_chan">
+                        <i class="ti-mobile"></i>
+                    </div>
                 </div>
                 <div class="form-gp form-group">
-                    <label for="exampleInputName1">姓名</label>
-                    <input type="text" id="exampleInputName1" name="name">
-                    <i class="ti-user"></i>
+                    <div class="logleft"><label for="upname">姓名：</label></div>
+                    <div class="logright">
+                        <input type="text" id="upname" name="name" class="log_re_chan">
+                        <i class="ti-user"></i>
+                    </div>
                 </div>
                 <div class="form-gp form-group">
-                    <label for="exampleInputEmail1">邮箱</label>
-                    <input type="email" id="exampleInputEmail1" name="email">
-                    <i class="ti-email"></i>
+                    <div class="logleft">
+                        <label for="exampleInputEmail1">邮箱：</label>
+                    </div>
+                    <div class="logright">
+                        <input type="email" id="exampleInputEmail1" name="email" class="log_re_chan">
+                        <i class="ti-email"></i>
+                    </div>
+                </div>
+                <div class="form-gp form-group" style="margin-top: 35px">
+                    <div class="logleft">
+                        <label for="comp" style="top: -20px;">
+                            <p style="margin: 0;float: right">单位：</p>
+                            <p style="margin: 0;float: right;font-size: 12px;">(学校/公司)</p>
+                        </label>
+                    </div>
+                    <div class="logright">
+                        <input type="text" id="comp" name="company" class="log_re_chan">
+                        <i class="ti-briefcase"></i>
+                    </div>
                 </div>
                 <div class="form-gp form-group">
-                    <label for="exampleInputEmail1">单位(学校/机构/公司)</label>
-                    <input type="text" id="exampleInputEmail1" name="company">
-                    <i class="ti-briefcase"></i>
+                    <div class="logleft">
+                        <label for="exampleInputPassword1">密码：</label>
+                    </div>
+                    <div class="logright">
+                        <input type="password" id="exampleInputPassword1" name="password" class="log_re_chan">
+                        <i class="ti-lock"></i>
+                    </div>
                 </div>
                 <div class="form-gp form-group">
-                    <label for="exampleInputPassword1">密码</label>
-                    <input type="password" id="exampleInputPassword1" name="password">
-                    <i class="ti-lock"></i>
+                    <div class="logleft"><label for="exampleInputPassword2">确认密码：</label></div>
+                    <div class="logright">
+                        <input type="password" id="exampleInputPassword2" name="password1" class="log_re_chan">
+                        <i class="ti-lock"></i>
+                    </div>
                 </div>
                 <div class="form-gp form-group">
-                    <label for="exampleInputPassword2">确认密码</label>
-                    <input type="password" id="exampleInputPassword2" name="password1">
-                    <i class="ti-lock"></i>
-                </div>
-                <div class="form-gp form-group">
-                    <label for="validnumber">验证码</label>
-                    <input type = "text" id = "validnumber1" name="validnumber" autofocus="autofocus" style="float: left;
-                        width: 241px;
-                        margin-left: 2px;" required />
-                    <input type = "button" class="code" onclick="createCode()"
-                    style="width: 89px;
-                        height: 30px;
-                        margin-left: 18px;
-                        border: 1px solid #d8d8d8;
-                        background: white;" />
+                    <div class="logleft">
+                        <label for="validnumber1">验证码：</label>
+                    </div>
+                    <div class="logright">
+                        <input type = "text" id = "validnumber1" name="validnumber" autofocus="autofocus" style="float: left;  width: 160px; margin-left: 10px; padding: 7px 9px 7px 9px;" required />
+                        <input type = "button" value="发送验证码" class="sendcode" onclick="Verify('upphone')" style="width: 105px;  height: 35px;  margin-left: 18px; border: 1px solid #d8d8d8;  background: white;border-radius: 6px;" />
+                    </div>
                 </div>
                 <div class="submit-btn-area" style="margin-top: 44px;" >
                     <button id="form_submit" type="submit" onclick="Signup()">注册 <i class="ti-arrow-right"></i></button>
@@ -174,37 +235,41 @@
         </div>
         <form class="signup form-horizontal" id="passwordForm">
             <div class="login-form-body">
-                <div class="form-gp form-group focused">
-                    <label for="phone">手机号</label>
-                    <input type="text" id="phone" name="phone" value="@session.get("userPhone")"   readonly>
-                    <i class="ti-user"></i>
+                <div class="form-gp form-group">
+                    <div class="logleft">
+                        <label for="phone">手机号：</label>
+                    </div>
+                    <div class="logright">
+                        <input type="text" id="phone" name="phone" value="@session.get("userPhone")" class="log_re_chan"  readonly>
+                        <i class="ti-user"></i>
+                    </div>
                 </div>
                 <div class="form-gp form-group">
-                    <label for="InputOldPassword">原密码</label>
-                    <input type="password" id="InputOldPassword" name="password">
-                    <i class="ti-lock"></i>
+                    <div class="logleft">
+                        <label for="InputNewPassword1">新密码：</label>
+                    </div>
+                    <div class="logright">
+                        <input type="password" id="InputNewPassword1" name="password1" class="log_re_chan">
+                        <i class="ti-lock"></i>
+                    </div>
                 </div>
                 <div class="form-gp form-group">
-                    <label for="InputNewPassword1">新密码</label>
-                    <input type="password" id="InputNewPassword1" name="password1">
-                    <i class="ti-lock"></i>
+                    <div class="logleft">
+                        <label for="InputNewPassword2">确认密码：</label>
+                    </div>
+                    <div class="logright">
+                        <input type="password" id="InputNewPassword2" name="password2" class="log_re_chan">
+                        <i class="ti-lock"></i>
+                    </div>
                 </div>
                 <div class="form-gp form-group">
-                    <label for="InputNewPassword2">确认密码</label>
-                    <input type="password" id="InputNewPassword2" name="password2">
-                    <i class="ti-lock"></i>
-                </div>
-                <div class="form-gp form-group">
-                    <label for="validnumber">验证码</label>
-                    <input type = "text" id = "validnumber2" name="validnumber" autofocus="autofocus" style="float: left;
-                        width: 241px;
-                        margin-left: 2px;" required />
-                    <input type = "button" class="code" onclick="createCode()"
-                    style="width: 89px;
-                        height: 30px;
-                        margin-left: 18px;
-                        border: 1px solid #d8d8d8;
-                        background: white;" />
+                    <div class="logleft">
+                        <label for="validnumber2">验证码：</label>
+                    </div>
+                    <div class="logright">
+                        <input type = "text" id = "validnumber2" name="validnumber" autofocus="autofocus" style="float: left; width: 160px; margin-left: 10px; padding: 7px 9px 7px 9px;" required />
+                        <input type = "button" value="发送验证码" class="sendcode" onclick="Verify('phone')" style="width: 105px;  height: 35px!important; margin-left: 18px; border: 1px solid #d8d8d8!important;  background: white!important;border-radius: 6px!important;" />
+                    </div>
                 </div>
                 <div class="submit-btn-area" style="margin-top: 44px;" >
                     <button id="form_submit" type="submit" onclick="changePassword()">确认修改 <i class="ti-arrow-right"></i></button>
@@ -215,33 +280,63 @@
     <a class="close-reveal-modal">&#215;</a>
 </div>
 
-@*<div id="previewpage" class="reveal-modal" style="background: white;top:133px;left: 45%;width: 730px;height: 665px;">*@
-
-@*    <div class="cont innerbox" style="padding: 25px 0 0 0;width: 100%;margin: 0 auto;height: 96%;overflow-y: auto;overflow-x: auto;">*@
-@*        <div class="login-form-head">*@
-@*        </div>*@
-@*        <div style="margin-top: 10px;">*@
-@*            <ul id="prepic">*@
-@*            </ul>*@
-@*        </div>*@
-@*    </div>*@
-@*    <a class="close-reveal-modal">&#215;</a>*@
-@*</div>*@
+<div id="mail_signin" class="reveal-modal">
+    <div class="cont">
+        <div class="login-form-head">
+            <h4 style="font-size: 2.5rem!important;font-family: 'Poppins', sans-serif">账号登录</h4>
+            <p style="font-size: 15px;margin-top: 10px;">你好, 欢迎使用云平台</p>
+        </div>
+        <form action="#" class="signup form-horizontal" id="mailSigninForm">
+            <div class="login-form-body">
+                <div class="form-gp form-group">
+                    <div class="logleft">
+                        <label for="mailphone">手机号：</label>
+                    </div>
+                    <div class="logright">
+                        <input type="text" id="mailphone" name="phone" class="log_re_chan">
+                        <i class="ti-email"></i>
+                    </div>
+                </div>
+                <div class="form-gp form-group">
+                    <div class="logleft">
+                        <label for="mailcode">验证码：</label>
+                    </div>
+                    <div class="logright">
+                        <input type = "text" id = "mailcode" name="code" autofocus="autofocus" style="float: left;  width: 160px; margin-left: 10px; padding: 7px 9px 7px 9px;" required />
+                        <input type = "button" value="发送验证码" class="sendcode" onclick="Verify('mailphone')" style="width: 105px;  height: 35px;  margin-left: 18px;border: 1px solid #d8d8d8;  background: white;border-radius: 6px;" />
+                    </div>
+                </div>
+                <div class="submit-btn-area" style="margin-top: 35px">
+                    <button id="form_submit" type="submit" onclick="MailSignin()">登录 <i class="ti-arrow-right"></i></button>
+                    <a class="signup" data-reveal-id="signup"></a>
+                </div>
+                <div class="form-footer text-center mt-5">
+                    <p class="text-muted" style="margin-top: 33px;font-size: 14px;">其他登录方式：<a onclick="openSignin()" style="cursor: pointer;margin-right: 25px;margin-left: 0px">密码登录</a>还没有账号? <a onclick="openSignup()" style="cursor: pointer;">立即注册</a></p>
+                </div>
+            </div>
+        </form>
+    </div>
+    <a class="close-reveal-modal">&#215;</a>
+</div>
 
 <script>
         $('.form-gp input').on('focus', function() {
-            $(this).parent('.form-gp').addClass('focused');
+            $(this).parent('.logright').parent('.form-gp').addClass('focused');
         });
+
         $('.form-gp input').on('focusout', function() {
-            if ($(this).val().length === 0) {
-                $(this).parent('.form-gp').removeClass('focused');
-            }
+            $(this).parent('.logright').parent('.form-gp').removeClass('focused');
         });
 
         var path = window.location.pathname;
 
 
         var code ; //在全局定义验证码
+
+        function openMailSignin() {
+            $(".close-reveal-modal").click();
+            $(".mailsignin").click();
+        }
 
         function openSignup() {
             $(".close-reveal-modal").click();
@@ -270,7 +365,7 @@
             window.location.href = "/CloudPlatform/User/signout";
         }
 
-        //登录
+        //账号密码登录
         function Signin() {
             var form = $("#signinForm");
             var fv = form.data("formValidation");
@@ -283,6 +378,7 @@
                     data: form.serialize(),
                     success: function (data) {
                         if (data.valid === "false") {
+                            createCode();
                             swal({
                                 title: "错误",
                                 text: "账号或密码错误",
@@ -325,7 +421,6 @@
                                 confirmButtonText: "确定"
                             }, function () {
                                 $(".signin").click();
-                                createCode();
                             })
                         }
                     }
@@ -370,168 +465,101 @@
 
         }
 
-        // function formValidation() {
-        //     $("#signinForm").formValidation({
-        //         framework: 'bootstrap',
-        //         icon: {
-        //             valid: 'glyphicon glyphicon-ok',
-        //             invalid: 'glyphicon glyphicon-remove',
-        //             validating: 'glyphicon glyphicon-refresh'
-        //         },
-        //         fields: {
-        //             user: {
-        //                 validators: {
-        //                     notEmpty: {
-        //                         message: '请输入账号！'
-        //                     }
-        //                 }
-        //             },
-        //             password: {
-        //                 validators: {
-        //                     notEmpty: {
-        //                         message: '请输入密码！'
-        //                     }
-        //                 }
-        //             },
-        //             validnumber: {
-        //                 validators: {
-        //                     notEmpty: {
-        //                         message: '请输入验证码！'
-        //                     },
-        //                     callback: {
-        //                         message: '验证码错误！',
-        //                         callback: function () {
-        //                             return $('#validnumber').val() === code;
-        //                         }
-        //                     }
-        //                 }
-        //             }
-        //         }
-        //     });
-        //     $('#signupForm').formValidation({
-        //         framework: 'bootstrap',
-        //         icon: {
-        //             valid: 'glyphicon glyphicon-ok',
-        //             invalid: 'glyphicon glyphicon-remove',
-        //             validating: 'glyphicon glyphicon-refresh'
-        //         },
-        //         fields: {
-        //             phone: {
-        //                 validators: {
-        //                     notEmpty: {
-        //                         message: '请输入手机号！'
-        //                     },
-        //                     phone:{
-        //                         message: '请输入正确手机号',
-        //                         country: 'CN'
-        //                     }
-        //                 }
-        //             },
-        //             name: {
-        //                 validators: {
-        //                     notEmpty: {
-        //                         message: '请填写姓名！'
-        //                     }
-        //                 }
-        //             },
-        //             email: {
-        //                 validators: {
-        //                     notEmpty: {
-        //                         message: '请填写邮箱地址！'
-        //                     },
-        //                     emailAddress:{
-        //                         message:'请输入正确邮箱地址！'
-        //                     }
-        //                 }
-        //             },
-        //             password: {
-        //                 validators: {
-        //                     notEmpty: {
-        //                         message: '请输入密码！'
-        //                     },
-        //                     stringLength: {
-        //                         min: 6,
-        //                         message: '请输入至少六位密码！'
-        //                     }
-        //                 }
-        //             },
-        //             password1: {
-        //                 validators: {
-        //                     notEmpty: {
-        //                         message: '请输入确认密码！'
-        //                     },
-        //                     identical: {
-        //                         field: 'password',
-        //                         message: '两次密码不一致!'
-        //                     }
-        //                 }
-        //             },
-        //             validnumber: {
-        //                 validators: {
-        //                     notEmpty: {
-        //                         message: "请输入验证码！"
-        //                     },
-        //                     callback: {
-        //                         message: '验证码错误！',
-        //                         callback: function () {
-        //                             return $('#validnumber1').val() === code;
-        //                         }
-        //                     }
-        //                 }
-        //             }
-        //         }
-        //     });
-        //     $('#passwordForm').formValidation({
-        //         framework: 'bootstrap',
-        //         icon: {
-        //             valid: 'glyphicon glyphicon-ok',
-        //             invalid: 'glyphicon glyphicon-remove',
-        //             validating: 'glyphicon glyphicon-refresh'
-        //         },
-        //         fields: {
-        //             password: {
-        //                 validators: {
-        //                     notEmpty: {
-        //                         message: '请输入旧密码！'
-        //                     }
-        //                 }
-        //             },
-        //             password1: {
-        //                 validators: {
-        //                     notEmpty: {
-        //                         message: '请输入新密码！'
-        //                     },
-        //                     stringLength: {
-        //                         min: 6,
-        //                         message: '请输入至少六位密码！'
-        //                     }
-        //                 }
-        //             },
-        //             password2: {
-        //                 validators: {
-        //                     notEmpty: {
-        //                         message: '请输入确认密码！'
-        //                     },
-        //                     identical: {
-        //                         field: 'password1',
-        //                         message: '两次密码不一致!'
-        //                     }
-        //                 }
-        //             },
-        //             validnumber: {
-        //                 validators: {
-        //                     notEmpty: {
-        //                         message: "请输入验证码！"
-        //                     },
-        //                     callback: {
-        //                         message: '验证码错误！',
-        //                         callback: function () {
-        //                             return $('#validnumber2').val() === code;
-        //                         }
-        //                     }
-        //                 }
-        //             }
-        //         }
-        //     });
-        // }
+        //短信登陆
+        function MailSignin() {
+            var form = $("#mailSigninForm");
+            var fv = form.data("formValidation");
+            fv.validate();
+            if (fv.isValid()) {
+                $.ajax({
+                    url: "@routes.UserController.mailSignIn()",
+                    type: "post",
+                    dataType: "json",
+                    data: form.serialize(),
+                    success: function (data) {
+                        if (data.valid === "false") {
+                            swal({
+                                title: "错误",
+                                text: "验证码错误",
+                                type: "error",
+                                confirmButtonText: "确认"
+                            })
+                        } else if (data.valid === "null") {
+                            swal({
+                                title: "错误",
+                                text: "请先发送验证码",
+                                type: "error",
+                                confirmButtonText: "确认"
+                            })
+                        } else {
+                            window.location.href = "/CloudPlatform/User/signInSuccess?path=" + path + "&id=" + data.id;
+                        }
+                    }
+                });
+            }
+
+        }
+
+        function Verify(param) {
+            if($("#"+param).val()==""){
+                swal({
+                    title: "请输入手机号",
+                    text: "请输入手机号",
+                    type: "warning",
+                    confirmButtonText: "确认"
+                })
+            }else sendEmail($("#"+param).val());
+        }
+
+        var count = 60;
+        var curCount = 0;
+        var interValObj = 0;
+
+        function setRemainTime() {
+            if (curCount == 0) {
+                window.clearInterval(interValObj);
+                $(".sendcode").val("重发验证码").attr("disabled", false).css("background","white");
+            } else {
+                curCount -= 1;
+                $(".sendcode").val("重新发送（" + curCount + "s）");
+            }
+        }
+
+        function sendEmail(phone) {
+            $.ajax({
+                url: "/CloudPlatform/Utils/sendMSG?phone="+phone,
+                type: "post",
+                success: function (data) {
+                    if (data.valid === "true") {
+                        curCount = count;
+                        $(".sendcode").val("重新发送（" + curCount + "）").attr("disabled", true).css("background","#dfdfdf");
+                        interValObj = window.setInterval(setRemainTime, 1000);
+                        swal({
+                            title: "短信发送成功",
+                            text: "短信发送成功,验证码有效期10分钟！",
+                            type: "success",
+                            confirmButtonText: "确认"
+                        })
+                    }else{
+                        if(data.responsecode==="isv.MOBILE_NUMBER_ILLEGAL"){
+                            swal({
+                                title: "错误",
+                                text: "无效手机号，请填写正确的手机号！",
+                                type: "error",
+                                confirmButtonText: "确认"
+                            })
+                        }else {
+                            swal({
+                                title: "短信发送失败",
+                                text: "短信发送失败",
+                                type: "error",
+                                confirmButtonText: "确认"
+                            })
+                        }
+                    }
+                }
+            });
+        }
+
+
 </script>

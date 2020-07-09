@@ -102,6 +102,34 @@
                 border-radius: 16px;
                 color: white;
             }
+
+            /*running*/
+            .layui-layer {
+                -webkit-overflow-scrolling: touch;
+                top: 35%;
+                left: 41%;
+                margin: 0;
+                padding: 0;
+                background-color: #fff;
+                -webkit-background-clip: content;
+                box-shadow: 1px 1px 50px rgba(0,0,0,.3);
+            }
+            .layui-layer-lan .layui-layer-btn {
+                padding: 10px;
+                text-align: right;
+                border-top: unset;
+            }
+            .layui-layer-lan[type=dialog] {
+                min-width: 280px;
+                border-radius: 11.5px;
+            }
+            .layui-layer-lan .layui-layer-title {
+                background: #1f3851;
+                color: #fff;
+                border: none;
+                border-top-left-radius: 11.5px;
+                border-top-right-radius: 11.5px;
+            }
     </style>
 
     <div class="col-md-12 mysoft-content" style="width: 98%;">
@@ -193,7 +221,7 @@
             <div class="tab-content" style="box-sizing: border-box!important;">
                 <div class="tab-pane fade active in" id="example">
                     <h5>输出结果：</h5>
-                    <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/cytoscape2out.png" alt="生物云平台">
+                    <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/net_example.png" alt="生物云平台">
                 </div>
                 <div class="tab-pane fade" id="instruction">
                     <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
@@ -393,33 +421,43 @@
             });
 
         function netweight() {
+            var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
+            var index = layer.alert(element, {
+                skin: 'layui-layer-lan',
+                closeBtn: 0,
+                title: "提醒",
+                btn: []
+            });
             var form = $("#Net");
             var fv = form.data("formValidation");
             fv.validate();
             if (fv.isValid()) {
                 checkTable();
                 checkEvi();
-                if(flagtable&&flagevi&&checktaskname()){
-                    var form1 = new FormData($("#Net")[0]);
-                    $.ajax({
-                        url: "/CloudPlatform/SoftTool/runNet",
-                        type: "post",
-                        processData: false,
-                        contentType: false,
-                        data: form1,
-                        success: function (data) {
-                            removeul();
-                            loadHistory();
-                            $("#his_tab1").addClass("active");
-                            $("#out_tab1").removeClass("active");
-                            $("#ins_tab1").removeClass("active");
-                            $("#history").addClass("active").addClass("in");
-                            $("#example").removeClass("active");
-                            $("#instruction1").removeClass("active");
-                            getTaskName();
-                        }
-                    });
-                }
+                setTimeout(function () {
+                    layer.close(index);
+                    if(flagtable&&flagevi&&checktaskname()){
+                        var form1 = new FormData($("#Net")[0]);
+                        $.ajax({
+                            url: "/CloudPlatform/SoftTool/runNet",
+                            type: "post",
+                            processData: false,
+                            contentType: false,
+                            data: form1,
+                            success: function (data) {
+                                removeul();
+                                loadHistory();
+                                $("#his_tab1").addClass("active");
+                                $("#out_tab1").removeClass("active");
+                                $("#ins_tab1").removeClass("active");
+                                $("#history").addClass("active").addClass("in");
+                                $("#example").removeClass("active");
+                                $("#instruction1").removeClass("active");
+                                getTaskName();
+                            }
+                        });
+                    }
+                }, 2000);
             }
         }
 
@@ -612,6 +650,30 @@
                         }
                     }
                 });
+                $("#mailSigninForm").formValidation({
+                    framework: 'bootstrap',
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        phone: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入账号！'
+                                }
+                            }
+                        },
+                        code: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入验证码！'
+                                }
+                            }
+                        }
+                    }
+                });
                 $("#signinForm").formValidation({
                     framework: 'bootstrap',
                     icon: {
@@ -685,6 +747,13 @@
                                 }
                             }
                         },
+                        company: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请填写单位！'
+                                }
+                            }
+                        },
                         password: {
                             validators: {
                                 notEmpty: {
@@ -711,12 +780,6 @@
                             validators: {
                                 notEmpty: {
                                     message: "请输入验证码！"
-                                },
-                                callback: {
-                                    message: '验证码错误！',
-                                    callback: function () {
-                                        return $('#validnumber1').val() === code;
-                                    }
                                 }
                             }
                         }
@@ -730,13 +793,6 @@
                         validating: 'glyphicon glyphicon-refresh'
                     },
                     fields: {
-                        password: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入旧密码！'
-                                }
-                            }
-                        },
                         password1: {
                             validators: {
                                 notEmpty: {
@@ -763,18 +819,11 @@
                             validators: {
                                 notEmpty: {
                                     message: "请输入验证码！"
-                                },
-                                callback: {
-                                    message: '验证码错误！',
-                                    callback: function () {
-                                        return $('#validnumber2').val() === code;
-                                    }
                                 }
                             }
                         }
                     }
                 });
-
             }
 
     </script>

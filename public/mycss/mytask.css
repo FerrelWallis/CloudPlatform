@@ -1,0 +1,124 @@
+input[type="text"]{
+    display: unset;
+    padding: unset;
+    background: white;
+}
+.login-form-body input[type="text"]{
+    display: unset;
+    padding: unset;
+    background: transparent;
+}
+select {
+    display: unset;
+}
+label {
+    margin-bottom: unset;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    margin-top: unset;
+}
+.grid_8{
+    width: 100%;
+    margin: unset;
+}
+/*tr:hover{*/
+/*    background: #cbeeeb;*/
+/*}*/
+.mws-table tbody tr.odd:hover,.mws-table tbody tr.even:hover {
+    background-color: #c4e3f3;
+}
+.selected {
+    background-color: #c4e3f3!important;
+}
+.layui-layer {
+    -webkit-overflow-scrolling: touch;
+    top: 35%;
+    left: 41%;
+    margin: 0;
+    padding: 0;
+    background-color: #fff;
+    -webkit-background-clip: content;
+    box-shadow: 1px 1px 50px rgba(0,0,0,.3);
+}
+.layui-layer-lan .layui-layer-btn {
+    padding: 10px;
+    text-align: right;
+    border-top: unset;
+}
+.layui-layer-lan[type=dialog] {
+    min-width: 280px;
+    border-radius: 11.5px;
+}
+.layui-layer-lan .layui-layer-title {
+    background: #333;
+    color: #fff;
+    border: none;
+    border-top-left-radius: 11.5px;
+    border-top-right-radius: 11.5px;
+}
+.success{
+    color: cadetblue;
+}
+.failed{
+    color: #bf4064;
+}
+.running{
+    color: #a08c5f;
+}
+/*滚动条样式*/
+.innerbox::-webkit-scrollbar {/*滚动条整体样式*/
+    width: 4px;     /*高宽分别对应横竖滚动条的尺寸*/
+    height: 4px;
+}
+.innerbox::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+    border-radius: 5px;
+    -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+    background: rgba(0,0,0,0.2);
+}
+.innerbox::-webkit-scrollbar-track {/*滚动条里面轨道*/
+    -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+    border-radius: 0;
+    background: rgba(0,0,0,0.1);
+}
+#prepic{
+    padding: 10px 20px 0 10px!important;
+}
+.img-thumbnail{
+    -webkit-transition: unset;
+    transition: unset;
+}
+div.dataTables_wrapper {
+    background: #1f3851;
+}
+.mws-panel .mws-panel-header {
+    /*background: url(../../images/core/mws-panel-header-bg.png) repeat-x;*/
+    height: 25px;
+    position: relative;
+    padding: 12px;
+    font-size: 14px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -o-border-radius: 4px;
+    -khtml-border-radius: 4px;
+    border-radius: 4px;
+    background: #1f3851;
+}
+.mws-panel .mws-panel-header span.mws-i-24 {
+    padding-left: 40px;
+    background-position: 8px center;
+    color: white;
+}
+div.dataTables_wrapper .dataTables_paginate span.paginate_button{
+    background: #1f3851;
+}
+.mws-table tbody tr.odd
+{
+    background-color:#f5f5f5;
+}
+.mws-table tbody tr.even
+{
+    background-color:#ffffff;
+}
+div.mws-panel-toolbar {
+    background-color: #fff;
+}

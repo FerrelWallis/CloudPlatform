@@ -3,6 +3,13 @@
 <html lang="en">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        @* 360极速模式*@
+        <meta name="renderer" content="webkit">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0, shrink-to-fit=no">
+
+        <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE"> <!--以IE9模式渲染-->
+        <meta http-equiv="X-UA-Compatible" content="IE=8"> <!--以IE8模式渲染-->
+        <meta http-equiv="X-UA-Compatible" content="IE=7"> <!--以IE7模式渲染-->
         <!--整体页面-->
         <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("css/reset.css")" media="screen" />
         <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("css/mws.style.css")" media="screen" />
@@ -62,11 +69,7 @@
             ul{
                 padding-left: 0px!important;
             }
-            /**, :before, :after {*/
-            /*     -webkit-box-sizing: unset!important;*/
-            /*    -moz-box-sizing: unset!important;*/
-            /*     box-sizing: unset!important;*/
-            /*}*/
+
         </style>
         @home.header()
 
@@ -120,9 +123,35 @@
 
                 function checklog(url) {
                     if(@session.get("userId").isEmpty){
+                        console.log(111);
                         openSignin();
                     }else {
                         window.location.href = url;
+                    }
+                };
+
+                $(".handler").mouseover(function () {
+                    $(this).css("background","url(/assets/images/handler2.png) no-repeat");
+                    $(this).css("background-color","#c8c9d6");
+                    $(this).css("background-position","center");
+                    $(this).css("background-size","100%");
+                });
+                $(".handler").mouseout(function () {
+                    $(this).css("background","url(/assets/images/handler.png) no-repeat");
+                    $(this).css("background-color","unset");
+                    $(this).css("background-position","center");
+                    $(this).css("background-size","100%");
+                });
+
+                //submit回车自动提交表单事件，回车事件
+                document.onkeydown = function (e) {
+                    var theEvent = window.event || e;
+                    var code = theEvent.keyCode || theEvent.which;
+                    if (code == 13) {
+                        if($("#newpassword").css("visibility")=="visible") changePassword();
+                        else if($("#signin").css("visibility")=="visible") Signin();
+                        else if($("#signup").css("visibility")=="visible") Signup();
+                        else return;
                     }
                 }
 

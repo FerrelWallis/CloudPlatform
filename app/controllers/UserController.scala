@@ -3,6 +3,7 @@ package controllers
 import java.io.File
 
 import dao.{softDao, usersDao}
+import services.onStart
 import javax.inject.{Inject, Singleton}
 import models.Tables.UsersRow
 import play.api.data.Form
@@ -14,7 +15,7 @@ import utils.{ExecCommand, Utils}
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, ExecutionContext}
 
-class UserController  @Inject()(cc: ControllerComponents,usersdao:usersDao,softdao:softDao)(implicit exec: ExecutionContext) extends AbstractController(cc) {
+class UserController  @Inject()(cc: ControllerComponents,onstart:onStart,usersdao:usersDao,softdao:softDao)(implicit exec: ExecutionContext) extends AbstractController(cc) {
 
   case class UserData(user: String, password: String)
 
@@ -42,7 +43,33 @@ class UserController  @Inject()(cc: ControllerComponents,usersdao:usersDao,softd
         Ok(Json.obj("valid" -> valid,"id" -> id))
       }
     }
+  }
 
+  case class mailLogData(phone: String, code: String)
+
+  val mailLogForm = Form(
+    mapping(
+      "phone" -> text,
+      "code" -> text,
+
+    )(mailLogData.apply)(mailLogData.unapply)
+  )
+
+  def mailSignIn = Action{ implicit request =>
+    val form = mailLogForm.bindFromRequest.get
+    val checkphone=Await.result(usersdao.checkPhoneExist(form.phone),Duration.Inf)
+    val (valid,id)=
+      if(checkphone.length==1){
+        println(onstart.verifyMap.toList)
+        if(onstart.verifyMap.getOrElse(form.phone,"null")=="null") ("null",checkphone.head.id.toString)
+        else if(onstart.verifyMap.getOrElse(form.phone,"null")==form.code) {
+          onstart.verifyMap.remove(form.phone)
+          ("true",checkphone.head.id.toString)
+        } else ("false",checkphone.head.id.toString)
+      }else{
+        ("nophone","nophone")
+      }
+    Ok(Json.obj("valid" -> valid,"id"-> id))
   }
 
 
@@ -54,7 +81,7 @@ class UserController  @Inject()(cc: ControllerComponents,usersdao:usersDao,softd
     }
   }
 
-  case class AddUserData(phone:String,name:String,email:String,company:String,password:String,password1:String)
+  case class AddUserData(phone:String,name:String,email:String,company:String,password:String,password1:String,validnumber:String)
 
   val userForm2 = Form(
     mapping(
@@ -63,7 +90,8 @@ class UserController  @Inject()(cc: ControllerComponents,usersdao:usersDao,softd
       "email" -> text,
       "company"->text,
       "password" -> text,
-      "password1"->text
+      "password1"->text,
+      "validnumber"->text
     )(AddUserData.apply)(AddUserData.unapply)
   )
 
@@ -79,37 +107,43 @@ class UserController  @Inject()(cc: ControllerComponents,usersdao:usersDao,softd
       }else if(checkEmail.length==1){
         Ok(Json.obj("valid"->"false","message"->"该邮箱地址已注册!"))
       }else{
-        val id=
-        Await.result(usersdao.addUser(row),Duration.Inf)
-        creatUserDir(id.toString)
-        Ok(Json.obj("valid"->"true"))
+        //判断验证码
+        val (valid,message)=
+          if(onstart.verifyMap.getOrElse(form.phone,"null")=="null") ("false","请先发送验证码！")
+          else if(onstart.verifyMap.getOrElse(form.phone,"null")==form.validnumber) {
+            onstart.verifyMap.remove(form.phone)
+            val id=Await.result(usersdao.addUser(row),Duration.Inf)
+            creatUserDir(id.toString)
+            ("true","注册成功")
+          } else ("false","验证码不正确！") //验证码不正确
+        Ok(Json.obj("valid"->valid,"message"->message))
       }
     }catch {
       case e:Exception=>Ok(Json.obj("valid"->"false","message"->e.getMessage))
     }
   }
 
-  case class PasswordData(phone:String,password:String,password1:String,password2:String)
+  case class PasswordData(phone:String,password1:String,validnumber:String)
 
   val PasswordForm = Form(
     mapping(
       "phone"->text,
-      "password"->text,
       "password1"-> text,
-      "password2" -> text
+      "validnumber"->text
     )(PasswordData.apply)(PasswordData.unapply)
   )
 
   def changePassword = Action{implicit request=>
     try{
       val form = PasswordForm.bindFromRequest.get
-      val check = Await.result(usersdao.checkUserByPhone(form.phone,form.password),Duration.Inf)
-      if(check.length == 1){
-        Await.result(usersdao.updatePassword(form.phone,form.password1),Duration.Inf)
-        Ok(Json.obj("valid" -> "true"))
-      } else {
-        Ok(Json.obj("valid"->"false" ,"message" -> "原密码错误!"))
-      }
+      val (valid,message)=
+        if(onstart.verifyMap.getOrElse(form.phone,"null")=="null") ("false","请先发送验证码！")
+        else if(onstart.verifyMap.getOrElse(form.phone,"null")==form.validnumber) {
+          onstart.verifyMap.remove(form.phone)
+          Await.result(usersdao.updatePassword(form.phone,form.password1),Duration.Inf)
+          ("true","修改成功")
+        } else ("false","验证码不正确！") //验证码不正确
+        Ok(Json.obj("valid" -> valid,"message"->message))
     }catch {
       case e : Exception => Ok(Json.obj("valid" ->"false","message" -> e.getMessage))
     }
@@ -149,6 +183,8 @@ class UserController  @Inject()(cc: ControllerComponents,usersdao:usersDao,softd
       case e : Exception => Ok(Json.obj("valid" ->"false","message" -> e.getMessage))
     }
   }
+
+
 
 
 

@@ -1023,7 +1023,7 @@ input[type=checkbox], input[type=radio] {
 }
 
 div.handler {
-    background: url(../../images/ellipsis-v.png) no-repeat;
+    background: url(../../images/handler.png) no-repeat;
     background-size: 100%;
     background-position: center;
     width: 14px;
@@ -1032,6 +1032,12 @@ div.handler {
     height: 100%;
     float: left;
 }
+
+
+/*.css-116m30j-ResizeBar {*/
+/*    z-index: 1;*/
+/*    */
+/*}*/
 
 .mysoft-content-left {
 

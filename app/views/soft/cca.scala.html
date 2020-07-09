@@ -127,13 +127,41 @@
                 border-radius: 16px;
                 color: white;
             }
+
+            /*running*/
+            .layui-layer {
+                -webkit-overflow-scrolling: touch;
+                top: 35%;
+                left: 41%;
+                margin: 0;
+                padding: 0;
+                background-color: #fff;
+                -webkit-background-clip: content;
+                box-shadow: 1px 1px 50px rgba(0,0,0,.3);
+            }
+            .layui-layer-lan .layui-layer-btn {
+                padding: 10px;
+                text-align: right;
+                border-top: unset;
+            }
+            .layui-layer-lan[type=dialog] {
+                min-width: 280px;
+                border-radius: 11.5px;
+            }
+            .layui-layer-lan .layui-layer-title {
+                background: #1f3851;
+                color: #fff;
+                border: none;
+                border-top-left-radius: 11.5px;
+                border-top-right-radius: 11.5px;
+            }
     </style>
 
     <div class="col-md-12 mysoft-content" style="width: 98%;">
         <div class=" mysoft-content-left whitebox" style="width: 771px;overflow-y: auto">
             <form id="CCA" method="GET" enctype="multipart/form-data" class="well form-inline" style="box-sizing: border-box!important;">
                 <img class="tools-img" src="/assets/images/softpic/cca.jpg">
-                <h3 class="tools-title">CCA/RDA分析</h3>
+                <h3 class="tools-title">CCA/RDA</h3>
                 <br><br>
                 <div class="form-group-p">
                     <div class="form-group">
@@ -155,7 +183,7 @@
                             </div>
                         </div>
                         <div class="form-group-extra">
-                            <em><a href="/CloudPlatform/SoftTool/downloadExamples?name=CCA_otu.txt">示例文件</a></em><span class="must">&nbsp;&nbsp;*</span>
+                            <em><a href="/CloudPlatform/SoftTool/downloadExamples?name=CCA_otu.txt">示例文件</a></em>
                         </div>
                         <br>
                         <br>
@@ -251,79 +279,6 @@
                     <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/CCA1-2.nonlabs.png" alt="生物云平台">
                     <br>
                     <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/CCA1-2.png" alt="生物云平台">
-                    <h5>1:样本坐标表 </h5>
-                    <blockquote>
-                        <pre>Samples CCA1  CCA2  CCA3  CCA4  CCA5  CA1
-                            CK1 -1.17237086899951 0.231164561576716 2.43536547360125  0.468613538470372 -0.521936162667495  -0.808046986758666
-                            CK2 -1.1572665823102  -1.42860877240687 -0.549032209802859  2.83351063677702  1.43378119851602  2.02534821080922
-                            CK3 -1.49570686760746 0.0273462956558565  -0.706329227389229  0.865838710760632 -0.290912650451685  1.01877976615298
-                            CK4 -1.20710868460347 0.370935253362443 -2.60560316720684 -2.42810618842451 0.168506841308157 -1.6719608268434
-                            CK5 -1.5562702802342  0.651269590349488 0.595882020371293 -1.45146930145046 -0.318000696274572  -0.251630348306944
-                            CA1 0.974610196394923 -0.104745619111151  -0.334203278424584  1.04120295623205  -0.0531562686390503 -0.942931875531439
-                            CA2 0.760730059809399 -2.12637958035229 0.745781118766851 -1.63166065483332 -0.0165817224481634 -0.573209913163789
-                            CA3 0.80435142753797  0.700368060885899 -0.263211126786403  0.229812203163464 -1.61999680223531 0.0204114357736938
-                            CA4 0.567093187244471 0.262752025306537 0.0148235934121042  -0.437995730700719  -0.822034862380148  0.231909808702752
-                            CA5 0.700914846513469 1.98976523732017  -0.162807163417265  0.0466015118241849  3.06827940812714  1.3262899501884
-                        </pre>
-                    </blockquote>
-                    <br>
-                    <h5>2:物种坐标表 </h5>
-                    <blockquote>
-                        <pre>Species CCA1  CCA2  CCA3  CCA4  CCA5  CA1
-                            Alicyclobacillus  0.34595108156025  -0.249931443439814  -0.00508892535787803  0.0575514559218589  -0.0294336770660223 -0.168446818978494
-                            Bacillus  -0.434908707180272  0.110247143354924 0.143966641687111 -0.0483216220508095 -0.0280734921997281 -0.0313666148504983
-                            CandidatusRhabdochlamydia 0.332412329234085 0.149552158756664 -0.110963677277933  -0.00513846687288351  -0.0755745296229585 0.0185259066401049
-                            CandidatusSolibacter  -0.338931730698679  0.0879930888338368  -0.0635812894580597 -0.220352060529118  -0.00527399612415062  -0.0720185430737823
-                            Mycobacterium 0.30769780457627  0.109805580124376 0.0324946604566324  0.015709933373511 0.251544295518129 0.0327943021149191
-                            Acidobacterium  0.593748839228754 0.413222114904331 -0.0190275868032072 0.0499162197773069  0.154477266462497 0.146438254658603
-                            CandidatusKoribacter  -0.807533540490883  -0.238088566626537  -0.166963852695348  0.255945631985289 0.07726025494122  0.691926396129785
-                            Conexibacter  0.682330827072613 0.380118852507714 0.0317777784942295  -0.0492734196140707 0.000966010984764718  0.205043073765086
-                            Nocardioides  -0.820114462482764  0.0737283559695164  0.673717900416305 0.279984911111747 0.0122300186916335  0.036916331507856
-                            Pilimelia -1.27268641146115 -0.0237692247359973 -0.375484360703181  -0.0268117477942791 0.0397218484000157  -0.0137762143280586
-                            Sinomonas -1.1647948301215  -0.0991385843491781 -0.140260843226405  0.265065165234655 -0.058581660637485  0.625884640720445
-                            Streptomyces  -0.706743539907205  -0.0165173955314497 -0.210856929356171  -0.0941302900650263 0.027518630271319 0.102114406891466
-                            Flavobacterium  0.197779672222041 -1.21998311475552 0.276998901549968 -0.4668873108256  0.147784962249983 0.0874168205447417
-                            Kitasatospora -0.513045251422147  -0.426617698321745  -0.149095388924391  0.188923417085328 0.176398426958694 0.490444761685818
-                            Parachlamydia 0.490302339839949 0.0763178809781672  -0.126739126101196  -0.0644678365797921 -0.240110777182143  0.0305911858454124
-                            Rathayibacter 0.543807338526059 0.155078631329423 0.19654117415888  0.0411930207557103  0.151295881530674 -0.0191993792585311
-                            Edaphobacter  0.499205261603634 0.353178206304564 0.0594334945395013  -0.116917048551099  0.283954689966612 0.41768442620536
-                            Catellatospora  -1.41823522496713 -0.127184907485305  -1.38322918921647 -0.398764248425288  0.174072239090334 -0.655892489276133
-                            Virgisporangium -1.3141321649437  -0.0283163960812968 -1.07500687863742 -0.394924480802182  0.13068384248966  -0.783230745347689
-                            Prevotella  0.719998724070353 -1.50861319724635 0.529239772332071 -1.03135529651776 0.213618328885839 -0.564226755041147
-                        </pre>
-                    </blockquote>
-                    <br>
-                    <h5>3：环境因子坐标 </h5>
-                    <blockquote>
-                        <pre>Constrain CCA1  CCA2  CCA3  CCA4  CCA5  CA1
-                            AN  0.215918459134623 0.300454636633771 0.0037843269271663  0.189483055402639 -0.909498807539178  0
-                            AP  -0.88321103447841 -0.00780260484008147  0.179211133562975 0.393625808498019 0.18116147610527  0
-                            AK  -0.948073637913666  0.0805585577858008  0.294316730344931 0.066086075520977 0.0606381787484189  0
-                            OM  -0.256087308224969  0.643580255179155 0.0716367791250762  0.502223686811577 0.51270194654555  0
-                            Ph  -0.945408617807588  -0.0121426079324861 -0.30469138398077 -0.0743625293392954 0.0876839620791046  0
-                        </pre>
-                    </blockquote>
-                    <br>
-                    <h5>4：DCA结果表</h5>
-                    <blockquote>
-                        <pre>DCA Eigenvalues Decorana_values Axis_lengths
-                            DCA1  0.235586191937275 0.24189609354078  2.04870842887944
-                            DCA2  0.080053434386399 0.046972558162257 2.25698204351043
-                            DCA3  0.0563583935717481  0.0158306521768173  1.47759325956464
-                            DCA4  0.0261967709460555  0.00724315524884521 1.65694736271154
-                        </pre>
-                    </blockquote>
-                    <br>
-                    <h5>5：环境因子相关性表 </h5>
-                    <blockquote>
-                        <pre>Constrain RDA1_cos  RDA2_cos
-                            AN  0.583576682528919 0.812058037093742
-                            AP  -0.999960979319677  -0.00883401596283277
-                            AK  -0.996409414613128  0.0846656864988553
-                            OM  -0.369716370113742  0.929144663478147
-                            Ph  -0.999917529028949  -0.0128427076833458
-                        </pre>
-                    </blockquote>
                 </div>
                 <div class="tab-pane fade" id="instruction">
                     <p>
@@ -585,14 +540,13 @@
             });
 
         function cca() {
-            if(@session.get("userId").isEmpty){
-                swal({
-                    title: "尚未登录",
-                    text: "请先登录账号",
-                    type: "warning",
-                    confirmButtonText: "确认"
-                })
-            }else {
+                var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
+                var index = layer.alert(element, {
+                    skin: 'layui-layer-lan',
+                    closeBtn: 0,
+                    title: "提醒",
+                    btn: []
+                });
                 var form = $("#CCA");
                 var fv = form.data("formValidation");
                 fv.validate();
@@ -616,29 +570,33 @@
                     } else {
                         bool=flagtable&&flagevi;
                     }
-                    if(bool&&checktaskname()){
-                        var form1 = new FormData($("#CCA")[0]);
-                        $.ajax({
-                            url: "/CloudPlatform/SoftTool/runCCA?isgroup="+$("#isgroup").prop("checked"),
-                            type: "post",
-                            processData: false,
-                            contentType: false,
-                            data: form1,
-                            success: function (data) {
-                                removeul();
-                                loadHistory();
-                                $("#his_tab1").addClass("active");
-                                $("#out_tab1").removeClass("active");
-                                $("#ins_tab1").removeClass("active");
-                                $("#history").addClass("active").addClass("in");
-                                $("#example").removeClass("active");
-                                $("#instruction1").removeClass("active");
-                                getTaskName();
-                            }
-                        });
-                    }
+                    setTimeout(function () {
+                        layer.close(index);
+                        if(bool&&checktaskname()){
+                            var form1 = new FormData($("#CCA")[0]);
+                            $.ajax({
+                                url: "/CloudPlatform/SoftTool/runCCA?isgroup="+$("#isgroup").prop("checked"),
+                                type: "post",
+                                processData: false,
+                                contentType: false,
+                                data: form1,
+                                success: function (data) {
+                                    removeul();
+                                    loadHistory();
+                                    $("#his_tab1").addClass("active");
+                                    $("#out_tab1").removeClass("active");
+                                    $("#ins_tab1").removeClass("active");
+                                    $("#history").addClass("active").addClass("in");
+                                    $("#example").removeClass("active");
+                                    $("#instruction1").removeClass("active");
+                                    getTaskName();
+                                }
+                            });
+                        }
+                    }, 2000);
+
                 }
-            }
+
         }
 
             var sample;
@@ -882,6 +840,30 @@
                         }
                     }
                 });
+                $("#mailSigninForm").formValidation({
+                    framework: 'bootstrap',
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        phone: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入账号！'
+                                }
+                            }
+                        },
+                        code: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入验证码！'
+                                }
+                            }
+                        }
+                    }
+                });
                 $("#signinForm").formValidation({
                     framework: 'bootstrap',
                     icon: {
@@ -955,6 +937,13 @@
                                 }
                             }
                         },
+                        company: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请填写单位！'
+                                }
+                            }
+                        },
                         password: {
                             validators: {
                                 notEmpty: {
@@ -981,12 +970,6 @@
                             validators: {
                                 notEmpty: {
                                     message: "请输入验证码！"
-                                },
-                                callback: {
-                                    message: '验证码错误！',
-                                    callback: function () {
-                                        return $('#validnumber1').val() === code;
-                                    }
                                 }
                             }
                         }
@@ -1000,13 +983,6 @@
                         validating: 'glyphicon glyphicon-refresh'
                     },
                     fields: {
-                        password: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入旧密码！'
-                                }
-                            }
-                        },
                         password1: {
                             validators: {
                                 notEmpty: {
@@ -1033,18 +1009,11 @@
                             validators: {
                                 notEmpty: {
                                     message: "请输入验证码！"
-                                },
-                                callback: {
-                                    message: '验证码错误！',
-                                    callback: function () {
-                                        return $('#validnumber2').val() === code;
-                                    }
                                 }
                             }
                         }
                     }
                 });
-
             }
 
     </script>

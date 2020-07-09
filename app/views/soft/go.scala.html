@@ -111,6 +111,35 @@
                 border-radius: 16px;
                 color: white;
             }
+
+
+            /*running*/
+            .layui-layer {
+                -webkit-overflow-scrolling: touch;
+                top: 35%;
+                left: 41%;
+                margin: 0;
+                padding: 0;
+                background-color: #fff;
+                -webkit-background-clip: content;
+                box-shadow: 1px 1px 50px rgba(0,0,0,.3);
+            }
+            .layui-layer-lan .layui-layer-btn {
+                padding: 10px;
+                text-align: right;
+                border-top: unset;
+            }
+            .layui-layer-lan[type=dialog] {
+                min-width: 280px;
+                border-radius: 11.5px;
+            }
+            .layui-layer-lan .layui-layer-title {
+                background: #1f3851;
+                color: #fff;
+                border: none;
+                border-top-left-radius: 11.5px;
+                border-top-right-radius: 11.5px;
+            }
     </style>
 
     <div class="col-md-12 mysoft-content" style="width: 98%">
@@ -242,7 +271,7 @@
                                 <input type="file" class="form-control file" id="table2" name="table2" >
                             </div>
                             <div class="form-group-extra" style="margin-left: 20px">
-                                <em><a href="/CloudPlatform/SoftTool/downloadExamples?name=CCA_env.txt">示例文件</a></em>
+                                <em><a href="/CloudPlatform/SoftTool/downloadExamples?name=golist.lst">示例文件</a></em>
                             </div>
                         </div>
                     </div>
@@ -268,41 +297,17 @@
             </ul>
             <div class="tab-content" style="box-sizing: border-box!important;">
                 <div class="tab-pane fade active in" id="example">
-                    <h5>输出结果：</h5>
-                    <blockquote>
-                        <p>
-                            ① out.[PFC].html 网页格式结果，3个分别对应GO的3个主要分类。结果如下图所示，
-                            包含两个部分:
-                            第一部分为GO富集结果统计表，包括GOid，GO功能描述，基因比例，背景基因比例，P值，Q值，P值Q值 小于0.05的显示红色。									<br>
-                            <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/newgo1.png" alt="生物云平台">
-                            <br>
-                            ② 第二部分为GO富集的具体基因，点击GOid可以链接到http://amigo.geneontology.org 官网，可以查看GO的具体信息。									<br>
-                            <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/newgo2.png" alt="生物云平台">
-
-                        </p>
-                        <p>
-                            ③ out.[PFC].png，out.[PFC].pdf,out.[PFC].xls
-                            GO富集的有向无环图，只显示富集的GO term（即p值小于0.05的），没有小于
-                            0.05的结果时，则没有这些文件。可以在xls结果从查看，结果与网页结果对应，包括GOid，GO功能描述，基因比例，背景基因比例，P值，Q值，以及相应的基因id.
-
-                        </p>
-                        <br>
-                        <p>
-                            ④ out.secLevel.svg/png
-                            图片结果如下图所示，为GO二级分类统计图，统计了用于富集的基因在GO 的二级分类中占各个分类的数量，统计结果在xls表中。表格内容包括，Ontology，Class（GO的二级分类），基因数，具体基因id.
-                            <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/newgo3.png" alt="生物云平台">
-                            <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/newgo4.png" alt="生物云平台">
-                        </p>
-                    </blockquote>
+                    <span style="color:red;">示例文件1，示例文件2 皆为大豆基因数据</span>
+                    <br><br>
+                    <h5>结果输出：</h5>
+                    <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/go_example1.png">
+                    <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/go_example2.png">
                 </div>
                 <div class="tab-pane fade" id="instruction">
                     <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
                         <span style="font-weight:700;"><strong>功能：</strong></span><br>
                         Gene Ontology（简称GO）是一个国际标准化的基因功能分类体系，提供了一套动态更新的标准词汇表（controlled vocabulary）来全面描述生物体中基因和基因产物的属性。GO总共有三个ontology（本体），分别描述基因的分子功能（molecular function）、细胞组分（cellular component）、参与的生物过程（biological process）。GO的基本单位是term（词条、节点），每个term都对应一个属性。GO功能分析一方面给出差异表达基因的GO功能分类注释；另一方面给出差异表达基因的GO功能显著性富集分析。 首先，我们将差异表达基因向GO数据库(http://www.geneontology.org/)的各term映射，并计算每个term的基因数，从而得到具有某个GO功能的基因列表及基因数目统计。然后应用超几何检验，找出与整个基因组背景相比，在差异表达基因中显著富集的GO条目。
                         <br>
-                        <strong> P的计算公式： </strong>
-                        <img class="img-rounded img-thumbnail img-responsive" src="https://www.omicshare.com/tools/Public/help/go_p.png" alt="生物云平台" style="height:auto;width:180px;">
-                        其中，N为所有Unigene中具有GO注释的基因数目；n为N中差异表达基因的数目；M为所有Unigene中注释为某特定GO term的基因数目；m为注释为某特定GO term的差异表达基因数目。计算得到的pvalue通过FDR校正之后，以corrected-pvalue≤0.05为阈值，满足此条件的GO term定义为在差异表达基因中显著富集的GO term。通过GO功能显著性富集分析能确定差异表达基因行使的主要生物学功能。
                     </p>
                     <br>
                     <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
@@ -500,29 +505,39 @@
             });
 
             function dogo() {
+                var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
+                var index = layer.alert(element, {
+                    skin: 'layui-layer-lan',
+                    closeBtn: 0,
+                    title: "提醒",
+                    btn: []
+                });
                 var form = $("#GO");
                 var fv = form.data("formValidation");
                 fv.validate();
                 if (fv.isValid()) {
-                    var form1 = new FormData($("#GO")[0]);
-                    $.ajax({
-                        url: "/CloudPlatform/SoftTool/runGo?types=go&refer="+ref+"&table="+table,
-                        type: "post",
-                        processData: false,
-                        contentType: false,
-                        data: form1,
-                        success: function (data) {
-                            removeul();
-                            loadHistory();
-                            $("#his_tab1").addClass("active");
-                            $("#out_tab1").removeClass("active");
-                            $("#ins_tab1").removeClass("active");
-                            $("#history").addClass("active").addClass("in");
-                            $("#example").removeClass("active");
-                            $("#instruction1").removeClass("active");
-                            getTaskName();
-                        }
-                    });
+                    setTimeout(function () {
+                        layer.close(index);
+                        var form1 = new FormData($("#GO")[0]);
+                        $.ajax({
+                            url: "/CloudPlatform/SoftTool/runGo?types=go&refer="+ref+"&table="+table,
+                            type: "post",
+                            processData: false,
+                            contentType: false,
+                            data: form1,
+                            success: function (data) {
+                                removeul();
+                                loadHistory();
+                                $("#his_tab1").addClass("active");
+                                $("#out_tab1").removeClass("active");
+                                $("#ins_tab1").removeClass("active");
+                                $("#history").addClass("active").addClass("in");
+                                $("#example").removeClass("active");
+                                $("#instruction1").removeClass("active");
+                                getTaskName();
+                            }
+                        });
+                    }, 2000);
                 }
             }
 
@@ -560,7 +575,7 @@
             }
 
             function formValidation() {
-            $('#GO').formValidation({
+                $('#GO').formValidation({
                 framework: 'bootstrap',
                 icon: {
                     valid: 'glyphicon glyphicon-ok',
@@ -603,170 +618,181 @@
                     }
                 }
             });
-            $("#signinForm").formValidation({
-                framework: 'bootstrap',
-                icon: {
-                    valid: 'glyphicon glyphicon-ok',
-                    invalid: 'glyphicon glyphicon-remove',
-                    validating: 'glyphicon glyphicon-refresh'
-                },
-                fields: {
-                    user: {
-                        validators: {
-                            notEmpty: {
-                                message: '请输入账号！'
-                            }
-                        }
+                $("#mailSigninForm").formValidation({
+                    framework: 'bootstrap',
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
                     },
-                    password: {
-                        validators: {
-                            notEmpty: {
-                                message: '请输入密码！'
+                    fields: {
+                        phone: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入账号！'
+                                }
                             }
-                        }
-                    },
-                    validnumber: {
-                        validators: {
-                            notEmpty: {
-                                message: '请输入验证码！'
-                            },
-                            callback: {
-                                message: '验证码错误！',
-                                callback: function () {
-                                    return $('#validnumber').val() === code;
+                        },
+                        code: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入验证码！'
                                 }
                             }
                         }
                     }
-                }
-            });
-            $('#signupForm').formValidation({
-                framework: 'bootstrap',
-                icon: {
-                    valid: 'glyphicon glyphicon-ok',
-                    invalid: 'glyphicon glyphicon-remove',
-                    validating: 'glyphicon glyphicon-refresh'
-                },
-                fields: {
-                    phone: {
-                        validators: {
-                            notEmpty: {
-                                message: '请输入手机号！'
-                            },
-                            phone:{
-                                message: '请输入正确手机号',
-                                country: 'CN'
-                            }
-                        }
+                });
+                $("#signinForm").formValidation({
+                    framework: 'bootstrap',
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
                     },
-                    name: {
-                        validators: {
-                            notEmpty: {
-                                message: '请填写姓名！'
+                    fields: {
+                        user: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入账号！'
+                                }
                             }
-                        }
-                    },
-                    email: {
-                        validators: {
-                            notEmpty: {
-                                message: '请填写邮箱地址！'
-                            },
-                            emailAddress:{
-                                message:'请输入正确邮箱地址！'
+                        },
+                        password: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入密码！'
+                                }
                             }
-                        }
-                    },
-                    password: {
-                        validators: {
-                            notEmpty: {
-                                message: '请输入密码！'
-                            },
-                            stringLength: {
-                                min: 6,
-                                message: '请输入至少六位密码！'
-                            }
-                        }
-                    },
-                    password1: {
-                        validators: {
-                            notEmpty: {
-                                message: '请输入确认密码！'
-                            },
-                            identical: {
-                                field: 'password',
-                                message: '两次密码不一致!'
-                            }
-                        }
-                    },
-                    validnumber: {
-                        validators: {
-                            notEmpty: {
-                                message: "请输入验证码！"
-                            },
-                            callback: {
-                                message: '验证码错误！',
-                                callback: function () {
-                                    return $('#validnumber1').val() === code;
+                        },
+                        validnumber: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入验证码！'
+                                },
+                                callback: {
+                                    message: '验证码错误！',
+                                    callback: function () {
+                                        return $('#validnumber').val() === code;
+                                    }
                                 }
                             }
                         }
                     }
-                }
-            });
-            $('#passwordForm').formValidation({
-                framework: 'bootstrap',
-                icon: {
-                    valid: 'glyphicon glyphicon-ok',
-                    invalid: 'glyphicon glyphicon-remove',
-                    validating: 'glyphicon glyphicon-refresh'
-                },
-                fields: {
-                    password: {
-                        validators: {
-                            notEmpty: {
-                                message: '请输入旧密码！'
-                            }
-                        }
+                });
+                $('#signupForm').formValidation({
+                    framework: 'bootstrap',
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
                     },
-                    password1: {
-                        validators: {
-                            notEmpty: {
-                                message: '请输入新密码！'
-                            },
-                            stringLength: {
-                                min: 6,
-                                message: '请输入至少六位密码！'
+                    fields: {
+                        phone: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入手机号！'
+                                },
+                                phone:{
+                                    message: '请输入正确手机号',
+                                    country: 'CN'
+                                }
                             }
-                        }
-                    },
-                    password2: {
-                        validators: {
-                            notEmpty: {
-                                message: '请输入确认密码！'
-                            },
-                            identical: {
-                                field: 'password1',
-                                message: '两次密码不一致!'
+                        },
+                        name: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请填写姓名！'
+                                }
                             }
-                        }
-                    },
-                    validnumber: {
-                        validators: {
-                            notEmpty: {
-                                message: "请输入验证码！"
-                            },
-                            callback: {
-                                message: '验证码错误！',
-                                callback: function () {
-                                    return $('#validnumber2').val() === code;
+                        },
+                        email: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请填写邮箱地址！'
+                                },
+                                emailAddress:{
+                                    message:'请输入正确邮箱地址！'
+                                }
+                            }
+                        },
+                        company: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请填写单位！'
+                                }
+                            }
+                        },
+                        password: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入密码！'
+                                },
+                                stringLength: {
+                                    min: 6,
+                                    message: '请输入至少六位密码！'
+                                }
+                            }
+                        },
+                        password1: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入确认密码！'
+                                },
+                                identical: {
+                                    field: 'password',
+                                    message: '两次密码不一致!'
+                                }
+                            }
+                        },
+                        validnumber: {
+                            validators: {
+                                notEmpty: {
+                                    message: "请输入验证码！"
                                 }
                             }
                         }
                     }
-                }
-            });
-
-        }
+                });
+                $('#passwordForm').formValidation({
+                    framework: 'bootstrap',
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        password1: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入新密码！'
+                                },
+                                stringLength: {
+                                    min: 6,
+                                    message: '请输入至少六位密码！'
+                                }
+                            }
+                        },
+                        password2: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入确认密码！'
+                                },
+                                identical: {
+                                    field: 'password1',
+                                    message: '两次密码不一致!'
+                                }
+                            }
+                        },
+                        validnumber: {
+                            validators: {
+                                notEmpty: {
+                                    message: "请输入验证码！"
+                                }
+                            }
+                        }
+                    }
+                });
+            }
 
             var ta1="Geneid\n" + "Glyma.01G006000\n" + "Glyma.01G011500\n" + "Glyma.01G011900\n" + "Glyma.01G012100\n" +
                     "Glyma.01G021000\n" + "Glyma.01G032600\n" + "Glyma.01G036000\n" + "Glyma.01G053800\n" +
