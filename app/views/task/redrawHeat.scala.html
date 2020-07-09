@@ -71,10 +71,18 @@
                                     <label>是否对行聚类：</label>
                                 </div>
                                 <div class="form-group right">
-                                    <select id="cluster_rows" name="cluster_rows" style="width: 45%;">
+                                    <select id="cluster_rows" name="cluster_rows" onchange="showr()" style="width: 45%;">
                                         <option value="FALSE">no</option>
                                         <option value="TRUE">yes</option>
                                     </select>
+                                </div>
+                            </div>
+                            <div class="form-group-p" id="showrow" style="display: none">
+                                <div class="form-group" style="margin-top: 5px;">
+                                    <label for="">行聚类分割数(1-</label><label id="rnum"></label><label>)：</label>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="rp" name="rp" class="form-control" placeholder="数字" value="1" style="width: 50px;float: left;margin-right: 5px;margin-top: 5px">
                                 </div>
                             </div>
                             <div class="form-group-p">
@@ -82,10 +90,18 @@
                                     <label>是否对列聚类：</label>
                                 </div>
                                 <div class="form-group right">
-                                    <select id="cluster_cols" name="cluster_cols" style="width: 45%;">
+                                    <select id="cluster_cols" name="cluster_cols" onchange="showc()" style="width: 45%;">
                                         <option value="FALSE">no</option>
                                         <option value="TRUE">yes</option>
                                     </select>
+                                </div>
+                            </div>
+                            <div class="form-group-p" id="showcol" style="display: none">
+                                <div class="form-group" style="margin-top: 5px;">
+                                    <label for="">列聚类分割数(1-</label><label id="cnum"></label><label>)：</label>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="cp" name="cp" class="form-control" placeholder="数字" value="1" style="width: 50px;float: left;margin-right: 5px;margin-top: 5px">
                                 </div>
                             </div>
                             <div class="form-group-p">
@@ -99,38 +115,19 @@
                                 </div>
                             </div>
                             <div class="form-group-p">
-                                <div class="form-group" style="margin-top: 5px;">
-                                    <label for="">行聚类分割数(1-</label><label id="rnum"></label><label>)：</label>
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" id="rp" name="rp" class="form-control" placeholder="数字" value="1" style="width: 50px;float: left;margin-right: 5px;margin-top: 5px">
-                                </div>
-                                <div class="form-group" style="margin-left: 20px;margin-top: 5px;">
-                                    <label for="">列聚类分割数(1-</label><label id="cnum"></label><label>)：</label>
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" id="cp" name="cp" class="form-control" placeholder="数字" value="1" style="width: 50px;float: left;margin-right: 5px;margin-top: 5px">
-                                </div>
-                            </div>
-
-                            <div class="form-group-p">
                                 <div class="form-group">
                                     <label>颜色：<span style="font-size:small;">&nbsp;(数值从小到大)</span></label>
                                 </div>
-                                <div class="form-group" style="width: 120px;">
+                                <div class="form-group" style="width: 150px;">
                                     <select name="color" id="color" onchange="show()" style="width: 100%;">
                                         <option value="#1E90FF:#FFFFFF:#E41A1C">蓝,白,红</option>
-                                        <option value="#1E90FF:white:#E41A1C">蓝,白,红</option>
-                                        <option value="#1E90FF:white:#E41A1C">蓝,白,红</option>
-                                        <option value="#1E90FF:white:#E41A1C">蓝,白,红</option>
+                                        <option value="black:red">黑-红</option>
+                                        <option value="green:red:yellow">绿-红-黄</option>
+                                        <option value="purple:black:yellow">紫-黑-黄</option>
+                                        <option value="green:black:red">绿-黑-红</option>
+                                        <option value="darkblue:darkgreen:yellow:darkred">深蓝-墨绿-黄-深红</option>
                                         <option value="0">手动输入</option>
                                     </select>
-                                </div>
-                                <div class="form-group" style="margin-left: 30px;">
-                                    <label for="">颜色数量：</label>
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" id="cc" name="cc" class="form-control" placeholder="数字" value="30" style="width: 50px;float: left;margin-right: 5px;">
                                 </div>
                             </div>
                             <div id="inputcolor" class="one-line" style="display: none">
@@ -156,6 +153,14 @@
 
                                 </div>
                                 <br>
+                            </div>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label for="">颜色渐变数量：</label>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="cc" name="cc" class="form-control" placeholder="数字" value="30" style="width: 50px;float: left;margin-right: 5px;">
+                                </div>
                             </div>
                             <div class="form-group-p">
                                 <div class="form-group" style="margin-top: 5px;">
@@ -275,6 +280,10 @@
                                 },
                                 numeric: {
                                     message: '必须为数字！'
+                                },
+                                greaterThan: {
+                                    value: 1,
+                                    message: "必须大于1！"
                                 }
                             }
                         },
@@ -285,6 +294,10 @@
                                 },
                                 numeric: {
                                     message: '必须为数字！'
+                                },
+                                greaterThan: {
+                                    value: 1,
+                                    message: "必须大于1！"
                                 }
                             }
                         },
@@ -520,6 +533,8 @@
                                 } else $("#"+i).val(v);
                             });
                             bordercolor();
+                            showr();
+                            showc();
                         }
                     });
                 }
@@ -634,6 +649,18 @@
                 if (colorparam == "TRUE") $("#borcolor").show();
                 else $("#borcolor").hide();
             }
+
+        function showr() {
+            var colorparam = $("#cluster_rows").val();
+            if (colorparam == "TRUE") $("#showrow").show();
+            else $("#showrow").hide();
+        }
+
+        function showc() {
+            var colorparam = $("#cluster_cols").val();
+            if (colorparam == "TRUE") $("#showcol").show();
+            else $("#showcol").hide();
+        }
     </script>
 
 }

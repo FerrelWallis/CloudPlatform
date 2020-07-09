@@ -112,3 +112,712 @@ Caused by: java.util.NoSuchElementException: None.get
     filters.ExampleFilter
 
 2020-07-09 10:00:26,573 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-4 - Application started (Dev) (no global state)
+2020-07-09 10:03:33,923 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-4 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 10:03:33,947 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-4 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 10:03:33,947 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-4 - Application started (Dev) (no global state)
+2020-07-09 10:06:07,334 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-11 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 10:06:07,357 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-11 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 10:06:07,358 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-11 - Application started (Dev) (no global state)
+2020-07-09 10:16:19,216 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-89 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 10:16:19,239 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-89 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 10:16:19,240 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-89 - Application started (Dev) (no global state)
+2020-07-09 10:17:10,644 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-94 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 10:17:10,667 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-94 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 10:17:10,667 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-94 - Application started (Dev) (no global state)
+2020-07-09 10:21:49,457 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-82 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 10:21:49,478 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-82 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 10:21:49,479 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-82 - Application started (Dev) (no global state)
+2020-07-09 10:24:25,119 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-116 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 10:24:25,141 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-116 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 10:24:25,142 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-116 - Application started (Dev) (no global state)
+2020-07-09 10:25:29,927 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-117 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 10:25:29,948 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-117 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 10:25:29,949 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-117 - Application started (Dev) (no global state)
+2020-07-09 10:26:55,687 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-111 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 10:26:55,710 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-111 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 10:26:55,711 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-111 - Application started (Dev) (no global state)
+2020-07-09 10:29:55,648 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-89 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 10:29:55,674 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-89 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 10:29:55,675 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-89 - Application started (Dev) (no global state)
+2020-07-09 10:32:46,055 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-112 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 10:32:46,080 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-112 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 10:32:46,080 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-112 - Application started (Dev) (no global state)
+2020-07-09 10:32:59,618 [WARN] from akka.actor.ActorSystemImpl in play-dev-mode-akka.actor.default-dispatcher-89 - Explicitly set HTTP header 'Content-Type: application/x-download' is ignored, explicit `Content-Type` header is not allowed. Set `HttpResponse.entity.contentType` instead.
+2020-07-09 10:34:00,161 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-82 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 10:34:00,185 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-82 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 10:34:00,186 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-82 - Application started (Dev) (no global state)
+2020-07-09 10:34:10,145 [WARN] from akka.actor.ActorSystemImpl in play-dev-mode-akka.actor.default-dispatcher-112 - Explicitly set HTTP header 'Content-Type: application/x-download' is ignored, explicit `Content-Type` header is not allowed. Set `HttpResponse.entity.contentType` instead.
+2020-07-09 10:36:09,226 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-112 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 10:36:09,248 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-112 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 10:36:09,248 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-112 - Application started (Dev) (no global state)
+2020-07-09 10:37:00,645 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-82 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 10:37:00,665 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-82 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 10:37:00,666 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-82 - Application started (Dev) (no global state)
+2020-07-09 10:38:03,895 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-92 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 10:38:03,917 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-92 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 10:38:03,917 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-92 - Application started (Dev) (no global state)
+2020-07-09 10:38:31,630 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-89 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 10:38:31,653 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-89 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 10:38:31,654 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-89 - Application started (Dev) (no global state)
+2020-07-09 10:46:17,657 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-317 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 10:46:17,678 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-317 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 10:46:17,678 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-317 - Application started (Dev) (no global state)
+2020-07-09 10:47:16,305 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-403 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 10:47:16,327 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-403 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 10:47:16,328 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-403 - Application started (Dev) (no global state)
+2020-07-09 10:47:45,423 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-112 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 10:47:45,443 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-112 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 10:47:45,444 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-112 - Application started (Dev) (no global state)
+2020-07-09 10:49:13,957 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-402 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 10:49:13,979 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-402 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 10:49:13,979 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-402 - Application started (Dev) (no global state)
+2020-07-09 10:52:07,113 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-440 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 10:52:07,138 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-440 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 10:52:07,139 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-440 - Application started (Dev) (no global state)
+2020-07-09 10:52:22,647 [WARN] from org.apache.fontbox.ttf.CmapSubtable in application-akka.actor.default-dispatcher-24 - Format 14 cmap table is not supported and will be ignored
+2020-07-09 10:53:28,934 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-403 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 10:53:28,955 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-403 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 10:53:28,955 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-403 - Application started (Dev) (no global state)
+2020-07-09 10:55:03,649 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-472 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 10:55:03,670 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-472 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 10:55:03,671 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-472 - Application started (Dev) (no global state)
+2020-07-09 10:55:33,847 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-472 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 10:55:33,872 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-472 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 10:55:33,873 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-472 - Application started (Dev) (no global state)
+2020-07-09 10:56:08,156 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-564 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 10:56:08,179 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-564 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 10:56:08,180 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-564 - Application started (Dev) (no global state)
+2020-07-09 11:09:39,328 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-569 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 11:09:39,349 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-569 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 11:09:39,349 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-569 - Application started (Dev) (no global state)
+2020-07-09 11:22:13,249 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-632 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 11:22:13,270 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-632 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 11:22:13,270 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-632 - Application started (Dev) (no global state)
+2020-07-09 11:22:45,219 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-632 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 11:22:45,242 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-632 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 11:22:45,242 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-632 - Application started (Dev) (no global state)
+2020-07-09 11:23:08,468 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-650 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 11:23:08,489 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-650 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 11:23:08,490 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-650 - Application started (Dev) (no global state)
+2020-07-09 11:24:35,506 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-647 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 11:24:35,527 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-647 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 11:24:35,528 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-647 - Application started (Dev) (no global state)
+2020-07-09 11:25:17,821 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-653 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 11:25:17,841 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-653 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 11:25:17,842 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-653 - Application started (Dev) (no global state)
+2020-07-09 11:25:32,592 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-654 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 11:25:32,612 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-654 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 11:25:32,613 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-654 - Application started (Dev) (no global state)
+2020-07-09 11:27:13,624 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-659 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 11:27:13,642 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-659 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 11:27:13,642 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-659 - Application started (Dev) (no global state)
+2020-07-09 11:27:30,268 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-659 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 11:27:30,289 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-659 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 11:27:30,290 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-659 - Application started (Dev) (no global state)
+2020-07-09 11:32:09,974 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-651 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 11:32:09,995 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-651 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 11:32:09,996 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-651 - Application started (Dev) (no global state)
+2020-07-09 11:32:25,718 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-636 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 11:32:25,738 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-636 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 11:32:25,739 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-636 - Application started (Dev) (no global state)
+2020-07-09 11:40:23,848 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-665 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 11:40:23,873 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-665 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 11:40:23,873 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-665 - Application started (Dev) (no global state)
+2020-07-09 11:42:02,327 [ERROR] from play.api.http.DefaultHttpErrorHandler in application-akka.actor.default-dispatcher-14 - 
+
+! @7gclodjjm - Internal server error, for (POST) [/CloudPlatform/MyTasks/getDutys] ->
+ 
+play.api.http.HttpErrorHandlerExceptions$$anon$1: Execution exception[[NoSuchElementException: None.get]]
+	at play.api.http.HttpErrorHandlerExceptions$.throwableToUsefulException(HttpErrorHandler.scala:335)
+	at play.api.http.DefaultHttpErrorHandler.onServerError(HttpErrorHandler.scala:253)
+	at play.core.server.AkkaHttpServer$$anonfun$2.applyOrElse(AkkaHttpServer.scala:424)
+	at play.core.server.AkkaHttpServer$$anonfun$2.applyOrElse(AkkaHttpServer.scala:420)
+	at scala.concurrent.Future.$anonfun$recoverWith$1(Future.scala:412)
+	at scala.concurrent.impl.Promise.$anonfun$transformWith$1(Promise.scala:37)
+	at scala.concurrent.impl.CallbackRunnable.run(Promise.scala:60)
+	at akka.dispatch.BatchingExecutor$AbstractBatch.processBatch(BatchingExecutor.scala:55)
+	at akka.dispatch.BatchingExecutor$BlockableBatch.$anonfun$run$1(BatchingExecutor.scala:92)
+	at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.java:12)
+	at scala.concurrent.BlockContext$.withBlockContext(BlockContext.scala:81)
+	at akka.dispatch.BatchingExecutor$BlockableBatch.run(BatchingExecutor.scala:92)
+	at akka.dispatch.TaskInvocation.run(AbstractDispatcher.scala:47)
+	at akka.dispatch.ForkJoinExecutorConfigurator$AkkaForkJoinTask.exec(ForkJoinExecutorConfigurator.scala:47)
+	at java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:289)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1056)
+	at java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1692)
+	at java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:157)
+Caused by: java.util.NoSuchElementException: None.get
+	at scala.None$.get(Option.scala:349)
+	at scala.None$.get(Option.scala:347)
+	at controllers.DutyController.$anonfun$getAllDutyById$1(DutyController.scala:61)
+	at scala.Function1.$anonfun$andThen$1(Function1.scala:52)
+	at play.api.mvc.ActionBuilderImpl.invokeBlock(Action.scala:441)
+	at play.api.mvc.ActionBuilderImpl.invokeBlock(Action.scala:439)
+	at play.api.mvc.ActionBuilder$$anon$9.apply(Action.scala:379)
+	at play.api.mvc.Action.$anonfun$apply$4(Action.scala:82)
+	at play.api.libs.streams.StrictAccumulator.$anonfun$mapFuture$4(Accumulator.scala:168)
+	at scala.util.Try$.apply(Try.scala:209)
+	at play.api.libs.streams.StrictAccumulator.$anonfun$mapFuture$3(Accumulator.scala:168)
+	at akka.stream.impl.Transform.apply(TraversalBuilder.scala:159)
+	at akka.stream.impl.PhasedFusingActorMaterializer.materialize(PhasedFusingActorMaterializer.scala:523)
+	at akka.stream.impl.PhasedFusingActorMaterializer.materialize(PhasedFusingActorMaterializer.scala:449)
+	at akka.stream.impl.PhasedFusingActorMaterializer.materialize(PhasedFusingActorMaterializer.scala:441)
+	at akka.stream.scaladsl.RunnableGraph.run(Flow.scala:703)
+	at play.api.libs.streams.Accumulator$.$anonfun$futureToSink$2(Accumulator.scala:231)
+	at scala.concurrent.Future.$anonfun$flatMap$1(Future.scala:302)
+	at scala.concurrent.impl.Promise.$anonfun$transformWith$1(Promise.scala:37)
+	at scala.concurrent.impl.CallbackRunnable.run(Promise.scala:60)
+	at play.api.libs.streams.Execution$trampoline$.execute(Execution.scala:70)
+	at scala.concurrent.impl.CallbackRunnable.executeWithValue(Promise.scala:68)
+	at scala.concurrent.impl.Promise$DefaultPromise.dispatchOrAddCallback(Promise.scala:312)
+	at scala.concurrent.impl.Promise$DefaultPromise.onComplete(Promise.scala:303)
+	at scala.concurrent.impl.Promise.transformWith(Promise.scala:36)
+	at scala.concurrent.impl.Promise.transformWith$(Promise.scala:34)
+	at scala.concurrent.impl.Promise$DefaultPromise.transformWith(Promise.scala:183)
+	at scala.concurrent.Future.flatMap(Future.scala:301)
+	at scala.concurrent.Future.flatMap$(Future.scala:301)
+	at scala.concurrent.impl.Promise$DefaultPromise.flatMap(Promise.scala:183)
+	at play.api.libs.streams.Accumulator$.$anonfun$futureToSink$1(Accumulator.scala:231)
+	at akka.stream.impl.Transform.apply(TraversalBuilder.scala:159)
+	at akka.stream.impl.PhasedFusingActorMaterializer.materialize(PhasedFusingActorMaterializer.scala:523)
+	at akka.stream.impl.PhasedFusingActorMaterializer.materialize(PhasedFusingActorMaterializer.scala:449)
+	at akka.stream.impl.PhasedFusingActorMaterializer.materialize(PhasedFusingActorMaterializer.scala:441)
+	at akka.stream.scaladsl.RunnableGraph.run(Flow.scala:703)
+	at play.api.libs.streams.SinkAccumulator.run(Accumulator.scala:139)
+	at play.api.libs.streams.SinkAccumulator.run(Accumulator.scala:140)
+	at play.core.server.AkkaHttpServer.$anonfun$runAction$4(AkkaHttpServer.scala:415)
+	at akka.http.scaladsl.util.FastFuture$.strictTransform$1(FastFuture.scala:41)
+	at akka.http.scaladsl.util.FastFuture$.$anonfun$transformWith$3(FastFuture.scala:51)
+	... 12 common frames omitted
+2020-07-09 11:55:25,555 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-739 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 11:55:25,576 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-739 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 11:55:25,576 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-739 - Application started (Dev) (no global state)
+2020-07-09 11:56:46,846 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-745 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 11:56:46,867 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-745 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 11:56:46,868 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-745 - Application started (Dev) (no global state)
+2020-07-09 11:57:00,915 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-678 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 11:57:00,932 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-678 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 11:57:00,933 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-678 - Application started (Dev) (no global state)
+2020-07-09 11:57:43,780 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-739 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 11:57:43,798 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-739 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 11:57:43,798 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-739 - Application started (Dev) (no global state)
+2020-07-09 11:58:27,851 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-736 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 11:58:27,872 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-736 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 11:58:27,873 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-736 - Application started (Dev) (no global state)
+2020-07-09 11:59:13,737 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-735 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 11:59:13,757 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-735 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 11:59:13,758 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-735 - Application started (Dev) (no global state)
+2020-07-09 13:19:35,864 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-786 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 13:19:35,884 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-786 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 13:19:35,885 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-786 - Application started (Dev) (no global state)
+2020-07-09 13:20:13,966 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-800 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 13:20:13,985 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-800 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 13:20:13,985 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-800 - Application started (Dev) (no global state)
+2020-07-09 13:21:07,630 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-791 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 13:21:07,652 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-791 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 13:21:07,653 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-791 - Application started (Dev) (no global state)
+2020-07-09 13:24:03,343 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-781 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 13:24:03,368 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-781 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 13:24:03,369 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-781 - Application started (Dev) (no global state)
+2020-07-09 13:31:48,699 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-794 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 13:31:48,720 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-794 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 13:31:48,720 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-794 - Application started (Dev) (no global state)
+2020-07-09 13:32:28,290 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-794 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 13:32:28,315 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-794 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 13:32:28,315 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-794 - Application started (Dev) (no global state)
+2020-07-09 13:38:47,782 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-822 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 13:38:47,802 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-822 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 13:38:47,802 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-822 - Application started (Dev) (no global state)
+2020-07-09 14:00:52,310 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-931 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 14:00:52,329 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-931 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 14:00:52,330 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-931 - Application started (Dev) (no global state)
+2020-07-09 14:01:36,807 [ERROR] from play.api.http.DefaultHttpErrorHandler in application-akka.actor.default-dispatcher-18 - 
+
+! @7gcmgm616 - Internal server error, for (POST) [/CloudPlatform/MyTasks/getDutysByType?sabbrename=IGC] ->
+ 
+play.api.http.HttpErrorHandlerExceptions$$anon$1: Execution exception[[NoSuchElementException: None.get]]
+	at play.api.http.HttpErrorHandlerExceptions$.throwableToUsefulException(HttpErrorHandler.scala:335)
+	at play.api.http.DefaultHttpErrorHandler.onServerError(HttpErrorHandler.scala:253)
+	at play.core.server.AkkaHttpServer$$anonfun$2.applyOrElse(AkkaHttpServer.scala:424)
+	at play.core.server.AkkaHttpServer$$anonfun$2.applyOrElse(AkkaHttpServer.scala:420)
+	at scala.concurrent.Future.$anonfun$recoverWith$1(Future.scala:412)
+	at scala.concurrent.impl.Promise.$anonfun$transformWith$1(Promise.scala:37)
+	at scala.concurrent.impl.CallbackRunnable.run(Promise.scala:60)
+	at akka.dispatch.BatchingExecutor$AbstractBatch.processBatch(BatchingExecutor.scala:55)
+	at akka.dispatch.BatchingExecutor$BlockableBatch.$anonfun$run$1(BatchingExecutor.scala:92)
+	at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.java:12)
+	at scala.concurrent.BlockContext$.withBlockContext(BlockContext.scala:81)
+	at akka.dispatch.BatchingExecutor$BlockableBatch.run(BatchingExecutor.scala:92)
+	at akka.dispatch.TaskInvocation.run(AbstractDispatcher.scala:47)
+	at akka.dispatch.ForkJoinExecutorConfigurator$AkkaForkJoinTask.exec(ForkJoinExecutorConfigurator.scala:47)
+	at java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:289)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1056)
+	at java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1692)
+	at java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:157)
+Caused by: java.util.NoSuchElementException: None.get
+	at scala.None$.get(Option.scala:349)
+	at scala.None$.get(Option.scala:347)
+	at controllers.DutyController.$anonfun$getDutyByType$1(DutyController.scala:42)
+	at scala.Function1.$anonfun$andThen$1(Function1.scala:52)
+	at play.api.mvc.ActionBuilderImpl.invokeBlock(Action.scala:441)
+	at play.api.mvc.ActionBuilderImpl.invokeBlock(Action.scala:439)
+	at play.api.mvc.ActionBuilder$$anon$9.apply(Action.scala:379)
+	at play.api.mvc.Action.$anonfun$apply$4(Action.scala:82)
+	at play.api.libs.streams.StrictAccumulator.$anonfun$mapFuture$4(Accumulator.scala:168)
+	at scala.util.Try$.apply(Try.scala:209)
+	at play.api.libs.streams.StrictAccumulator.$anonfun$mapFuture$3(Accumulator.scala:168)
+	at akka.stream.impl.Transform.apply(TraversalBuilder.scala:159)
+	at akka.stream.impl.PhasedFusingActorMaterializer.materialize(PhasedFusingActorMaterializer.scala:523)
+	at akka.stream.impl.PhasedFusingActorMaterializer.materialize(PhasedFusingActorMaterializer.scala:449)
+	at akka.stream.impl.PhasedFusingActorMaterializer.materialize(PhasedFusingActorMaterializer.scala:441)
+	at akka.stream.scaladsl.RunnableGraph.run(Flow.scala:703)
+	at play.api.libs.streams.Accumulator$.$anonfun$futureToSink$2(Accumulator.scala:231)
+	at scala.concurrent.Future.$anonfun$flatMap$1(Future.scala:302)
+	at scala.concurrent.impl.Promise.$anonfun$transformWith$1(Promise.scala:37)
+	at scala.concurrent.impl.CallbackRunnable.run(Promise.scala:60)
+	at play.api.libs.streams.Execution$trampoline$.execute(Execution.scala:70)
+	at scala.concurrent.impl.CallbackRunnable.executeWithValue(Promise.scala:68)
+	at scala.concurrent.impl.Promise$DefaultPromise.dispatchOrAddCallback(Promise.scala:312)
+	at scala.concurrent.impl.Promise$DefaultPromise.onComplete(Promise.scala:303)
+	at scala.concurrent.impl.Promise.transformWith(Promise.scala:36)
+	at scala.concurrent.impl.Promise.transformWith$(Promise.scala:34)
+	at scala.concurrent.impl.Promise$DefaultPromise.transformWith(Promise.scala:183)
+	at scala.concurrent.Future.flatMap(Future.scala:301)
+	at scala.concurrent.Future.flatMap$(Future.scala:301)
+	at scala.concurrent.impl.Promise$DefaultPromise.flatMap(Promise.scala:183)
+	at play.api.libs.streams.Accumulator$.$anonfun$futureToSink$1(Accumulator.scala:231)
+	at akka.stream.impl.Transform.apply(TraversalBuilder.scala:159)
+	at akka.stream.impl.PhasedFusingActorMaterializer.materialize(PhasedFusingActorMaterializer.scala:523)
+	at akka.stream.impl.PhasedFusingActorMaterializer.materialize(PhasedFusingActorMaterializer.scala:449)
+	at akka.stream.impl.PhasedFusingActorMaterializer.materialize(PhasedFusingActorMaterializer.scala:441)
+	at akka.stream.scaladsl.RunnableGraph.run(Flow.scala:703)
+	at play.api.libs.streams.SinkAccumulator.run(Accumulator.scala:139)
+	at play.api.libs.streams.SinkAccumulator.run(Accumulator.scala:140)
+	at play.core.server.AkkaHttpServer.$anonfun$runAction$4(AkkaHttpServer.scala:415)
+	at akka.http.scaladsl.util.FastFuture$.strictTransform$1(FastFuture.scala:41)
+	at akka.http.scaladsl.util.FastFuture$.$anonfun$transformWith$3(FastFuture.scala:51)
+	... 12 common frames omitted
+2020-07-09 14:02:03,419 [ERROR] from play.api.http.DefaultHttpErrorHandler in application-akka.actor.default-dispatcher-14 - 
+
+! @7gcmgnjak - Internal server error, for (POST) [/CloudPlatform/MyTasks/checkTaskname] ->
+ 
+play.api.http.HttpErrorHandlerExceptions$$anon$1: Execution exception[[NoSuchElementException: None.get]]
+	at play.api.http.HttpErrorHandlerExceptions$.throwableToUsefulException(HttpErrorHandler.scala:335)
+	at play.api.http.DefaultHttpErrorHandler.onServerError(HttpErrorHandler.scala:253)
+	at play.core.server.AkkaHttpServer$$anonfun$2.applyOrElse(AkkaHttpServer.scala:424)
+	at play.core.server.AkkaHttpServer$$anonfun$2.applyOrElse(AkkaHttpServer.scala:420)
+	at scala.concurrent.Future.$anonfun$recoverWith$1(Future.scala:412)
+	at scala.concurrent.impl.Promise.$anonfun$transformWith$1(Promise.scala:37)
+	at scala.concurrent.impl.CallbackRunnable.run(Promise.scala:60)
+	at akka.dispatch.BatchingExecutor$AbstractBatch.processBatch(BatchingExecutor.scala:55)
+	at akka.dispatch.BatchingExecutor$BlockableBatch.$anonfun$run$1(BatchingExecutor.scala:92)
+	at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.java:12)
+	at scala.concurrent.BlockContext$.withBlockContext(BlockContext.scala:81)
+	at akka.dispatch.BatchingExecutor$BlockableBatch.run(BatchingExecutor.scala:92)
+	at akka.dispatch.TaskInvocation.run(AbstractDispatcher.scala:47)
+	at akka.dispatch.ForkJoinExecutorConfigurator$AkkaForkJoinTask.exec(ForkJoinExecutorConfigurator.scala:47)
+	at java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:289)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1056)
+	at java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1692)
+	at java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:157)
+Caused by: java.util.NoSuchElementException: None.get
+	at scala.None$.get(Option.scala:349)
+	at scala.None$.get(Option.scala:347)
+	at controllers.DutyController.$anonfun$checktaskname$1(DutyController.scala:99)
+	at scala.Function1.$anonfun$andThen$1(Function1.scala:52)
+	at play.api.mvc.ActionBuilderImpl.invokeBlock(Action.scala:441)
+	at play.api.mvc.ActionBuilderImpl.invokeBlock(Action.scala:439)
+	at play.api.mvc.ActionBuilder$$anon$9.apply(Action.scala:379)
+	at play.api.mvc.Action.$anonfun$apply$4(Action.scala:82)
+	at scala.concurrent.Future.$anonfun$flatMap$1(Future.scala:302)
+	... 13 common frames omitted
+2020-07-09 14:10:26,975 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-923 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2020-07-09 14:10:26,995 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-923 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2020-07-09 14:10:26,996 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-923 - Application started (Dev) (no global state)
+2020-07-09 14:31:13,131 [ERROR] from play.api.http.DefaultHttpErrorHandler in application-akka.actor.default-dispatcher-32 - 
+
+! @7gcmkj7ja - Internal server error, for (GET) [/CloudPlatform/Softwares/home/likelist] ->
+ 
+play.api.http.HttpErrorHandlerExceptions$$anon$1: Execution exception[[NoSuchElementException: None.get]]
+	at play.api.http.HttpErrorHandlerExceptions$.throwableToUsefulException(HttpErrorHandler.scala:335)
+	at play.api.http.DefaultHttpErrorHandler.onServerError(HttpErrorHandler.scala:253)
+	at play.core.server.AkkaHttpServer$$anonfun$2.applyOrElse(AkkaHttpServer.scala:424)
+	at play.core.server.AkkaHttpServer$$anonfun$2.applyOrElse(AkkaHttpServer.scala:420)
+	at scala.concurrent.Future.$anonfun$recoverWith$1(Future.scala:412)
+	at scala.concurrent.impl.Promise.$anonfun$transformWith$1(Promise.scala:37)
+	at scala.concurrent.impl.CallbackRunnable.run(Promise.scala:60)
+	at akka.dispatch.BatchingExecutor$AbstractBatch.processBatch(BatchingExecutor.scala:55)
+	at akka.dispatch.BatchingExecutor$BlockableBatch.$anonfun$run$1(BatchingExecutor.scala:92)
+	at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.java:12)
+	at scala.concurrent.BlockContext$.withBlockContext(BlockContext.scala:81)
+	at akka.dispatch.BatchingExecutor$BlockableBatch.run(BatchingExecutor.scala:92)
+	at akka.dispatch.TaskInvocation.run(AbstractDispatcher.scala:47)
+	at akka.dispatch.ForkJoinExecutorConfigurator$AkkaForkJoinTask.exec(ForkJoinExecutorConfigurator.scala:47)
+	at java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:289)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1056)
+	at java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1692)
+	at java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:157)
+Caused by: java.util.NoSuchElementException: None.get
+	at scala.None$.get(Option.scala:349)
+	at scala.None$.get(Option.scala:347)
+	at controllers.SoftController.$anonfun$getLike$1(SoftController.scala:161)
+	at scala.Function1.$anonfun$andThen$1(Function1.scala:52)
+	at play.api.mvc.ActionBuilderImpl.invokeBlock(Action.scala:441)
+	at play.api.mvc.ActionBuilderImpl.invokeBlock(Action.scala:439)
+	at play.api.mvc.ActionBuilder$$anon$9.apply(Action.scala:379)
+	at play.api.mvc.Action.$anonfun$apply$4(Action.scala:82)
+	at play.api.libs.streams.StrictAccumulator.$anonfun$mapFuture$4(Accumulator.scala:168)
+	at scala.util.Try$.apply(Try.scala:209)
+	at play.api.libs.streams.StrictAccumulator.$anonfun$mapFuture$3(Accumulator.scala:168)
+	at akka.stream.impl.Transform.apply(TraversalBuilder.scala:159)
+	at akka.stream.impl.PhasedFusingActorMaterializer.materialize(PhasedFusingActorMaterializer.scala:523)
+	at akka.stream.impl.PhasedFusingActorMaterializer.materialize(PhasedFusingActorMaterializer.scala:449)
+	at akka.stream.impl.PhasedFusingActorMaterializer.materialize(PhasedFusingActorMaterializer.scala:441)
+	at akka.stream.scaladsl.RunnableGraph.run(Flow.scala:703)
+	at play.api.libs.streams.Accumulator$.$anonfun$futureToSink$2(Accumulator.scala:231)
+	at scala.concurrent.Future.$anonfun$flatMap$1(Future.scala:302)
+	at scala.concurrent.impl.Promise.$anonfun$transformWith$1(Promise.scala:37)
+	at scala.concurrent.impl.CallbackRunnable.run(Promise.scala:60)
+	at play.api.libs.streams.Execution$trampoline$.execute(Execution.scala:70)
+	at scala.concurrent.impl.CallbackRunnable.executeWithValue(Promise.scala:68)
+	at scala.concurrent.impl.Promise$DefaultPromise.dispatchOrAddCallback(Promise.scala:312)
+	at scala.concurrent.impl.Promise$DefaultPromise.onComplete(Promise.scala:303)
+	at scala.concurrent.impl.Promise.transformWith(Promise.scala:36)
+	at scala.concurrent.impl.Promise.transformWith$(Promise.scala:34)
+	at scala.concurrent.impl.Promise$DefaultPromise.transformWith(Promise.scala:183)
+	at scala.concurrent.Future.flatMap(Future.scala:301)
+	at scala.concurrent.Future.flatMap$(Future.scala:301)
+	at scala.concurrent.impl.Promise$DefaultPromise.flatMap(Promise.scala:183)
+	at play.api.libs.streams.Accumulator$.$anonfun$futureToSink$1(Accumulator.scala:231)
+	at akka.stream.impl.Transform.apply(TraversalBuilder.scala:159)
+	at akka.stream.impl.PhasedFusingActorMaterializer.materialize(PhasedFusingActorMaterializer.scala:523)
+	at akka.stream.impl.PhasedFusingActorMaterializer.materialize(PhasedFusingActorMaterializer.scala:449)
+	at akka.stream.impl.PhasedFusingActorMaterializer.materialize(PhasedFusingActorMaterializer.scala:441)
+	at akka.stream.scaladsl.RunnableGraph.run(Flow.scala:703)
+	at play.api.libs.streams.SinkAccumulator.run(Accumulator.scala:139)
+	at play.api.libs.streams.SinkAccumulator.run(Accumulator.scala:140)
+	at play.core.server.AkkaHttpServer.$anonfun$runAction$4(AkkaHttpServer.scala:415)
+	at akka.http.scaladsl.util.FastFuture$.strictTransform$1(FastFuture.scala:41)
+	at akka.http.scaladsl.util.FastFuture$.$anonfun$transformWith$3(FastFuture.scala:51)
+	... 12 common frames omitted
+2020-07-09 14:31:32,362 [ERROR] from play.api.http.DefaultHttpErrorHandler in application-akka.actor.default-dispatcher-34 - 
+
+! @7gcmkka51 - Internal server error, for (GET) [/CloudPlatform/Softwares/home/likelist] ->
+ 
+play.api.http.HttpErrorHandlerExceptions$$anon$1: Execution exception[[NoSuchElementException: None.get]]
+	at play.api.http.HttpErrorHandlerExceptions$.throwableToUsefulException(HttpErrorHandler.scala:335)
+	at play.api.http.DefaultHttpErrorHandler.onServerError(HttpErrorHandler.scala:253)
+	at play.core.server.AkkaHttpServer$$anonfun$2.applyOrElse(AkkaHttpServer.scala:424)
+	at play.core.server.AkkaHttpServer$$anonfun$2.applyOrElse(AkkaHttpServer.scala:420)
+	at scala.concurrent.Future.$anonfun$recoverWith$1(Future.scala:412)
+	at scala.concurrent.impl.Promise.$anonfun$transformWith$1(Promise.scala:37)
+	at scala.concurrent.impl.CallbackRunnable.run(Promise.scala:60)
+	at akka.dispatch.BatchingExecutor$AbstractBatch.processBatch(BatchingExecutor.scala:55)
+	at akka.dispatch.BatchingExecutor$BlockableBatch.$anonfun$run$1(BatchingExecutor.scala:92)
+	at scala.runtime.java8.JFunction0$mcV$sp.apply(JFunction0$mcV$sp.java:12)
+	at scala.concurrent.BlockContext$.withBlockContext(BlockContext.scala:81)
+	at akka.dispatch.BatchingExecutor$BlockableBatch.run(BatchingExecutor.scala:92)
+	at akka.dispatch.TaskInvocation.run(AbstractDispatcher.scala:47)
+	at akka.dispatch.ForkJoinExecutorConfigurator$AkkaForkJoinTask.exec(ForkJoinExecutorConfigurator.scala:47)
+	at java.util.concurrent.ForkJoinTask.doExec(ForkJoinTask.java:289)
+	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1056)
+	at java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1692)
+	at java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:157)
+Caused by: java.util.NoSuchElementException: None.get
+	at scala.None$.get(Option.scala:349)
+	at scala.None$.get(Option.scala:347)
+	at controllers.SoftController.$anonfun$getLike$1(SoftController.scala:161)
+	at scala.Function1.$anonfun$andThen$1(Function1.scala:52)
+	at play.api.mvc.ActionBuilderImpl.invokeBlock(Action.scala:441)
+	at play.api.mvc.ActionBuilderImpl.invokeBlock(Action.scala:439)
+	at play.api.mvc.ActionBuilder$$anon$9.apply(Action.scala:379)
+	at play.api.mvc.Action.$anonfun$apply$4(Action.scala:82)
+	at play.api.libs.streams.StrictAccumulator.$anonfun$mapFuture$4(Accumulator.scala:168)
+	at scala.util.Try$.apply(Try.scala:209)
+	at play.api.libs.streams.StrictAccumulator.$anonfun$mapFuture$3(Accumulator.scala:168)
+	at akka.stream.impl.Transform.apply(TraversalBuilder.scala:159)
+	at akka.stream.impl.PhasedFusingActorMaterializer.materialize(PhasedFusingActorMaterializer.scala:523)
+	at akka.stream.impl.PhasedFusingActorMaterializer.materialize(PhasedFusingActorMaterializer.scala:449)
+	at akka.stream.impl.PhasedFusingActorMaterializer.materialize(PhasedFusingActorMaterializer.scala:441)
+	at akka.stream.scaladsl.RunnableGraph.run(Flow.scala:703)
+	at play.api.libs.streams.Accumulator$.$anonfun$futureToSink$2(Accumulator.scala:231)
+	at scala.concurrent.Future.$anonfun$flatMap$1(Future.scala:302)
+	at scala.concurrent.impl.Promise.$anonfun$transformWith$1(Promise.scala:37)
+	at scala.concurrent.impl.CallbackRunnable.run(Promise.scala:60)
+	at play.api.libs.streams.Execution$trampoline$.execute(Execution.scala:70)
+	at scala.concurrent.impl.CallbackRunnable.executeWithValue(Promise.scala:68)
+	at scala.concurrent.impl.Promise$DefaultPromise.dispatchOrAddCallback(Promise.scala:312)
+	at scala.concurrent.impl.Promise$DefaultPromise.onComplete(Promise.scala:303)
+	at scala.concurrent.impl.Promise.transformWith(Promise.scala:36)
+	at scala.concurrent.impl.Promise.transformWith$(Promise.scala:34)
+	at scala.concurrent.impl.Promise$DefaultPromise.transformWith(Promise.scala:183)
+	at scala.concurrent.Future.flatMap(Future.scala:301)
+	at scala.concurrent.Future.flatMap$(Future.scala:301)
+	at scala.concurrent.impl.Promise$DefaultPromise.flatMap(Promise.scala:183)
+	at play.api.libs.streams.Accumulator$.$anonfun$futureToSink$1(Accumulator.scala:231)
+	at akka.stream.impl.Transform.apply(TraversalBuilder.scala:159)
+	at akka.stream.impl.PhasedFusingActorMaterializer.materialize(PhasedFusingActorMaterializer.scala:523)
+	at akka.stream.impl.PhasedFusingActorMaterializer.materialize(PhasedFusingActorMaterializer.scala:449)
+	at akka.stream.impl.PhasedFusingActorMaterializer.materialize(PhasedFusingActorMaterializer.scala:441)
+	at akka.stream.scaladsl.RunnableGraph.run(Flow.scala:703)
+	at play.api.libs.streams.SinkAccumulator.run(Accumulator.scala:139)
+	at play.api.libs.streams.SinkAccumulator.run(Accumulator.scala:140)
+	at play.core.server.AkkaHttpServer.$anonfun$runAction$4(AkkaHttpServer.scala:415)
+	at akka.http.scaladsl.util.FastFuture$.strictTransform$1(FastFuture.scala:41)
+	at akka.http.scaladsl.util.FastFuture$.$anonfun$transformWith$3(FastFuture.scala:51)
+	... 12 common frames omitted

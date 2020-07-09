@@ -611,17 +611,17 @@
             }
 
             function boxplot() {
-                var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
-                var index = layer.alert(element, {
-                    skin: 'layui-layer-lan',
-                    closeBtn: 0,
-                    title: "提醒",
-                    btn: []
-                });
                 var form = $("#ScaPlot");
                 var fv = form.data("formValidation");
                 fv.validate();
                 if (fv.isValid()) {
+                    var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
+                    var index = layer.alert(element, {
+                        skin: 'layui-layer-lan',
+                        closeBtn: 0,
+                        title: "提醒",
+                        btn: []
+                    });
                     checkTable();
                     setTimeout(function () {
                         layer.close(index);

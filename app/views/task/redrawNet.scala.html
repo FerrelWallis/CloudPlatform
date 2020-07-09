@@ -41,8 +41,6 @@
                                 <a class="dropdown-item" onclick="downJson()">下载 json</a>
                             </div>
                         </div>
-@*                        <a class="button" style="margin-left: 20px;" onclick="refresh()">刷新网络图</a>*@
-@*                        <input type="text" id="search" onchange="search()" style="display: inline-block;width: 300px;margin-left: 100px"/>*@
                     </div>
                     <br>
                     <form id="Net" style="display: none" method="GET" enctype="multipart/form-data">
@@ -100,10 +98,18 @@
                                     <input type="text" id="gopa" name="gopa" class="form-control" placeholder="数字" value="1" style="width: 65px;float: left;margin-right: 5px;margin-left: 10px;">
                                 </div>
                             </div>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label>基因节点大小(0-10)：</label>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="gsize" name="gsize" class="form-control" placeholder="数字" value="5" style="width: 65px;float: left;margin-right: 5px;margin-left: 10px;">
+                                </div>
+                            </div>
                             <div id="showgfont">
                                 <div class="form-group-p">
                                     <div class="form-group">
-                                        <label>基因名大小(0-不显示)：</label>
+                                        <label>基因名大小(0即不显示)：</label>
                                     </div>
                                     <div class="form-group">
                                         <input type="text" id="gfont" name="gfont" class="form-control" placeholder="数字" value="12" style="width: 65px;float: left;margin-right: 5px;margin-left: 10px;">
@@ -172,10 +178,18 @@
                                     <input type="text" id="eopa" name="eopa" class="form-control" placeholder="数字" value="1" style="width: 65px;float: left;margin-right: 5px;margin-left: 10px;">
                                 </div>
                             </div>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label>基因节点大小(0-10)：</label>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="esize" name="esize" class="form-control" placeholder="数字" value="10" style="width: 65px;float: left;margin-right: 5px;margin-left: 10px;">
+                                </div>
+                            </div>
                             <div id="showefont">
                                 <div class="form-group-p">
                                     <div class="form-group">
-                                        <label>环境因子名大小(0-不显示)：</label>
+                                        <label>环境因子名大小(0即不显示)：</label>
                                     </div>
                                     <div class="form-group">
                                         <input type="text" id="efont" name="efont" class="form-control" placeholder="数字" value="12" style="width: 60px;float: left;margin-right: 5px;margin-left: 10px;">
@@ -240,6 +254,24 @@
                                 }
                             }
                         },
+                        gsize: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                },
+                                greaterThan: {
+                                    value: 0,
+                                    message: "必须大于等于0！"
+                                },
+                                lessThan: {
+                                    value: 10,
+                                    message: "必须小于等于10！"
+                                }
+                            }
+                        },
                         gfont: {
                             validators: {
                                 notEmpty: {
@@ -257,6 +289,24 @@
                                 },
                                 numeric: {
                                     message: '必须为数字！'
+                                }
+                            }
+                        },
+                        esize: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                },
+                                greaterThan: {
+                                    value: 0,
+                                    message: "必须大于等于0！"
+                                },
+                                lessThan: {
+                                    value: 10,
+                                    message: "必须小于等于10！"
                                 }
                             }
                         },

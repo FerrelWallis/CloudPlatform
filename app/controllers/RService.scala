@@ -709,7 +709,7 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
     val input= file1.filename+"/"+file2.filename
     val param= "相关分析方法:"+data.anatype
 
-    val elements=Json.obj("gshape"->"ellipse","color1"->"#555555","gopa"->"1","gfont"->"12","color2"->"#ffffff","eshape"->"diamond","color3"->"#5da5fb","eopa"->"1","efont"->"12","color4"->"#ffffff","color5"->"#d0b7d5","opacity"->"0.4").toString()
+    val elements=Json.obj("gshape"->"ellipse","color1"->"#555555","gopa"->"1","gsize"->"5","gfont"->"12","color2"->"#ffffff","eshape"->"diamond","color3"->"#5da5fb","eopa"->"1","esize"->"10","efont"->"12","color4"->"#ffffff","color5"->"#d0b7d5","opacity"->"0.4").toString()
 
     //数据库加入duty（运行中）
     val start=dutyController.insertDuty(data.taskname,id,"NetWeight","权重网络图",input,param,elements)
@@ -742,6 +742,8 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
     val id=request.session.get("userId").get
     val path=Utils.path+"/users/"+id+"/"+taskname
 
+    val elements=jsonToMap(Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf).elements)
+
     val genus=FileUtils.readLines(new File(path+"/table.txt")).asScala
     val g=genus.map{line=>
       line.trim.split("\t").head
@@ -759,8 +761,8 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
       val id=list.indexOf(x).toString
       val xy=Json.obj("x"->Math.random()*500,"y"->Math.random()*500)
       val (group,score)=
-        if(count<=e.drop(1).length) ("evi",0.006769776522008331) //环境node
-        else ("gene",0.0022841757103715943) //基因node
+        if(count<=e.drop(1).length) ("evi",elements("esize").toDouble) //环境node
+        else ("gene",elements("gsize").toDouble) //基因node
       val data=Json.obj("id"->id,"name"->x,"score"->score,"group"->group)
       Json.obj("data"->data,"position"->xy,"group"->"nodes")
     }
@@ -781,9 +783,7 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
 
     val rows=nodes++edges
 
-    val elements=jsonToMap(Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf).elements)
-
-    val node=Json.obj("selector"->"node", "style"->Json.obj("width"->"mapData(score, 0, 0.006769776522008331, 20, 60)", "height"->"mapData(score, 0, 0.006769776522008331, 20, 60)", "content"-> "data(name)", "font-size"-> "12px", "text-valign"-> "center", "text-halign"-> "center", "text-outline-width"-> "2px"))
+    val node=Json.obj("selector"->"node", "style"->Json.obj("width"->"mapData(score, 0, 10, 10, 100)", "height"->"mapData(score, 0, 10, 10, 100)", "content"-> "data(name)", "font-size"-> "12px", "text-valign"-> "center", "text-halign"-> "center", "text-outline-width"-> "2px"))
 
     val font1=elements("gfont")+"px"
     val nodegene=Json.obj("selector"-> "node[group='gene']","style"->Json.obj( "shape"-> elements("gshape"), "background-color"-> elements("color1"), "text-outline-color"-> elements("color1"), "opacity"-> elements("gopa"), "font-size"->font1,"color"->elements("color2")))
@@ -807,8 +807,8 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
     Ok(Json.obj("rows"->rows,"elements"->elements,"selector"->selector))
   }
 
-  case class ReNetData(gshape:String, color1:String,gopa:String,gfont:String,
-                       color2:String,eshape:String,color3:String,eopa:String,
+  case class ReNetData(gshape:String, color1:String,gopa:String,gsize:String,gfont:String,
+                       color2:String,eshape:String,color3:String,eopa:String,esize:String,
                        efont:String,color4:String,color5:String, opacity:String)
 
   val ReNetForm: Form[ReNetData] =Form(
@@ -816,11 +816,13 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
       "gshape"->text,
       "color1"->text,
       "gopa"->text,
+      "gsize"->text,
       "gfont"->text,
       "color2"->text,
       "eshape"->text,
       "color3"->text,
       "eopa"->text,
+      "esize"->text,
       "efont"->text,
       "color4"->text,
       "color5"->text,
@@ -832,7 +834,7 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
     val data=ReNetForm.bindFromRequest.get
     val id=request.session.get("userId").get
 
-    val elements=Json.obj("gshape"->data.gshape,"color1"->data.color1,"gopa"->data.gopa,"gfont"->data.gfont,"color2"->data.color2,"eshape"->data.eshape,"color3"->data.color3,"eopa"->data.eopa,"efont"->data.efont,"color4"->data.color4,"color5"->data.color5,"opacity"->data.opacity).toString()
+    val elements=Json.obj("gshape"->data.gshape,"color1"->data.color1,"gopa"->data.gopa,"gsize"->data.gsize,"gfont"->data.gfont,"color2"->data.color2,"eshape"->data.eshape,"color3"->data.color3,"eopa"->data.eopa,"esize"->data.esize,"efont"->data.efont,"color4"->data.color4,"color5"->data.color5,"opacity"->data.opacity).toString()
     Await.result(dutydao.updateElements(id,taskname,elements),Duration.Inf)
 
     Ok(Json.obj("valid"->"true"))
