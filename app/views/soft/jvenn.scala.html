@@ -1,4 +1,4 @@
-@()(implicit session: Session)
+@(abbre:String,sname:String)(implicit session: Session)
 @home.main("维恩图") {
 
 @*    <link href="@routes.Assets.versioned("bootstrap/css/bootstrap.css")" rel="stylesheet" media="screen">*@
@@ -33,6 +33,23 @@
                  clip: rect(0, 0, 0, 0);
                  border: 0;
             }
+        .login-form-body .form-gp input {
+            height: 30px;
+            border: none;
+            border-bottom-color: currentcolor;
+            border-bottom-style: none;
+            border-bottom-width: medium;
+            border-bottom: 1px solid #e6e6e6;
+            background: transparent;
+            border-radius: 3px;
+            outline: none;
+            font-family: 'MuseoSans500Regular', Arial, sans-serif;
+            color: #777;
+            margin: 0;
+            max-width: 100%;
+            box-sizing: border-box;
+            -webkit-box-shadow:unset;
+        }
     </style>
 
     <div class="row-fluid" style="padding-top: 20px">
@@ -390,141 +407,6 @@
 
 
             function formValidation() {
-                $("#mailSigninForm").formValidation({
-                    framework: 'bootstrap',
-                    icon: {
-                        valid: 'glyphicon glyphicon-ok',
-                        invalid: 'glyphicon glyphicon-remove',
-                        validating: 'glyphicon glyphicon-refresh'
-                    },
-                    fields: {
-                        phone: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入账号！'
-                                }
-                            }
-                        },
-                        code: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入验证码！'
-                                }
-                            }
-                        }
-                    }
-                });
-                $("#signinForm").formValidation({
-                    framework: 'bootstrap',
-                    icon: {
-                        valid: 'glyphicon glyphicon-ok',
-                        invalid: 'glyphicon glyphicon-remove',
-                        validating: 'glyphicon glyphicon-refresh'
-                    },
-                    fields: {
-                        user: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入账号！'
-                                }
-                            }
-                        },
-                        password: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入密码！'
-                                }
-                            }
-                        },
-                        validnumber: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入验证码！'
-                                },
-                                callback: {
-                                    message: '验证码错误！',
-                                    callback: function () {
-                                        return $('#validnumber').val() === code;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
-                $('#signupForm').formValidation({
-                    framework: 'bootstrap',
-                    icon: {
-                        valid: 'glyphicon glyphicon-ok',
-                        invalid: 'glyphicon glyphicon-remove',
-                        validating: 'glyphicon glyphicon-refresh'
-                    },
-                    fields: {
-                        phone: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入手机号！'
-                                },
-                                phone:{
-                                    message: '请输入正确手机号',
-                                    country: 'CN'
-                                }
-                            }
-                        },
-                        name: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请填写姓名！'
-                                }
-                            }
-                        },
-                        email: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请填写邮箱地址！'
-                                },
-                                emailAddress:{
-                                    message:'请输入正确邮箱地址！'
-                                }
-                            }
-                        },
-                        company: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请填写单位！'
-                                }
-                            }
-                        },
-                        password: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入密码！'
-                                },
-                                stringLength: {
-                                    min: 6,
-                                    message: '请输入至少六位密码！'
-                                }
-                            }
-                        },
-                        password1: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入确认密码！'
-                                },
-                                identical: {
-                                    field: 'password',
-                                    message: '两次密码不一致!'
-                                }
-                            }
-                        },
-                        validnumber: {
-                            validators: {
-                                notEmpty: {
-                                    message: "请输入验证码！"
-                                }
-                            }
-                        }
-                    }
-                });
                 $('#passwordForm').formValidation({
                     framework: 'bootstrap',
                     icon: {

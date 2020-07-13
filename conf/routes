@@ -9,18 +9,18 @@ GET           /CloudPlatform/PersonalCenter                          controllers
 GET           /CloudPlatform/myTask                                  controllers.HomeController.mytask
 GET           /CloudPlatform/allsoft                                 controllers.HomeController.allsoft(types:String)
 
-GET           /CloudPlatform/SoftPage/GO                             controllers.SoftController.go
-GET           /CloudPlatform/SoftPage/KEGG                           controllers.SoftController.kegg
-GET           /CloudPlatform/SoftPage/PCA                            controllers.SoftController.pca
-GET           /CloudPlatform/SoftPage/CCA                            controllers.SoftController.cca
-GET           /CloudPlatform/SoftPage/Heatmap                        controllers.SoftController.heatmap
-GET           /CloudPlatform/SoftPage/Boxplot                        controllers.SoftController.boxplot
-GET           /CloudPlatform/SoftPage/NetWeight                      controllers.SoftController.netWeight
+GET           /CloudPlatform/SoftPage/GO                             controllers.SoftController.go(abbre:String,sname:String)
+GET           /CloudPlatform/SoftPage/KEGG                           controllers.SoftController.kegg(abbre:String,sname:String)
+GET           /CloudPlatform/SoftPage/PCA                            controllers.SoftController.pca(abbre:String,sname:String)
+GET           /CloudPlatform/SoftPage/CCA                            controllers.SoftController.cca(abbre:String,sname:String)
+GET           /CloudPlatform/SoftPage/Heatmap                        controllers.SoftController.heatmap(abbre:String,sname:String)
+GET           /CloudPlatform/SoftPage/Boxplot                        controllers.SoftController.boxplot(abbre:String,sname:String)
+GET           /CloudPlatform/SoftPage/NetWeight                      controllers.SoftController.netWeight(abbre:String,sname:String)
 GET           /CloudPlatform/SoftPage/NetDirected                    controllers.SoftController.netDirected
 GET           /CloudPlatform/SoftPage/Net                            controllers.SoftController.net
-GET           /CloudPlatform/SoftPage/Venn                           controllers.SoftController.venn
-GET           /CloudPlatform/SoftPage/InnerGroupCorrelation          controllers.SoftController.innergroup
-GET           /CloudPlatform/SoftPage/ScatterPlot                    controllers.SoftController.scaplot
+GET           /CloudPlatform/SoftPage/Venn                           controllers.SoftController.venn(abbre:String,sname:String)
+GET           /CloudPlatform/SoftPage/IGC                            controllers.SoftController.innergroup(abbre:String,sname:String)
+GET           /CloudPlatform/SoftPage/Scaplot                        controllers.SoftController.scaplot(abbre:String,sname:String)
 
 GET           /CloudPlatform/Softwares/home/latest                   controllers.SoftController.getlatestSix
 GET           /CloudPlatform/Softwares/home/hotest                   controllers.SoftController.gethotestSix
@@ -73,7 +73,7 @@ POST          /CloudPlatform/SoftTool/redrawIGC                      controllers
 
 
 
-POST          /CloudPlatform/Utils/sendMSG                           controllers.UtilsController.sendMSG(phone:String)
+POST          /CloudPlatform/Utils/sendMSG                           controllers.UtilsController.sendMSG(phone:String,where:String)
 
 
 #POST          /CloudPlatform/SoftTool/runKegg                        controllers.RService.doKegg(id:String,userefer:Boolean,desc:Boolean)

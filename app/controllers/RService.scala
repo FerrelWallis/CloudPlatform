@@ -436,7 +436,7 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
     //获取图片
     val pics=getReDrawPics(path)
     val (downpics,downpng,downtiffs)=(path+"/out/heatmap.pdf",path+"/out/heatmap.png",path+"/out/heatmap.tiff")
-    Ok(Json.obj("pics"->pics,"downpng"->downpng,"downpics"->downpics,"downtiffs"->downtiffs,"rnum"->rnum,"cnum"->cnum,"elements"->elements))
+    Ok(Json.obj("pics"->pics,"downpng"->downpng,"downpics"->downpics,"downtiffs"->downtiffs,"rnum"->rnum,"cnum"->cnum,"elements"->elements,"allcol"->(head(1).trim.split("\t").length-1)))
   }
 
   case class ReHeatData(col:String, scale:String, lg:String, cluster_rows:String, cluster_cols:String, rtree:String, ctree:String,
@@ -477,10 +477,12 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
     val border= if(data.hasborder=="FALSE") "" else " -cbc " + data.colorborder
     val ics= if(data.col=="") "" else " -ics " + data.col
 
-
     val elements=Json.obj("col"->data.col,"scale"->data.scale,"lg"->data.lg,"cluster_rows"->data.cluster_rows,"cluster_cols"->data.cluster_cols,"rtree"->data.rtree,"ctree"->data.ctree,"rp"->data.rp,"cp"->data.cp,"color"->color,"cc"->data.cc,"xfs"->data.xfs,"yfs"->data.yfs,"hasborder"->data.hasborder,"colorborder"->data.colorborder,"hasnum"->data.hasnum,"hasrname"->data.hasrname,"hascname"->data.hascname).toString()
     println(elements)
     Await.result(dutydao.updateElements(id,taskname,elements),Duration.Inf)
+
+    val head=FileUtils.readFileToString(tableFile).trim.split("\n")
+    val cnum= if(data.col=="") (head(1).trim.split("\t").length-1).toString else data.col.split(",").length.toString
 
     val command = "Rscript "+Utils.path+"R/heatmap/heatMap_plot.R -i "+ tableFile.getAbsolutePath +
       " -o " +dutyDir+"/out -s " + data.scale + " -lg " + data.lg + ics + " -cls " +data.cluster_rows+":"+
@@ -496,7 +498,7 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
       Utils.pdf2Png(dutyDir+"/out/heatmap.pdf",dutyDir+"/out/heatmap.png") //替换图片
       Utils.pdf2Png(dutyDir+"/out/heatmap.pdf",dutyDir+"/out/heatmap.tiff") //替换图片
       val pics=dutyDir+"/out/heatmap.png"
-      Ok(Json.obj("valid"->"true","pics"->pics))
+      Ok(Json.obj("valid"->"true","pics"->pics,"cnum"->cnum))
     } else {
       Ok(Json.obj("valid"->"false"))
     }
@@ -1091,21 +1093,24 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
       "/在格子上显示数字：" + data.hasnum + "/画出格子的边界：" + data.hasborder + "/是否显示行名：" +
       data.hasrname + "/是否显示列名：" + data.hascname
 
-    val elements=Json.obj("cluster_rows"->"FALSE","cluster_cols"->"FALSE","rtree"->"50","ctree"->"50","rp"->"1","cp"->"1","color"->data.color,"cc"->"30","xfs"->"10","yfs"->"10","hasborder"->data.hasborder,"colorborder"->"#000000","hasnum"->data.hasnum,"hasrname"->data.hasrname,"hascname"->data.hascname).toString()
+//    val elements=Json.obj("cluster_rows"->"FALSE","cluster_cols"->"FALSE","rtree"->"50","ctree"->"50","rp"->"1","cp"->"1","color"->data.color,"cc"->"30","xfs"->"10","yfs"->"10","hasborder"->data.hasborder,"colorborder"->"#000000","hasnum"->data.hasnum,"hasrname"->data.hasrname,"hascname"->data.hascname).toString()
 
     //数据库加入duty（运行中）
-    val start=dutyController.insertDuty(data.taskname,id,"IGC","组内相关性分析",input,param,elements)
+    val start=dutyController.insertDuty(data.taskname,id,"IGC","组内相关性分析",input,param,"")
     //矩阵文件读取写入任务文件下table.txt
     file1.ref.moveTo(tableFile)
 
     Future{
-//      val color= " -c "+ data.color
-//
-//      val border=
-//        if(data.hasborder=="TRUE") " -cbc #000000 "
-//        else ""
-//
-//      val command = ""
+      val color= " -c "+ data.color
+
+      val border=
+        if(data.hasborder=="TRUE") " -cbc #000000 "
+        else ""
+
+      val command1 = "Rscript "+Utils.path+"R/igc/cormap_data.R -i " + tableFile.getAbsolutePath +
+        " -o " + dutyDir + "/out" + " -m " + data.vector + " -am " + data.anatype
+
+      val command2 = ""
 //
 //      println(command)
 //

@@ -1,4 +1,4 @@
-@()(implicit session: Session)
+@(abbre:String,sname:String)(implicit session: Session)
 @home.main("PCA"){
 
     <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("css/test/mysoft.css")" media="screen" />
@@ -17,8 +17,8 @@
     <div class="col-md-12 mysoft-content" style="width: 98%">
         <div class="mysoft-content-left whitebox" style="width: 771px;overflow-y: auto">
             <form id="PCA1" method="GET" enctype="multipart/form-data" class="form1 well form-inline tab-pane fade active in" style="box-sizing: border-box!important;">
-                <img class="tools-img" src="/assets/images/softpic/pca.jpg">
-                <h3 class="tools-title">主成分分析PCA</h3>
+                <div class="softpic mws-ic @abbre"> </div>
+                <h3 class="tools-title">@sname</h3>
                 <div class="form-group">
                     <h2>
                     </h2>
@@ -195,7 +195,7 @@
                 <br>
                 <input type="hidden" value="upload" name="act">
                 <input type="hidden" value="pca" name="action">
-                <input type="button" value="提&nbsp;&nbsp;交" name="submit" class="btn btn-primary" style="margin-bottom: 20px" onclick="PCA('PCA1')">
+                <input type="button" value="提&nbsp;&nbsp;交" name="submit" class="btn btn-primary" style="margin-bottom: 20px" onclick="PCA()">
             </form>
         </div>
 
@@ -300,7 +300,7 @@
                             <br>
                         </div>
                         <div id="history" class="form1_ins tab-pane fade">
-                            <a id="btn-refresh" class="btn_refresh mws-i-24 i-refresh-3" onclick="refresh()">刷新状态</a>
+                            <a id="btn-refresh" class="btn_refresh mws-i-24 i-refresh-3" onclick="refresh('@abbre')">刷新状态</a>
                             <ul id="hisul" style="margin-top: 15px">
                                 <li id="hislist" class="hislist">
                                     <div class="his_name"><span>任务编号</span></div>
@@ -322,140 +322,13 @@
     <script src="@routes.Assets.versioned("bootstrap-table-master/locale/bootstrap-table-en-US.min.js")" type="text/javascript"></script>
     <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/fileinput.min.js")" type="text/javascript"></script>
     <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/locales/zh.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("myjs/soft.js")" type="text/javascript"></script>
     <script type="text/javascript">
 
-            function getTaskName() {
-                let date = new Date();
-                let month = date.getMonth() + 1;
-                let day = date.getDate();
-                let h = date.getHours();
-                let m = date.getMinutes();
-                let s = date.getSeconds();
-                let name = "PCA"+month + day + h + m + s ;
-                $("#mytaskname").val(name);
-                $("#PCA1").formValidation("revalidateField", "taskname");
-            }
-
-            $("#mytaskname").keyup(function () {
-                checktaskname();
-            });
-
-            function checktaskname() {
-                var val = $("#mytaskname").val();
-                var rule = /[()（）@@#$%^&*~`!|\/\\?;,.，。:"]/;
-                if (rule.test(val)) {
-                    alert('任务编号里不能有特殊字符，请重新填写!');
-                    return false;
-                }
-                if(val.toString().indexOf(" ")>0){
-                    alert('任务编号里不能有空格!');
-                    return false;
-                }
-                if(val.toString().length>13){
-                    alert('任务编号最长13位!');
-                    return false;
-                }
-                return true;
-            }
-
-        var running=false;
-
-        $(document).ready(function () {
-            formValidation();
-            loadHistory();
-            getTaskName();
-        });
-
-        var cur=true;
-
-        function refresh() {
-            if(cur){
-                cur=false;
-                removeul();
-                loadHistory();
-                var count=5;
-                $("#btn-refresh").text("00:"+count);
-                var tim=setInterval(function () {
-                    $("#btn-refresh").text("00:"+count);
-                    if(count==0){
-                        cur=true;
-                        $("#btn-refresh").text("刷新状态");
-                        clearInterval(tim);
-                    }else count=count-1;
-                },1000);
-            }else return;
-        }
-        
-        function loadHistory(){
-            var html="";
-            if(@session.get("userId").isEmpty){
-                html+="<li class='hislist'><span>尚未登陆,暂无数据</span></li>"
-                $("#hislist").after(html);
-            }else{
-                $.ajax({
-                    url: "/CloudPlatform/MyTasks/getDutysByType?sabbrename=PCA",
-                    type: "post",
-                    success: function (data) {
-                        if(data.run==true) running=true;
-                        else running=false;
-                        $.each(data.rows,function (i,v) {
-                            html += "<li class='hislist'><div class='his_name'><span>"+v.taskname+"</span></div><div class='his_time'><span>"+v.subtime+"</span></div><div class='his_time'><span>"+v.finitime+"</span></div><div class='his_name'>"+v.status+"</div><hr></li>";
-                        });
-                        $("#hislist").after(html);
-                        if(running==true){
-                            cur=false;
-                            var count=0;
-                            $("#btn-refresh").text("00:"+count);
-                            var timmer=setInterval(function () {
-                                $("#btn-refresh").text("00:"+count);
-                                if(count==0){
-                                    $("#btn-refresh").text("刷新状态");
-                                    if(running==false) {
-                                        removeul();
-                                        loadHistory();
-                                        cur=true;
-                                        clearInterval(timmer);
-                                    } else {
-                                        checkrunning();
-                                    }
-                                    count=5;
-
-                                }else count=count-1;
-                            },1000);
-                        }
-                    }
-                });
-            }
-        }
-
-        function checkrunning() {
-            $.ajax({
-                url: "/CloudPlatform/MyTasks/getDutysByType?sabbrename=PCA",
-                type: "post",
-                success: function (data) {
-                    if(data.run==true) running=true;
-                    else running=false;
-                }
-            });
-        }
-
-        function removeul(){
-            $("#hisul li").remove();
-            $("#hisul").append("<li id=\"hislist\" class=\"hislist\">\n" +
-                    "                                    <div class=\"his_name\"><span>任务编号</span></div>\n" +
-                    "                                    <div class=\"his_time\"><span>提交时间</span></div>\n" +
-                    "                                    <div class=\"his_time\"><span style='margin-left: -20px;'>结束时间</span></div>\n" +
-                    "                                    <div class=\"his_name\"><span style='margin-left: -23px;'>状态</span></div>\n" +
-                    "                                    <hr>\n" +
-                    "                                </li>");
-
-        }
-
-        $(".file").fileinput({
-                showPreview: false,
-                showUpload:false,
-                showRemove:false,
-                browseLabel: "选择文件"
+            $(document).ready(function () {
+                formValidation();
+                loadHistory("@abbre");
+                getTaskName("PCA1","PCA");
             });
 
             $("#isgroup").click(function () {
@@ -467,45 +340,46 @@
                 }
             });
 
-        function PCA(formId) {
+        function PCA() {
             var form = $("#PCA1");
             var fv = form.data("formValidation");
             fv.validate();
             if (fv.isValid()) {
-                var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
-                var index = layer.alert(element, {
-                    skin: 'layui-layer-lan',
-                    closeBtn: 0,
-                    title: "提醒",
-                    btn: []
-                });
                 checkTablefile();
                 checkGroupfile();
                 var bool=flagtable&&flaggroupfile;
-                setTimeout(function () {
-                    layer.close(index);
-                    if(bool&&checktaskname()){
+                if(bool&&checktaskname()) {
+                    var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
+                    var index = layer.alert(element, {
+                        skin: 'layui-layer-lan',
+                        closeBtn: 0,
+                        title: "提醒",
+                        btn: []
+                    });
+                    setTimeout(function () {
+                        layer.close(index);
                         var form1 = new FormData($("#PCA1")[0]);
                         $.ajax({
-                            url: "/CloudPlatform/SoftTool/runPCA?isgroup="+$("#isgroup").prop("checked")+"&table="+table+"&group="+group,
+                            url: "/CloudPlatform/SoftTool/runPCA?isgroup=" + $("#isgroup").prop("checked") + "&table=" + table + "&group=" + group,
                             type: "post",
                             processData: false,
                             contentType: false,
                             data: form1,
                             success: function (data) {
                                 removeul();
-                                loadHistory();
+                                loadHistory("@abbre");
                                 $("#his_tab1").addClass("active");
                                 $("#out_tab1").removeClass("active");
                                 $("#ins_tab1").removeClass("active");
                                 $("#history").addClass("active").addClass("in");
                                 $("#form1").removeClass("active");
                                 $("#instruction1").removeClass("active");
-                                getTaskName();
+                                getTaskName("PCA1","PCA");
                             }
                         });
-                    }
-                }, 2000);
+
+                    }, 2000);
+                }
             }
         }
 
@@ -566,7 +440,6 @@
                         type: "warning",
                         confirmButtonText: "确认"
                     });
-
                     return false;
                 }
                 for(let j in row){
@@ -790,141 +663,6 @@
                                 // type: 'image/jpeg,image/png',
                                 maxSize: 5*1024*1024,
                                 message: '文件不得大于5M！'
-                            }
-                        }
-                    }
-                }
-            });
-            $("#mailSigninForm").formValidation({
-                framework: 'bootstrap',
-                icon: {
-                    valid: 'glyphicon glyphicon-ok',
-                    invalid: 'glyphicon glyphicon-remove',
-                    validating: 'glyphicon glyphicon-refresh'
-                },
-                fields: {
-                    phone: {
-                        validators: {
-                            notEmpty: {
-                                message: '请输入账号！'
-                            }
-                        }
-                    },
-                    code: {
-                        validators: {
-                            notEmpty: {
-                                message: '请输入验证码！'
-                            }
-                        }
-                    }
-                }
-            });
-            $("#signinForm").formValidation({
-                framework: 'bootstrap',
-                icon: {
-                    valid: 'glyphicon glyphicon-ok',
-                    invalid: 'glyphicon glyphicon-remove',
-                    validating: 'glyphicon glyphicon-refresh'
-                },
-                fields: {
-                    user: {
-                        validators: {
-                            notEmpty: {
-                                message: '请输入账号！'
-                            }
-                        }
-                    },
-                    password: {
-                        validators: {
-                            notEmpty: {
-                                message: '请输入密码！'
-                            }
-                        }
-                    },
-                    validnumber: {
-                        validators: {
-                            notEmpty: {
-                                message: '请输入验证码！'
-                            },
-                            callback: {
-                                message: '验证码错误！',
-                                callback: function () {
-                                    return $('#validnumber').val() === code;
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-            $('#signupForm').formValidation({
-                framework: 'bootstrap',
-                icon: {
-                    valid: 'glyphicon glyphicon-ok',
-                    invalid: 'glyphicon glyphicon-remove',
-                    validating: 'glyphicon glyphicon-refresh'
-                },
-                fields: {
-                    phone: {
-                        validators: {
-                            notEmpty: {
-                                message: '请输入手机号！'
-                            },
-                            phone:{
-                                message: '请输入正确手机号',
-                                country: 'CN'
-                            }
-                        }
-                    },
-                    name: {
-                        validators: {
-                            notEmpty: {
-                                message: '请填写姓名！'
-                            }
-                        }
-                    },
-                    email: {
-                        validators: {
-                            notEmpty: {
-                                message: '请填写邮箱地址！'
-                            },
-                            emailAddress:{
-                                message:'请输入正确邮箱地址！'
-                            }
-                        }
-                    },
-                    company: {
-                        validators: {
-                            notEmpty: {
-                                message: '请填写单位！'
-                            }
-                        }
-                    },
-                    password: {
-                        validators: {
-                            notEmpty: {
-                                message: '请输入密码！'
-                            },
-                            stringLength: {
-                                min: 6,
-                                message: '请输入至少六位密码！'
-                            }
-                        }
-                    },
-                    password1: {
-                        validators: {
-                            notEmpty: {
-                                message: '请输入确认密码！'
-                            },
-                            identical: {
-                                field: 'password',
-                                message: '两次密码不一致!'
-                            }
-                        }
-                    },
-                    validnumber: {
-                        validators: {
-                            notEmpty: {
-                                message: "请输入验证码！"
                             }
                         }
                     }

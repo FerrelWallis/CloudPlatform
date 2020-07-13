@@ -6,23 +6,18 @@
     <script src="@routes.Assets.versioned("layer-v3.0/layer/layer.js")" type="text/javascript"></script>
 
     <div class="container" style="width: 99.5%;margin: unset;max-width: unset">
-
         <div class="mws-panel grid_8">
             <div class="mws-panel-header">
                 <span class="mws-i-24 i-table-1">我的任务</span>
-
             </div>
             <div class="mws-panel-body">
                 <div class="mws-panel-toolbar top clearfix">
                     <ul>
                         <li><a class="mws-ic-16 ic-cloud-download-1" style="color: cadetblue" id="download">下载</a></li>
-@*                        <li><a class="mws-ic-16 ic-eye2" style="color: cadetblue" id="preview">预览</a><a id="hidden" data-reveal-id="previewpage" style="display: none"></a></li>*@
                         <li><a class="mws-ic-16 ic-delete2" style="color: cadetblue" id="delete">删除</a></li>
                         <li><a class="mws-ic-16 ic-refresh2" style="color: cadetblue" id="refresh">刷新任务状态</a></li>
                     </ul>
-
                 </div>
-
                 <table class="mws-datatable-fn mws-table" id="table">
                     <thead>
                         <tr>
@@ -34,7 +29,6 @@
                         </tr>
                     </thead>
                 </table>
-
             </div>
         </div>
     </div>
@@ -42,11 +36,9 @@
     <script type="text/javascript" src="/assets/plugins/jquery.dataTables.js"></script>
     <script type="text/javascript" src="/assets/plugins/colorpicker/colorpicker.js"></script>
     <script type="text/javascript" src="/assets/plugins/spinner/ui.spinner.js"></script>
-
     <script type="text/javascript" src="/assets/js/jquery-ui.js"></script>
 
     <script>
-
 
             function toRedraw(url) {
                 console.log(url);
@@ -106,7 +98,7 @@
                 }
 
                 $("#refresh").click(function() {
-                    var element = "<div id='content'><span id='info'>刷新中，请耐心等待...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
+                    var element = "<div id='content'><span id='info'>刷新中，请耐心等待...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>";
                     var index = layer.alert(element, {
                         skin: 'layui-layer-lan',
                         closeBtn: 0,
@@ -125,13 +117,12 @@
                     } else {
                         $('tr.selected').removeClass('selected');
                         $(this).addClass('selected');
-
                     }
                 });
 
                 $("#delete").click(function () {
                     var taskname=$('tr.selected').find("#taskname").text();
-                    if(taskname==""){
+                    if(taskname===""){
                         swal({
                             title: "未选择任务",
                             text: "请选择要删除的任务记录！",
@@ -149,15 +140,14 @@
                                         text: "删除失败！"+data.message,
                                         type: "error",
                                         confirmButtonText: "确认"
-                                    })
+                                    });
                                 }else{
-
                                     swal({
                                         title: "删除成功",
                                         text: "任务记录删除成功！",
                                         type: "success",
                                         confirmButtonText: "确认"
-                                    })
+                                    });
                                     refresh();
                                 }
                             }
@@ -167,7 +157,7 @@
 
                 $("#download").click(function () {
                     var taskname=$('tr.selected').find("#taskname").text();
-                    if(taskname==""){
+                    if(taskname===""){
                         swal({
                             title: "未选择任务",
                             text: "请选择要下载的任务记录！",
@@ -175,7 +165,7 @@
                             confirmButtonText: "确认"
                         });
                     }else{
-                        if($('tr.selected').find("#status").text()=="已完成"){
+                        if($('tr.selected').find("#status").text()==="已完成"){
                             window.location.href = "/CloudPlatform/SoftTool/downloadZip?taskname="+taskname;
                         }else{
                             swal({
@@ -189,145 +179,7 @@
                 });
             });
 
-
-
-
             function formValidation() {
-                $("#mailSigninForm").formValidation({
-                    framework: 'bootstrap',
-                    icon: {
-                        valid: 'glyphicon glyphicon-ok',
-                        invalid: 'glyphicon glyphicon-remove',
-                        validating: 'glyphicon glyphicon-refresh'
-                    },
-                    fields: {
-                        phone: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入账号！'
-                                }
-                            }
-                        },
-                        code: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入验证码！'
-                                }
-                            }
-                        }
-                    }
-                });
-                $("#signinForm").formValidation({
-                    framework: 'bootstrap',
-                    icon: {
-                        valid: 'glyphicon glyphicon-ok',
-                        invalid: 'glyphicon glyphicon-remove',
-                        validating: 'glyphicon glyphicon-refresh'
-                    },
-                    fields: {
-                        user: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入账号！'
-                                }
-                            }
-                        },
-                        password: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入密码！'
-                                }
-                            }
-                        },
-                        validnumber: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入验证码！'
-                                },
-                                callback: {
-                                    message: '验证码错误！',
-                                    callback: function () {
-                                        return $('#validnumber').val() === code;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
-                $('#signupForm').formValidation({
-                    framework: 'bootstrap',
-                    icon: {
-                        valid: 'glyphicon glyphicon-ok',
-                        invalid: 'glyphicon glyphicon-remove',
-                        validating: 'glyphicon glyphicon-refresh'
-                    },
-                    fields: {
-                        phone: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入手机号！'
-                                },
-                                phone:{
-                                    message: '请输入正确手机号',
-                                    country: 'CN'
-                                }
-                            }
-                        },
-                        name: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请填写姓名！'
-                                }
-                            }
-                        },
-                        email: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请填写邮箱地址！'
-                                },
-                                emailAddress:{
-                                    message:'请输入正确邮箱地址！'
-                                }
-                            }
-                        },
-                        company: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请填写单位！'
-                                }
-                            }
-                        },
-                        password: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入密码！'
-                                },
-                                stringLength: {
-                                    min: 6,
-                                    message: '请输入至少六位密码！'
-                                }
-                            }
-                        },
-                        password1: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入确认密码！'
-                                },
-                                identical: {
-                                    field: 'password',
-                                    message: '两次密码不一致!'
-                                }
-                            }
-                        },
-                        validnumber: {
-                            validators: {
-                                notEmpty: {
-                                    message: "请输入验证码！"
-                                }
-                            }
-                        }
-                    }
-                });
                 $('#passwordForm').formValidation({
                     framework: 'bootstrap',
                     icon: {

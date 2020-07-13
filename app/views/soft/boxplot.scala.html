@@ -1,9 +1,9 @@
-@()(implicit session: Session)
+@(abbre:String,sname:String)(implicit session: Session)
 @home.main("Boxplot"){
 
     <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("css/test/mysoft.css")" media="screen" />
     <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("bootstrap-fileinput-master/css/fileinput.css")" media="screen" />
-    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("palette/evol-colorpicker.min.css")" media="screen" />
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("mycss/soft.css")" media="screen" />
         <!--button弹出操作-->
     <script src="@routes.Assets.versioned("layer-v3.0/layer/layer.js")" type="text/javascript"></script>
     <script type="text/javascript" src="@routes.Assets.versioned("js/myzui.min.js")"></script>
@@ -21,35 +21,6 @@
         display: inline-flex;
         padding: 9px 0 0 0;
     }
-    .mysoft-content-left .form-group-extra .btn-sm {
-        font-size: 14px;
-        background-color: #27b9d0;
-        border-color: #27b9d0;
-        border-radius: 4px;
-        padding: 5px 15px;
-        height: auto;
-    }
-    .mysoft-content-right .tab-content, .mysoft-content-left form {
-        box-shadow: unset;
-    }
-    .img-thumbnail {
-        display: inline-block;
-        max-width: 100%;
-        height: auto;
-        padding: 4px;
-        line-height: 1.53846154;
-        background-color: #fff;
-        border: unset;
-        border-radius: 4px;
-        -webkit-transition: all .2s ease-in-out;
-        -o-transition: all .2s ease-in-out;
-        transition: all .2s ease-in-out;
-    }
-    blockquote {
-        padding: 10px 20px;
-        margin: 0 0 20px;
-        border-left: unset;
-    }
     .mysoft-content-left .form-group-p .right-form-group input:not([type="radio"]):not([type="checkbox"]), .mysoft-content-left .form-group-p .right-form-group select, .mysoft-content-left .form-group-p .form-group:nth-child(2) input:not([type="radio"]):not([type="checkbox"]), .mysoft-content-left .form-group-p .form-group:nth-child(2) select {
         width: 100%;
         height: 32px;
@@ -59,107 +30,13 @@
         height: 35px;
         border-bottom: 1px solid #dfe0de;
     }
-
-    /*file*/
-    .input-group .form-control {
-        position: relative;
-        z-index: 2;
-        float: left;
-        width: 80%;
-        margin-bottom: 0;
-        height: 22px;
-        border-radius: 4px;
-    }
-    .input-group .form-control:first-child, .input-group-addon:first-child, .input-group-btn:first-child > .btn, .input-group-btn:first-child > .btn-group > .btn, .input-group-btn:first-child > .dropdown-toggle, .input-group-btn:last-child > .btn:not(:last-child):not(.dropdown-toggle), .input-group-btn:last-child > .btn-group:not(:last-child) > .btn {
-        border-top-right-radius: 4px;
-        border-bottom-right-radius: 4px;
-        border-radius: 5px;
-        background-color: #f7f7f7;
-        height: 21px;
-        border: 1px solid #e6e6e6;
-        box-shadow: none;
-    }
-    .input-group .form-control:last-child, .input-group-addon:last-child, .input-group-btn:last-child > .btn, .input-group-btn:last-child > .btn-group > .btn, .input-group-btn:last-child > .dropdown-toggle, .input-group-btn:first-child > .btn:not(:first-child), .input-group-btn:first-child > .btn-group:not(:first-child) > .btn {
-        border-top-left-radius: 4px;
-        border-bottom-left-radius: 4px;
-    }
-    .hidden-xs {
-        display: unset !important;
-    }
-
-    /*历史任务*/
-            .his_name{
-              /*margin: 5px 10px;*/
-              width: 20%;
-              display: inline-block;
-              text-align: center;
-            }
-            .his_time{
-              /*margin: 5px 10px;*/
-              width: 28%;
-              display: inline-block;
-              text-align: center;
-            }
-            .hislist hr{
-              margin-top: 10px;
-              margin-bottom: 10px;
-            }
-            .btn_refresh{
-              padding: 7px 11px 7px 38px;
-              color: white!important;
-              background: #27b9d0;
-              border-radius: 6px;
-              background-repeat: no-repeat;
-              background-position: 9px 3px;
-              margin: 10px 10px;
-            }
-            .success{
-                padding: 6px 10px;
-                background: cadetblue;
-                border-radius: 16px;
-                color: white;
-            }
-            .failed{
-                padding: 6px 10px;
-                background: #bf4064;
-                border-radius: 16px;
-                color: white;
-            }
-
-            /*running*/
-            .layui-layer {
-                -webkit-overflow-scrolling: touch;
-                top: 35%;
-                left: 41%;
-                margin: 0;
-                padding: 0;
-                background-color: #fff;
-                -webkit-background-clip: content;
-                box-shadow: 1px 1px 50px rgba(0,0,0,.3);
-            }
-            .layui-layer-lan .layui-layer-btn {
-                padding: 10px;
-                text-align: right;
-                border-top: unset;
-            }
-            .layui-layer-lan[type=dialog] {
-                min-width: 280px;
-                border-radius: 11.5px;
-            }
-            .layui-layer-lan .layui-layer-title {
-                background: #1f3851;
-                color: #fff;
-                border: none;
-                border-top-left-radius: 11.5px;
-                border-top-right-radius: 11.5px;
-            }
 </style>
 
     <div class="col-md-12 mysoft-content" style="width: 98%">
         <div class="  mysoft-content-left  whitebox" style="width: 590px;">
             <form id="Boxplot" method="GET" enctype="multipart/form-data" class="well form-inline" style="box-sizing: border-box!important;">
-                <img class="tools-img" src="/assets/images/softpic/box.jpg">
-                <h3 class="tools-title">Boxplot 盒型图</h3>
+                <div class="softpic mws-ic @abbre"> </div>
+                <h3 class="tools-title">@sname</h3>
                 <div class="form-group">
                     <h2>
                     </h2>
@@ -282,7 +159,7 @@
                     <p></p>
                 </div>
                 <div id="history" class="form1_ins tab-pane fade">
-                    <a id="btn-refresh" class="btn_refresh mws-i-24 i-refresh-3" onclick="refresh()">刷新状态</a>
+                    <a id="btn-refresh" class="btn_refresh mws-i-24 i-refresh-3" onclick="refresh('@abbre')">刷新状态</a>
                     <ul id="hisul" style="margin-top: 15px">
                         <li id="hislist" class="hislist">
                             <div class="his_name"><span>任务编号</span></div>
@@ -300,141 +177,13 @@
     <script type="text/javascript" src="@routes.Assets.versioned("js/toolsAdjust.js")"></script>
     <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/fileinput.min.js")" type="text/javascript"></script>
     <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/locales/zh.js")" type="text/javascript"></script>
-    <script type="text/javascript" src="@routes.Assets.versioned("palette/evol-colorpicker.min.js")"></script>
+    <script src="@routes.Assets.versioned("myjs/soft.js")" type="text/javascript"></script>
     <script type="text/javascript">
-
-            function getTaskName() {
-                let date = new Date();
-                let month = date.getMonth() + 1;
-                let day = date.getDate();
-                let h = date.getHours();
-                let m = date.getMinutes();
-                let s = date.getSeconds();
-                let name = "BOX"+month + day + h + m + s ;
-                $("#mytaskname").val(name);
-                $("#Boxplot").formValidation("revalidateField", "taskname");
-            }
-
-            $("#mytaskname").keyup(function () {
-                checktaskname();
-            });
-
-            function checktaskname() {
-                var val = $("#mytaskname").val();
-                var rule = /[()（）@@#$%^&*~`!|\/\\?;,.，。:"]/;
-                if (rule.test(val)) {
-                    alert('任务编号里不能有特殊字符，请重新填写!');
-                    return false;
-                }
-                if(val.toString().indexOf(" ")>0){
-                    alert('任务编号里不能有空格!');
-                    return false;
-                }
-                if(val.toString().length>13){
-                    alert('任务编号最长13位!');
-                    return false;
-                }
-                return true;
-            }
-
-            var running=false;
 
             $(function () {
                 formValidation();
-                loadHistory();
-                getTaskName();
-            });
-
-            var cur=true;
-
-            function refresh() {
-                if(cur){
-                    cur=false;
-                    removeul();
-                    loadHistory();
-                    var count=5;
-                    $("#btn-refresh").text("00:"+count);
-                    var tim=setInterval(function () {
-                        $("#btn-refresh").text("00:"+count);
-                        if(count==0){
-                            cur=true;
-                            $("#btn-refresh").text("刷新状态");
-                            clearInterval(tim);
-                        }else count=count-1;
-                    },1000);
-                }else return;
-            }
-
-            function loadHistory(){
-                var html="";
-                if(@session.get("userId").isEmpty){
-                    html+="<li class='hislist'><span>尚未登陆,暂无数据</span></li>"
-                    $("#hislist").after(html);
-                }else{
-                    $.ajax({
-                        url: "/CloudPlatform/MyTasks/getDutysByType?sabbrename=Boxplot",
-                        type: "post",
-                        success: function (data) {
-                            if(data.run==true) running=true;
-                            else running=false;
-                            $.each(data.rows,function (i,v) {
-                                html += "<li class='hislist'><div class='his_name'><span>"+v.taskname+"</span></div><div class='his_time'><span>"+v.subtime+"</span></div><div class='his_time'><span>"+v.finitime+"</span></div><div class='his_name'>"+v.status+"</div><hr></li>";
-                            });
-                            $("#hislist").after(html);
-                            if(running==true){
-                                cur=false;
-                                var count=5;
-                                $("#btn-refresh").text("00:"+count);
-                                var timmer=setInterval(function () {
-                                    $("#btn-refresh").text("00:"+count);
-                                    if(count==0){
-                                        $("#btn-refresh").text("刷新状态");
-                                        if(running==false) {
-                                            removeul();
-                                            loadHistory();
-                                            cur=true;
-                                            clearInterval(timmer);
-                                        } else {
-                                            checkrunning();
-                                        }
-                                        count=5;
-                                    }else count=count-1;
-                                },1000);
-                            }
-                        }
-                    });
-                }
-            }
-
-            function checkrunning() {
-                $.ajax({
-                    url: "/CloudPlatform/MyTasks/getDutysByType?sabbrename=Boxplot",
-                    type: "post",
-                    success: function (data) {
-                        if(data.run==true) running=true;
-                        else running=false;
-                    }
-                });
-            }
-
-            function removeul(){
-                $("#hisul li").remove();
-                $("#hisul").append("<li id=\"hislist\" class=\"hislist\">\n" +
-                        "                                    <div class=\"his_name\"><span>任务编号</span></div>\n" +
-                        "                                    <div class=\"his_time\"><span>提交时间</span></div>\n" +
-                        "                                    <div class=\"his_time\"><span style='margin-left: -20px;'>结束时间</span></div>\n" +
-                        "                                    <div class=\"his_name\"><span style='margin-left: -23px;'>状态</span></div>\n" +
-                        "                                    <hr>\n" +
-                        "                                </li>");
-
-            }
-
-            $(".file").fileinput({
-                showPreview: false,
-                showUpload:false,
-                showRemove:false,
-                showCancel: false,
-                browseLabel: "选择文件"
+                loadHistory("@abbre");
+                getTaskName("Boxplot","BOX");
             });
 
             var flagtable=false;
@@ -517,17 +266,17 @@
                 var fv = form.data("formValidation");
                 fv.validate();
                 if (fv.isValid()) {
-                    var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
-                    var index = layer.alert(element, {
-                        skin: 'layui-layer-lan',
-                        closeBtn: 0,
-                        title: "提醒",
-                        btn: []
-                    });
                     checkTable();
-                    setTimeout(function () {
-                        layer.close(index);
-                        if(flagtable&&checktaskname()){
+                    if(flagtable&&checktaskname()) {
+                        var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
+                        var index = layer.alert(element, {
+                            skin: 'layui-layer-lan',
+                            closeBtn: 0,
+                            title: "提醒",
+                            btn: []
+                        });
+                        setTimeout(function () {
+                            layer.close(index);
                             var form1 = new FormData($("#Boxplot")[0]);
                             $.ajax({
                                 url: "/CloudPlatform/SoftTool/runBoxplot",
@@ -537,18 +286,18 @@
                                 data: form1,
                                 success: function (data) {
                                     removeul();
-                                    loadHistory();
+                                    loadHistory("@abbre");
                                     $("#his_tab1").addClass("active");
                                     $("#out_tab1").removeClass("active");
                                     $("#ins_tab1").removeClass("active");
                                     $("#history").addClass("active").addClass("in");
                                     $("#example").removeClass("active");
                                     $("#instruction").removeClass("active");
-                                    getTaskName();
+                                    getTaskName("Boxplot","BOX");
                                 }
                             });
-                        }
-                    }, 2000);
+                        }, 2000);
+                    }
                 }
             }
 
@@ -598,141 +347,6 @@
                             validators: {
                                 numeric: {
                                     message: '必须为数字！'
-                                }
-                            }
-                        }
-                    }
-                });
-                $("#mailSigninForm").formValidation({
-                    framework: 'bootstrap',
-                    icon: {
-                        valid: 'glyphicon glyphicon-ok',
-                        invalid: 'glyphicon glyphicon-remove',
-                        validating: 'glyphicon glyphicon-refresh'
-                    },
-                    fields: {
-                        phone: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入账号！'
-                                }
-                            }
-                        },
-                        code: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入验证码！'
-                                }
-                            }
-                        }
-                    }
-                });
-                $("#signinForm").formValidation({
-                    framework: 'bootstrap',
-                    icon: {
-                        valid: 'glyphicon glyphicon-ok',
-                        invalid: 'glyphicon glyphicon-remove',
-                        validating: 'glyphicon glyphicon-refresh'
-                    },
-                    fields: {
-                        user: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入账号！'
-                                }
-                            }
-                        },
-                        password: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入密码！'
-                                }
-                            }
-                        },
-                        validnumber: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入验证码！'
-                                },
-                                callback: {
-                                    message: '验证码错误！',
-                                    callback: function () {
-                                        return $('#validnumber').val() === code;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
-                $('#signupForm').formValidation({
-                    framework: 'bootstrap',
-                    icon: {
-                        valid: 'glyphicon glyphicon-ok',
-                        invalid: 'glyphicon glyphicon-remove',
-                        validating: 'glyphicon glyphicon-refresh'
-                    },
-                    fields: {
-                        phone: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入手机号！'
-                                },
-                                phone:{
-                                    message: '请输入正确手机号',
-                                    country: 'CN'
-                                }
-                            }
-                        },
-                        name: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请填写姓名！'
-                                }
-                            }
-                        },
-                        email: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请填写邮箱地址！'
-                                },
-                                emailAddress:{
-                                    message:'请输入正确邮箱地址！'
-                                }
-                            }
-                        },
-                        company: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请填写单位！'
-                                }
-                            }
-                        },
-                        password: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入密码！'
-                                },
-                                stringLength: {
-                                    min: 6,
-                                    message: '请输入至少六位密码！'
-                                }
-                            }
-                        },
-                        password1: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入确认密码！'
-                                },
-                                identical: {
-                                    field: 'password',
-                                    message: '两次密码不一致!'
-                                }
-                            }
-                        },
-                        validnumber: {
-                            validators: {
-                                notEmpty: {
-                                    message: "请输入验证码！"
                                 }
                             }
                         }

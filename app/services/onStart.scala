@@ -12,6 +12,7 @@ import scala.concurrent.duration.Duration
 
 class onStart @Inject()(softDao:softDao){
   TableUtils.SoftsMap = Await.result(softDao.getAllSoft, Duration.Inf)
+
   var verifyMap: mutable.HashMap[String, String] = mutable.HashMap()
 
   var verifyTimeMap: mutable.HashMap[String, Long] = mutable.HashMap()

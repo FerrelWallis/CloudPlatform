@@ -62,7 +62,7 @@ class DutyController @Inject()(cc: ControllerComponents,dutydao:dutyDao)(implici
     val table=Await.result(dutydao.getAllDutyById(uid),Duration.Inf)
     val row = table.map{x=>
       val taskname = s"<a id='taskname' href='/CloudPlatform/Mytask/teskPreview/"+x.sabbrename+"?taskname="+x.taskname+"' target='_blank'>" + x.taskname + "</a>"
-      val sname=s"<a href='/CloudPlatform/SoftPage/"+x.sabbrename+"' target='_blank'>" + x.sname + "</a>"
+      val sname=s"<a href='/CloudPlatform/SoftPage/"+x.sabbrename+"?abbre="+x.sabbrename+"&sname="+x.sname+"' target='_blank'>" + x.sname + "</a>"
       val color=if(x.status=="已完成") "success"
       else if(x.status=="运行失败") "failed"
       else if(x.status=="运行中") "running"

@@ -128,3 +128,12 @@ blockquote {
 #group .form-group-p{
     width: 100%;
 }
+.softpic{
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    border: none;
+    display: inline-block;
+    background-position: center center;
+    vertical-align: middle;
+}

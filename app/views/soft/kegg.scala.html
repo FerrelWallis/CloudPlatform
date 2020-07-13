@@ -1,4 +1,4 @@
-@()(implicit session: Session)
+@(abbre:String,sname:String)(implicit session: Session)
     @home.main("KEGG"){
 
         <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("css/test/mysoft.css")" media="screen" />
@@ -22,9 +22,8 @@
         <div class="col-md-12 mysoft-content" style="width: 98%">
             <div class="whitebox mysoft-content-left" style="width: 730px;">
                 <form id="KEGG" method="GET" enctype="multipart/form-data" class="well form-inline" style="box-sizing: border-box!important;">
-                    <img class="tools-img" src="/assets/images/softpic/kegg.jpg">
-                    <h3 class="tools-title">KEGG富集分析&nbsp;&nbsp;&nbsp;&nbsp;
-                    </h3>
+                    <div class="softpic mws-ic @abbre"> </div>
+                    <h3 class="tools-title">@sname</h3>
                     <div class="form-group">
                         <h2>
                         </h2>
@@ -79,7 +78,7 @@
                                             <label for="exampleInputName2">上传文件：</label>
                                         </div>
                                         <div class="form-group">
-                                            <input type="file" class="form-control file" id="table1" name="table1">
+                                            <input type="file" class="form-control file" onchange="checkTablefile()" id="table1" name="table1">
                                         </div>
                                     </div>
                                     <br>
@@ -237,7 +236,7 @@
                             ④out.htm： 网页格式结果<span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">。</span>
                         </p>                        </div>
                     <div id="history" class="form1_ins tab-pane fade">
-                        <a id="btn-refresh" class="btn_refresh mws-i-24 i-refresh-3" onclick="refresh()">刷新状态</a>
+                        <a id="btn-refresh" class="btn_refresh mws-i-24 i-refresh-3" onclick="refresh('@abbre')">刷新状态</a>
                         <ul id="hisul" style="margin-top: 15px">
                             <li id="hislist" class="hislist">
                                 <div class="his_name"><span>任务编号</span></div>
@@ -255,177 +254,138 @@
         <script type="text/javascript" src="@routes.Assets.versioned("js/toolsAdjust.js")"></script>
         <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/fileinput.min.js")" type="text/javascript"></script>
         <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/locales/zh.js")" type="text/javascript"></script>
-
+        <script src="@routes.Assets.versioned("myjs/soft.js")" type="text/javascript"></script>
         <script type="text/javascript">
 
-                function getTaskName() {
-                    let date = new Date();
-                    let month = date.getMonth() + 1;
-                    let day = date.getDate();
-                    let h = date.getHours();
-                    let m = date.getMinutes();
-                    let s = date.getSeconds();
-                    let name = "KEG"+month + day + h + m + s ;
-                    $("#mytaskname").val(name);
-                    $("#KEGG").formValidation("revalidateField", "taskname");
-                }
-
-                $("#mytaskname").keyup(function () {
-                    checktaskname();
-                });
-
-                function checktaskname() {
-                    var val = $("#mytaskname").val();
-                    var rule = /[()（）@@#$%^&*~`!|\/\\?;,.，。:"]/;
-                    if (rule.test(val)) {
-                        alert('任务编号里不能有特殊字符，请重新填写!');
-                        return false;
-                    }
-                    if(val.toString().indexOf(" ")>0){
-                        alert('任务编号里不能有空格!');
-                        return false;
-                    }
-                    if(val.toString().length>13){
-                        alert('任务编号最长13位!');
-                        return false;
-                    }
-                    return true;
-                }
-
-                var running=false;
 
                 $(document).ready(function () {
                     formValidation();
-                    loadHistory();
-                    getTaskName();
+                    loadHistory("@abbre");
+                    getTaskName("KEGG","KEG");
                 });
 
-                var cur=true;
+                var flagtable=true;
 
-                function refresh() {
-                    if(cur){
-                        cur=false;
-                        removeul();
-                        loadHistory();
-                        var count=5;
-                        $("#btn-refresh").text("00:"+count);
-                        var tim=setInterval(function () {
-                            $("#btn-refresh").text("00:"+count);
-                            if(count==0){
-                                cur=true;
-                                $("#btn-refresh").text("刷新状态");
-                                clearInterval(tim);
-                            }else count=count-1;
-                        },1000);
-                    }else return;
-                }
-
-                function loadHistory(){
-                    var html="";
-                    if(@session.get("userId").isEmpty){
-                        html+="<li class='hislist'><span>尚未登陆,暂无数据</span></li>"
-                        $("#hislist").after(html);
-                    }else{
-                        $.ajax({
-                            url: "/CloudPlatform/MyTasks/getDutysByType?sabbrename=KEGG",
-                            type: "post",
-                            success: function (data) {
-                                if(data.run==true) running=true;
-                                else running=false;
-                                $.each(data.rows,function (i,v) {
-                                    html += "<li class='hislist'><div class='his_name'><span>"+v.taskname+"</span></div><div class='his_time'><span>"+v.subtime+"</span></div><div class='his_time'><span>"+v.finitime+"</span></div><div class='his_name'>"+v.status+"</div><hr></li>";
-                                });
-                                $("#hislist").after(html);
-                                if(running==true){
-                                    cur=false;
-                                    var count=5;
-                                    $("#btn-refresh").text("00:"+count);
-                                    var timmer=setInterval(function () {
-                                        $("#btn-refresh").text("00:"+count);
-                                        if(count==0){
-                                            $("#btn-refresh").text("刷新状态");
-                                            if(running==false) {
-                                                removeul();
-                                                loadHistory();
-                                                cur=true;
-                                                clearInterval(timmer);
-                                            } else {
-                                                checkrunning();
-                                            }
-                                            count=5;
-                                        }else count=count-1;
-                                    },1000);
-                                }
-                            }
-                        });
+                function checkTablefile() {
+                    if(table==2 && $("#table1").val()!=""){
+                        var reader=new FileReader();
+                        reader.readAsText(document.getElementById('table1').files[0],"UTF-8");
+                        reader.onload=function () {
+                            let text=reader.result;
+                            let line=text.trim().split('\n');
+                            checktable(line);
+                        };
+                        return;
+                    } else if(table==1 && $("#txdata1").val()!=""){
+                        let line=$("#txdata1").val().trim().split('\n');
+                        checktable(line);
+                        return;
                     }
                 }
 
-                function checkrunning() {
-                    $.ajax({
-                        url: "/CloudPlatform/MyTasks/getDutysByType?sabbrename=KEGG",
-                        type: "post",
-                        success: function (data) {
-                            if(data.run==true) running=true;
-                            else running=false;
+                function checktable(line) {
+                    var sample=line[0].trim().split('\t');
+                    var length=sample.length;
+                    if(length>2) {
+                        flagtable=false;
+                        swal({
+                            title: "矩阵文件格式错误",
+                            text: "矩阵文件不超过2列",
+                            type: "warning",
+                            confirmButtonText: "确认"
+                        });
+                        return false;
+                    }
+                    var name=[];
+                    for(let i in line){
+                        var r=parseInt(i)+1;
+                        let row=line[i].trim().split('\t');
+                        if(row.length!=length){
+                            flagtable=false;
+                            swal({
+                                title: "矩阵文件格式错误",
+                                text: "矩阵文件第"+r+"行数据数量不一致",
+                                type: "warning",
+                                confirmButtonText: "确认"
+                            });
+                            return false;
                         }
-                    });
+                        if(name.indexOf(row[0])>=0){
+                            flagtable=false;
+                            swal({
+                                title: "矩阵文件错误",
+                                text: "矩阵文件第"+r+"行基因名重复存在，请核实！",
+                                type: "warning",
+                                confirmButtonText: "确认"
+                            });
+                            return false;
+                        }else name.push(row[0]);
+                        for(let j in row){
+                            var c=parseInt(j)+1;
+                            if(i!=0){
+                                if(j!=0 && !checkRate(row[j].trim())){
+                                    flagtable=false;
+                                    console.log("tavle="+flagtable);
+                                    swal({
+                                        title: "矩阵文件格式错误",
+                                        text: "矩阵文件第"+r+"行,第"+c+"列数据不是数字",
+                                        type: "warning",
+                                        confirmButtonText: "确认"
+                                    });
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+                    flagtable=true;
+                    return true;
                 }
 
-                function removeul(){
-                    $("#hisul li").remove();
-                    $("#hisul").append("<li id=\"hislist\" class=\"hislist\">\n" +
-                            "                                    <div class=\"his_name\"><span>任务编号</span></div>\n" +
-                            "                                    <div class=\"his_time\"><span>提交时间</span></div>\n" +
-                            "                                    <div class=\"his_time\"><span style='margin-left: -20px;'>结束时间</span></div>\n" +
-                            "                                    <div class=\"his_name\"><span style='margin-left: -23px;'>状态</span></div>\n" +
-                            "                                    <hr>\n" +
-                            "                                </li>");
-
+                function checkRate(input) {
+                    // var re = /^(-?\d+)(\.\d+)?$/;
+                    var re=/^[+-]?[\d]+([\.][\d]+)?([Ee][+-]?[\d]+)?$/;//判断字符串是否为浮点数或科学计数法
+                    if (!re.test(input)) {
+                        return false;
+                    }else return true;
                 }
-
-                $(".file").fileinput({
-                    showPreview: false,
-                    showUpload:false,
-                    showRemove:false,
-                    showCancel: false,
-                    browseLabel: "选择文件"
-                });
 
                 function kegg() {
                     var form = $("#KEGG");
                     var fv = form.data("formValidation");
                     fv.validate();
                     if (fv.isValid()) {
-                        var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
-                        var index = layer.alert(element, {
-                            skin: 'layui-layer-lan',
-                            closeBtn: 0,
-                            title: "提醒",
-                            btn: []
-                        });
-                        setTimeout(function () {
-                            layer.close(index);
-                            var form1 = new FormData($("#KEGG")[0]);
-                            $.ajax({
-                                url: "/CloudPlatform/SoftTool/runGo?types=ko&refer="+ref+"&table="+table,
-                                type: "post",
-                                processData: false,
-                                contentType: false,
-                                data: form1,
-                                success: function (data) {
-                                    removeul();
-                                    loadHistory();
-                                    $("#his_tab1").addClass("active");
-                                    $("#out_tab1").removeClass("active");
-                                    $("#ins_tab1").removeClass("active");
-                                    $("#history").addClass("active").addClass("in");
-                                    $("#example").removeClass("active");
-                                    $("#instruction1").removeClass("active");
-                                    getTaskName();
-                                }
+                        checkTablefile();
+                        if(flagtable) {
+                            var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
+                            var index = layer.alert(element, {
+                                skin: 'layui-layer-lan',
+                                closeBtn: 0,
+                                title: "提醒",
+                                btn: []
                             });
-                        }, 2000);
+                            setTimeout(function () {
+                                layer.close(index);
+                                var form1 = new FormData($("#KEGG")[0]);
+                                $.ajax({
+                                    url: "/CloudPlatform/SoftTool/runGo?types=ko&refer=" + ref + "&table=" + table,
+                                    type: "post",
+                                    processData: false,
+                                    contentType: false,
+                                    data: form1,
+                                    success: function (data) {
+                                        removeul();
+                                        loadHistory("@abbre");
+                                        $("#his_tab1").addClass("active");
+                                        $("#out_tab1").removeClass("active");
+                                        $("#ins_tab1").removeClass("active");
+                                        $("#history").addClass("active").addClass("in");
+                                        $("#example").removeClass("active");
+                                        $("#instruction1").removeClass("active");
+                                        getTaskName("KEGG","KEG");
+                                    }
+                                });
+                            }, 2000);
+                        }
                     }
                 }
 
@@ -454,6 +414,7 @@
                         if(table==1) {
                             if(param==1) $("#txdata1").val(ta1);
                             else $("#txdata1").val(ta2);
+                            $("#KEGG").formValidation("revalidateField", "txdata1");
                         }
                         else {
                             if(param==1) window.location.href = "/CloudPlatform/SoftTool/downloadExamples?name=gokegg1.txt"
@@ -497,145 +458,17 @@
                                     }
                                 }
                             },
+                            txdata1: {
+                                validators: {
+                                    notEmpty: {
+                                        message: '必须输入矩阵表格文件!'
+                                    }
+                                }
+                            },
                             table2: {
                                 validators: {
                                     notEmpty: {
                                         message: '必须上传背景基因文件!'
-                                    }
-                                }
-                            }
-                        }
-                    });
-                    $("#mailSigninForm").formValidation({
-                        framework: 'bootstrap',
-                        icon: {
-                            valid: 'glyphicon glyphicon-ok',
-                            invalid: 'glyphicon glyphicon-remove',
-                            validating: 'glyphicon glyphicon-refresh'
-                        },
-                        fields: {
-                            phone: {
-                                validators: {
-                                    notEmpty: {
-                                        message: '请输入账号！'
-                                    }
-                                }
-                            },
-                            code: {
-                                validators: {
-                                    notEmpty: {
-                                        message: '请输入验证码！'
-                                    }
-                                }
-                            }
-                        }
-                    });
-                    $("#signinForm").formValidation({
-                        framework: 'bootstrap',
-                        icon: {
-                            valid: 'glyphicon glyphicon-ok',
-                            invalid: 'glyphicon glyphicon-remove',
-                            validating: 'glyphicon glyphicon-refresh'
-                        },
-                        fields: {
-                            user: {
-                                validators: {
-                                    notEmpty: {
-                                        message: '请输入账号！'
-                                    }
-                                }
-                            },
-                            password: {
-                                validators: {
-                                    notEmpty: {
-                                        message: '请输入密码！'
-                                    }
-                                }
-                            },
-                            validnumber: {
-                                validators: {
-                                    notEmpty: {
-                                        message: '请输入验证码！'
-                                    },
-                                    callback: {
-                                        message: '验证码错误！',
-                                        callback: function () {
-                                            return $('#validnumber').val() === code;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    });
-                    $('#signupForm').formValidation({
-                        framework: 'bootstrap',
-                        icon: {
-                            valid: 'glyphicon glyphicon-ok',
-                            invalid: 'glyphicon glyphicon-remove',
-                            validating: 'glyphicon glyphicon-refresh'
-                        },
-                        fields: {
-                            phone: {
-                                validators: {
-                                    notEmpty: {
-                                        message: '请输入手机号！'
-                                    },
-                                    phone:{
-                                        message: '请输入正确手机号',
-                                        country: 'CN'
-                                    }
-                                }
-                            },
-                            name: {
-                                validators: {
-                                    notEmpty: {
-                                        message: '请填写姓名！'
-                                    }
-                                }
-                            },
-                            email: {
-                                validators: {
-                                    notEmpty: {
-                                        message: '请填写邮箱地址！'
-                                    },
-                                    emailAddress:{
-                                        message:'请输入正确邮箱地址！'
-                                    }
-                                }
-                            },
-                            company: {
-                                validators: {
-                                    notEmpty: {
-                                        message: '请填写单位！'
-                                    }
-                                }
-                            },
-                            password: {
-                                validators: {
-                                    notEmpty: {
-                                        message: '请输入密码！'
-                                    },
-                                    stringLength: {
-                                        min: 6,
-                                        message: '请输入至少六位密码！'
-                                    }
-                                }
-                            },
-                            password1: {
-                                validators: {
-                                    notEmpty: {
-                                        message: '请输入确认密码！'
-                                    },
-                                    identical: {
-                                        field: 'password',
-                                        message: '两次密码不一致!'
-                                    }
-                                }
-                            },
-                            validnumber: {
-                                validators: {
-                                    notEmpty: {
-                                        message: "请输入验证码！"
                                     }
                                 }
                             }

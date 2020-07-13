@@ -243,6 +243,7 @@
     <script>
 
         var colornum=0;
+        var allcol=0;
 
             function formValidation() {
                 $('#Heatmap').formValidation({
@@ -522,6 +523,7 @@
                             $("#downTiff").attr("href","/CloudPlatform/SoftTool/download?path="+data.downtiffs);
                             $("#rnum").text(data.rnum);
                             $("#cnum").text(data.cnum);
+                            allcol=data.allcol;
                             $.each(data.elements,function (i,v) {
                                 if(i=="color") {
                                     if(colorpattern(v)) $("#"+i).val(v);
@@ -617,32 +619,72 @@
                 var fv = form.data("formValidation");
                 fv.validate();
                 if (fv.isValid()) {
-                    var element = "<div id='content'><span id='info'>绘图中，请耐心等待...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
-                    var index = layer.alert(element, {
-                        skin: 'layui-layer-lan',
-                        closeBtn: 0,
-                        title: "提醒",
-                        btn: []
-                    });
-                    var colors=[];
-                    for(var i=0;i<colornum;i++)
-                        colors.push($("#color"+i).val());
-                    $("#designcolor").val(colors.join(":"));
-                    var form1 = new FormData($("#Heatmap")[0]);
-                    $.ajax({
-                        url: "/CloudPlatform/SoftTool/redrawHeat?taskname=@row.taskname",
-                        type: "post",
-                        processData: false,
-                        contentType: false,
-                        data: form1,
-                        success: function (data) {
-                            $("#redraw_pic").attr("src","/CloudPlatform/pic?path="+data.pics+"&num="+Math.random());
-                            layer.close(index);
-                        }
-                    });
+                    if(checkrpcp()){
+                        var element = "<div id='content'><span id='info'>绘图中，请耐心等待...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
+                        var index = layer.alert(element, {
+                            skin: 'layui-layer-lan',
+                            closeBtn: 0,
+                            title: "提醒",
+                            btn: []
+                        });
+                        var colors=[];
+                        for(var i=0;i<colornum;i++)
+                            colors.push($("#color"+i).val());
+                        $("#designcolor").val(colors.join(":"));
+                        var form1 = new FormData($("#Heatmap")[0]);
+                        $.ajax({
+                            url: "/CloudPlatform/SoftTool/redrawHeat?taskname=@row.taskname",
+                            type: "post",
+                            processData: false,
+                            contentType: false,
+                            data: form1,
+                            success: function (data) {
+                                $("#redraw_pic").attr("src","/CloudPlatform/pic?path="+data.pics+"&num="+Math.random());
+                                $("#cnum").text(data.cnum);
+                                layer.close(index);
+                            }
+                        });
+                    }
                 }
             }
 
+
+
+            function checkrpcp() {
+                if(parseInt($("#rp").val())>parseInt($("#rnum").text())){
+                    swal({
+                        title: "行聚类分割数错误",
+                        text: "行聚类分割数超过总行数！",
+                        type: "warning",
+                        confirmButtonText: "确认"
+                    });
+                    return false;
+                }
+                if($("#col").val()==""){
+                    console.log(allcol);
+                    if(parseInt($("#cp").val())>allcol) {
+                        swal({
+                            title: "列聚类分割数错误",
+                            text: "列聚类分割数超过总列数！",
+                            type: "warning",
+                            confirmButtonText: "确认"
+                        });
+                        return false;
+                    }
+                }else{
+                    var num=$("#col").val().toString().split(",").length;
+                    if(parseInt($("#cp").val())>num){
+                        swal({
+                            title: "列聚类分割数错误",
+                            text: "列聚类分割数超过总列数！作图总列数为："+num,
+                            type: "warning",
+                            confirmButtonText: "确认"
+                        });
+                        return false;
+                    }
+                }
+                return true;
+            }
 
             function bordercolor() {
                 var colorparam = $("#hasborder").val();
