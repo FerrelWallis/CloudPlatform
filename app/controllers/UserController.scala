@@ -50,8 +50,7 @@ class UserController  @Inject()(cc: ControllerComponents,onstart:onStart,usersda
   val mailLogForm = Form(
     mapping(
       "phone" -> text,
-      "code" -> text,
-
+      "code" -> text
     )(mailLogData.apply)(mailLogData.unapply)
   )
 
@@ -72,12 +71,70 @@ class UserController  @Inject()(cc: ControllerComponents,onstart:onStart,usersda
     Ok(Json.obj("valid" -> valid,"id"-> id))
   }
 
+  case class changeDetailData(phone:String, name: String, email: String, company:String, code:String)
+
+  val changeDetailForm = Form(
+    mapping(
+      "phone" -> text,
+      "name" -> text,
+      "email" -> text,
+      "company" -> text,
+      "code" -> text
+    )(changeDetailData.apply)(changeDetailData.unapply)
+  )
+
+  def changeDetail = Action{ implicit request =>
+    val form = changeDetailForm.bindFromRequest.get
+      if(onstart.verifyMap.getOrElse(form.phone,"null")=="null") Ok(Json.obj("valid" -> "false","message"->"请先发送验证码！"))
+      else if(onstart.verifyMap.getOrElse(form.phone,"null")==form.code) {
+        onstart.verifyMap.remove(form.phone)
+        Await.result(usersdao.updateDetail(form.phone,form.name,form.email,form.company),Duration.Inf)
+        Ok(Json.obj("valid" -> "true","message"->"成功！","id"->request.session.get("userId").get))
+      } else Ok(Json.obj("valid" -> "false","message"->"验证码不正确！"))
+  }
+
+  def getDetail = Action{implicit request=>
+    val id=request.session.get("userId").get
+    val detial=Await.result(usersdao.getById(id),Duration.Inf)
+    Ok(Json.obj("name" -> detial.name,"phone"->detial.phone,"email"->detial.email,"company"->detial.company))
+  }
+
+  case class changePhoneData(oldphone:String, oldcode: String, newphone: String, newcode:String)
+
+  val changePhoneForm = Form(
+    mapping(
+      "oldphone" -> text,
+      "oldcode" -> text,
+      "newphone" -> text,
+      "newcode" -> text
+    )(changePhoneData.apply)(changePhoneData.unapply)
+  )
+
+  def changePhone = Action{ implicit request =>
+    val form = changePhoneForm.bindFromRequest.get
+    val checkPhone=Await.result(usersdao.checkPhoneExist(form.newphone),Duration.Inf)
+    if(checkPhone.length>0) Ok(Json.obj("valid"->"false","message"->"新手机号已绑定账号!"))
+    else {
+      val id=request.session.get("userId").get
+      if(onstart.verifyMap.getOrElse(form.oldphone,"null")=="null") Ok(Json.obj("valid" -> "false","message"->"旧手机号,请先发送验证码！"))
+      else if(onstart.verifyMap.getOrElse(form.newphone,"null")=="null") Ok(Json.obj("valid" -> "false","message"->"新手机号,请先发送验证码！"))
+      else if(onstart.verifyMap.getOrElse(form.oldphone,"null")!=form.oldcode) Ok(Json.obj("valid" -> "false","message"->"旧手机号，验证码不正确！"))
+      else if(onstart.verifyMap.getOrElse(form.newphone,"null")!=form.newcode) Ok(Json.obj("valid" -> "false","message"->"新手机号，验证码不正确！"))
+      else {
+        onstart.verifyMap.remove(form.oldphone)
+        onstart.verifyMap.remove(form.newphone)
+        Await.result(usersdao.updatePhone(id,form.newphone),Duration.Inf)
+        Ok(Json.obj("valid" -> "true","message"->"成功！","id"->id))
+      }
+    }
+  }
 
 
   def signInSuccess(path:String,id:String) = Action.async{implicit request=>
     val session = new Session
+    val direct=if(path.indexOf("allsoft")>=0) "/CloudPlatform/home" else path
     usersdao.getById(id).map{x=>
-      Redirect(routes.HomeController.home()).withNewSession.withSession(session + ("userId" -> x.id.toString) + ("userPhone"->x.phone) + ("userName"->x.name) + ("userEmail"->x.email) + ("userCompany"->x.company))
+      Redirect(direct).withNewSession.withSession(session + ("userId" -> x.id.toString) + ("userPhone"->x.phone) + ("userName"->x.name) + ("userEmail"->x.email) + ("userCompany"->x.company))
     }
   }
 
@@ -102,9 +159,9 @@ class UserController  @Inject()(cc: ControllerComponents,onstart:onStart,usersda
       val row = UsersRow(0,form.phone,form.email,form.password,form.name,form.company,"user"," ")
       val checkPhone=Await.result(usersdao.checkPhoneExist(form.phone),Duration.Inf)
       val checkEmail=Await.result(usersdao.checkEmailExist(form.email),Duration.Inf)
-      if(checkPhone.length==1) {
+      if(checkPhone.length>0) {
         Ok(Json.obj("valid"->"false","message"->"该手机号已注册!"))
-      }else if(checkEmail.length==1){
+      }else if(checkEmail.length>0){
         Ok(Json.obj("valid"->"false","message"->"该邮箱地址已注册!"))
       }else{
         //判断验证码

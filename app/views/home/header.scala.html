@@ -30,14 +30,14 @@
             border-top-right-radius: 11.5px;
         }
 </style>
-<div id="mws-header" class="clearfix fix">
+<div id="mws-header" class="clearfix fix" style="height: 100px">
     <div id="mws-logo-container">
         <div id="mws-logo-wrap">
-            <img src="/assets/images/logo.png" style="width: 150px;  height: 40px;  margin-top: 9px;  margin-left: 13px;">
+            <img src="/assets/images/logo4.png" style="width: 240px;  height: 70px;  margin-top: 15px;  margin-left: 0px;">
         </div>
     </div>
-    <div style="float: right;height: 58px;">
-        <div id="mws-user-tools" class="clearfix" style="position: relative">
+    <div style="float: right;height: 100px;">
+        <div id="mws-user-tools" class="clearfix" style="position: relative;">
             @if(session.get("userId").isEmpty) {
                 <div class="social-nav">
                     <div class="rss social-nav_li">
@@ -48,13 +48,13 @@
                         </a>
                     </div>
                     <div class="rss social-nav_li">
-                        <a href="#" class="signup " data-reveal-id="signup" title="Sign in" style="padding-top: 20px;">
+                        <a href="#" class="signup " data-reveal-id="signup" title="Sign in" style="margin-top: 24px;">
                             注册
                         </a>
                     </div>
                 </div>
             } else {
-                <div id="mws-user-info" class="mws-inset">
+                <div id="mws-user-info" class="mws-inset" style="height: 32px;width: 160px;margin-top: 40px">
                     <div id="mws-user-photo">
                         <img src="/assets/example/profile.jpg" alt="User Photo" />
                     </div>
@@ -64,7 +64,6 @@
                         </div>
                         <ul>
                             <li><a href="@routes.HomeController.personal()">个人中心</a></li>
-                            <li><a href="#" data-reveal-id="newpassword">修改密码</a></li>
                             <li><a href="#" onclick="Signout()">退出</a></li>
                         </ul>
                     </div>
@@ -191,7 +190,7 @@
                     </div>
                     <div class="logright">
                         <input type = "text" id = "validnumber1" name="validnumber" autofocus="autofocus" style="float: left;  width: 160px; margin-left: 10px; padding: 7px 9px 7px 9px;" required />
-                        <input type = "button" value="发送验证码" class="sendcode" onclick="Verify('upphone')" style="width: 105px;  height: 35px;  margin-left: 18px; border: 1px solid #d8d8d8;  background: white;border-radius: 6px;" />
+                        <input type = "button" value="发送验证码" id="sendcode1" class="sendcode" onclick="Verify('upphone','sendcode1')" style="width: 105px;  height: 35px;  margin-left: 18px; border: 1px solid #d8d8d8;  background: white;border-radius: 6px;" />
                     </div>
                 </div>
                 <div class="submit-btn-area" style="margin-top: 44px;" >
@@ -220,7 +219,7 @@
                     </div>
                     <div class="logright">
                         <input type="text" id="phone" name="phone" value="@session.get("userPhone")" class="log_re_chan"  readonly>
-                        <i class="ti-user"></i>
+                        <i class="ti-mobile"></i>
                     </div>
                 </div>
                 <div class="form-gp form-group">
@@ -247,7 +246,7 @@
                     </div>
                     <div class="logright">
                         <input type = "text" id = "validnumber2" name="validnumber" autofocus="autofocus" style="float: left; width: 160px; margin-left: 10px; padding: 7px 9px 7px 9px;" required />
-                        <input type = "button" value="发送验证码" class="sendcode" onclick="Verify('phone')" style="width: 105px;  height: 35px!important; margin-left: 18px; border: 1px solid #d8d8d8!important;  background: white!important;border-radius: 6px!important;" />
+                        <input type = "button" value="发送验证码" id="sendcode2" class="sendcode" onclick="Verify('phone','sendcode2')" style="width: 105px;  height: 35px!important; margin-left: 18px; border: 1px solid #d8d8d8!important;  background: white!important;border-radius: 6px!important;" />
                     </div>
                 </div>
                 <div class="submit-btn-area" style="margin-top: 44px;" >
@@ -282,7 +281,7 @@
                     </div>
                     <div class="logright">
                         <input type = "text" id = "mailcode" name="code" autofocus="autofocus" style="float: left;  width: 160px; margin-left: 10px; padding: 7px 9px 7px 9px;" required />
-                        <input type = "button" value="发送验证码" class="sendcode" onclick="Verify('mailphone')" style="width: 105px;  height: 35px;  margin-left: 18px;border: 1px solid #d8d8d8;  background: white;border-radius: 6px;" />
+                        <input type = "button" value="发送验证码" id="sendcode3" class="sendcode" onclick="Verify('mailphone','sendcode3')" style="width: 105px;  height: 35px;  margin-left: 18px;border: 1px solid #d8d8d8;  background: white;border-radius: 6px;" />
                     </div>
                 </div>
                 <div class="submit-btn-area" style="margin-top: 35px">
@@ -291,6 +290,120 @@
                 </div>
                 <div class="form-footer text-center mt-5">
                     <p class="text-muted" style="margin-top: 33px;font-size: 14px;">其他登录方式：<a onclick="openSignin()" style="cursor: pointer;margin-right: 25px;margin-left: 0px">密码登录</a>还没有账号? <a onclick="openSignup()" style="cursor: pointer;">立即注册</a></p>
+                </div>
+            </div>
+        </form>
+    </div>
+    <a class="close-reveal-modal">&#215;</a>
+</div>
+
+<div id="changephone" class="reveal-modal">
+    <div class="cont">
+        <div class="login-form-head">
+            <h4 style="font-size: 2.5rem!important;font-family: 'Poppins', sans-serif">绑定新手机</h4>
+            <p style="font-size: 15px;margin-top: 10px;">你好, 这里解除原手机号绑定，并绑定新手机号</p>
+        </div>
+        <form action="#" class="signup form-horizontal" id="changePhoneForm">
+            <div class="login-form-body">
+                <div class="form-gp form-group">
+                    <div class="logleft">
+                        <label for="mailoldphone">旧手机号：</label>
+                    </div>
+                    <div class="logright">
+                        <input type="text" id="mailoldphone" name="oldphone" value="@session.get("userPhone")" class="log_re_chan" readonly>
+                        <i class="ti-mobile"></i>
+                    </div>
+                </div>
+                <div class="form-gp form-group">
+                    <div class="logleft">
+                        <label for="mailoldcode">验证码：</label>
+                    </div>
+                    <div class="logright">
+                        <input type = "text" id = "mailoldcode" name="oldcode" autofocus="autofocus" style="float: left;  width: 160px; margin-left: 10px; padding: 7px 9px 7px 9px;" required />
+                        <input type = "button" value="发送验证码" class="sendcode" id="sendcode4" onclick="Verify('mailoldphone','sendcode4')" style="width: 105px;  height: 35px;  margin-left: 18px;border: 1px solid #d8d8d8;  background: white;border-radius: 6px;" />
+                    </div>
+                </div>
+                <div class="form-gp form-group">
+                    <div class="logleft">
+                        <label for="mailnewphone">新手机号：</label>
+                    </div>
+                    <div class="logright">
+                        <input type="text" id="mailnewphone" name="newphone" class="log_re_chan">
+                        <i class="ti-mobile"></i>
+                    </div>
+                </div>
+                <div class="form-gp form-group">
+                    <div class="logleft">
+                        <label for="mailcode">验证码：</label>
+                    </div>
+                    <div class="logright">
+                        <input type = "text" id = "mailnewcode" name="newcode" autofocus="autofocus" style="float: left;  width: 160px; margin-left: 10px; padding: 7px 9px 7px 9px;" required />
+                        <input type = "button" value="发送验证码" class="sendcode" id="sendcode5" onclick="Verify('mailnewphone','sendcode5')" style="width: 105px;  height: 35px;  margin-left: 18px;border: 1px solid #d8d8d8;  background: white;border-radius: 6px;" />
+                    </div>
+                </div>
+                <div class="submit-btn-area" style="margin-top: 35px">
+                    <button id="form_submit" type="submit" onclick="changePhone()">重新绑定 <i class="ti-arrow-right"></i></button>
+@*                    <a class="signup" data-reveal-id="signup"></a>*@
+                </div>
+            </div>
+        </form>
+    </div>
+    <a class="close-reveal-modal">&#215;</a>
+</div>
+
+<div id="changedetail" class="reveal-modal">
+    <div class="cont">
+        <div class="login-form-head">
+            <h4 style="font-size: 2.5rem!important;font-family: 'Poppins', sans-serif">修改个人信息</h4>
+            <p style="font-size: 15px;margin-top: 10px;">你好, 这里修改个人信息</p>
+        </div>
+        <form class="signup form-horizontal" id="changeDetailForm">
+            <div class="login-form-body">
+                <div class="form-gp form-group" style="display: none">
+                    <div class="logright">
+                        <input type="text" id="dephone" name="phone" value="@session.get("userPhone")" class="log_re_chan" readonly>
+                        <i class="ti-mobile"></i>
+                    </div>
+                </div>
+                <div class="form-gp form-group">
+                    <div class="logleft"><label for="dename">姓名：</label></div>
+                    <div class="logright">
+                        <input type="text" id="dename" name="name" value="@session.get("userName")" class="log_re_chan">
+                        <i class="ti-user"></i>
+                    </div>
+                </div>
+                <div class="form-gp form-group">
+                    <div class="logleft">
+                        <label for="demail">邮箱：</label>
+                    </div>
+                    <div class="logright">
+                        <input type="email" id="demail" name="email" value="@session.get("userEmail")" class="log_re_chan">
+                        <i class="ti-email"></i>
+                    </div>
+                </div>
+                <div class="form-gp form-group" style="margin-top: 35px">
+                    <div class="logleft">
+                        <label for="decomp" style="top: -20px;">
+                            <p style="margin: 0;float: right">单位：</p>
+                            <p style="margin: 0;float: right;font-size: 12px;">(学校/公司)</p>
+                        </label>
+                    </div>
+                    <div class="logright">
+                        <input type="text" id="decomp" name="company" value="@session.get("userCompany")" class="log_re_chan">
+                        <i class="ti-briefcase"></i>
+                    </div>
+                </div>
+                <div class="form-gp form-group">
+                    <div class="logleft">
+                        <label for="mailcode">验证码：</label>
+                    </div>
+                    <div class="logright">
+                        <input type = "text" id = "mailcode" name="code" autofocus="autofocus" style="float: left;  width: 160px; margin-left: 10px; padding: 7px 9px 7px 9px;" required />
+                        <input type = "button" value="发送验证码" class="sendcode" id="sendcode6" onclick="Verify('dephone','sendcode6')" style="width: 105px;  height: 35px;  margin-left: 18px;border: 1px solid #d8d8d8;  background: white;border-radius: 6px;" />
+                    </div>
+                </div>
+                <div class="submit-btn-area" style="margin-top: 35px">
+                    <button id="form_submit" onclick="changeDe()">确认修改 <i class="ti-arrow-right"></i></button>
                 </div>
             </div>
         </form>
@@ -416,42 +529,6 @@
 
         }
 
-        //修改密码
-        function changePassword() {
-            var form = $("#passwordForm");
-            var fv = form.data("formValidation");
-            fv.validate();
-            if (fv.isValid()) {
-                $.ajax({
-                    url: "@routes.UserController.changePassword()",
-                    type: "post",
-                    dataType: "json",
-                    data: form.serialize(),
-                    success: function (data) {
-                        if (data.valid == "false") {
-                            swal({
-                                title: "Error!",
-                                text: data.message,
-                                type: "error",
-                                confirmButtonText: "OK"
-                            })
-                        } else {
-                            $(".close-reveal-modal").click();
-                            swal({
-                                title: "修改成功",
-                                text: "修改密码成功!",
-                                type: 'success',
-                                confirmButtonText: "返回页面，请重新登录！"
-                            }, function () {
-                                window.location.href = "/CloudPlatform/User/signout?path=" + path;
-                            })
-                        }
-                    }
-                });
-            }
-
-        }
-
         //短信登陆
         function MailSignin() {
             var form = $("#mailSigninForm");
@@ -494,10 +571,127 @@
                     }
                 });
             }
+        }
+
+        //修改密码
+        function changePassword() {
+            var form = $("#passwordForm");
+            var fv = form.data("formValidation");
+            fv.validate();
+            if (fv.isValid()) {
+                $.ajax({
+                    url: "@routes.UserController.changePassword()",
+                    type: "post",
+                    dataType: "json",
+                    data: form.serialize(),
+                    success: function (data) {
+                        if (data.valid == "false") {
+                            swal({
+                                title: "Error!",
+                                text: data.message,
+                                type: "error",
+                                confirmButtonText: "OK"
+                            })
+                        } else {
+                            $(".close-reveal-modal").click();
+                            swal({
+                                title: "修改成功",
+                                text: "修改密码成功!",
+                                type: 'success',
+                                confirmButtonText: "返回页面，请重新登录！"
+                            }, function () {
+                                window.location.href = "/CloudPlatform/User/signout?path=" + path;
+                            })
+                        }
+                    }
+                });
+            }
 
         }
 
-        function Verify(param) {
+        //重绑手机
+        function changePhone() {
+            var form = $("#changePhoneForm");
+            var fv = form.data("formValidation");
+            fv.validate();
+            if (fv.isValid()) {
+                var element = "<div id='content'><span id='info'>重新绑定中，请耐心等待...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
+                var index = layer.alert(element, {
+                    skin: 'layui-layer-lan',
+                    closeBtn: 0,
+                    title: "提醒",
+                    btn: []
+                });
+                $.ajax({
+                    url: "@routes.UserController.changePhone()",
+                    type: "post",
+                    dataType: "json",
+                    data: form.serialize(),
+                    success: function (data) {
+                        if (data.valid === "false") {
+                            layer.close(index);
+                            swal({
+                                title: "错误",
+                                text: data.message,
+                                type: "error",
+                                confirmButtonText: "确认"
+                            })
+                        } else {
+                            layer.close(index);
+                            window.location.href = "/CloudPlatform/User/signInSuccess?path=" + path + "&id=" + data.id;
+                        }
+                    }
+                });
+            }
+        }
+
+        //修改个人信息
+        function changeDe() {
+            var form = $("#changeDetailForm");
+            var fv = form.data("formValidation");
+            fv.validate();
+            if (fv.isValid()) {
+                // console.log(222);
+                var element = "<div id='content'><span id='info'>修改中，请耐心等待...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
+                var index = layer.alert(element, {
+                    skin: 'layui-layer-lan',
+                    closeBtn: 0,
+                    title: "提醒",
+                    btn: []
+                });
+                $.ajax({
+                    url: "/CloudPlatform/User/changeDetail",
+                    type: "post",
+                    dataType: "json",
+                    data: form.serialize(),
+                    success: function (data) {
+                        console.log(data.valid);
+                        if (data.valid === "false") {
+                            layer.close(index);
+                            swal({
+                                title: "错误",
+                                text: data.message,
+                                type: "error",
+                                confirmButtonText: "确认"
+                            })
+                        } else {
+                            layer.close(index);
+                            swal({
+                                title: "修改成功",
+                                text: "修改成功!",
+                                type: 'success',
+                                confirmButtonText: "确认"
+                            }, function () {
+                                window.location.href = "/CloudPlatform/User/signInSuccess?path=" + path + "&id=" + data.id;
+                            })
+                        }
+                    }
+                });
+            }
+        }
+
+        function Verify(param,sendcode) {
+            console.log(111);
             if($("#"+param).val()==""){
                 swal({
                     title: "请输入手机号",
@@ -505,32 +699,41 @@
                     type: "warning",
                     confirmButtonText: "确认"
                 })
-            }else sendEmail($("#"+param).val(),param);
+            }else sendEmail($("#"+param).val(),param,sendcode);
         }
 
         var count = 60;
-        var curCount = 0;
-        var interValObj = 0;
+        // var curCount = 0;
+        // var interValObj = 0;
 
-        function setRemainTime() {
-            if (curCount == 0) {
-                window.clearInterval(interValObj);
-                $(".sendcode").val("重发验证码").attr("disabled", false).css("background","white");
-            } else {
-                curCount -= 1;
-                $(".sendcode").val("重新发送（" + curCount + "s）");
-            }
-        }
+        // function setRemainTime() {
+        //     if (curCount == 0) {
+        //         window.clearInterval(interValObj);
+        //         $(".sendcode").val("重发验证码").attr("disabled", false).css("background","white");
+        //     } else {
+        //         curCount -= 1;
+        //         $(".sendcode").val("重新发送（" + curCount + "s）");
+        //     }
+        // }
 
-        function sendEmail(phone,param) {
+        function sendEmail(phone,param,sendcode) {
+            console.log(222);
             $.ajax({
                 url: "/CloudPlatform/Utils/sendMSG?phone="+phone+"&where="+param,
                 type: "post",
                 success: function (data) {
                     if (data.valid === "true") {
-                        curCount = count;
-                        $(".sendcode").val("重新发送（" + curCount + "）").attr("disabled", true).css("background","#dfdfdf");
-                        interValObj = window.setInterval(setRemainTime, 1000);
+                        var curCount = count;
+                        $("#"+sendcode).val("重新发送（" + curCount + "）").attr("disabled", true).css("background","#dfdfdf");
+                        var interValObj = window.setInterval(function () {
+                            if (curCount == 0) {
+                                window.clearInterval(interValObj);
+                                $("#"+sendcode).val("重发验证码").attr("disabled", false).css("background","white");
+                            } else {
+                                curCount -= 1;
+                                $("#"+sendcode).val("重新发送（" + curCount + "s）");
+                            }
+                        }, 1000);
                         swal({
                             title: "短信发送成功",
                             text: "短信发送成功,验证码有效期10分钟！",

@@ -59,6 +59,10 @@
     background: url(../images/softpic/Jvenn.png) 50% center no-repeat;
     background-size: contain;
 }
+.VennChart{
+    background: url(../images/softpic/Jvenn.png) 50% center no-repeat;
+    background-size: contain;
+}
 
 
 
@@ -828,3 +832,7 @@
 .cloud-img{
     background: url("../images/cloud.png");
 }
+
+/*.mainpadding{*/
+/*    padding-top: 47px;*/
+/*}*/

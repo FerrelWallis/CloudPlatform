@@ -238,8 +238,7 @@
                     <a id="btn-refresh" class="btn_refresh mws-i-24 i-refresh-3" onclick="refresh('@abbre')">刷新状态</a>
                     <ul id="hisul" style="margin-top: 15px">
                         <li id="hislist" class="hislist">
-                            <div class="his_name"><span>任务编号</span></div>
-                            <div class="his_time"><span>提交时间</span></div>
+                            <div class="his_time"><span>任务编号</span></div>
                             <div class="his_time"><span style="margin-left: -20px;">结束时间</span></div>
                             <div class="his_name"><span style="margin-left: -23px;">状态</span></div>
                             <hr>
@@ -439,45 +438,6 @@
                                     // type: 'image/jpeg,image/png',
                                     maxSize: 5*1024*1024,
                                     message: '文件不得大于5M！'
-                                }
-                            }
-                        }
-                    }
-                });
-                $('#passwordForm').formValidation({
-                    framework: 'bootstrap',
-                    icon: {
-                        valid: 'glyphicon glyphicon-ok',
-                        invalid: 'glyphicon glyphicon-remove',
-                        validating: 'glyphicon glyphicon-refresh'
-                    },
-                    fields: {
-                        password1: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入新密码！'
-                                },
-                                stringLength: {
-                                    min: 6,
-                                    message: '请输入至少六位密码！'
-                                }
-                            }
-                        },
-                        password2: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入确认密码！'
-                                },
-                                identical: {
-                                    field: 'password1',
-                                    message: '两次密码不一致!'
-                                }
-                            }
-                        },
-                        validnumber: {
-                            validators: {
-                                notEmpty: {
-                                    message: "请输入验证码！"
                                 }
                             }
                         }

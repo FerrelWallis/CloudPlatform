@@ -28,7 +28,6 @@
                         <input id="mytaskname" type="text" class="form-control" name="taskname" placeholder="" value="">
                     </div>
                 </div>
-
                 <br><br>
                 <div id="div1" class="one-line">
                     <div class="form-group-p" style="width: 465px">
@@ -40,12 +39,198 @@
                         </div>
                     </div>
                     <div class="form-group-extra">
-                        <em><a href="/CloudPlatform/SoftTool/downloadExamples?name=Heatmap.data">示例文件</a></em><span class="must" style="margin-left: 10px">*</span>&nbsp;&nbsp;
+                        <em><a href="/CloudPlatform/SoftTool/downloadExamples?name=heatmap.xls">示例文件</a></em><span class="must" style="margin-left: 10px">*</span>&nbsp;&nbsp;
                     </div>
                     <br>
                     <br>
                 </div>
-
+                <div class="form-group-p">
+                    <div class="form-group">
+                        <label>是否对行聚类：</label>
+                    </div>
+                    <div class="form-group">
+                        <select id="cluster_rows" name="cluster_rows" onchange="clurow()">
+                            <option value="FALSE">不聚类</option>
+                            <option value="TRUE">自动聚类</option>
+                            <option value="file">上传聚类信息文件</option>
+                        </select>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <div id="autoclur" class="one-line" style="display: none">
+                    <div class="form-group-p">
+                        <div class="form-group">
+                            <label>自动行聚类方法：</label>
+                        </div>
+                        <div class="form-group">
+                            <select id="crm" name="crm">
+                                <option value="complete">complete</option>
+                                <option value="single">single</option>
+                                <option value="ward.D">ward</option>
+                                <option value="average">average</option>
+                                <option value="mcquitty">mcquitty</option>
+                            </select>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                </div>
+                <div id="clur" class="one-line" style="display: none">
+                    <div class="form-group-p" style="width: 500px">
+                        <div class="form-group">
+                            <label for="exampleInputName0">
+                                行聚类文件：
+                            </label>
+                        </div>
+                        <div class="form-group" style="width: 350px;display: inline-block">
+                            <input type="file" class="form-control file" id="table2" name="table2">
+                        </div>
+                        <div class="form-group-extra">
+                            <em><a href="/CloudPlatform/SoftTool/downloadExamples?name=heat_inputrow.tre">示例文件</a></em>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                </div>
+                <div class="form-group-p">
+                    <div class="form-group">
+                        <label>是否对列聚类：</label>
+                    </div>
+                    <div class="form-group">
+                        <select id="cluster_cols" name="cluster_cols" onchange="clucol()">
+                            <option value="FALSE">不聚类</option>
+                            <option value="TRUE">自动聚类</option>
+                            <option value="file">上传聚类信息文件</option>
+                        </select>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <div id="autocluc" class="one-line" style="display: none">
+                    <div class="form-group-p">
+                        <div class="form-group">
+                            <label>自动列聚类方法：</label>
+                        </div>
+                        <div class="form-group">
+                            <select id="ccm" name="ccm">
+                                <option value="complete">complete</option>
+                                <option value="single">single</option>
+                                <option value="ward.D">ward</option>
+                                <option value="average">average</option>
+                                <option value="mcquitty">mcquitty</option>
+                            </select>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                </div>
+                <div id="cluc" class="one-line" style="display: none">
+                    <div class="form-group-p" style="width: 500px">
+                        <div class="form-group">
+                            <label for="exampleInputName0">
+                                列聚类文件：
+                            </label>
+                        </div>
+                        <div class="form-group" style="width: 350px;display: inline-block">
+                            <input type="file" class="form-control file" id="table3" name="table3">
+                        </div>
+                        <div class="form-group-extra">
+                            <em><a href="/CloudPlatform/SoftTool/downloadExamples?name=heat_inputcol.tre">示例文件</a></em>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                </div>
+                <div class="form-group-p">
+                    <div class="form-group">
+                        <input type="checkbox" name="isgroupr" id="isgroupr" class="form-control" style="height: 13px;width: auto;float: left;margin-top: 3px;">&nbsp;&nbsp;
+                    </div>
+                    <span class="pointer" >是否行分组</span>
+                </div>
+                <br>
+                <div id="groupr" class="one-line" style="display: none;">
+                    <div class="form-group-p" style="width: 500px">
+                        <div class="form-group">
+                            <label for="exampleInputName0">
+                                行分组文件：
+                            </label>
+                        </div>
+                        <div class="form-group" style="width: 350px;display: inline-block">
+                            <input type="file" class="form-control file" id="table4" name="table4" onchange="checkGroupRow()">
+                        </div>
+                        <div class="form-group-extra">
+                            <em><a href="/CloudPlatform/SoftTool/downloadExamples?name=heat_rowgroup.xls">示例文件</a></em>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                </div>
+                <div class="form-group-p">
+                    <div class="form-group">
+                        <input type="checkbox" name="isgroupc" id="isgroupc" class="form-control" style="height: 13px;width: auto;float: left;margin-top: 3px;">&nbsp;&nbsp;
+                    </div>
+                    <span class="pointer" >是否列分组</span>
+                </div>
+                <br>
+                <div id="groupc" class="one-line" style="display: none;">
+                    <div class="form-group-p" style="width: 500px">
+                        <div class="form-group">
+                            <label for="exampleInputName0">
+                                列分组文件：
+                            </label>
+                        </div>
+                        <div class="form-group" style="width: 350px;display: inline-block">
+                            <input type="file" class="form-control file" id="table5" name="table5" onchange="checkGroupCol()">
+                        </div>
+                        <div class="form-group-extra">
+                            <em><a href="/CloudPlatform/SoftTool/downloadExamples?name=heat_colgroup.xls">示例文件</a></em>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                </div>
+                <div id="groupr" class="one-line" style="display: none;">
+                    <div class="form-group-p" style="width: 500px">
+                        <div class="form-group">
+                            <label for="exampleInputName0">
+                                行分组文件：
+                            </label>
+                        </div>
+                        <div class="form-group" style="width: 350px;display: inline-block">
+                            <input type="file" class="form-control file" id="table3" name="table3" onchange="checkGroupfile()">
+                        </div>
+                        <div class="form-group-extra">
+                            <em><a href="/CloudPlatform/SoftTool/downloadExamples?name=CCA_group.txt">示例文件</a></em>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                </div>
+                <div class="form-group-p">
+                    <div class="form-group">
+                        <input type="checkbox" name="istag" id="istag" class="form-control" style="height: 13px;width: auto;float: left;margin-top: 3px;">&nbsp;&nbsp;
+                    </div>
+                    <span class="pointer" >是否自定义格子标签</span>
+                </div>
+                <br>
+                <div id="showtag" class="one-line" style="display: none;">
+                    <div class="form-group-p" style="width: 500px">
+                        <div class="form-group">
+                            <label for="exampleInputName0">
+                                标签文件：
+                            </label>
+                        </div>
+                        <div class="form-group" style="width: 350px;display: inline-block">
+                            <input type="file" class="form-control file" id="table6" name="table6" onchange="checkTag()">
+                        </div>
+                        <div class="form-group-extra">
+                            <em><a href="/CloudPlatform/SoftTool/downloadExamples?name=heat_tag.xls">示例文件</a></em>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                </div>
                 <div class="panel panel-default">
                     <div class="panel-heading" data-toggle="collapse" href="#collapseOne">
                         <h4 class="panel-title">
@@ -58,25 +243,18 @@
                         <div class="panel-body">
                             <div class="form-group-p">
                                 <div class="form-group">
-                                    <label for="format">选择用于作图的列：</label>
-                                    <input type="text" name="col" id="col" value="" placeholder="如1,2,3,4,5" class="form-control input-sm" style="width:200px;">
+                                    <label for="format">选择用于作图的行：</label>
+                                    <input type="text" name="inr" id="inr" value="" placeholder="如1,2,3,4,5" class="form-control input-sm" style="width:200px;">
                                 </div>
                             </div>
                             <br><br>
                             <div class="form-group-p">
                                 <div class="form-group">
-                                    <label>归一化：</label>
-                                </div>
-                                <div class="form-group">
-                                    <select name="scale">
-                                        <option value="column">column</option>
-                                        <option value="row">row</option>
-                                        <option value="none">none</option>
-                                    </select>
+                                    <label for="format">选择用于作图的列：</label>
+                                    <input type="text" name="inc" id="inc" value="" placeholder="如1,2,3,4,5" class="form-control input-sm" style="width:200px;">
                                 </div>
                             </div>
-                            <br>
-                            <br>
+                            <br><br>
                             <div class="form-group-p">
                                 <div class="form-group">
                                     <label>是否取lg：</label>
@@ -89,58 +267,31 @@
                                     </select>
                                 </div>
                             </div>
-                            <br>
-                            <br>
+                            <br><br>
                             <div class="form-group-p">
                                 <div class="form-group">
-                                    <label>是否对行聚类：</label>
+                                    <label>归一化：</label>
                                 </div>
                                 <div class="form-group">
-                                    <select name="cluster_rows">
-                                        <option value="FALSE">no</option>
-                                        <option value="TRUE">yes</option>
+                                    <select name="sc">
+                                        <option value="none">none</option>
+                                        <option value="col">column</option>
+                                        <option value="row">row</option>
                                     </select>
                                 </div>
                             </div>
-                            <br>
-                            <br>
-                            <div class="form-group-p">
-                                <div class="form-group">
-                                    <label>是否对列聚类：</label>
-                                </div>
-                                <div class="form-group">
-                                    <select name="cluster_cols">
-                                        <option value="FALSE">no</option>
-                                        <option value="TRUE">yes</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <br>
-                            <br>
-
+                            <br><br>
                             <div class="form-group">
                                 <label>颜色：<span style="font-size:small;">&nbsp;(从左到右，代表数值越来越大)</span>
                                 </label>
                             </div>
                             <div class="form-group">
-                                <select name="color" id="color" style="width: 150px">
-                                    <option value="#1E90FF:#FFFFFF:#E41A1C">蓝,白,红</option>
+                                <select name="color" id="color" style="width: 170px">
+                                    <option value="#E41A1C:#1E90FF:#FF8C00:#4DAF4A:#984EA3:#40E0D0">浅蓝-紫-绿-橙-蓝-红</option>
+                                    <option value="#1E90FF:#FFFFFF:#E41A1C">蓝-白-红</option>
                                     <option value="black:red">黑-红</option>
-                                    <option value="green:red:yellow">绿-红-黄</option>
-                                    <option value="purple:black:yellow">紫-黑-黄</option>
                                     <option value="green:black:red">绿-黑-红</option>
-                                    <option value="darkblue:darkgreen:yellow:darkred">深蓝-墨绿-黄-深红</option>
                                 </select>
-                            </div>
-                            <br>
-                            <br>
-                            <div class="form-group-p">
-                                <div class="form-group">
-                                    <label for="format">XY轴字体大小：</label>
-                                    <input type="text" name="xfs" id="xfs" value="10" placeholder="" class="form-control input-sm" style="width:40px;">
-                                    :
-                                    <input type="text" name="yfs" id="yfs" value="10" placeholder="" class="form-control input-sm" style="width:40px;">
-                                </div>
                             </div>
                             <br>
                             <br>
@@ -150,19 +301,6 @@
                                 </div>
                                 <div class="form-group">
                                     <select name="hasnum">
-                                        <option value="FALSE">no</option>
-                                        <option value="TRUE">yes</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <br>
-                            <br>
-                            <div class="form-group-p">
-                                <div class="form-group">
-                                    <label>画出格子的边界：</label>
-                                </div>
-                                <div class="form-group">
-                                    <select id="hasborder" name="hasborder">
                                         <option value="FALSE">no</option>
                                         <option value="TRUE">yes</option>
                                     </select>
@@ -196,6 +334,19 @@
                             </div>
                             <br>
                             <br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label>画出格子的边界：</label>
+                                </div>
+                                <div class="form-group">
+                                    <select id="hasborder" name="hasborder">
+                                        <option value="white">yes</option>
+                                        <option value="none">no</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <br>
+                            <br>
                         </div>
                     </div>
                 </div>
@@ -210,82 +361,153 @@
 
         <div class="mysoft-content-right" style="width: 279px;box-sizing: border-box!important;">
             <ul class="nav nav-tabs">
-                <li class="active" id="out_tab1">
-                    <a href="###" data-target="#example" data-toggle="tab">示例结果</a>
-                </li>
-                <li class="" id="ins_tab1">
+                <li class="active" id="ins_tab1">
                     <a href="###" data-target="#instruction" data-toggle="tab">使用说明</a>
+                </li>
+                <li class="" id="out_tab1">
+                    <a href="###" data-target="#example" data-toggle="tab">示例结果</a>
                 </li>
                 <li class="" id="his_tab1">
                     <a href="#" data-target="#history" data-toggle="tab">Heatmap历史任务</a>
                 </li>
             </ul>
             <div class="tab-content" style="box-sizing: border-box!important;">
+                <div class="tab-pane fade active in" id="instruction">
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>1.背景介绍</strong></span><br>
+                        GO（Gene Ontology）数据库由基因本体论联合会建立，该数据库将全世界所有与基因有关的研究结果进行分类汇总。对不同数据库中关于基因和基因产物的生物学术语进行标准化，对基因和蛋白功能进行统一的限定和描述。利用GO数据库，可以从BP（Biological Process,生物过程）、MF（Molecular Function,分子功能）和CC（Cellular Component,细胞组分）三个方面对基因和基因产物进行分类注释。
+                        <br>
+                    </p>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>2.操作方法</strong></span>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/go1.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;padding-left: 44%">
+                        操作界面
+                    </p>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>2.1.上传基因数据文件</strong></span><br>
+                        可以选择输入文件或手动输入两种上传数据的方式，云平台支持两种数据格式：仅富集的Geneid列表或基因表达差异分析结果，输入文件必须为txt格式文件，示例文件如下。
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/go2.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;padding-left: 34%">
+                        图1. 仅包含富集的geneid
+                    </p>
+                    <img src="/assets/images/softpic/instruction/go3.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        图2. 基因差异表达分析结果（geneid列输入富集的geneid，logFC列为差异倍数取log2，大于0表示基因上调，小于0表示基因下调）
+                    </p>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>2.2.选择背景基因文件</strong></span><br>
+                        背景基因文件可以分为有参考基因组和无参考基因组两种情况。
+                        <br>
+                    </p>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;">1）有参考基因组</span><br>
+                        选择“2：使用已有参考”条目，下拉菜单中提供的物种有水稻、拟南芥、小鼠、大鼠、斑马鱼、鸡、秀丽线虫、果蝇、人等模式物种。选择完成后点击提交即可。
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/go4.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;">2）无参考基因组</span><br>
+                        非模式物种没有参考基因组可以选择，需要自备GO背景基因文件，文件格式必须为txt，示例文件如下，第一行为基因id，第二行为该基因对应的所有GO号，以“;”分隔
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/go5.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        将文件上传到“3:背景基因文件”中，点击“提交”即可
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/go6.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>2.3.查看任务</strong></span><br>
+                        提交任务后，点击界面右侧的“GO历史任务”模块，可以看到任务编号、提交时间、结束时间和状态。
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/go7.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        通过点击界面“我的任务”可以查看任务编号、软件名称和状态等信息，点击任务编号，即可查看分析结果。
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/go8.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        在任务详情界面，展示的是任务参数、结果文件列表和在线调整图片3个区域，提供结果文件下载和图片调整功能。
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/go9.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>3.结果调整</strong></span><br>
+                        云平台提供在线调整图片功能，可以通过调整显示行数、条形宽度、图片大小、添加自定义颜色等参数，调整GO富集分析柱状图图片展示效果，调整完成后点击“绘制”，即可生成新图片，新图片可以在下载区域进行下载。
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/go10.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>4.结果解读</strong></span><br>
+                        <span style="font-weight:700;"><strong>4.1.GO富集分析柱状图</strong></span><br>
+                        纵坐标为GO三个大类的下一层级的GO term，横坐标为注释到该term下(包括该term的子 term)的差异基因个数。 3种不同分类表示Go term的三种基本分类(按颜色分类分别为MF、CC和BP)
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/go11.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>4.2.GO富集分析结果图</strong></span><br>
+                        GO富集程度通过Rich factor、pvalue和富集到此term上的基因个数来衡量。其中Rich factor指差异表达的基因中位于该term条目的基因数目与所有有注释基因中位于该pathway条目的基因总数的比值。pvalue的取值范围为[0-1]，越接近于零，表示富集越显著。
+                        <br>
+                        纵轴表示term名称，横轴表示term对应的Rich factor，qvalue的大小用点的颜色来表示，qvalue越小则颜色越接近红色，每个pathway下包含的差异基因的多少用点的大小来表示。
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/go12.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
 
-                <div class="tab-pane fade active in" id="example">
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>4.3.GO富集分析结果</strong></span><br>
+                        (1) ID:GO 名<br>
+                        (2) enrichment:是否富集，e:显著富集<br>
+                        (3) description:GO 具体功能描述<br>
+                        (4) ratio_in_study:该 GO 下差异基因数量/总差异基因数量<br>
+                        (5) ratio_in_pop: 该 GO 下总基因数量/总基因数量<br>
+                        (6) p_uncorrected:富集分析统计学显著水平<br>
+                        (7) p_fdr: fdr 方法矫正后的统计学显著水平该通路的具体网络链接<br>
+                        (8) Namespace:GO 通路类型<br>
+                        (9) genes_in_study: 在该 GO 下的具体差异基因信息<br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/go13.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                </div>
+                <div class="tab-pane fade" id="example">
                     <h5>输出结果：heatmap热图</h5>
                     <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/heatmap_example.png" alt="生物云平台">
                 </div>
-                <div class="tab-pane fade" id="instruction">
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;">功能：</span><br>
-                        用一个带有表头的以tab分隔的表格数据绘制一个热图。
-                    </p>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;">输入：</span>
-                    </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        ① 矩阵文件:文件为二维矩阵文件，第一行一般为样本，第一列为基因名
-                    </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        ② 列的参数:即选择用哪几列画图。
-                    </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        ③ 行的参数:可以数字输入前多少行作为绘图数据或输入基因名文件。
-                    </p>
-                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">上传文件格式说明：格式如下，数据与数据之间务必用制表符(tab符)隔开,可以选择在Excel中打开，然后另存为以tab键分隔的.txt文件。</span><br>
-                    <img class="img-rounded img-thumbnail img-responsive" src="https://www.omicshare.com/tools/Public/help/heatmapfilein.png" alt="生物云平台" style="height:auto;"><span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span><br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;">参数：</span>
-                    </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        可选输入
-                    </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        ① 归一化（z-score）处理，选择列，或者行，或者不处理，一般选择行。
-                    </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        ② 颜色选择，一般选择green,black,red或者navy,white,firebrick3。也可以在调色板里选择任意颜色。
-                    </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        ③ 字体大小选择，默认为10px。
-                    </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        ④ 矩阵格子的长度和高度，默认为自适应，也可以设置为25X12。
-                    </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        ⑤ 是否在格子上显示数字，默认不显示。
-                    </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        ⑥ 是否在格子上显示边界，默认不显示。
-                    </p>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;">输出：</span>
-                    </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        程序将按要求输出热图，提供PNG和PDF格式的文件下载
-                    </p>
-                    <p>
-                        <br>
-                    </p>						</div>
                 <div id="history" class="form1_ins tab-pane fade">
                     <a id="btn-refresh" class="btn_refresh mws-i-24 i-refresh-3" onclick="refresh('@abbre')">刷新状态</a>
                     <ul id="hisul" style="margin-top: 15px">
                         <li id="hislist" class="hislist">
-                            <div class="his_name"><span>任务编号</span></div>
-                            <div class="his_time"><span>提交时间</span></div>
+                            <div class="his_time"><span>任务编号</span></div>
                             <div class="his_time"><span style="margin-left: -20px;">结束时间</span></div>
                             <div class="his_name"><span style="margin-left: -23px;">状态</span></div>
                             <hr>
@@ -310,6 +532,13 @@
             });
 
             var flagtable=true;
+            var flaggroupRow=true;
+            var flaggroupCol=true;
+            var flagTag=true;
+            var row=0;
+            var col=0;
+            var colsample;
+            var rowsample;
 
             function checkTable() {
                 var reader=new FileReader();
@@ -317,11 +546,24 @@
                 reader.onload=function () {
                     let text=reader.result;
                     let line=text.trim().split('\n');
-                    sample=line[0].trim().split('\t');
-                    var length=sample.length;
+                    row=line.length-1;
+                    colsample=line[0].trim().split('\t');
+                    col=colsample.length-1;
+                    var length=colsample.length;
+                    rowsample=[];
                     for(let i in line){
                         var r=parseInt(i)+1;
                         let row=line[i].trim().split('\t');
+                        if(rowsample.indexOf(row[0])>=0){
+                            flagtable=false;
+                            swal({
+                                title: "矩阵文件错误",
+                                text: "矩阵文件第"+r+"行基因名重复存在，请核实！",
+                                type: "warning",
+                                confirmButtonText: "确认"
+                            });
+                            return false;
+                        }else rowsample.push(row[0]);
                         var name=[];
                         if(row.length!=length){
                             flagtable=false;
@@ -365,10 +607,279 @@
                 };
             }
 
+            function checkGroupRow() {
+                if($("#isgroupr").prop("checked")){
+                    if($("#table1").val()==""){
+                        flaggroupRow=false;
+                        var file = document.getElementById('table4');
+                        file.value = '';
+                        $(".file-caption-name").attr("title","");
+                        swal({
+                            title: "请先上传矩阵文件",
+                            text: "请先上传矩阵文件！",
+                            type: "warning",
+                            confirmButtonText: "确认"
+                        });
+                        return;
+                    }
+                    if($("#table4").val()!=""){
+                        var reader=new FileReader();
+                        reader.readAsText(document.getElementById('table4').files[0],"UTF-8");
+                        reader.onload=function () {
+                            let text=reader.result;
+                            let line=text.trim().split('\n');
+                            var name=[];
+                            for(let i in line) {
+                                if(i!=0){
+                                    let row=line[i].trim().split('\t');
+                                    var r=parseInt(i)+1;
+                                    if(rowsample.indexOf(row[0])<0){
+                                        flaggroupRow=false;
+                                        swal({
+                                            title: "行分组文件格式错误",
+                                            text: "行分组文件第"+r+"行样品名不存在，请核对矩阵文件！",
+                                            type: "warning",
+                                            confirmButtonText: "确认"
+                                        });
+                                        return;
+                                    }
+                                    if(name.indexOf(row[0])>=0){
+                                        flaggroupRow=false;
+                                        swal({
+                                            title: "行分组文件错误",
+                                            text: "行分组文件第"+r+"行样品名重复存在，请核实！",
+                                            type: "warning",
+                                            confirmButtonText: "确认"
+                                        });
+                                        return;
+                                    }else name.push(row[0]);
+                                }
+                            }
+                            flaggroupRow=true;
+                        };
+                    }else flaggroupRow=true;
+                }else flaggroupRow=true;
+            }
+
+            function checkGroupCol() {
+                if($("#isgroupc").prop("checked")) {
+                    if($("#table1").val()==""){
+                        flaggroupCol=false;
+                        var file = document.getElementById('table5');
+                        file.value = '';
+                        $(".file-caption-name").attr("title","");
+                        swal({
+                            title: "请先上传矩阵文件",
+                            text: "请先上传矩阵文件！",
+                            type: "warning",
+                            confirmButtonText: "确认"
+                        });
+                        return;
+                    }
+                    if($("#table5").val()!=""){
+                        var reader=new FileReader();
+                        reader.readAsText(document.getElementById('table5').files[0],"UTF-8");
+                        reader.onload=function () {
+                            let text=reader.result;
+                            let line=text.trim().split('\n');
+                            var name=[];
+                            for(let i in line) {
+                                if(i!=0){
+                                    let row=line[i].trim().split('\t');
+                                    var r=parseInt(i)+1;
+                                    if(colsample.indexOf(row[0])<0){
+                                        flaggroupCol=false;
+                                        swal({
+                                            title: "列分组文件格式错误",
+                                            text: "列分组文件第"+r+"行样品名不存在，请核对矩阵文件！",
+                                            type: "warning",
+                                            confirmButtonText: "确认"
+                                        });
+                                        return;
+                                    }
+                                    if(name.indexOf(row[0])>=0){
+                                        flaggroupCol=false;
+                                        swal({
+                                            title: "列分组文件错误",
+                                            text: "列分组文件第"+r+"行样品名重复存在，请核实！",
+                                            type: "warning",
+                                            confirmButtonText: "确认"
+                                        });
+                                        return;
+                                    }else name.push(row[0]);
+                                }
+                            }
+                            flaggroupCol=true;
+                        };
+                    }else flaggroupCol=true;
+                }else flaggroupCol=true;
+            }
+
+            function checkTag() {
+                if($("#istag").prop("checked")) {
+                    if($("#table1").val()==""){
+                        flagTag=false;
+                        var file = document.getElementById('table6');
+                        file.value = '';
+                        $(".file-caption-name").attr("title","");
+                        swal({
+                            title: "请先上传矩阵文件",
+                            text: "请先上传矩阵文件！",
+                            type: "warning",
+                            confirmButtonText: "确认"
+                        });
+                        return;
+                    }
+                    if($("#table6").val()!=""){
+                        var reader=new FileReader();
+                        reader.readAsText(document.getElementById('table6').files[0],"UTF-8");
+                        reader.onload=function () {
+                            let text=reader.result;
+                            let line=text.trim().split('\n');
+                            var rowname=[];
+                            for(let i in line) {
+                                let row=line[i].trim().split('\t');
+                                var r=parseInt(i)+1;
+                                if(i!=0){
+                                    if(rowsample.indexOf(row[0])<0){
+                                        flagTag=false;
+                                        swal({
+                                            title: "标签文件格式错误",
+                                            text: "标签文件第"+r+"行基因名不存在，请核对矩阵文件！",
+                                            type: "warning",
+                                            confirmButtonText: "确认"
+                                        });
+                                        return;
+                                    }
+                                    if(rowname.indexOf(row[0])>=0){
+                                        flagTag=false;
+                                        swal({
+                                            title: "标签文件错误",
+                                            text: "标签文件第"+r+"行基因名重复存在，请核实！",
+                                            type: "warning",
+                                            confirmButtonText: "确认"
+                                        });
+                                        return;
+                                    }else rowname.push(row[0]);
+
+                                }else{
+                                    var colname=[];
+                                    for(let j in row){
+                                        var c=parseInt(j)+1;
+                                        if(j!=0){
+                                            if(colsample.indexOf(row[j])<0){
+                                                flagTag=false;
+                                                swal({
+                                                    title: "标签文件格式错误",
+                                                    text: "标签文件第"+c+"列样品名不存在，请核对矩阵文件！",
+                                                    type: "warning",
+                                                    confirmButtonText: "确认"
+                                                });
+                                                return;
+                                            }
+                                            if(colname.indexOf(row[j])>=0){
+                                                flagTag=false;
+                                                swal({
+                                                    title: "标签文件错误",
+                                                    text: "标签文件第"+c+"列样品名重复存在，请核实！",
+                                                    type: "warning",
+                                                    confirmButtonText: "确认"
+                                                });
+                                                return;
+                                            }else colname.push(row[j]);
+                                        }
+                                    }
+                                }
+                            }
+                            flagTag=true;
+                        };
+                    }else flagTag=true;
+                }else flagTag=true;
+            }
+
+
             function checkRate(input) {
                 // var re = /^(-?\d+)(\.\d+)?$/;
                 var re=/^[+-]?[\d]+([\.][\d]+)?([Ee][+-]?[\d]+)?$/;//判断字符串是否为浮点数或科学计数法
                 if (!re.test(input)) {
+                    return false;
+                }else return true;
+            }
+
+            function checkrow() {
+                if($("#inr").val()!="") {
+                    var r=$("#inr").val().toString().split(",");
+                    if(r.length>row){
+                        swal({
+                            title: "作图的行格式错误",
+                            text: "用于作图的行的数量不得超过矩阵文件数据行数！当前作图的行的数量为"+r.length+"，矩阵文件数据共"+row+"行",
+                            type: "warning",
+                            confirmButtonText: "确认"
+                        });
+                        return false;
+                    }
+                    for(let rr in r){
+                        if(parseInt(r[rr])>row){
+                            swal({
+                                title: "作图的行格式错误",
+                                text: r[rr]+"超过矩阵文件行数！矩阵文件数据共"+row+"行",
+                                type: "warning",
+                                confirmButtonText: "确认"
+                            });
+                            return false;
+                        }
+                    }
+                    return true;
+                }else return true;
+            }
+
+            function checkcol() {
+                if($("#inc").val()!="") {
+                    var c=$("#inc").val().toString().split(",");
+                    if(c.length>col){
+                        swal({
+                            title: "作图的列格式错误",
+                            text: "用于作图的列的数量不得超过矩阵文件数据列数！当前作图的列的数量为"+c.length+"，矩阵文件数据共"+col+"列",
+                            type: "warning",
+                            confirmButtonText: "确认"
+                        });
+                        return false;
+                    }
+                    for(let cc in c){
+                        if(parseInt(c[cc])>col){
+                            swal({
+                                title: "作图的行格式错误",
+                                text: c[cc]+"超过矩阵文件列数！矩阵文件数据共"+col+"列",
+                                type: "warning",
+                                confirmButtonText: "确认"
+                            });
+                            return false;
+                        }
+                    }
+                    return true;
+                }else return true;
+            }
+
+            function checkgroupr() {
+                if($("#table4").val()!="" && $("#inr").val()!=""){
+                    swal({
+                        title: "错误",
+                        text: "上传行分组后，不可再选择用于做图的行！请取消上传行分组文件，或删除用于做图的行",
+                        type: "warning",
+                        confirmButtonText: "确认"
+                    });
+                    return false;
+                }else return true;
+            }
+
+            function checkgroupc() {
+                if($("#table5").val()!="" && $("#inc").val()!=""){
+                    swal({
+                        title: "错误",
+                        text: "上传列分组后，不可再选择用于做图的列！请取消上传列分组文件，或删除用于做图的列",
+                        type: "warning",
+                        confirmButtonText: "确认"
+                    });
                     return false;
                 }else return true;
             }
@@ -379,7 +890,10 @@
                 fv.validate();
                 if (fv.isValid()) {
                     checkTable();
-                    if(flagtable&&checktaskname()) {
+                    checkGroupRow();
+                    checkGroupCol();
+                    checkTag();
+                    if(flagtable&&flaggroupCol&&flaggroupRow&&flagTag&&checkcol()&&checkrow()&&checkgroupr()&&checkgroupc()&&checktaskname()) {
                         var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
                         var index = layer.alert(element, {
                             skin: 'layui-layer-lan',
@@ -391,7 +905,7 @@
                             layer.close(index);
                             var form1 = new FormData($("#heatmap")[0]);
                             $.ajax({
-                                url: "/CloudPlatform/SoftTool/runHeatmap",
+                                url: "/CloudPlatform/SoftTool/runHeatmap?isgroupr="+$("#isgroupr").prop("checked")+"&isgroupc="+$("#isgroupc").prop("checked")+"&istag="+$("#istag").prop("checked"),
                                 type: "post",
                                 processData: false,
                                 contentType: false,
@@ -404,7 +918,7 @@
                                     $("#ins_tab1").removeClass("active");
                                     $("#history").addClass("active").addClass("in");
                                     $("#example").removeClass("active");
-                                    $("#instruction1").removeClass("active");
+                                    $("#instruction").removeClass("active");
                                     getTaskName("heatmap","Heat");
                                 }
                             });
@@ -413,6 +927,59 @@
                 }
             }
 
+            function clurow() {
+                if($("#cluster_rows").val()=="file") {
+                    $("#autoclur").hide();
+                    $("#clur").show();
+                }else if($("#cluster_rows").val()=="TRUE") {
+                    console.log(111);
+                    $("#clur").hide();
+                    $("#autoclur").show();
+                } else {
+                    $("#clur").hide();
+                    $("#autoclur").hide()
+                }
+            }
+
+            function clucol() {
+                if($("#cluster_cols").val()=="file") {
+                    $("#autocluc").hide();
+                    $("#cluc").show();
+                } else if($("#cluster_cols").val()=="TRUE") {
+                    $("#cluc").hide();
+                    $("#autocluc").show();
+                } else {
+                    $("#cluc").hide();
+                    $("#autocluc").hide();
+                }
+            }
+
+            $("#isgroupr").click(function () {
+                var isSelected = this.checked;
+                if (isSelected === true) {
+                    $("#groupr").show();
+                } else {
+                    $("#groupr").hide();
+                }
+            });
+
+            $("#isgroupc").click(function () {
+                var isSelected = this.checked;
+                if (isSelected === true) {
+                    $("#groupc").show();
+                } else {
+                    $("#groupc").hide();
+                }
+            });
+
+            $("#istag").click(function () {
+                var isSelected = this.checked;
+                if (isSelected === true) {
+                    $("#showtag").show();
+                } else {
+                    $("#showtag").hide();
+                }
+            });
 
             function formValidation() {
                 $('#heatmap').formValidation({
@@ -448,62 +1015,58 @@
                                 }
                             }
                         },
-                        xfs: {
+                        table2: {
                             validators: {
                                 notEmpty: {
-                                    message: '不能为空!'
+                                    message: '必须上传行聚类文件，或选择自动聚类或不聚类!'
                                 },
-                                numeric: {
-                                    message: '必须为数字！'
+                                file: {
+                                    maxSize: 5*1024*1024,
+                                    message: '文件不得大于5M！'
                                 }
                             }
                         },
-                        yfs: {
+                        table3: {
                             validators: {
                                 notEmpty: {
-                                    message: '不能为空!'
+                                    message: '必须上传列聚类文件，或选择自动聚类或不聚类!'
                                 },
-                                numeric: {
-                                    message: '必须为数字！'
-                                }
-                            }
-                        }
-                    }
-                });
-                $('#passwordForm').formValidation({
-                    framework: 'bootstrap',
-                    icon: {
-                        valid: 'glyphicon glyphicon-ok',
-                        invalid: 'glyphicon glyphicon-remove',
-                        validating: 'glyphicon glyphicon-refresh'
-                    },
-                    fields: {
-                        password1: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入新密码！'
-                                },
-                                stringLength: {
-                                    min: 6,
-                                    message: '请输入至少六位密码！'
+                                file: {
+                                    maxSize: 5*1024*1024,
+                                    message: '文件不得大于5M！'
                                 }
                             }
                         },
-                        password2: {
+                        table4: {
                             validators: {
                                 notEmpty: {
-                                    message: '请输入确认密码！'
+                                    message: '必须上传行分组文件，或取消行分组!'
                                 },
-                                identical: {
-                                    field: 'password1',
-                                    message: '两次密码不一致!'
+                                file: {
+                                    maxSize: 5*1024*1024,
+                                    message: '文件不得大于5M！'
                                 }
                             }
                         },
-                        validnumber: {
+                        table5: {
                             validators: {
                                 notEmpty: {
-                                    message: "请输入验证码！"
+                                    message: '必须上传列分组文件，或取消列分组!'
+                                },
+                                file: {
+                                    maxSize: 5*1024*1024,
+                                    message: '文件不得大于5M！'
+                                }
+                            }
+                        },
+                        table6: {
+                            validators: {
+                                notEmpty: {
+                                    message: '必须上传格子标签文件，或取消自定义格子标签!'
+                                },
+                                file: {
+                                    maxSize: 5*1024*1024,
+                                    message: '文件不得大于5M！'
                                 }
                             }
                         }

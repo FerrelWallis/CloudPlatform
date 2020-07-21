@@ -21,6 +21,8 @@ GET           /CloudPlatform/SoftPage/Net                            controllers
 GET           /CloudPlatform/SoftPage/Venn                           controllers.SoftController.venn(abbre:String,sname:String)
 GET           /CloudPlatform/SoftPage/IGC                            controllers.SoftController.innergroup(abbre:String,sname:String)
 GET           /CloudPlatform/SoftPage/Scaplot                        controllers.SoftController.scaplot(abbre:String,sname:String)
+GET           /CloudPlatform/SoftPage/VennChart                      controllers.SoftController.vennChart(abbre:String,sname:String)
+
 
 GET           /CloudPlatform/Softwares/home/latest                   controllers.SoftController.getlatestSix
 GET           /CloudPlatform/Softwares/home/hotest                   controllers.SoftController.gethotestSix
@@ -49,9 +51,9 @@ POST          /CloudPlatform/SoftTool/runBoxplot                     controllers
 POST          /CloudPlatform/SoftTool/getBoxData                     controllers.RService.readBoxData(taskname:String)
 POST          /CloudPlatform/SoftTool/redrawBox                      controllers.RService.redrawBox(taskname:String)
 
-POST          /CloudPlatform/SoftTool/runHeatmap                     controllers.RService.doHeatmap
+POST          /CloudPlatform/SoftTool/runHeatmap                     controllers.RService.doHeatmap(isgroupr:Boolean,isgroupc:Boolean,istag:Boolean)
 POST          /CloudPlatform/SoftTool/getHeatData                    controllers.RService.readHeatData(taskname:String)
-POST          /CloudPlatform/SoftTool/redrawHeat                     controllers.RService.redrawHeatmap(taskname:String)
+POST          /CloudPlatform/SoftTool/redrawHeat                     controllers.RService.redrawHeatmap(taskname:String,rtree:String,ctree:String,xfs:String,yfs:String,sc:String)
 
 POST          /CloudPlatform/SoftTool/runCCA                         controllers.RService.doCCA(isgroup:Boolean)
 POST          /CloudPlatform/SoftTool/getCCAData                     controllers.RService.readCCAData(taskname:String)
@@ -66,6 +68,7 @@ POST          /CloudPlatform/SoftTool/getGOData                      controllers
 POST          /CloudPlatform/SoftTool/redrawGO                       controllers.RService.redrawGO(taskname:String,types:String)
 
 POST          /CloudPlatform/SoftTool/getJvennData                   controllers.RService.getJvennData
+POST          /CloudPlatform/SoftTool/getJvennData2                  controllers.RService.getJvennData2
 
 POST          /CloudPlatform/SoftTool/runIGC                         controllers.RService.doIGC
 POST          /CloudPlatform/SoftTool/getIGCData                     controllers.RService.readIGC(taskname:String)
@@ -88,9 +91,11 @@ GET           /CloudPlatform/SoftTool/download                       controllers
 GET           /CloudPlatform/SoftTool/downloadExamples               controllers.RService.downloadExamples(name:String)
 GET           /CloudPlatform/pic                                     controllers.RService.getPic(path:String,num:Double)
 
+POST          /CloudPlatform/MyTasks/getAllDutys                     controllers.DutyController.getAllDutys
 POST          /CloudPlatform/MyTasks/getDutys                        controllers.DutyController.getAllDutyById
 POST          /CloudPlatform/MyTasks/getDutysByType                  controllers.DutyController.getDutyByType(sabbrename:String)
-POST          /CloudPlatform/MyTasks/deleteDutys                     controllers.DutyController.deleteDuty(uid:String,taskname:String)
+POST          /CloudPlatform/MyTasks/deleteDutys                     controllers.DutyController.deleteDutys(ids:String)
+POST          /CloudPlatform/MyTasks/deleteDuty                      controllers.DutyController.deleteDuty(taskname:String)
 #GET           /CloudPlatform/MyTasks/taskPreview                     controllers.DutyController.taskPreview(taskname:String)
 POST          /CloudPlatform/MyTasks/checkTaskname                   controllers.DutyController.checktaskname
 
@@ -99,11 +104,13 @@ POST          /CloudPlatform/User/signIn                             controllers
 POST          /CloudPlatform/User/mailSignIn                         controllers.UserController.mailSignIn
 GET           /CloudPlatform/User/signInSuccess                      controllers.UserController.signInSuccess(path:String,id:String)
 POST          /CloudPlatform/User/changePassword                     controllers.UserController.changePassword
+POST          /CloudPlatform/User/changePhone                        controllers.UserController.changePhone
+POST          /CloudPlatform/User/changeDetail                       controllers.UserController.changeDetail
+POST          /CloudPlatform/User/getDetail                          controllers.UserController.getDetail
 GET           /CloudPlatform/User/signout                            controllers.UserController.signout
 POST          /CloudPlatform/User/addUser                            controllers.UserController.addUser
 POST          /CloudPlatform/User/addLike                            controllers.UserController.addLike(sid:String)
 POST          /CloudPlatform/User/delLike                            controllers.UserController.deleteLike(sid:String)
-
 
 
 

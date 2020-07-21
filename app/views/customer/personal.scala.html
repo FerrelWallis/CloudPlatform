@@ -110,30 +110,48 @@
                 background: #1f3851;
                 /*background: #102541;*/
             }
+        p a.mws-ic-16{
+            padding-left: 32px;
+            background-position: 12px center;
+        }
+            .persondetail .grid_1 p{
+                text-align: right;
+            }
+            .grid_1 {
+                width: 15%;
+            }
+            p {
+                margin: 0px 0px 16px 0;
+                font-size: 14px;
+            }
     </style>
 
-    <div class="container" style="margin: 0 10px;width: 98%;">
-        <div class="mws-panel  mws-collapsible">
+    <div class="container" style="margin: 0 10px;width: 98%;margin-top: 20px">
+        <div class="mws-panel  grid_5" style="width: 53%">
             <div class="mws-panel-header">
                 <span class="mws-i-24 i-user">个人资料</span>
             </div>
-            <div class="mws-panel-body">
-                <div class="mws-panel-content" style="height: 175px;background: white">
-                    <div class="grid_2">
+            <div class="mws-panel-body" style="overflow-y: hidden;height: 223px;background: white">
+                <div class="mws-panel-content">
+                    <div class="grid_1" style="width: 22%" >
                         <img src="/assets/example/profile.jpg" style="width: 161px;border-radius: 50px;">
                     </div>
-                    <div class="grid_6" style="margin-top: 1px;" >
-                        <div class="grid_3">
+                    <div class="grid_6 persondetail" style="margin-top: 1px;" >
+                        <div class="grid_1" style="width: 30%">
                             <p>用户名：</p>
                             <p>手机：</p>
                             <p>邮箱：</p>
                             <p>学校/机构/公司：</p>
                         </div>
-                        <div class="grid_5">
+                        <div class="grid_5" style="width: 60%; margin-left: 20px;">
                             <p>@session.get("userName")</p>
-                            <p>@session.get("userPhone")</p>
+                            <p>@session.get("userPhone")<a data-reveal-id="changephone" class="mws-ic-16 ic-edit1" style="margin-left: 20px"></a></p>
                             <p>@session.get("userEmail")</p>
                             <p>@session.get("userCompany")</p>
+                            <p>
+                                <a data-reveal-id="newpassword" style="margin-top: 5px; margin-left: 10px; float: right; background: #1f3851; color: white; padding: 5px 15px 5px 15px; border-radius: 6px;">修改密码</a>
+                                <a data-reveal-id="changedetail" style="margin-top: 5px; float: right; background: #1f3851; color: white; padding: 5px 15px 5px 15px; border-radius: 6px;">修改信息</a>
+                            </p>
                         </div>
                     </div>
 
@@ -141,7 +159,21 @@
             </div>
         </div>
 
-        <div class="mws-panel  mws-collapsible">
+        <div class="mws-panel grid_3" style="width: 42%">
+            <div class="mws-panel-header">
+                <span class="mws-i-24 i-favorite">我的收藏</span>
+            </div>
+            <div class="mws-panel-body" style="height: 223px;overflow-y: scroll;background: white">
+                <div class="mws-panel-content" style="">
+                    <div id="likelist" style="padding: 1em 0em 1em 1em;">
+                        <ul id="like" class="ui-widget ui-helper-clearfix">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mws-panel  mws-collapsible grid_8">
             <div class="mws-panel-header">
                 <span class="mws-i-24 i-clipboard-1">任务记录</span>
             </div>
@@ -160,19 +192,7 @@
             </div>
         </div>
 
-        <div class="mws-panel  mws-collapsible">
-            <div class="mws-panel-header">
-                <span class="mws-i-24 i-favorite">我的收藏</span>
-            </div>
-            <div class="mws-panel-body" style="height: 200px;overflow-y: scroll;background: white">
-                <div class="mws-panel-content" style="">
-                    <div id="likelist" style="padding: 1em 0em 1em 1em;">
-                        <ul id="like" class="ui-widget ui-helper-clearfix">
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
+
 
         <div class="clear"></div>
 
@@ -270,6 +290,79 @@
                         }
                     },
                     validnumber: {
+                        validators: {
+                            notEmpty: {
+                                message: "请输入验证码！"
+                            }
+                        }
+                    }
+                }
+            });
+            $('#changePhoneForm').formValidation({
+                framework: 'bootstrap',
+                icon: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                fields: {
+                    newphone: {
+                        validators: {
+                            notEmpty: {
+                                message: '请输入新手机号！'
+                            },
+                            phone:{
+                                message: '请输入正确手机号',
+                                country: 'CN'
+                            }
+                        }
+                    },
+                    oldcode: {
+                        validators: {
+                            notEmpty: {
+                                message: "请输入验证码！"
+                            }
+                        }
+                    },
+                    newcode: {
+                        validators: {
+                            notEmpty: {
+                                message: "请输入验证码！"
+                            }
+                        }
+                    }
+                }
+            });
+            $('#changeDetailForm').formValidation({
+                framework: 'bootstrap',
+                icon: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                fields: {
+                    name: {
+                        validators: {
+                            notEmpty: {
+                                message: '不能为空！'
+                            }
+                        }
+                    },
+                    email: {
+                        validators: {
+                            notEmpty: {
+                                message: '不能为空！'
+                            }
+                        }
+                    },
+                    company: {
+                        validators: {
+                            notEmpty: {
+                                message: "不能为空！"
+                            }
+                        }
+                    },
+                    code: {
                         validators: {
                             notEmpty: {
                                 message: "请输入验证码！"

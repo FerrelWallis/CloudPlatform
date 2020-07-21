@@ -37,7 +37,7 @@
 
         <!--JavaScript-->
         <script type="text/javascript" src="@routes.Assets.versioned("bootstrap/js/jquery-3.1.1.min.js")"></script>
-        <script type="text/javascript" src="@routes.Assets.versioned("bootstrap/js/bootstrap.js")"></script>
+@*        <script type="text/javascript" src="@routes.Assets.versioned("bootstrap/js/bootstrap.js")"></script>*@
 
             <!--主页下导航栏,个人中心-->
         <script type="text/javascript" src="@routes.Assets.versioned("js/mws.js")"></script>
@@ -90,8 +90,8 @@
                         <li><a onclick="checklog('/CloudPlatform/PersonalCenter')"  class="mws-i-24 i-single-user">个人中心</a></li>
                         <li>
                             <a href="#"  class="mws-i-24 i-blocks-images">软件中心</a>
-                            <ul style="padding-top: 8px;padding-bottom: 5px;">
-                                <li><a href="/CloudPlatform/allsoft?types=li_like">我的收藏</a></li>
+                            <ul style="padding-top: 8px;padding-bottom: 5px;height: 272px">
+                                <li style="margin-top: 10px"><a href="/CloudPlatform/allsoft?types=li_like">我的收藏</a></li>
                                 <li><a href="/CloudPlatform/allsoft?types=li_allsoft">所有软件</a></li>
                                 <li><a href="/CloudPlatform/allsoft?types=li_function">功能分析</a></li>
                                 <li><a href="/CloudPlatform/allsoft?types=li_cluster">聚类分析</a></li>
@@ -119,6 +119,7 @@
                 $(function () {
                     createCode();
                     formValidation();
+
                 });
 
                 function checklog(url) {
@@ -128,6 +129,8 @@
                         window.location.href = url;
                     }
                 };
+
+
 
                 $(".handler").mouseover(function () {
                     $(this).css("background","url(/assets/images/handler2.png) no-repeat");

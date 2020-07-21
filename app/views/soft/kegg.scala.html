@@ -163,25 +163,18 @@
             <div class="handler"></div>
             <div class="mysoft-content-right" style="width: 320px;">
                 <ul class="nav nav-tabs nav-tabs-right">
-                    <li class="active">
-                        <a href="###" data-target="#example" data-toggle="tab">示例结果</a>
-                    </li>
-                    <li class="">
+                    <li class="active" id="ins_tab1">
                         <a href="###" data-target="#instruction" data-toggle="tab">使用说明</a>
+                    </li>
+                    <li class="" id="out_tab1">
+                        <a href="###" data-target="#example" data-toggle="tab">示例结果</a>
                     </li>
                     <li class="" id="his_tab1">
                         <a href="#" data-target="#history" data-toggle="tab">KEGG历史任务</a>
                     </li>
                 </ul>
                 <div class="tab-content" style="box-sizing: border-box!important;">
-                    <div class="tab-pane fade active in" id="example">
-                        <span style="color:red;">示例文件1，示例文件2 皆为大豆基因数据</span>
-                        <br><br>
-                        <h5>输出结果：</h5>
-                        <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/ko_example1.png">
-                        <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/ko_example2.png">
-                    </div>
-                    <div class="tab-pane fade" id="instruction">
+                    <div class="tab-pane fade active in" id="instruction">
                         <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
                             <span style="font-weight:700;">功能：</span><br>
                             在生物体内，不同基因相互协调行使其生物学功能，基于Pathway的分析有助于更进一步了解基因的生物学功能。KEGG是有关Pathway的主要公共数据库。 Pathway显著性富集分析以KEGG Pathway为单位，应用超几何检验，找出与整个基因组背景相比，在差异表达基因中显著性富集的Pathway。<br>
@@ -235,12 +228,18 @@
                         <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
                             ④out.htm： 网页格式结果<span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">。</span>
                         </p>                        </div>
+                    <div class="tab-pane fade" id="example">
+                        <span style="color:red;">示例文件1，示例文件2 皆为大豆基因数据</span>
+                        <br><br>
+                        <h5>输出结果：</h5>
+                        <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/ko_example1.png">
+                        <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/ko_example2.png">
+                    </div>
                     <div id="history" class="form1_ins tab-pane fade">
                         <a id="btn-refresh" class="btn_refresh mws-i-24 i-refresh-3" onclick="refresh('@abbre')">刷新状态</a>
                         <ul id="hisul" style="margin-top: 15px">
                             <li id="hislist" class="hislist">
-                                <div class="his_name"><span>任务编号</span></div>
-                                <div class="his_time"><span>提交时间</span></div>
+                                <div class="his_time"><span>任务编号</span></div>
                                 <div class="his_time"><span style="margin-left: -20px;">结束时间</span></div>
                                 <div class="his_name"><span style="margin-left: -23px;">状态</span></div>
                                 <hr>
@@ -355,7 +354,7 @@
                     fv.validate();
                     if (fv.isValid()) {
                         checkTablefile();
-                        if(flagtable) {
+                        if(flagtable&&checktaskname()) {
                             var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
                             var index = layer.alert(element, {
                                 skin: 'layui-layer-lan',
@@ -380,7 +379,7 @@
                                         $("#ins_tab1").removeClass("active");
                                         $("#history").addClass("active").addClass("in");
                                         $("#example").removeClass("active");
-                                        $("#instruction1").removeClass("active");
+                                        $("#instruction").removeClass("active");
                                         getTaskName("KEGG","KEG");
                                     }
                                 });
@@ -469,45 +468,6 @@
                                 validators: {
                                     notEmpty: {
                                         message: '必须上传背景基因文件!'
-                                    }
-                                }
-                            }
-                        }
-                    });
-                    $('#passwordForm').formValidation({
-                        framework: 'bootstrap',
-                        icon: {
-                            valid: 'glyphicon glyphicon-ok',
-                            invalid: 'glyphicon glyphicon-remove',
-                            validating: 'glyphicon glyphicon-refresh'
-                        },
-                        fields: {
-                            password1: {
-                                validators: {
-                                    notEmpty: {
-                                        message: '请输入新密码！'
-                                    },
-                                    stringLength: {
-                                        min: 6,
-                                        message: '请输入至少六位密码！'
-                                    }
-                                }
-                            },
-                            password2: {
-                                validators: {
-                                    notEmpty: {
-                                        message: '请输入确认密码！'
-                                    },
-                                    identical: {
-                                        field: 'password1',
-                                        message: '两次密码不一致!'
-                                    }
-                                }
-                            },
-                            validnumber: {
-                                validators: {
-                                    notEmpty: {
-                                        message: "请输入验证码！"
                                     }
                                 }
                             }

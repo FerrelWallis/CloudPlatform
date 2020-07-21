@@ -21,15 +21,6 @@
         display: inline-flex;
         padding: 9px 0 0 0;
     }
-    .mysoft-content-left .form-group-p .right-form-group input:not([type="radio"]):not([type="checkbox"]), .mysoft-content-left .form-group-p .right-form-group select, .mysoft-content-left .form-group-p .form-group:nth-child(2) input:not([type="radio"]):not([type="checkbox"]), .mysoft-content-left .form-group-p .form-group:nth-child(2) select {
-        width: 100%;
-        height: 32px;
-    }
-    .mysoft-content-left .form-group-extra .input-sm {
-        width: 40%;
-        height: 35px;
-        border-bottom: 1px solid #dfe0de;
-    }
 </style>
 
     <div class="col-md-12 mysoft-content" style="width: 98%">
@@ -110,18 +101,81 @@
         <div class="handler"></div>
         <div class="mysoft-content-right" style="width: 460px;">
             <ul class="nav nav-tabs">
-                <li class="active">
-                    <a href="###" data-target="#example" data-toggle="tab">示例结果</a>
-                </li>
-                <li class="">
+                <li class="active" id="ins_tab1">
                     <a href="###" data-target="#instruction" data-toggle="tab">使用说明</a>
+                </li>
+                <li class="" id="out_tab1">
+                    <a href="###" data-target="#example" data-toggle="tab">示例结果</a>
                 </li>
                 <li class="" id="his_tab1">
                     <a href="#" data-target="#history" data-toggle="tab">Boxplot历史任务</a>
                 </li>
             </ul>
             <div class="tab-content" style="box-sizing: border-box!important;">
-                <div class="tab-pane fade active in" id="example">
+                <div class="tab-pane fade active in" id="instruction">
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>1.背景介绍</strong></span><br>
+                        箱线图是利用数据中的五个统计量：最小值、第一四分位数、中位数、第三四分位数与最大值来描述数据的一种方法，它也可以粗略地看出数据是否具有有对称性，分布的分散程度等信息，可以用于对几个样本的比较。
+                        <br>
+                    </p>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>2.操作方法</strong></span>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/box1.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;padding-left: 44%">
+                        操作界面
+                    </p>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>2.1.输入文件</strong></span><br>
+                        输入文件必须是以tab键分割的txt文件，示例文件如下：
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/box2.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>2.2.设置参数</strong></span><br>
+                        上传文件后，选择绘图参数，可选参数包括是否绘制数据点和设定y轴的范围，设定好参数后，点击“提交”即可
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/box3.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>2.3.查看任务</strong></span><br>
+                        提交任务后，点击界面右侧的“boxplot历史任务”模块，可以看到任务编号、提交时间、结束时间和状态。通过点击界面“我的任务”也可以查看任务编号、软件名称和状态等信息，点击任务编号，即可查看分析结果。
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/box4.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        在任务详情界面，展示的是任务参数、结果文件列表和在线调整图片3个区域，提供结果文件下载和图片调整功能。
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/box5.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>3.示例图片</strong></span><br>
+                        生成的图片根据设置的参数不同会出现差异，示例图片如下，参数选择绘制数据点，y轴范围为1-100。
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/box6.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>4.结果文件</strong></span><br>
+                        结果文件仅包含生成的箱线图pdf格式文件，但是该图可以通过以下参数进行在线调整。
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/box7.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                </div>
+                <div class="tab-pane fade" id="example">
                     <h3 style="margin-bottom: 10px;">输出类型1:</h3>
                     <h5 style="margin-bottom: 2px">示例参数: </h5>
                     <p>1. 是否绘制数据点：no</p>
@@ -136,34 +190,11 @@
                     <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/boxplot_example2.png" alt="生物云平台">
 
                 </div>
-                <div class="tab-pane fade" id="instruction">
-                    <p>
-                        <strong>
-                            功能：</strong>
-                        <br>
-                        用一个带有表头的，且以tab符分隔的表格数据绘制一个盒型图
-                    </p>
-                    <br>
-                    <p><strong>输入：</strong><br>上传文件格式说明：格式如下，数据与数据之间务必用制表符隔开(tab符)，不能用空格，制图时将以第一行为x轴</p>
-                    <br>
-                    <strong>参数：</strong>
-                    <p></p>
-                    <p>
-                    ①自定义颜色：不填的话用系统默认颜色。填写的话，要注意颜色数量要与文件个数相等，①添加/修改颜色用十六进制格式或英文书写(如有三个输入文件，那么可以定义black,green,red或#000000,#008000,#FF0000，注意每个颜色要用逗号隔开)， ② 还有另外一种添加颜色的方法：右边有调色板可以选取需要的颜色，点击带颜色小方格，选中需要的颜色后然后点击添加改颜色按钮就增加了一个颜色。                            </p>
-                    <p>②y取值范围：最小值--最大值</p>
-                    <p></p>
-                    <br>
-                    <p><strong>输出：</strong></p>
-                    <p>程序将输出盒型图，提供常见图片格式的图片下载</p>
-                    <br>
-                    <p></p>
-                </div>
                 <div id="history" class="form1_ins tab-pane fade">
                     <a id="btn-refresh" class="btn_refresh mws-i-24 i-refresh-3" onclick="refresh('@abbre')">刷新状态</a>
                     <ul id="hisul" style="margin-top: 15px">
                         <li id="hislist" class="hislist">
-                            <div class="his_name"><span>任务编号</span></div>
-                            <div class="his_time"><span>提交时间</span></div>
+                            <div class="his_time"><span>任务编号</span></div>
                             <div class="his_time"><span style="margin-left: -20px;">结束时间</span></div>
                             <div class="his_name"><span style="margin-left: -23px;">状态</span></div>
                             <hr>
@@ -347,45 +378,6 @@
                             validators: {
                                 numeric: {
                                     message: '必须为数字！'
-                                }
-                            }
-                        }
-                    }
-                });
-                $('#passwordForm').formValidation({
-                    framework: 'bootstrap',
-                    icon: {
-                        valid: 'glyphicon glyphicon-ok',
-                        invalid: 'glyphicon glyphicon-remove',
-                        validating: 'glyphicon glyphicon-refresh'
-                    },
-                    fields: {
-                        password1: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入新密码！'
-                                },
-                                stringLength: {
-                                    min: 6,
-                                    message: '请输入至少六位密码！'
-                                }
-                            }
-                        },
-                        password2: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入确认密码！'
-                                },
-                                identical: {
-                                    field: 'password1',
-                                    message: '两次密码不一致!'
-                                }
-                            }
-                        },
-                        validnumber: {
-                            validators: {
-                                notEmpty: {
-                                    message: "请输入验证码！"
                                 }
                             }
                         }

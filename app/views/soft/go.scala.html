@@ -162,75 +162,156 @@
         <div class="handler"></div>
         <div class="mysoft-content-right" style="width: 320px;">
             <ul class="nav nav-tabs nav-tabs-right">
-                <li class="active">
-                    <a href="###" data-target="#example" data-toggle="tab">示例结果</a>
-                </li>
-                <li class="">
+                <li class="active" id="ins_tab1">
                     <a href="###" data-target="#instruction" data-toggle="tab">使用说明</a>
+                </li>
+                <li class="" id="out_tab1">
+                    <a href="###" data-target="#example" data-toggle="tab">示例结果</a>
                 </li>
                 <li class="" id="his_tab1">
                     <a href="#" data-target="#history" data-toggle="tab">GO历史任务</a>
                 </li>
             </ul>
             <div class="tab-content" style="box-sizing: border-box!important;">
-                <div class="tab-pane fade active in" id="example">
+                <div class="tab-pane fade active in" id="instruction">
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>1.背景介绍</strong></span><br>
+                        GO（Gene Ontology）数据库由基因本体论联合会建立，该数据库将全世界所有与基因有关的研究结果进行分类汇总。对不同数据库中关于基因和基因产物的生物学术语进行标准化，对基因和蛋白功能进行统一的限定和描述。利用GO数据库，可以从BP（Biological Process,生物过程）、MF（Molecular Function,分子功能）和CC（Cellular Component,细胞组分）三个方面对基因和基因产物进行分类注释。
+                        <br>
+                    </p>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>2.操作方法</strong></span>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/go1.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;padding-left: 44%">
+                        操作界面
+                    </p>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>2.1.上传基因数据文件</strong></span><br>
+                        可以选择输入文件或手动输入两种上传数据的方式，云平台支持两种数据格式：仅富集的Geneid列表或基因表达差异分析结果，输入文件必须为txt格式文件，示例文件如下。
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/go2.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;padding-left: 34%">
+                        图1. 仅包含富集的geneid
+                    </p>
+                    <img src="/assets/images/softpic/instruction/go3.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        图2. 基因差异表达分析结果（geneid列输入富集的geneid，logFC列为差异倍数取log2，大于0表示基因上调，小于0表示基因下调）
+                    </p>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>2.2.选择背景基因文件</strong></span><br>
+                        背景基因文件可以分为有参考基因组和无参考基因组两种情况。
+                        <br>
+                    </p>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;">1）有参考基因组</span><br>
+                        选择“2：使用已有参考”条目，下拉菜单中提供的物种有水稻、拟南芥、小鼠、大鼠、斑马鱼、鸡、秀丽线虫、果蝇、人等模式物种。选择完成后点击提交即可。
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/go4.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;">2）无参考基因组</span><br>
+                        非模式物种没有参考基因组可以选择，需要自备GO背景基因文件，文件格式必须为txt，示例文件如下，第一行为基因id，第二行为该基因对应的所有GO号，以“;”分隔
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/go5.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        将文件上传到“3:背景基因文件”中，点击“提交”即可
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/go6.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>2.3.查看任务</strong></span><br>
+                        提交任务后，点击界面右侧的“GO历史任务”模块，可以看到任务编号、提交时间、结束时间和状态。
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/go7.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        通过点击界面“我的任务”可以查看任务编号、软件名称和状态等信息，点击任务编号，即可查看分析结果。
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/go8.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        在任务详情界面，展示的是任务参数、结果文件列表和在线调整图片3个区域，提供结果文件下载和图片调整功能。
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/go9.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>3.结果调整</strong></span><br>
+                        云平台提供在线调整图片功能，可以通过调整显示行数、条形宽度、图片大小、添加自定义颜色等参数，调整GO富集分析柱状图图片展示效果，调整完成后点击“绘制”，即可生成新图片，新图片可以在下载区域进行下载。
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/go10.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>4.结果解读</strong></span><br>
+                        <span style="font-weight:700;"><strong>4.1.GO富集分析柱状图</strong></span><br>
+                        纵坐标为GO三个大类的下一层级的GO term，横坐标为注释到该term下(包括该term的子 term)的差异基因个数。 3种不同分类表示Go term的三种基本分类(按颜色分类分别为MF、CC和BP)
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/go11.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>4.2.GO富集分析结果图</strong></span><br>
+                        GO富集程度通过Rich factor、pvalue和富集到此term上的基因个数来衡量。其中Rich factor指差异表达的基因中位于该term条目的基因数目与所有有注释基因中位于该pathway条目的基因总数的比值。pvalue的取值范围为[0-1]，越接近于零，表示富集越显著。
+                        <br>
+                        纵轴表示term名称，横轴表示term对应的Rich factor，qvalue的大小用点的颜色来表示，qvalue越小则颜色越接近红色，每个pathway下包含的差异基因的多少用点的大小来表示。
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/go12.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>4.3.GO富集分析结果</strong></span><br>
+                        (1) ID:GO 名<br>
+                        (2) enrichment:是否富集，e:显著富集<br>
+                        (3) description:GO 具体功能描述<br>
+                        (4) ratio_in_study:该 GO 下差异基因数量/总差异基因数量<br>
+                        (5) ratio_in_pop: 该 GO 下总基因数量/总基因数量<br>
+                        (6) p_uncorrected:富集分析统计学显著水平<br>
+                        (7) p_fdr: fdr 方法矫正后的统计学显著水平该通路的具体网络链接<br>
+                        (8) Namespace:GO 通路类型<br>
+                        (9) genes_in_study: 在该 GO 下的具体差异基因信息<br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/go13.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                </div>
+                <div class="tab-pane fade" id="example">
                     <span style="color:red;">示例文件1，示例文件2 皆为大豆基因数据</span>
                     <br><br>
                     <h5>结果输出：</h5>
                     <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/go_example1.png">
                     <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/go_example2.png">
                 </div>
-                <div class="tab-pane fade" id="instruction">
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>功能：</strong></span><br>
-                        Gene Ontology（简称GO）是一个国际标准化的基因功能分类体系，提供了一套动态更新的标准词汇表（controlled vocabulary）来全面描述生物体中基因和基因产物的属性。GO总共有三个ontology（本体），分别描述基因的分子功能（molecular function）、细胞组分（cellular component）、参与的生物过程（biological process）。GO的基本单位是term（词条、节点），每个term都对应一个属性。GO功能分析一方面给出差异表达基因的GO功能分类注释；另一方面给出差异表达基因的GO功能显著性富集分析。 首先，我们将差异表达基因向GO数据库(http://www.geneontology.org/)的各term映射，并计算每个term的基因数，从而得到具有某个GO功能的基因列表及基因数目统计。然后应用超几何检验，找出与整个基因组背景相比，在差异表达基因中显著富集的GO条目。
-                        <br>
-                    </p>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>输入：</strong></span>
-                    </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        ①输入的表格文件，必须为txt格式。可以选择在excel中将数据打开，然后另存为"文本文件(制表符分隔)(*.txt)"。
-                        <span style="color:red;">也可以输入两列，diff是差异结果，第二列为差异倍数取log2，大于0上调，小于0下调，此时参数应选择diff。</span>
-                    </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        ②富集的目的基因列表，即想要研究的基因列表，每行第一列为基因id，基因id要包含在背景基因表中。
-                    </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        ③背景基因总表，如果是有参考基因组的模式生物，可以直接使用已有参考基因作为背景基因文件。目前提供的物种有水稻、拟南芥、小鼠、大鼠、斑马鱼、鸡、秀丽线虫、果蝇、人。ID类型可选择基因ID或转录本ID，根据富集目的基因的ID类型决定。可以点击“预览参考文件”来查看具体ID。
-                        <br>
-                        如果所研究物种不在以上范围，则需要自行准备GO背景基因文件。现在支持两种格式。第一种：格式为第一列为基因id，第二列为GO注释结果。第二种：同一个基因的所有GO号会在同一行并列给出。任务提交后，程序会自动判断处理。如下图所示：
-                    </p>
-                    <img class="img-rounded img-thumbnail img-responsive" src="https://www.omicshare.com/tools/Public/help/go2_1.png" alt="生物云平台" style="height:auto;"><span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"> </span><img class="img-rounded img-thumbnail img-responsive" src="https://www.omicshare.com/tools/Public/help/go2_2.png" alt="生物云平台" style="height:auto;"><span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span><br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <br>
-                    </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>输出：</strong></span>
-                    </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        ①out.[PFC].html: 网页格式结果，3个分别对应GO的3个主要分类。
-                    </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        ②out.[PFC].xls： 基因的GO功能分类统计结果。
-                    </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        ③out.[PFC].png：基因的GO功能分类结果统计图
-                    </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        ④out.secLevel2.svg/png：为GO二级分类统计图，统计了用于富集的基因在GO 的二级分类中占各个分类的数量，统计结果在xls表中。表格内容包括，Ontology，Class（GO的二级分类），基因数，具体基因id。
-                    </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        ⑤out.level2.xls: GO第二级分类统计
-                    </p>
-                </div>
                 <div id="history" class="form1_ins tab-pane fade">
                     <a id="btn-refresh" class="btn_refresh mws-i-24 i-refresh-3" onclick="refresh('@abbre')">刷新状态</a>
                     <ul id="hisul" style="margin-top: 15px">
                         <li id="hislist" class="hislist">
-                            <div class="his_name"><span>任务编号</span></div>
-                            <div class="his_time"><span>提交时间</span></div>
+                            <div class="his_time"><span>任务编号</span></div>
                             <div class="his_time"><span style="margin-left: -20px;">结束时间</span></div>
                             <div class="his_name"><span style="margin-left: -23px;">状态</span></div>
                             <hr>
@@ -344,7 +425,7 @@
                 fv.validate();
                 if (fv.isValid()) {
                     checkTablefile();
-                    if(flagtable){
+                    if(flagtable&&checktaskname()){
                         var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
                         var index = layer.alert(element, {
                             skin: 'layui-layer-lan',
@@ -369,7 +450,7 @@
                                     $("#ins_tab1").removeClass("active");
                                     $("#history").addClass("active").addClass("in");
                                     $("#example").removeClass("active");
-                                    $("#instruction1").removeClass("active");
+                                    $("#instruction").removeClass("active");
                                     getTaskName("GO","GO");
                                 }
                             });
@@ -463,45 +544,6 @@
                     }
                 }
             });
-                $('#passwordForm').formValidation({
-                    framework: 'bootstrap',
-                    icon: {
-                        valid: 'glyphicon glyphicon-ok',
-                        invalid: 'glyphicon glyphicon-remove',
-                        validating: 'glyphicon glyphicon-refresh'
-                    },
-                    fields: {
-                        password1: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入新密码！'
-                                },
-                                stringLength: {
-                                    min: 6,
-                                    message: '请输入至少六位密码！'
-                                }
-                            }
-                        },
-                        password2: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入确认密码！'
-                                },
-                                identical: {
-                                    field: 'password1',
-                                    message: '两次密码不一致!'
-                                }
-                            }
-                        },
-                        validnumber: {
-                            validators: {
-                                notEmpty: {
-                                    message: "请输入验证码！"
-                                }
-                            }
-                        }
-                    }
-                });
             }
 
             var ta1="Geneid\n" + "Glyma.01G006000\n" + "Glyma.01G011500\n" + "Glyma.01G011900\n" + "Glyma.01G012100\n" +

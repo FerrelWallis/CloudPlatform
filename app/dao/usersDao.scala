@@ -45,6 +45,14 @@ class usersDao @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
     db.run(Users.filter(_.id === Integer.parseInt(id)).map(_.like).update(like)).map(_=>())
   }
 
+  def updatePhone(id:String,newphone:String) : Future[Unit] = {
+    db.run(Users.filter(_.id === Integer.parseInt(id)).map(_.phone).update(newphone)).map(_=>())
+  }
+
+  def updateDetail(phone:String,name:String,email:String,company:String): Future[Unit]={
+    db.run(Users.filter(_.phone ===phone).map(x=>(x.name,x.email,x.company)).update(name,email,company)).map(_=>())
+  }
+
   def getLike(id:String) : Future[String] = {
     db.run(Users.filter(_.id === Integer.parseInt(id)).map(_.like).result.head)
   }

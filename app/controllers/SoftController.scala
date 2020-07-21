@@ -52,6 +52,10 @@ class SoftController @Inject()(cc: ControllerComponents,softdao:softDao,userdao:
     Ok(views.html.soft.jvenn(abbre,sname))
   }
 
+  def vennChart(abbre:String,sname:String)=Action{implicit request=>
+    Ok(views.html.soft.vennChart(abbre,sname))
+  }
+
   def innergroup(abbre:String,sname:String)=Action{implicit request=>
     Ok(views.html.soft.innerGroupCorrelation(abbre,sname))
   }
@@ -59,6 +63,8 @@ class SoftController @Inject()(cc: ControllerComponents,softdao:softDao,userdao:
   def scaplot(abbre:String,sname:String)=Action{implicit request=>
     Ok(views.html.soft.scatterplots(abbre,sname))
   }
+
+
 
   //test below
   def softpage=Action{implicit request=>

@@ -1019,7 +1019,8 @@ input[type=checkbox], input[type=radio] {
 
 /*å·¥å…·é¡µé¢*/
 .mysoft-content {
-    height: 840px
+    height: 840px;
+    margin-top:5px;
 }
 
 div.handler {

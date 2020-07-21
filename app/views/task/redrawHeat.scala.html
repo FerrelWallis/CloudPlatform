@@ -38,8 +38,98 @@
                         <div class="redraw-right" style="width: 40%;float: left;margin-bottom: 30px;">
                             <div class="form-group-p">
                                 <div class="form-group">
+                                    <label>热图显示部分：</label>
+                                </div>
+                                <div class="form-group right">
+                                    <select id="smt" name="smt" style="width: 100px;">
+                                        <option value="full">全部</option>
+                                        <option value="left">左半边</option>
+                                        <option value="right">右半边</option>
+                                        <option value="top">上半边</option>
+                                        <option value="bottom">下半边</option>
+                                        <option value="topTriangle">右上三角</option>
+                                        <option value="bottomTriangle ">左下三角</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label>是否对行聚类：</label>
+                                </div>
+                                <div class="form-group right">
+                                    <select id="cluster_rows" name="cluster_rows" onchange="showr()" style="width: 200px;">
+                                        <option value="FALSE">不聚类</option>
+                                        <option value="TRUE">自动聚类</option>
+                                        <option value="file">使用上传的聚类信息文件</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group-p" id="showautorow" style="display: none">
+                                <div class="form-group">
+                                    <label>自动行聚类方法：</label>
+                                </div>
+                                <div class="form-group">
+                                    <select id="crm" name="crm" style="width: 100px;">
+                                        <option value="complete">complete</option>
+                                        <option value="single">single</option>
+                                        <option value="ward.D">ward</option>
+                                        <option value="average">average</option>
+                                        <option value="mcquitty">mcquitty</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group-p" id="showrow" style="display: none">
+                                <div class="form-group" style="margin-top: 5px;">
+                                    <label for="">行聚类分割数(1-</label><label id="rnum"></label><label>)：</label>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="rp" name="rp" class="form-control" placeholder="数字" value="1" style="width: 50px;float: left;margin-right: 5px;margin-top: 5px">
+                                </div>
+                            </div>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label>是否对列聚类：</label>
+                                </div>
+                                <div class="form-group right">
+                                    <select id="cluster_cols" name="cluster_cols" onchange="showc()" style="width: 200px;">
+                                        <option value="FALSE">不聚类</option>
+                                        <option value="TRUE">自动聚类</option>
+                                        <option value="file">使用上传的聚类信息文件</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group-p" id="showautocol" style="display: none">
+                                <div class="form-group">
+                                    <label>自动列聚类方法：</label>
+                                </div>
+                                <div class="form-group">
+                                    <select id="ccm" name="ccm" style="width: 100px;">
+                                        <option value="complete">complete</option>
+                                        <option value="single">single</option>
+                                        <option value="ward.D">ward</option>
+                                        <option value="average">average</option>
+                                        <option value="mcquitty">mcquitty</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group-p" id="showcol" style="display: none">
+                                <div class="form-group" style="margin-top: 5px;">
+                                    <label for="">列聚类分割数(1-</label><label id="cnum"></label><label>)：</label>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="cp" name="cp" class="form-control" placeholder="数字" value="1" style="width: 50px;float: left;margin-right: 5px;margin-top: 5px">
+                                </div>
+                            </div>
+                            <div class="form-group-p" id="showinr">
+                                <div class="form-group">
+                                    <label for="format">选择用于作图的行：</label>
+                                    <input type="text" name="inr" id="inr" value="" placeholder="如1,2,3,4,5" class="form-control input-sm" style="width:200px;display: inline-block">
+                                </div>
+                            </div>
+                            <div class="form-group-p" id="showinc">
+                                <div class="form-group">
                                     <label for="format">选择用于作图的列：</label>
-                                    <input type="text" name="col" id="col" value="" placeholder="如1,2,3,4,5" class="form-control input-sm" style="width:200px;">
+                                    <input type="text" name="inc" id="inc" value="" placeholder="如1,2,3,4,5" class="form-control input-sm" style="width:200px;display: inline-block">
                                 </div>
                             </div>
                             <div class="form-group-p">
@@ -47,8 +137,8 @@
                                     <label>归一化：</label>
                                 </div>
                                 <div class="form-group right">
-                                    <select id="scale" name="scale">
-                                        <option value="column">column</option>
+                                    <select id="sc" name="sc">
+                                        <option value="col">column</option>
                                         <option value="row">row</option>
                                         <option value="none">none</option>
                                     </select>
@@ -68,64 +158,14 @@
                             </div>
                             <div class="form-group-p">
                                 <div class="form-group">
-                                    <label>是否对行聚类：</label>
-                                </div>
-                                <div class="form-group right">
-                                    <select id="cluster_rows" name="cluster_rows" onchange="showr()" style="width: 45%;">
-                                        <option value="FALSE">no</option>
-                                        <option value="TRUE">yes</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group-p" id="showrow" style="display: none">
-                                <div class="form-group" style="margin-top: 5px;">
-                                    <label for="">行聚类分割数(1-</label><label id="rnum"></label><label>)：</label>
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" id="rp" name="rp" class="form-control" placeholder="数字" value="1" style="width: 50px;float: left;margin-right: 5px;margin-top: 5px">
-                                </div>
-                            </div>
-                            <div class="form-group-p">
-                                <div class="form-group">
-                                    <label>是否对列聚类：</label>
-                                </div>
-                                <div class="form-group right">
-                                    <select id="cluster_cols" name="cluster_cols" onchange="showc()" style="width: 45%;">
-                                        <option value="FALSE">no</option>
-                                        <option value="TRUE">yes</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group-p" id="showcol" style="display: none">
-                                <div class="form-group" style="margin-top: 5px;">
-                                    <label for="">列聚类分割数(1-</label><label id="cnum"></label><label>)：</label>
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" id="cp" name="cp" class="form-control" placeholder="数字" value="1" style="width: 50px;float: left;margin-right: 5px;margin-top: 5px">
-                                </div>
-                            </div>
-                            <div class="form-group-p">
-                                <div class="form-group" style="margin-top: 5px;">
-                                    <label for="">行 X 列聚类树高度：</label>
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" id="rtree" name="rtree" class="form-control" placeholder="数字" value="50" style="width: 50px;float: left;margin-right: 5px;margin-top: 5px">
-                                    <label style="float: left;margin-top: 12px;">X</label>
-                                    <input type="text" id="ctree" name="ctree" class="form-control" placeholder="数字" value="50" onblur="ylim();" style="width: 50px;  margin-left: 5px;float: left;margin-top: 5px;margin-right: 20px">
-                                </div>
-                            </div>
-                            <div class="form-group-p">
-                                <div class="form-group">
                                     <label>颜色：<span style="font-size:small;">&nbsp;(数值从小到大)</span></label>
                                 </div>
                                 <div class="form-group" style="width: 150px;">
                                     <select name="color" id="color" onchange="show()" style="width: 100%;">
-                                        <option value="#1E90FF:#FFFFFF:#E41A1C">蓝,白,红</option>
+                                        <option value="#E41A1C:#1E90FF:#FF8C00:#4DAF4A:#984EA3:#40E0D0">浅蓝-紫-绿-橙-蓝-红</option>
+                                        <option value="#1E90FF:#FFFFFF:#E41A1C">蓝-白-红</option>
                                         <option value="black:red">黑-红</option>
-                                        <option value="green:red:yellow">绿-红-黄</option>
-                                        <option value="purple:black:yellow">紫-黑-黄</option>
                                         <option value="green:black:red">绿-黑-红</option>
-                                        <option value="darkblue:darkgreen:yellow:darkred">深蓝-墨绿-黄-深红</option>
                                         <option value="0">手动输入</option>
                                     </select>
                                 </div>
@@ -134,7 +174,7 @@
                                 <div style="border: 1px solid lightgrey;border-radius: 5px;padding: 10px;margin-left: 30px">
                                     <div class="form-group-p" style="padding-left: 0">
                                         <div style="width: 100%;margin-left: 10px">
-                                            <label>自定义颜色（2-5个）：</label>
+                                            <label>自定义颜色（2-6个）：</label>
                                         </div>
                                     </div>
                                     <br><br>
@@ -162,14 +202,14 @@
                                     <input type="text" id="cc" name="cc" class="form-control" placeholder="数字" value="30" style="width: 50px;float: left;margin-right: 5px;">
                                 </div>
                             </div>
-                            <div class="form-group-p">
-                                <div class="form-group" style="margin-top: 5px;">
-                                    <label for="">XY 轴字体大小：</label>
+                            <div class="form-group-p" id="nacolor">
+                                <div class="form-group">
+                                    <label>缺失值数据颜色：</label>
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" id="xfs" name="xfs" class="form-control" placeholder="数字" value="10" style="width: 50px;float: left;margin-right: 5px;margin-top: 5px">
-                                    <label style="float: left;margin-top: 12px;">：</label>
-                                    <input type="text" id="yfs" name="yfs" class="form-control" placeholder="数字" value="10" style="width: 50px;  margin-left: 5px;float: left;margin-top: 5px;margin-right: 20px">
+                                    <div  class="evo-cp-wrap">
+                                        <input id="nc"  name="nc" value="" class="colorPicker evo-cp0" readonly="readonly">
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group-p">
@@ -178,30 +218,19 @@
                                 </div>
                                 <div class="form-group right">
                                     <select name="hasborder" style="width: 45%;" id="hasborder" onchange="bordercolor()">
-                                        <option value="FALSE">no</option>
-                                        <option value="TRUE">yes</option>
+                                        <option value="none">no</option>
+                                        <option value="white">yes</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group-p" style="display:none;" id="borcolor">
                                 <div class="form-group">
-                                    <label>边界颜色</label>
+                                    <label>边界颜色：</label>
                                 </div>
                                 <div class="form-group">
                                     <div  class="evo-cp-wrap">
-                                        <input id="colorborder"  name="colorborder" value="" class="colorPicker evo-cp0" readonly="readonly">
+                                        <input id="cbc"  name="cbc" value="" class="colorPicker evo-cp0" readonly="readonly">
                                     </div>
-                                </div>
-                            </div>
-                            <div class="form-group-p">
-                                <div class="form-group">
-                                    <label>在格子上显示数字：</label>
-                                </div>
-                                <div class="form-group right">
-                                    <select id="hasnum" name="hasnum" style="width: 45%;">
-                                        <option value="FALSE">no</option>
-                                        <option value="TRUE">yes</option>
-                                    </select>
                                 </div>
                             </div>
                             <div class="form-group-p">
@@ -226,6 +255,37 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label>格子上显示数字：</label>
+                                </div>
+                                <div class="form-group right">
+                                    <select id="hasnum" name="hasnum" style="width: 45%;">
+                                        <option value="FALSE">no</option>
+                                        <option value="TRUE">yes</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group-p">
+                                <div class="form-group" style="margin-top: 5px;">
+                                    <label for="">行 X 列聚类树高度：</label>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="rtree" name="rtree" class="form-control" placeholder="数字" value="50" style="width: 50px;float: left;margin-right: 5px;margin-top: 5px">
+                                    <label style="float: left;margin-top: 12px;">X</label>
+                                    <input type="text" id="ctree" name="ctree" class="form-control" placeholder="数字" value="50" onblur="ylim();" style="width: 50px;  margin-left: 5px;float: left;margin-top: 5px;margin-right: 20px">
+                                </div>
+                            </div>
+                            <div class="form-group-p">
+                                <div class="form-group" style="margin-top: 5px;">
+                                    <label for="">XY 轴字体大小：</label>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="xfs" name="xfs" class="form-control" placeholder="数字" value="10" style="width: 50px;float: left;margin-right: 5px;margin-top: 5px">
+                                    <label style="float: left;margin-top: 12px;">：</label>
+                                    <input type="text" id="yfs" name="yfs" class="form-control" placeholder="数字" value="10" style="width: 50px;  margin-left: 5px;float: left;margin-top: 5px;margin-right: 20px">
+                                </div>
+                            </div>
                             <br>
                             <br>
                             <input type="button" value="绘&nbsp;&nbsp;制" name="submit" class="btn btn-primary btn-dark" onclick="DrawHeat()" style="margin-left: 30px">
@@ -244,6 +304,7 @@
 
         var colornum=0;
         var allcol=0;
+        var allrow=0;
 
             function formValidation() {
                 $('#Heatmap').formValidation({
@@ -334,180 +395,6 @@
                         }
                     }
                 });
-                $("#mailSigninForm").formValidation({
-                    framework: 'bootstrap',
-                    icon: {
-                        valid: 'glyphicon glyphicon-ok',
-                        invalid: 'glyphicon glyphicon-remove',
-                        validating: 'glyphicon glyphicon-refresh'
-                    },
-                    fields: {
-                        phone: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入账号！'
-                                }
-                            }
-                        },
-                        code: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入验证码！'
-                                }
-                            }
-                        }
-                    }
-                });
-                $("#signinForm").formValidation({
-                    framework: 'bootstrap',
-                    icon: {
-                        valid: 'glyphicon glyphicon-ok',
-                        invalid: 'glyphicon glyphicon-remove',
-                        validating: 'glyphicon glyphicon-refresh'
-                    },
-                    fields: {
-                        user: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入账号！'
-                                }
-                            }
-                        },
-                        password: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入密码！'
-                                }
-                            }
-                        },
-                        validnumber: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入验证码！'
-                                },
-                                callback: {
-                                    message: '验证码错误！',
-                                    callback: function () {
-                                        return $('#validnumber').val() === code;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
-                $('#signupForm').formValidation({
-                    framework: 'bootstrap',
-                    icon: {
-                        valid: 'glyphicon glyphicon-ok',
-                        invalid: 'glyphicon glyphicon-remove',
-                        validating: 'glyphicon glyphicon-refresh'
-                    },
-                    fields: {
-                        phone: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入手机号！'
-                                },
-                                phone:{
-                                    message: '请输入正确手机号',
-                                    country: 'CN'
-                                }
-                            }
-                        },
-                        name: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请填写姓名！'
-                                }
-                            }
-                        },
-                        email: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请填写邮箱地址！'
-                                },
-                                emailAddress:{
-                                    message:'请输入正确邮箱地址！'
-                                }
-                            }
-                        },
-                        company: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请填写单位！'
-                                }
-                            }
-                        },
-                        password: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入密码！'
-                                },
-                                stringLength: {
-                                    min: 6,
-                                    message: '请输入至少六位密码！'
-                                }
-                            }
-                        },
-                        password1: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入确认密码！'
-                                },
-                                identical: {
-                                    field: 'password',
-                                    message: '两次密码不一致!'
-                                }
-                            }
-                        },
-                        validnumber: {
-                            validators: {
-                                notEmpty: {
-                                    message: "请输入验证码！"
-                                }
-                            }
-                        }
-                    }
-                });
-                $('#passwordForm').formValidation({
-                    framework: 'bootstrap',
-                    icon: {
-                        valid: 'glyphicon glyphicon-ok',
-                        invalid: 'glyphicon glyphicon-remove',
-                        validating: 'glyphicon glyphicon-refresh'
-                    },
-                    fields: {
-                        password1: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入新密码！'
-                                },
-                                stringLength: {
-                                    min: 6,
-                                    message: '请输入至少六位密码！'
-                                }
-                            }
-                        },
-                        password2: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入确认密码！'
-                                },
-                                identical: {
-                                    field: 'password1',
-                                    message: '两次密码不一致!'
-                                }
-                            }
-                        },
-                        validnumber: {
-                            validators: {
-                                notEmpty: {
-                                    message: "请输入验证码！"
-                                }
-                            }
-                        }
-                    }
-                });
             }
 
             $(document).ready(function () {
@@ -524,6 +411,7 @@
                             $("#rnum").text(data.rnum);
                             $("#cnum").text(data.cnum);
                             allcol=data.allcol;
+                            allrow=data.allrow;
                             $.each(data.elements,function (i,v) {
                                 if(i=="color") {
                                     if(colorpattern(v)) $("#"+i).val(v);
@@ -532,20 +420,32 @@
                                         $("#inputcolor").show();
                                     }
                                     splitcolor(v);
+                                } else if(i=="nc" || i=="cbc") {
+                                    $("#"+i).colorpicker({color: v, defaultPalette: 'web'});
                                 } else $("#"+i).val(v);
                             });
+                            if(data.groupr) $("#showinr").hide();
+                            if(data.groupc) $("#showinc").hide();
                             bordercolor();
                             showr();
                             showc();
+                            $(".colorPicker").attr("readonly", "readonly");
+                            $("#borcolor .evo-cp-wrap").css("float", "left");
+                            $("#borcolor .evo-cp-wrap").css("width", "120px");
+                            $("#nacolor .evo-cp-wrap").css("float", "left");
+                            $("#nacolor .evo-cp-wrap").css("width", "120px");
                         }
                     });
                 }
             });
 
-        $("#colorborder").colorpicker({color: '#000000', defaultPalette: 'web'});
-        $(".colorPicker").attr("readonly", "readonly");
-        $("#borcolor .evo-cp-wrap").css("float", "left");
-        $("#borcolor .evo-cp-wrap").css("width", "120px");
+        // $("#cbc").colorpicker({color: '#ffffff', defaultPalette: 'web'});
+        // $("#nc").colorpicker({color: '#DDDDDD', defaultPalette: 'web'});
+        // $(".colorPicker").attr("readonly", "readonly");
+        // $("#borcolor .evo-cp-wrap").css("float", "left");
+        // $("#borcolor .evo-cp-wrap").css("width", "120px");
+        // $("#nacolor .evo-cp-wrap").css("float", "left");
+        // $("#nacolor .evo-cp-wrap").css("width", "120px");
 
             function splitcolor(param) {
                 console.log("split="+param);
@@ -581,10 +481,10 @@
         }
 
             function addcolor() {
-                if(colornum==5){
+                if(colornum==6){
                     swal({
                         title: "添加颜色失败",
-                        text: "添加失败，颜色最大数量为5个！",
+                        text: "添加失败，颜色最大数量为6个！",
                         type: "warning",
                         confirmButtonText: "确认"
                     });
@@ -619,7 +519,7 @@
                 var fv = form.data("formValidation");
                 fv.validate();
                 if (fv.isValid()) {
-                    if(checkrpcp()){
+                    if(checkrpcp()&&checkrow()&&checkcol()){
                         var element = "<div id='content'><span id='info'>绘图中，请耐心等待...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
                         var index = layer.alert(element, {
                             skin: 'layui-layer-lan',
@@ -633,34 +533,56 @@
                         $("#designcolor").val(colors.join(":"));
                         var form1 = new FormData($("#Heatmap")[0]);
                         $.ajax({
-                            url: "/CloudPlatform/SoftTool/redrawHeat?taskname=@row.taskname",
+                            url: "/CloudPlatform/SoftTool/redrawHeat?rtree="+$("#rtree").val()+"&ctree="+$("#ctree").val()+"&xfs="+$("#xfs").val()+"&yfs="+$("#yfs").val()+"&sc="+$("#sc").val()+"&taskname=@row.taskname",
                             type: "post",
                             processData: false,
                             contentType: false,
                             data: form1,
                             success: function (data) {
-                                $("#redraw_pic").attr("src","/CloudPlatform/pic?path="+data.pics+"&num="+Math.random());
-                                $("#cnum").text(data.cnum);
                                 layer.close(index);
+                                if(data.valid=="false"){
+                                    swal({
+                                        title: "错误",
+                                        text: data.message,
+                                        type: "error",
+                                        confirmButtonText: "确认"
+                                    });
+                                }else{
+                                    $("#redraw_pic").attr("src","/CloudPlatform/pic?path="+data.pics+"&num="+Math.random());
+                                    $("#cnum").text(data.cnum);
+                                    $("#rnum").text(data.rnum);
+                                }
                             }
                         });
                     }
                 }
             }
 
-
-
             function checkrpcp() {
-                if(parseInt($("#rp").val())>parseInt($("#rnum").text())){
-                    swal({
-                        title: "行聚类分割数错误",
-                        text: "行聚类分割数超过总行数！",
-                        type: "warning",
-                        confirmButtonText: "确认"
-                    });
-                    return false;
+                if($("#inr").val()==""){
+                    console.log(allrow);
+                    if(parseInt($("#rp").val())>allrow) {
+                        swal({
+                            title: "行聚类分割数错误",
+                            text: "行聚类分割数超过总行数！",
+                            type: "warning",
+                            confirmButtonText: "确认"
+                        });
+                        return false;
+                    }
+                }else{
+                    var num=$("#inr").val().toString().split(",").length;
+                    if(parseInt($("#rp").val())>num){
+                        swal({
+                            title: "行聚类分割数错误",
+                            text: "行聚类分割数超过总列数！作图行数为："+num,
+                            type: "warning",
+                            confirmButtonText: "确认"
+                        });
+                        return false;
+                    }
                 }
-                if($("#col").val()==""){
+                if($("#inc").val()==""){
                     console.log(allcol);
                     if(parseInt($("#cp").val())>allcol) {
                         swal({
@@ -672,11 +594,11 @@
                         return false;
                     }
                 }else{
-                    var num=$("#col").val().toString().split(",").length;
+                    var num=$("#inc").val().toString().split(",").length;
                     if(parseInt($("#cp").val())>num){
                         swal({
                             title: "列聚类分割数错误",
-                            text: "列聚类分割数超过总列数！作图总列数为："+num,
+                            text: "列聚类分割数超过总列数！作图列数为："+num,
                             type: "warning",
                             confirmButtonText: "确认"
                         });
@@ -688,20 +610,86 @@
 
             function bordercolor() {
                 var colorparam = $("#hasborder").val();
-                if (colorparam == "TRUE") $("#borcolor").show();
+                if (colorparam == "white") $("#borcolor").show();
                 else $("#borcolor").hide();
             }
 
         function showr() {
             var colorparam = $("#cluster_rows").val();
-            if (colorparam == "TRUE") $("#showrow").show();
-            else $("#showrow").hide();
+            if (colorparam != "FALSE") {
+                if(colorparam=="TRUE") $("#showautorow").show();
+                else $("#showautorow").hide();
+                $("#showrow").show();
+            } else {
+                $("#showautorow").hide();
+                $("#showrow").hide();
+            }
         }
 
         function showc() {
             var colorparam = $("#cluster_cols").val();
-            if (colorparam == "TRUE") $("#showcol").show();
-            else $("#showcol").hide();
+            if (colorparam != "FALSE") {
+                if(colorparam=="TRUE") $("#showautocol").show();
+                else $("#showautocol").hide();
+                $("#showcol").show();
+            } else {
+                $("#showcol").hide();
+                $("#showautocol").hide();
+            }
+        }
+
+        function checkrow() {
+            if($("#inr").val()!="") {
+                var r=$("#inr").val().toString().split(",");
+                if(r.length>allrow){
+                    swal({
+                        title: "作图的行格式错误",
+                        text: "用于作图的行的数量不得超过矩阵文件数据行数！当前作图的行的数量为"+r.length+"，矩阵文件数据共"+allrow+"行",
+                        type: "warning",
+                        confirmButtonText: "确认"
+                    });
+                    return false;
+                }
+                for(let rr in r){
+                    if(parseInt(r[rr])>allrow){
+                        swal({
+                            title: "作图的行格式错误",
+                            text: r[rr]+"超过矩阵文件行数！矩阵文件数据共"+allrow+"行",
+                            type: "warning",
+                            confirmButtonText: "确认"
+                        });
+                        return false;
+                    }
+                }
+                return true;
+            }else return true;
+        }
+
+        function checkcol() {
+            if($("#inc").val()!="") {
+                var c=$("#inc").val().toString().split(",");
+                if(c.length>allcol){
+                    swal({
+                        title: "作图的列格式错误",
+                        text: "用于作图的列的数量不得超过矩阵文件数据列数！当前作图的列的数量为"+c.length+"，矩阵文件数据共"+allcol+"列",
+                        type: "warning",
+                        confirmButtonText: "确认"
+                    });
+                    return false;
+                }
+                for(let cc in c){
+                    if(parseInt(c[cc])>allcol){
+                        swal({
+                            title: "作图的行格式错误",
+                            text: c[cc]+"超过矩阵文件列数！矩阵文件数据共"+allcol+"列",
+                            type: "warning",
+                            confirmButtonText: "确认"
+                        });
+                        return false;
+                    }
+                }
+                return true;
+            }else return true;
         }
     </script>
 

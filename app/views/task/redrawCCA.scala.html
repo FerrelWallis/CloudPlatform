@@ -262,7 +262,6 @@
     <script>
 
             function formValidation() {
-
                 $('#CCA').formValidation({
                     framework: 'bootstrap',
                     icon: {
@@ -403,180 +402,6 @@
                         }
                     }
                 });
-                $("#mailSigninForm").formValidation({
-                    framework: 'bootstrap',
-                    icon: {
-                        valid: 'glyphicon glyphicon-ok',
-                        invalid: 'glyphicon glyphicon-remove',
-                        validating: 'glyphicon glyphicon-refresh'
-                    },
-                    fields: {
-                        phone: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入账号！'
-                                }
-                            }
-                        },
-                        code: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入验证码！'
-                                }
-                            }
-                        }
-                    }
-                });
-                $("#signinForm").formValidation({
-                    framework: 'bootstrap',
-                    icon: {
-                        valid: 'glyphicon glyphicon-ok',
-                        invalid: 'glyphicon glyphicon-remove',
-                        validating: 'glyphicon glyphicon-refresh'
-                    },
-                    fields: {
-                        user: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入账号！'
-                                }
-                            }
-                        },
-                        password: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入密码！'
-                                }
-                            }
-                        },
-                        validnumber: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入验证码！'
-                                },
-                                callback: {
-                                    message: '验证码错误！',
-                                    callback: function () {
-                                        return $('#validnumber').val() === code;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
-                $('#signupForm').formValidation({
-                    framework: 'bootstrap',
-                    icon: {
-                        valid: 'glyphicon glyphicon-ok',
-                        invalid: 'glyphicon glyphicon-remove',
-                        validating: 'glyphicon glyphicon-refresh'
-                    },
-                    fields: {
-                        phone: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入手机号！'
-                                },
-                                phone:{
-                                    message: '请输入正确手机号',
-                                    country: 'CN'
-                                }
-                            }
-                        },
-                        name: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请填写姓名！'
-                                }
-                            }
-                        },
-                        email: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请填写邮箱地址！'
-                                },
-                                emailAddress:{
-                                    message:'请输入正确邮箱地址！'
-                                }
-                            }
-                        },
-                        company: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请填写单位！'
-                                }
-                            }
-                        },
-                        password: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入密码！'
-                                },
-                                stringLength: {
-                                    min: 6,
-                                    message: '请输入至少六位密码！'
-                                }
-                            }
-                        },
-                        password1: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入确认密码！'
-                                },
-                                identical: {
-                                    field: 'password',
-                                    message: '两次密码不一致!'
-                                }
-                            }
-                        },
-                        validnumber: {
-                            validators: {
-                                notEmpty: {
-                                    message: "请输入验证码！"
-                                }
-                            }
-                        }
-                    }
-                });
-                $('#passwordForm').formValidation({
-                    framework: 'bootstrap',
-                    icon: {
-                        valid: 'glyphicon glyphicon-ok',
-                        invalid: 'glyphicon glyphicon-remove',
-                        validating: 'glyphicon glyphicon-refresh'
-                    },
-                    fields: {
-                        password1: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入新密码！'
-                                },
-                                stringLength: {
-                                    min: 6,
-                                    message: '请输入至少六位密码！'
-                                }
-                            }
-                        },
-                        password2: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入确认密码！'
-                                },
-                                identical: {
-                                    field: 'password1',
-                                    message: '两次密码不一致!'
-                                }
-                            }
-                        },
-                        validnumber: {
-                            validators: {
-                                notEmpty: {
-                                    message: "请输入验证码！"
-                                }
-                            }
-                        }
-                    }
-                });
             }
 
             var colornum=0;
@@ -625,13 +450,7 @@
                 }
             });
 
-            // $('#color1').colorpicker({color: '#E41A1C', showOn: 'button', defaultPalette: 'web'});
-            // $('#color2').colorpicker({color: '#E41A1C', showOn: 'button', defaultPalette: 'web'});
-            // $('#color3').colorpicker({color: '#FF8C00', showOn: 'button', defaultPalette: 'web'});
-            // $(".colorPicker").attr("readonly", "readonly");
-            // $(".evo-cp-wrap").css("float", "left");
             $("#snamecol .evo-cp-wrap").css("width", "95px");
-
 
             function DrawCCA() {
                 var form = $("#CCA");
@@ -674,7 +493,6 @@
                 }
             }
 
-
             function checkXYCol(){
                 if($("#xdata").val()===$("#ydata").val()) return true;
                 else return false;
@@ -697,7 +515,6 @@
                 if (param == "true") $("#speci").show();
                 else $("#speci").hide();
             }
-
 
     </script>
 

@@ -16,6 +16,98 @@ object FilesUtils {
 
   def main(args: Array[String]): Unit = {
 
+    val buffer=FileUtils.readLines(new File("F:\\CloudPlatform\\files\\examples\\VennChart.txt")).asScala
+    val sample=buffer(0).split("\t")
+    val gene=buffer.map{x=>
+      x.split("\t")(0)
+    }.drop(1)
+    println(gene.toList)
+    println(sample.toList)
+    val head=FileUtils.readLines(new File("F:\\CloudPlatform\\files\\examples\\VennChartGroup.txt")).asScala
+    println(head.toList)
+
+    val char = Array("A", "B", "C", "D", "E", "F")
+
+    val result=buffer.map{x=>
+      val body=x.split("\t")
+      val gene=x.split("\t")(0)
+      val key=head.map{y=>
+        val test = y.split("&").map{z=>
+          val index=sample.indexOf(z)
+          println("z="+z)
+          println("index="+index)
+          println("body="+body(index))
+          if(body(index)!="0") z else ""
+        }
+        println(test.toList)
+        println()
+        if(!test.contains("")) char(head.indexOf(y)) else ""
+      }.mkString
+      (key,gene)
+    }.filter(r=>r._1!="")
+
+    val data = result.groupBy(_._1).map(x => x._1 -> x._2.map(_._2))
+    val name = head.zipWithIndex.map(x => char(x._2) -> x._1).toMap
+    val values = result.groupBy(_._1).map(x => x._1 -> x._2.map(_._2).length)
+
+    println(result)
+
+//        val body=head.map{x=>
+//          println(x)
+//          val col=x.split("&").map{y=>
+//            val index=sample.indexOf(y) //sample下标
+//            val line=buffer.drop(1).map{z=>
+//              val data=z.split("\t")(index+1)
+//              val name=z.split("\t")(0)
+//              if(data !="0" ) name else ""
+//            }
+//            line.filter(_!="")
+//          }
+//          println()
+//          println((x+:col.flatten).toList)
+//          println()
+//          x+:col.flatten
+//        }
+//
+//        println(body.toList)
+
+//    val result=gene.map{g=>
+//      val key=body.filter(_.contains(g)).map(z=> char(body.indexOf(z))).mkString
+//      (key,g)
+//    }
+//
+//    println(result)
+
+
+
+
+
+
+//    val body=head.map{x=>
+//      println(x)
+//      val col=x.split("&").map{y=>
+//        val index=sample.indexOf(y) //sample下标
+//        val line=buffer.drop(1).map{z=>
+//          val data=z.split("\t")(index+1)
+//          val name=z.split("\t")(0)
+//          if(data !="0" ) name else ""
+//        }
+//        line.filter(_!="")
+//      }
+//      println()
+//      println((x+:col.flatten).toList)
+//      println()
+//      x+:col.flatten
+//    }
+//
+//    println(body.toList)
+
+
+
+
+    //    val e=evi.map{line=>
+    //      line.trim.split("\t").head
+    //    }
 
 
 //    val(valid,code,responsecode)=Utils.sendMessage("12345678911")

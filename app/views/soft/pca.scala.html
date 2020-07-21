@@ -205,18 +205,131 @@
             <div class="tab-content" style="box-sizing: border-box!important;padding: 0;">
                 <div class="form1 tab-pane fade active in">
                     <ul class="nav nav-tabs">
-                        <li class="active" id="out_tab1">
-                            <a href="#" data-target="#form1" data-toggle="tab" id="outcome">示例结果</a>
+                        <li class="active" id="ins_tab1">
+                            <a href="#" data-target="#instruction1" data-toggle="tab">使用说明</a>
                         </li>
-                        <li class="" id="ins_tab1">
-                            <a href="#" data-target="#instruction1" data-toggle="tab">说明</a>
+                        <li class="" id="out_tab1">
+                            <a href="#" data-target="#form1" data-toggle="tab" id="outcome">示例结果</a>
                         </li>
                         <li class="" id="his_tab1">
                             <a href="#" data-target="#history" data-toggle="tab">PCA历史任务</a>
                         </li>
                     </ul>
                     <div class="tab-content" style="box-sizing: border-box!important;">
-                        <div id="form1" class="tab-pane fade active in">
+                        <div id="instruction1" class="form1_ins tab-pane fade active in">
+                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                                <span style="font-weight:700;"><strong>1.背景介绍</strong></span><br>
+                                主成分分析（Principal Component Analysis，PCA）， 是一种对数据进行简化分析的技术，这种方法可以有效的找出数据中最“主要”的元素和结构，去除噪音和冗余，将原有的复杂数据降维，揭示隐藏在复杂数据背后的简单结构。其优点是简单且无参数限制。通过分析不同样品OTU（97%相似性）组成可以反映样品间的差异和距离
+                                <br>
+                            </p>
+                            <br>
+                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                                <span style="font-weight:700;"><strong>2.操作方法</strong></span>
+                            </p>
+                            <img src="/assets/images/softpic/instruction/pca1.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                            <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                            <br>
+                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                                <span style="font-weight:700;"><strong>2.1.上传矩阵表格文件</strong></span><br>
+                                可以选择输入文件或手动输入两种上传数据的方式，云平台支持的格式为txt格式的二维矩阵文件，示例文件如下。
+                                <br>
+                            </p>
+                            <img src="/assets/images/softpic/instruction/pca2.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                            <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                            <br>
+                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                                第一列为基因ID，第一行为样本名，每一列对应的为这个样本对应基因经过归一化后的表达量。将这个矩阵文件上传到“1. 上传矩阵表格文件”
+                                <br>
+                            </p>
+                            <br>
+                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                                <span style="font-weight:700;"><strong>2.2.参数选择</strong></span><br>
+                                可选参数包括是否显示样本名、是否显示箭头和是否按分组绘图三种，选择不同的参数，绘制图片的显示效果也不同。
+                                <br>
+                            </p>
+                            <br>
+                            <img src="/assets/images/softpic/instruction/pca3.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                            <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                            <br>
+                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                                <span style="font-weight:700;">2.2.1.选择不按分组绘图，直接点击“提交”即可</span><br>
+                            </p>
+                            <img src="/assets/images/softpic/instruction/pca4.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                            <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                            <br>
+                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                                <span style="font-weight:700;">2.2.2.选择按分组进行绘图</span><br>
+                                这一步可以选择手动输入或者上传文件，可以选择是否绘制分组圈，示例文件格式如下图，第一列为样品名，第二列为分组编号。上传文件后点击“提交”即可。
+                                <br>
+                            </p>
+                            <img src="/assets/images/softpic/instruction/pca5.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                            <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                            <br>
+                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                                <span style="font-weight:700;"><strong>2.3.查看任务</strong></span><br>
+                                提交任务后，点击界面右侧的“PCA历史任务”模块，可以看到任务编号、提交时间、结束时间和状态。
+                                <br>
+                            </p>
+                            <img src="/assets/images/softpic/instruction/pca6.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                            <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                            <br>
+                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                                通过点击界面“我的任务”可以查看任务编号、软件名称和状态等信息，点击任务编号，即可查看分析结果。
+                                <br>
+                            </p>
+                            <img src="/assets/images/softpic/instruction/pca7.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                            <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                            <br>
+                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                                在任务详情界面，展示的是任务参数、结果文件列表和在线调整图片3个区域，提供结果文件下载和图片调整功能。
+                                <br>
+                            </p>
+                            <img src="/assets/images/softpic/instruction/pca8.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                            <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                            <br>
+                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                                <span style="font-weight:700;"><strong>3.示例图片</strong></span><br>
+                                根据设置的不同参数会产生不同的示例图片，共包含5组图片，详见下方
+                                <br>
+                                <span style="font-weight:700;"><strong>3.1.无分组文件（在无分组文件的情况下，输出图片显示样本名，且不能画分组圈）</strong></span><br>
+                            </p>
+                            <img src="/assets/images/softpic/instruction/pca9.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                            <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                            <br>
+                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                                <span style="font-weight:700;"><strong>3.2.有分组文件，不显示样本名，不绘制样本分组圈</strong></span><br>
+                            </p>
+                            <img src="/assets/images/softpic/instruction/pca10.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                            <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                            <br>
+                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                                <span style="font-weight:700;"><strong>3.3.有分组文件，显示样本名，不绘制样本分组圈</strong></span><br>
+                            </p>
+                            <img src="/assets/images/softpic/instruction/pca11.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                            <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                            <br>
+                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                                <span style="font-weight:700;"><strong>3.4.有分组文件，不显示样本名，绘制样本分组圈</strong></span><br>
+                            </p>
+                            <img src="/assets/images/softpic/instruction/pca12.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                            <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                            <br>
+                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                                <span style="font-weight:700;"><strong>3.5.有分组文件，不显示样本名，绘制样本分组圈</strong></span><br>
+                            </p>
+                            <img src="/assets/images/softpic/instruction/pca13.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                            <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                            <br>
+                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                                <span style="font-weight:700;"><strong>4.结果文件列表</strong></span><br>
+                                结果文件包括PCA结果图、PCA值表格和特征向量矩阵表格，其中PCA结果图可以根据以下参数进行在线调整
+                                <br>
+                            </p>
+                            <img src="/assets/images/softpic/instruction/pca14.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                            <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                            <br>
+                        </div>
+                        <div id="form1" class="tab-pane fade">
                             <h3 style="margin-bottom: 10px;">输出类型1:</h3>
                             <h5 style="margin-bottom: 2px">示例参数: </h5>
                             <p>1. 无分组文件</p>
@@ -261,50 +374,11 @@
                             <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/pca_example4.png" alt="生物云平台">
 
                         </div>
-                        <div id="instruction1" class="form1_ins tab-pane fade">
-
-                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                                <span style="font-weight:700;">PCA功能：</span><br>
-                                将多个变量通过线性变换，筛选出数个比较重要的变量。
-                            </p>
-                            <br>
-                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                                <span style="font-weight:700;">输入：</span>
-                            </p>
-                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                                1. 矩阵文件:文件为二维矩阵文件，第一行一般为样本，第一列为基因名。
-                            </p>
-                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                                2. 分组文件:筛选用来做聚类分析的列，一般为样本名。列表中的每一行表示一个列名，且列名必须在矩阵文件中存在。
-                            </p>
-                            <br>
-                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                                <span style="font-weight:700;">参数：</span>
-                            </p>
-                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                                1. 是否显示样本名：最后输出的图片上标注样本名。
-                            </p>
-                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                                2. 是否绘制分组圈：最后输出的图片上根据数据分组绘制分组圈。
-                            </p>
-                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                                3. 归一化：我们利用z-score进行数据的归一化，即将每个基因的表达量减去这个基因在所有样本中表达量的均值，然后除以其标准差。对数据进行归一化，可消除表达量异常高的基因的影响，减少数据间的“贫富差距”。我们推荐对数据进行归一化。
-                            </p>
-                            <br>
-                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                                <span style="font-weight:700;">输出：</span>
-                            </p>
-                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                                程序将输出主成分分析结果图
-                            </p>
-                            <br>
-                        </div>
                         <div id="history" class="form1_ins tab-pane fade">
                             <a id="btn-refresh" class="btn_refresh mws-i-24 i-refresh-3" onclick="refresh('@abbre')">刷新状态</a>
                             <ul id="hisul" style="margin-top: 15px">
                                 <li id="hislist" class="hislist">
-                                    <div class="his_name"><span>任务编号</span></div>
-                                    <div class="his_time"><span>提交时间</span></div>
+                                    <div class="his_time"><span>任务编号</span></div>
                                     <div class="his_time"><span style="margin-left: -20px;">结束时间</span></div>
                                     <div class="his_name"><span style="margin-left: -23px;">状态</span></div>
                                     <hr>
@@ -663,45 +737,6 @@
                                 // type: 'image/jpeg,image/png',
                                 maxSize: 5*1024*1024,
                                 message: '文件不得大于5M！'
-                            }
-                        }
-                    }
-                }
-            });
-            $('#passwordForm').formValidation({
-                framework: 'bootstrap',
-                icon: {
-                    valid: 'glyphicon glyphicon-ok',
-                    invalid: 'glyphicon glyphicon-remove',
-                    validating: 'glyphicon glyphicon-refresh'
-                },
-                fields: {
-                    password1: {
-                        validators: {
-                            notEmpty: {
-                                message: '请输入新密码！'
-                            },
-                            stringLength: {
-                                min: 6,
-                                message: '请输入至少六位密码！'
-                            }
-                        }
-                    },
-                    password2: {
-                        validators: {
-                            notEmpty: {
-                                message: '请输入确认密码！'
-                            },
-                            identical: {
-                                field: 'password1',
-                                message: '两次密码不一致!'
-                            }
-                        }
-                    },
-                    validnumber: {
-                        validators: {
-                            notEmpty: {
-                                message: "请输入验证码！"
                             }
                         }
                     }

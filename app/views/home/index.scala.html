@@ -23,18 +23,29 @@
                 margin: 8px;
                 padding: 4px 0px 4px 11px;
             }
+        .moresoft{
+            margin-top: 13.5px;
+            color: steelblue!important;
+            font-size: 15px;
+        }
+            .moresoft:hover{
+                color: royalblue;
+            }
     </style>
 
 
 
-    <div class="container" style="padding-top: 20px;">
+    <div class="container mainpadding" style="margin-top: 10px!important;">
         <div class="mws-panel grid_8">
             <div class="mws-tabs">
                 <div style="padding: 1em 0em 1em 1em;">
-                    <ul style="margin-left: 12px">
-                        <li><a href="#hotest" onclick="loadhot()">热门工具</a></li>
-                        <li><a href="#latest" onclick="loadlate()">最新工具</a></li>
-                    </ul>
+                    <div style="width: 85%;height: 40px">
+                        <ul style="margin-left: 12px;display: inline-block">
+                            <li style="margin-right: 10px"><a href="#hotest" onclick="loadhot()">热门工具</a></li>
+                            <li><a href="#latest" onclick="loadlate()">最新工具</a></li>
+                        </ul>
+                        <a style="display: inline-block;float: right;" class="moresoft" href="/CloudPlatform/allsoft?types=li_allsoft">更多软件&nbsp;>></a>
+                    </div>
                 </div>
 
                 <div id="hotest" style="padding: 1em 0em 1em 1em;">

@@ -111,7 +111,7 @@
                         <div class="form-group-p" style="width: 500px">
                             <div class="form-group">
                                 <label for="exampleInputName0">
-                                    分组文件(选填)：
+                                    分组文件：
                                 </label>
                             </div>
                             <div class="form-group">
@@ -136,123 +136,104 @@
         <div class="mysoft-content-right" style="width: 305px;">
 
             <ul class="nav nav-tabs">
-                <li class="active" id="out_tab1">
-                    <a href="###" data-target="#example" data-toggle="tab">示例结果</a>
-                </li>
-                <li class="" id="ins_tab1">
+                <li id="ins_tab1" class="active">
                     <a href="###" data-target="#instruction" data-toggle="tab">使用说明</a>
+                </li>
+                <li class="" id="out_tab1">
+                    <a href="###" data-target="#example" data-toggle="tab">示例结果</a>
                 </li>
                 <li class="" id="his_tab1">
                     <a href="#" data-target="#history" data-toggle="tab">CCA/RDA历史任务</a>
                 </li>
             </ul>
             <div class="tab-content" style="box-sizing: border-box!important;">
-                <div class="tab-pane fade active in" id="example">
+                <div class="tab-pane fade active in" id="instruction">
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>1.背景介绍</strong></span><br>
+                        CCA或RDA是基于对应分析发展而来的一种排序方法，将对应分析与多元回归分析相结合，每一步计算均与环境因子进行回归，又称多元直接梯度分析。此分析是主要用来反映菌群与环境因子之间关系。RDA是基于线性模型，CCA是基于单峰模型。分析可以检测环境因子、样本、菌群三者之间的关系或者两两之间的关系。
+                        <br>
+                    </p>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>2.操作界面</strong></span><br>
+                        操作界面包含任务编号、OTU丰度表、环境因子列表文件、分析类型和是否分组绘图选项，其中1和2需要上传数据，3和4只需要进行选择。
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/cca1.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;padding-left: 44%">操作界面</p>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>2.1.输入文件</strong></span><br>
+                        需要输入的文件包括OTU丰度表和环境因子列表文件，如果选择按分组进行绘图，还需要提供分组信息表，文件必须为tab-delimited保存的txt格式，示例文件如下。
+                        <br>
+                    </p>
+                    <br>
+                    <img src="/assets/images/softpic/instruction/cca2.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;padding-left: 44%">OTU丰度表</p>
+                    <img src="/assets/images/softpic/instruction/cca3.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;padding-left: 39%">环境因子列表文件</p>
+                    <img src="/assets/images/softpic/instruction/cca4.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;padding-left: 44%">分组信息表</p>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        上传文件后，点击“提交”按键即可。<br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/cca5.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>2.2.查看进程</strong></span><br>
+                        提交任务后，点击界面右侧的“CCA/RDA历史任务”模块，可以看到任务编号、提交时间、结束时间和状态。通过点击界面“我的任务”也可以查看任务编号、软件名称和状态等信息，点击任务编号，即可查看分析结果。
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/cca6.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        在任务详情界面，展示的是任务参数、结果文件列表和在线调整图片3个区域，提供结果文件下载和图片调整功能。<br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/cca7.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>3.示例图片</strong></span><br>
+                        <span style="font-weight:700;"><strong>3.1.按分组绘图，分析方法RDA</strong></span><br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/cca8.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>3.2.按分组绘图，分析方法为CCA</strong></span><br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/cca9.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>4.结果文件列表</strong></span><br>
+                        结果文件包含CCA/RDA结果图、百分比表、样本坐标表、物种坐标表、环境因子坐标表，其中CCA/RDA结果图可以进行在线调整。
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/cca10.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                </div>
+                <div class="tab-pane fade" id="example">
                     <h5>结果输出：</h5>
                     <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/CCA1-2.nonlabs.png" alt="生物云平台">
                     <br>
                     <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/CCA1-2.png" alt="生物云平台">
                 </div>
-                <div class="tab-pane fade" id="instruction">
-                    <p>
-                        <strong>功能：</strong>
-                        <br>
-                        利用CCA/RDA分析环境因子对群落分布影响							</p>
-                    <br>
-                    <p>
-                        <strong>输入：</strong>
-                        <br>
-                        1. 输入文件：
-                        <br>
-                        （1）带物种注释的OTU丰度表（必须）								<br>
-                        （2）各样本的环境因子表格，要求环境因子数目不超过样本数（必须）								<br>
-                        （3）如果有分组信息，请输入样本分组信息表。单样本最多支持两种分组信息，如A样本同时属于病人分组，也属于成年人分组。（非必需）								<br>
-                        （4）
-                        <font style="color:red">所有表格格式为tab-delimited所保存的txt格式。</font>
-                        <br>
-                    </p>
-                    <br>
-                    <h3>参数：</h3>
-                    <p>
-                    </p>
-                    <br>
-                    <p>
-                        <strong>分析类型：</strong>
-                    </p>
-                    <p>可以选择CCA分析 或者 RDA分析</p>
-                    <br>
-                    <p>
-                        <strong>是否显示物种名称：</strong>
-                    </p>
-                    <p>默认显示样本名称</p>
-                    <br>
-                    <p>
-                        <strong>前几物种展示：</strong>
-                    </p>
-                    <p>默认该分类水平下丰度在前10的微生物作图</p>
-                    <br>
-                    <p>
-                        <strong>图形名称：</strong>
-                    </p>
-                    <p>设定图形标题名称,暂不支持中文</p>
-                    <br>
-                    <p>
-                        <strong>点的大小：</strong>
-                    </p>
-                    <p>图形点大小控制，默认为3，值越大点越大</p>
-                    <br>
-                    <p>
-                        <strong>点透明度：</strong>
-                    </p>
-                    <p>图形点透明度控制，默认为0.7,可以填0-1的值</p>
-                    <br>
-
-                    <p>
-                        <strong>自定义分组颜色(颜色的个数要和分组个数相等)</strong>
-                    </p>
-                    <p>设定分组颜色，所选择颜色数目应与分组数目一致 </p>
-                    <br>
-                    <p></p>
-                    <p>
-                        <strong>输出：</strong>
-                        <br>
-                        1)
-                        <strong>样本坐标表：</strong>
-                        记录了样本在各个维度上的位置								<br>
-                        2)
-                        <strong>物种坐标表：</strong>
-                        记录了物种在各个维度上的位置								<br>
-                        3)
-                        <strong>环境因子坐标：</strong>
-                        记录了环境因子在各个维度上的位置								<br>
-                    </p><p>
-                        <!-- 如果length of gradient中梯度最大的值（第一个数值）大于4，则推荐选择CCA分析；如果在3.0-4.0之间，可选择RDA和CCA分析；如果小于3.0, 则推荐RDA分析。 -->
-                </p>
-                    4)
-                    <strong>环境因子相关性表：</strong>
-                    前两列表示环境因子箭头与排序轴夹角余弦值，表示环境因素与排序轴相关性。							<br>
-                    <p>
-                            <!-- <strong>前两列表：</strong>表示环境因子箭头与排序轴夹角余弦值，表示环境因素与排序轴相关性。R值表示环境因子对物种分布的影响值，值越大，影响越大。 -->
-                    </p>
-                    5)
-                    <strong>CCA/RDA结果图</strong>
-                    <br>
-                    <p>
-                        CCA1-2.nonlabs.png/pdf: A CCA/RDA plot without sample names
-                        <br>
-                        CCA1-2.png/pdf: A CCA/RDA plot with sample names
-                    </p>
-                    <p>
-                            <!-- <img class="img-rounded img-thumbnail img-responsive" src="/tools/Public/help/ccaout.png" alt="生物云平台">。 -->
-                    </p>
-                    <p></p>
-                </div>
                 <div id="history" class="form1_ins tab-pane fade">
                     <a id="btn-refresh" class="btn_refresh mws-i-24 i-refresh-3" onclick="refresh('@abbre')">刷新状态</a>
                     <ul id="hisul" style="margin-top: 15px">
                         <li id="hislist" class="hislist">
-                            <div class="his_name"><span>任务编号</span></div>
-                            <div class="his_time"><span>提交时间</span></div>
+                            <div class="his_time"><span>任务编号</span></div>
                             <div class="his_time"><span style="margin-left: -20px;">结束时间</span></div>
                             <div class="his_name"><span style="margin-left: -23px;">状态</span></div>
                             <hr>
@@ -334,7 +315,7 @@
                                     $("#ins_tab1").removeClass("active");
                                     $("#history").addClass("active").addClass("in");
                                     $("#example").removeClass("active");
-                                    $("#instruction1").removeClass("active");
+                                    $("#instruction").removeClass("active");
                                     getTaskName("CCA","CCA");
                                 }
                             });
@@ -405,6 +386,19 @@
             }
             
             function checkEvi() {
+                if($("#table1").val()==""){
+                    flagevi=false;
+                    var file = document.getElementById('table2');
+                    file.value = '';
+                    $(".file-caption-name").attr("title","");
+                    swal({
+                        title: "请先上传OUT丰度表",
+                        text: "请先上传OUT丰度表！",
+                        type: "warning",
+                        confirmButtonText: "确认"
+                    });
+                    return;
+                }
                 var reader=new FileReader();
                 reader.readAsText(document.getElementById('table2').files[0],"UTF-8");
                 reader.onload=function () {
@@ -479,6 +473,19 @@
             }
 
             function checkGroupfile() {
+                if($("#table1").val()==""){
+                    flaggroupfile=false;
+                    var file = document.getElementById('table3');
+                    file.value = '';
+                    $(".file-caption-name").attr("title","");
+                    swal({
+                        title: "请先上传OUT丰度表",
+                        text: "请先上传OUT丰度表！",
+                        type: "warning",
+                        confirmButtonText: "确认"
+                    });
+                    return;
+                }
                 if($("#table3").val()!=""){
                     var reader=new FileReader();
                     reader.readAsText(document.getElementById('table3').files[0],"UTF-8");
@@ -580,45 +587,6 @@
                                     // type: 'image/jpeg,image/png',
                                     maxSize: 5*1024*1024,
                                     message: '文件不得大于5M！'
-                                }
-                            }
-                        }
-                    }
-                });
-                $('#passwordForm').formValidation({
-                    framework: 'bootstrap',
-                    icon: {
-                        valid: 'glyphicon glyphicon-ok',
-                        invalid: 'glyphicon glyphicon-remove',
-                        validating: 'glyphicon glyphicon-refresh'
-                    },
-                    fields: {
-                        password1: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入新密码！'
-                                },
-                                stringLength: {
-                                    min: 6,
-                                    message: '请输入至少六位密码！'
-                                }
-                            }
-                        },
-                        password2: {
-                            validators: {
-                                notEmpty: {
-                                    message: '请输入确认密码！'
-                                },
-                                identical: {
-                                    field: 'password1',
-                                    message: '两次密码不一致!'
-                                }
-                            }
-                        },
-                        validnumber: {
-                            validators: {
-                                notEmpty: {
-                                    message: "请输入验证码！"
                                 }
                             }
                         }

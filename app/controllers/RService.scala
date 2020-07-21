@@ -246,7 +246,7 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
     val input= file1.filename
     val param= "是否绘制盒子内部点："+data.spot+"/Y轴范围："+data.ymin+"-"+data.ymax
     val ylim=
-      if(data.ymin!=""&&data.ymax!="") data.ymin+":"+data.ymax
+      if(data.ymin!=""&&data.ymax!="") " -ymm " + data.ymin+":"+data.ymax
       else ""
 
     val elements= Json.obj("spot"->data.spot,"ymin"->data.ymin,"ymax"->data.ymax,"boxwidth"->"0.7","alp"->"0.8","add"->"1","color"->"#E41A1C:#1E90FF:#FF8C00:#4DAF4A:#984EA3:#40E0D0:#F4AAC4:#DC414B:#957624:#43B43C","width"->"12","length"->"10","dpi"->"300","xts"->"15","yts"->"15","lts"->"14").toString()
@@ -261,6 +261,8 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
         " -o " +dutyDir+"/out" + " -sp " + data.spot + ylim + " -ls 12:10"
       val execCommand = new ExecCommand
       execCommand.exect(command,dutyDir+"/temp")
+
+      println(command)
 
       if (execCommand.isSuccess) {
         val finish=dutyController.updateFini(id,data.taskname)
@@ -328,6 +330,8 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
       data.boxwidth + " -alp " + data.alp + " -add " + data.add + " -xts " + "sans:bold.italic:"+ data.xts +
       " -yts " + "sans:bold.italic:" + data.yts + " -lts " + "sans:bold.italic:" + data.lts + " -cs " + data.color
 
+    println(command)
+
     val execCommand = new ExecCommand
     execCommand.exect(command,dutyDir+"/temp")
 
@@ -346,62 +350,126 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
 
 
   //Heatmap
-  case class HeatmapData(taskname:String,col:String,scale:String,lg:String,cluster_rows:String,cluster_cols:String,
-                         color:String,xfs:String,yfs:String,hasnum:String,hasborder:String,hasrname:String,hascname:String)
+  case class HeatmapData(taskname:String,cluster_rows:String,crm:String,cluster_cols:String,
+                         ccm:String,inr:String,inc:String, lg:String,sc:String,
+                         color:String,hasnum:String,hasrname:String, hascname:String,hasborder:String)
 
   val HeatmapForm: Form[HeatmapData] =Form(
     mapping (
       "taskname"->text,
-      "col"->text,
-      "scale"->text,
-      "lg"->text,
       "cluster_rows"->text,
+      "crm"->text,
       "cluster_cols"->text,
+      "ccm"->text,
+      "inr"->text,
+      "inc"->text,
+      "lg"->text,
+      "sc"->text,
       "color"->text,
-      "xfs"->text,
-      "yfs"->text,
       "hasnum"->text,
-      "hasborder"->text,
       "hasrname"->text,
       "hascname"->text,
+      "hasborder"->text
     )(HeatmapData.apply)(HeatmapData.unapply)
   )
 
-  def doHeatmap=Action(parse.multipartFormData) { implicit request =>
+  def doHeatmap(isgroupr:Boolean,isgroupc:Boolean,istag:Boolean)=Action(parse.multipartFormData) { implicit request =>
     val data = HeatmapForm.bindFromRequest.get
     val id=request.session.get("userId").get
     val dutyDir=creatUserDir(id,data.taskname)
+    val tableFile=new File(dutyDir,"table.txt")
+    val treerFile=new File(dutyDir,"treer.txt")
+    val treecFile=new File(dutyDir,"treec.txt")
+    val grouprFile=new File(dutyDir,"groupr.txt")
+    val groupcFile=new File(dutyDir,"groupc.txt")
+    val tagFile=new File(dutyDir,"tag.txt")
+
+    val filename2=
+      if(data.cluster_rows=="file") {
+        val file=request.body.file("table2").get
+        file.ref.moveTo(treerFile)
+        "/"+file.filename
+      }else ""
+
+    val filename3=
+      if(data.cluster_cols=="file") {
+        val file=request.body.file("table3").get
+        file.ref.moveTo(treecFile)
+        "/"+file.filename
+      }else ""
+
+    val filename4=
+      if(isgroupr==true) {
+        val file=request.body.file("table4").get
+        file.ref.moveTo(grouprFile)
+        "/"+file.filename
+      }else ""
+
+    val filename5=
+      if(isgroupc==true) {
+        val file=request.body.file("table5").get
+        file.ref.moveTo(groupcFile)
+        "/"+file.filename
+      }else ""
+
+    val filename6=
+      if(istag==true) {
+        val file=request.body.file("table6").get
+        file.ref.moveTo(tagFile)
+        "/"+file.filename
+      }else ""
+
     //在用户下创建任务文件夹和结果文件夹
     val file1=request.body.file("table1").get
-    val tableFile=new File(dutyDir,"table.txt")
-    val input= file1.filename
-    val c=if(data.col=="") "" else "作图的列："+data.col
-    val param= c+"/归一化："+data.scale+"/是否取lg："+data.lg+"/是否对行聚类："+
-      data.cluster_rows+ "/是否对列聚类："+data.cluster_cols+"/颜色："+data.color + "/xy字体大小："+data.xfs+":"+data.yfs+ "/在格子上显示数字："+data.hasnum+"/是否显示行名："+
-      data.hasrname+"/是否显示列名："+data.hascname
+    //矩阵文件读取写入任务文件下table.txt
+    file1.ref.moveTo(tableFile)
+    val input= file1.filename+filename2+filename3+filename4+filename5+filename6
+    val c=
+      if(data.inr=="" && data.inc=="") ""
+      else if(data.inr!="" && data.inc=="") "/作图的行："+data.inr
+      else if(data.inr=="" && data.inc!="") "/作图的列："+data.inc
+      else "/作图的行："+data.inr+"/作图的列："+data.inc
+    val rm=if(data.cluster_rows=="TRUE") "/行聚类方法："+data.crm else ""
+    val cm=if(data.cluster_cols=="TRUE") "/列聚类方法："+data.ccm else ""
 
-    val elements=Json.obj("col"->data.col,"scale"->data.scale,"lg"->data.lg,"cluster_rows"->data.cluster_rows,"cluster_cols"->data.cluster_cols,"rtree"->"50","ctree"->"50","rp"->"1","cp"->"1","color"->data.color,"cc"->"30","xfs"->data.xfs,"yfs"->data.yfs,"hasborder"->data.hasborder,"colorborder"->"#000000","hasnum"->data.hasnum,"hasrname"->data.hasrname,"hascname"->data.hascname).toString()
+    val param= "是否对行聚类：" + data.cluster_rows + rm + "/是否对列聚类：" +
+      data.cluster_cols + cm + "/是否行分组：" + isgroupr + "/是否列分组：" +
+      isgroupc + "/是否自定义格子标签：" + istag + c + "/是否取lg：" + data.lg +
+      "/归一化：" + data.sc + "/颜色：" + data.color + "/在格子上显示数字：" +
+      data.hasnum + "/是否显示行名：" + data.hasrname + "/是否显示列名：" + data.hascname +
+      "/画出格子的边界：" + data.hasborder
+
+    val elements=Json.obj("smt"->"full","cluster_rows"->data.cluster_rows,"crm"->data.crm,
+      "rp"->"1","cluster_cols"->data.cluster_cols,"ccm"->data.ccm,"cp"->"1","inr"->data.inr,
+      "inc"->data.inc,"sc"->data.sc,"lg"->data.lg,"color"->data.color,"cc"->"30","nc"->"#DDDDDD",
+      "hasborder"->data.hasborder,"cbc"->"#ffffff","hasnum"->data.hasnum,"hasrname"->data.hasrname,
+      "hascname"->data.hascname,"rtree"->"50","ctree"->"50","xfs"->"10","yfs"->"10").toString()
 
     //数据库加入duty（运行中）
     val start=dutyController.insertDuty(data.taskname,id,"Heatmap","Heatmap 热图",input,param,elements)
-    //矩阵文件读取写入任务文件下table.txt
-    file1.ref.moveTo(tableFile)
+
 
     Future{
-      val color= " -c "+ data.color
+      val trf=if(treerFile.exists()) " -trf "+treerFile.getAbsolutePath else ""
+      val tcf=if(treecFile.exists()) " -tcf "+treecFile.getAbsolutePath else ""
+      val ari=if(grouprFile.exists()) " -ari "+ grouprFile.getAbsolutePath else ""
+      val aci=if(groupcFile.exists()) " -aci "+ groupcFile.getAbsolutePath else ""
+      val lfi=if(tagFile.exists()) " -lfi "+ tagFile.getAbsolutePath else ""
 
-      val border=
-        if(data.hasborder=="TRUE") " -cbc #000000 "
+      val rowclu=
+        if(data.cluster_rows!="file") " -crw " + data.cluster_rows+" -crm " + data.crm
+        else ""
+      val colclu=
+        if(data.cluster_cols!="file") " -ccl " + data.cluster_cols+" -ccm " + data.ccm
         else ""
 
-      val col=
-        if(data.col=="") ""
-        else " -ics "+data.col
+      val inr=if(data.inr!="") " -inr "+data.inr else ""
+      val inc=if(data.inc!="") " -inc "+data.inc else ""
 
-      val command = "Rscript "+Utils.path+"R/heatmap/heatMap_plot.R -i "+ tableFile.getAbsolutePath +
-        " -o " +dutyDir+"/out" + col + " -s " + data.scale + " -lg " + data.lg + " -cls " +
-        data.cluster_rows+":"+ data.cluster_cols + color + " -fs " + data.xfs + ":" + data.yfs + border +
-        " -sn " + data.hasrname + ":" + data.hascname + ":" + data.hasnum
+      val command = "Rscript "+Utils.path+"R/heatmap/heatMap.R -i "+ tableFile.getAbsolutePath +
+        " -o " +dutyDir+"/out" + trf + tcf + ari + aci + lfi + rowclu + colclu + inr + inc +
+        " -lg " + data.lg + " -sc " + data.sc + " -sn " +  data.hasrname + ":" + data.hascname +
+        ":" + data.hasnum + " -c " + data.color + " -cbc " + data.hasborder + " -if pdf -cln TRUE"
 
       println(command)
 
@@ -426,81 +494,125 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
     val id=request.session.get("userId").get
     val path=Utils.path+"/users/"+id+"/"+taskname
 
+    //如果行列有分组文件，就不能进行用于作图的分组选择
+    val groupr=new File(path,"groupr.txt").exists()
+    val groupc=new File(path,"groupc.txt").exists()
+
     val elements=jsonToMap(Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf).elements)
 
     val head=FileUtils.readFileToString(new File(path+"/table.txt")).trim.split("\n")
-    val rnum=head.length-1
+    val rnum=
+      if(elements("inr")=="") head.length-1
+      else elements("inr").split(",").length
     val cnum=
-      if(elements("col")=="") head(1).trim.split("\t").length-1
-      else elements("col").split(",").length
+      if(elements("inc")=="") head(1).trim.split("\t").length-1
+      else elements("inc").split(",").length
     //获取图片
     val pics=getReDrawPics(path)
     val (downpics,downpng,downtiffs)=(path+"/out/heatmap.pdf",path+"/out/heatmap.png",path+"/out/heatmap.tiff")
-    Ok(Json.obj("pics"->pics,"downpng"->downpng,"downpics"->downpics,"downtiffs"->downtiffs,"rnum"->rnum,"cnum"->cnum,"elements"->elements,"allcol"->(head(1).trim.split("\t").length-1)))
+//    Ok(Json.obj("pics"->pics,"downpng"->downpng,"downpics"->downpics,"downtiffs"->downtiffs,"rnum"->rnum,"allcol"->(head(1).trim.split("\t").length-1)))
+    Ok(Json.obj("pics"->pics,"downpng"->downpng,"downpics"->downpics,"downtiffs"->downtiffs,"rnum"->rnum,"cnum"->cnum,"elements"->elements,"allcol"->(head(1).trim.split("\t").length-1),"allrow"->(head.length-1),"groupr"->groupr,"groupc"->groupc))
   }
 
-  case class ReHeatData(col:String, scale:String, lg:String, cluster_rows:String, cluster_cols:String, rtree:String, ctree:String,
-                        rp:String, cp:String, color:String, designcolor:String, cc:String, xfs:String, yfs:String,
-                        hasborder:String, colorborder:String, hasnum:String, hasrname:String, hascname:String)
+  case class ReHeatData(smt:String,cluster_rows:String,crm:String,rp:String,cluster_cols:String,ccm:String,
+                        cp:String,inr:String,inc:String,designcolor:String,lg:String,color:String,cc:String,
+                        nc:String,hasborder:String,cbc:String,hasrname:String, hascname:String,hasnum:String)
 
   val ReHeatForm: Form[ReHeatData] =Form(
     mapping (
-      "col"->text,
-      "scale"->text,
-      "lg"->text,
+      "smt"->text,
       "cluster_rows"->text,
-      "cluster_cols"->text,
-      "rtree"->text,
-      "ctree"->text,
+      "crm"->text,
       "rp"->text,
+      "cluster_cols"->text,
+      "ccm"->text,
       "cp"->text,
-      "color"->text,
+      "inr"->text,
+      "inc"->text,
       "designcolor"->text,
+      "lg"->text,
+      "color"->text,
       "cc"->text,
-      "xfs"->text,
-      "yfs"->text,
+      "nc"->text,
       "hasborder"->text,
-      "colorborder"->text,
-      "hasnum"->text,
+      "cbc"->text,
       "hasrname"->text,
-      "hascname"->text
+      "hascname"->text,
+      "hasnum"->text
     )(ReHeatData.apply)(ReHeatData.unapply)
   )
 
-  def redrawHeatmap(taskname:String)=Action(parse.multipartFormData) { implicit request =>
+  def redrawHeatmap(taskname:String,rtree:String,ctree:String,xfs:String,yfs:String,sc:String)=Action(parse.multipartFormData) { implicit request =>
     val data=ReHeatForm.bindFromRequest.get
     val id=request.session.get("userId").get
     val dutyDir=Utils.path+"users/"+id+"/"+taskname
     val tableFile=new File(dutyDir,"table.txt")
+    val treerFile=new File(dutyDir,"treer.txt")
+    val treecFile=new File(dutyDir,"treec.txt")
+    val grouprFile=new File(dutyDir,"groupr.txt")
+    val groupcFile=new File(dutyDir,"groupc.txt")
+    val tagFile=new File(dutyDir,"tag.txt")
 
-    val color= if(data.color=="0") data.designcolor else data.color
-    val border= if(data.hasborder=="FALSE") "" else " -cbc " + data.colorborder
-    val ics= if(data.col=="") "" else " -ics " + data.col
+    if(data.cluster_rows=="file" && !treerFile.exists()){
+      Ok(Json.obj("valid"->"false","message"->"没有上传行聚类信息文件，无法使用！"))
+    } else if(data.cluster_cols=="file" && !treecFile.exists()){
+      Ok(Json.obj("valid"->"false","message"->"没有上传列聚类信息文件，无法使用！"))
+    }else{
+      val ari=if(grouprFile.exists()) " -ari "+ grouprFile.getAbsolutePath else ""
+      val aci=if(groupcFile.exists()) " -aci "+ groupcFile.getAbsolutePath else ""
+      val lfi=if(tagFile.exists()) " -lfi "+ tagFile.getAbsolutePath else ""
 
-    val elements=Json.obj("col"->data.col,"scale"->data.scale,"lg"->data.lg,"cluster_rows"->data.cluster_rows,"cluster_cols"->data.cluster_cols,"rtree"->data.rtree,"ctree"->data.ctree,"rp"->data.rp,"cp"->data.cp,"color"->color,"cc"->data.cc,"xfs"->data.xfs,"yfs"->data.yfs,"hasborder"->data.hasborder,"colorborder"->data.colorborder,"hasnum"->data.hasnum,"hasrname"->data.hasrname,"hascname"->data.hascname).toString()
-    println(elements)
-    Await.result(dutydao.updateElements(id,taskname,elements),Duration.Inf)
+      val rowclu=
+        if(data.cluster_rows=="TRUE") " -crw " + data.cluster_rows + " -crm " + data.crm + " -rp " + data.rp
+        else if(data.cluster_rows=="FALSE") " -crw " + data.cluster_rows
+        else " -trf " + treerFile.getAbsolutePath + " -rp " + data.rp
+      val colclu=
+        if(data.cluster_cols=="TRUE") " -ccl " + data.cluster_cols + " -ccm " + data.ccm + " -cp " + data.cp
+        else if(data.cluster_rows=="FALSE") " -ccl " + data.cluster_cols
+        else " -tcf " + treecFile.getAbsolutePath + " -cp " + data.cp
 
-    val head=FileUtils.readFileToString(tableFile).trim.split("\n")
-    val cnum= if(data.col=="") (head(1).trim.split("\t").length-1).toString else data.col.split(",").length.toString
+      val color= if(data.color=="0") data.designcolor else data.color
+      val cbc= if(data.hasborder=="white") " -cbc " + data.cbc else " -cbc " + data.hasborder
+      val inc= if(data.inc=="") "" else " -inc " + data.inc
+      val inr= if(data.inr=="") "" else " -inr " + data.inr
 
-    val command = "Rscript "+Utils.path+"R/heatmap/heatMap_plot.R -i "+ tableFile.getAbsolutePath +
-      " -o " +dutyDir+"/out -s " + data.scale + " -lg " + data.lg + ics + " -cls " +data.cluster_rows+":"+
-      data.cluster_cols + " -th " + data.rtree + ":" + data.ctree + " -rp " + data.rp + " -cp " + data.cp +
-      " -c " + color + " -cc " + data.cc + " -fs " + data.xfs + ":" + data.yfs + border + " -sn " +
-      data.hascname + ":" + data.hasrname + ":" + data.hasnum
+      val elements=Json.obj("smt"->data.smt,"cluster_rows"->data.cluster_rows,"crm"->data.crm,
+        "rp"->data.rp,"cluster_cols"->data.cluster_cols,"ccm"->data.ccm,"cp"->data.cp,"inr"->data.inr,
+        "inc"->data.inc,"sc"->sc,"lg"->data.lg,"color"->color,"cc"->data.cc,"nc"->data.nc,
+        "hasborder"->data.hasborder,"cbc"->data.cbc,"hasnum"->data.hasnum, "hasrname"->data.hasrname,
+        "hascname"->data.hascname,"rtree"->rtree,"ctree"->ctree,"xfs"->xfs,"yfs"->yfs).toString()
 
-    val execCommand = new ExecCommand
-    execCommand.exect(command,dutyDir+"/temp")
+      println(elements)
+      Await.result(dutydao.updateElements(id,taskname,elements),Duration.Inf)
 
-    if (execCommand.isSuccess) {
-      creatZip(dutyDir) //替换压缩文件包
-      Utils.pdf2Png(dutyDir+"/out/heatmap.pdf",dutyDir+"/out/heatmap.png") //替换图片
-      Utils.pdf2Png(dutyDir+"/out/heatmap.pdf",dutyDir+"/out/heatmap.tiff") //替换图片
-      val pics=dutyDir+"/out/heatmap.png"
-      Ok(Json.obj("valid"->"true","pics"->pics,"cnum"->cnum))
-    } else {
-      Ok(Json.obj("valid"->"false"))
+      val head=FileUtils.readFileToString(tableFile).trim.split("\n")
+      val rnum =
+        if(data.inr=="") (head.length-1).toString
+        else data.inr.split(",").length.toString
+      val cnum =
+        if(data.inc=="") (head(1).trim.split("\t").length-1).toString
+        else data.inc.split(",").length.toString
+
+      val command = "Rscript "+Utils.path+"R/heatmap/heatMap.R -i "+ tableFile.getAbsolutePath +
+        " -o " +dutyDir+"/out"+ " -smt " + data.smt + ari + aci + lfi + rowclu + colclu + inr + inc +
+        " -sc " + sc + " -lg " + data.lg + " -c " + color + " -cc " + data.cc + " -nc " + data.nc +
+        cbc + " -sn " + data.hasrname + ":" + data.hascname + ":" + data.hasnum + " -th " +
+        rtree + ":" + ctree + " -fs " + xfs + ":" + yfs + " -if pdf -cln TRUE"
+
+      println(command)
+
+      val execCommand = new ExecCommand
+      execCommand.exect(command,dutyDir+"/temp")
+
+      if (execCommand.isSuccess) {
+        creatZip(dutyDir) //替换压缩文件包
+        Utils.pdf2Png(dutyDir+"/out/heatmap.pdf",dutyDir+"/out/heatmap.png") //替换图片
+        Utils.pdf2Png(dutyDir+"/out/heatmap.pdf",dutyDir+"/out/heatmap.tiff") //替换图片
+        val pics=dutyDir+"/out/heatmap.png"
+        Ok(Json.obj("valid"->"true","pics"->pics,"cnum"->cnum,"rnum"->rnum))
+      } else {
+        Ok(Json.obj("valid"->"false","message"->execCommand.getErrStr))
+      }
     }
   }
 
@@ -1038,20 +1150,26 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
       Json.obj("error" -> "文件中列数过多！")
     } else {
       val matrix = buffer.map(_.split("[\t|;|,]"))
-      val head = matrix.head
+      val head = matrix.head //head=sample
       val char = Array("A", "B", "C", "D", "E", "F")
       val body = (0 to matrix.head.length).map { x =>
         matrix.map { y =>
           if (y.length > x) y(x) else ""
         }.distinct.init
       }.toBuffer
+      //body=array(每一列数据为一行array,,,)
+//      println(body.toList)
 
       val result = body.flatMap { x =>
         x.map { y =>
           val key = body.filter(_.contains(y)).map(z => char(body.indexOf(z))).mkString
+//          println((key,y))
           (key, y)
         }.distinct
       }.distinct
+
+      //result=>array((headers,gene),(),(),())  headers 是该元素的sample对应ABCD
+//      println(result.toList)
 
       val data = result.groupBy(_._1).map(x => x._1 -> x._2.map(_._2))
       val name = head.zipWithIndex.map(x => char(x._2) -> x._1).toMap
@@ -1059,6 +1177,37 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
 
       Json.obj("data" -> data, "name" -> name, "values" -> values)
     })))
+  }
+
+  //getVennData2
+  def getJvennData2 = Action(parse.multipartFormData) { implicit request =>
+    val file = request.body.file("browse_upload2").get.ref.file
+    val buffer = FileUtils.readLines(file).asScala
+    val file2 = request.body.file("browse_upload3").get.ref.file
+    val head = FileUtils.readLines(file2).asScala
+
+    val sample=buffer(0).split("\t")
+    val char = Array("A", "B", "C", "D", "E", "F")
+
+    val result=buffer.map{x=>
+      val body=x.split("\t")
+      val gene=x.split("\t")(0)
+      val key=head.map{y=>
+        val test = y.split(",").map{z=>
+          val index=sample.indexOf(z)
+          if(body(index)!="0") z else ""
+        }
+//        println(test.toList)
+        if(!test.contains("")) char(head.indexOf(y)) else ""
+      }.mkString
+      (key,gene)
+    }.filter(r=>r._1!="")
+
+    val data = result.groupBy(_._1).map(x => x._1 -> x._2.map(_._2))
+    val name = head.zipWithIndex.map(x => char(x._2) -> x._1).toMap
+    val values = result.groupBy(_._1).map(x => x._1 -> x._2.map(_._2).length)
+
+    Ok(Json.obj("data" -> data, "name" -> name, "values" -> values))
   }
 
 
@@ -1152,7 +1301,7 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
                         rp:String, cp:String, color:String, designcolor:String, cc:String, xfs:String, yfs:String,
                         hasborder:String, colorborder:String, hasnum:String, hasrname:String, hascname:String)
 
-  val ReIGCForm: Form[ReHeatData] =Form(
+  val ReIGCForm: Form[ReIGCData] =Form(
     mapping (
       "col"->text,
       "scale"->text,
@@ -1173,11 +1322,11 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
       "hasnum"->text,
       "hasrname"->text,
       "hascname"->text
-    )(ReHeatData.apply)(ReHeatData.unapply)
+    )(ReIGCData.apply)(ReIGCData.unapply)
   )
 
   def redrawIGC(taskname:String)=Action(parse.multipartFormData) { implicit request =>
-    val data=ReHeatForm.bindFromRequest.get
+    val data=ReIGCForm.bindFromRequest.get
     val id=request.session.get("userId").get
     val dutyDir=Utils.path+"users/"+id+"/"+taskname
     val tableFile=new File(dutyDir,"table.txt")

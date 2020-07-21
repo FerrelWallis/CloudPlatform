@@ -3,40 +3,166 @@
 @home.main("MyTask"){
 
     <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("mycss/mytask.css")" media="screen" />
+    <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("bootstrap-table-master/dist/bootstrap.min.css")">
+    <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("bootstrap-table-master/dist/bootstrap-table.min.css")">
+
+    <script src="@routes.Assets.versioned("bootstrap-table-master/dist/bootstrap-table.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("bootstrap-table-master/dist/locale/bootstrap-table-en-US.min.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/fileinput.min.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/locales/zh.js")" type="text/javascript"></script>
     <script src="@routes.Assets.versioned("layer-v3.0/layer/layer.js")" type="text/javascript"></script>
 
-    <div class="container" style="width: 99.5%;margin: unset;max-width: unset">
-        <div class="mws-panel grid_8">
-            <div class="mws-panel-header">
-                <span class="mws-i-24 i-table-1">我的任务</span>
-            </div>
-            <div class="mws-panel-body">
-                <div class="mws-panel-toolbar top clearfix">
-                    <ul>
-                        <li><a class="mws-ic-16 ic-cloud-download-1" style="color: cadetblue" id="download">下载</a></li>
-                        <li><a class="mws-ic-16 ic-delete2" style="color: cadetblue" id="delete">删除</a></li>
-                        <li><a class="mws-ic-16 ic-refresh2" style="color: cadetblue" id="refresh">刷新任务状态</a></li>
-                    </ul>
-                </div>
-                <table class="mws-datatable-fn mws-table" id="table">
-                    <thead>
-                        <tr>
-                            <th>任务编号</th>
-                            <th>软件名称</th>
-                            <th>提交时间</th>
-                            <th>结束时间</th>
-                            <th>状态</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
+    <style>
+    .fixed-table-container{
+        margin-bottom: 30px;
+    }
+        .search{
+            width: 300px;
+        }
+    input[type="text"], textarea {
+        background: #fff;
+        background: rgba(255, 255, 255, .4);
+        border-top: 1px solid #c9c9c8;
+        border-left: 1px solid #dfe0de;
+        border-right: 1px solid #dfe0de;
+        border-bottom: 1px solid #c9c9c8;
+        padding: 7px 9px;
+        border-radius: 6px;
+        color: #888;
+        box-shadow: unset;
+    }
+    .pagination-info{
+        margin-left: 10px;
+    }
+        .control-icon{
+            padding-left: 32px;
+            background-position: 12px center;
+        }
+    h2 {
+        font-family: "Helvetica Neue", Helvetica, 'Microsoft Yahei', 'Hiragino Sans GB', 'WenQuanYi Micro Hei', Tahoma, Arial, sans-serif;
+        font-weight: 700;
+        line-height: 1.1;
+        color: inherit;
+        font-size: 20px;
+        margin: 0px;
+        padding: 0px;
+    }
+    .text-muted {
+        color: gray;
+    }
+    .lead {
+        font-size: 15.5px;
+        margin-bottom: 20px;
+        line-height: 1.4;
+    }
+    p {
+        margin: 0;
+        padding: 0;
+        font-family: "PTSansRegular", Arial, Helvetica, sans-serif;
+    }
+    .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary {
+        color: #fff;
+        background-color: black;
+        border-color: black;
+        -webkit-box-shadow: 0 2px 1px rgba(0, 0, 0, .1);
+        box-shadow: 0 2px 1px rgba(0, 0, 0, .1);
+    }
+    .btn-primary {
+        color: #fff;
+        text-shadow: 0 -1px 0 rgba(0, 0, 0, .2);
+        background-color: #353535;
+        border-color: #353535;
+    }
+    .btn-lg {
+        padding: 10px 31px;
+        font-size: 17px;
+        line-height: 1.25;
+        border-radius: 4px;
+    }
+    .btn-dark {
+        color: #fff;
+        background-color: #1f3851;
+        border-color: #1f3851;
+    }
+    .btn-dark:hover, .btn-dark:focus,.btn-dark:active {
+        color: #fff;
+        background-color: #133059!important;
+        border-color: #133059!important;
+    }
+    .pull-right{
+        margin-right: 10px;
+    }
+    /*div#mws-user-tools #mws-user-info {*/
+    /*    display: block;*/
+    /*    height: auto;*/
+    /*    padding: 4px;*/
+    /*    margin-top: 9px;*/
+    /*}*/
+    /*div#mws-header {*/
+    /*    height: auto;*/
+    /*}*/
+    * {
+        -webkit-box-sizing:unset;
+        -moz-box-sizing:unset;
+        box-sizing:unset;
+    }
+    </style>
+
+    <div class="container mainpadding" style=" background: white; margin-left: 0px;width: 97%;max-width: unset;">
+        <h4 style="margin-bottom: 0px; margin-left: 20px; font-weight: bold;">我的任务</h4>
+        <hr style="margin-top: 10px; margin-bottom: 0px;">
+    </div>
+    <div class="container " style="width: 97%;margin: unset;max-width: unset;background: white">
+            <!--data-toolbar：设置装按钮的容器为id为toolbar的。-->
+        <div id="toolbar">
+                &nbsp;搜索：
         </div>
+        <div id="action" >
+            <input type="button" id="remove" value="批量删除" class="btn btn-primary btn-dark" style="float: right;margin-top: 10px;margin-right: 10px;">
+            <input type="button" value="刷新列表" class="btn btn-primary btn-dark" onclick="refresh()" style="float: right;margin-top: 10px;margin-right: 10px;">
+        </div>
+
+            <!--bootstrap table属性：data-pagination：设置是否显示页码数 data-search：设置search框 -->
+            <!--data-toolbar：设置装按钮的容器为id为toolbar的。-->
+            <!--data-page-list：用于设置选择每页显示的条数 前提：pagination设为true，启用了分页功能。
+      --默认为[10, 25, 50, 100]，即可以选择”每页显示10/25/50/100条记录”，
+      --data-search-align：搜索框的位置，默认right（最右），可选left-->
+        <table class="display table table-bordered" style="width: 99.9%" id="table" data-pagination="true" data-search="true"
+        data-toolbar="#toolbar" data-page-list="[10, 25, 50, 100, all]" data-search-align="left" data-multiple-search="true">
+        </table>
+
+@*        <div class="mws-panel grid_8">*@
+@*            <div class="mws-panel-header">*@
+@*                <span class="mws-i-24 i-table-1">我的任务</span>*@
+@*            </div>*@
+@*            <div class="mws-panel-body">*@
+@*                <div class="mws-panel-toolbar top clearfix">*@
+@*                    <ul>*@
+@*                        <li><a class="mws-ic-16 ic-cloud-download-1" style="color: cadetblue" id="download">下载</a></li>*@
+@*                        <li><a class="mws-ic-16 ic-delete2" style="color: cadetblue" id="delete">删除</a></li>*@
+@*                        <li><a class="mws-ic-16 ic-refresh2" style="color: cadetblue" id="refresh">刷新任务状态</a></li>*@
+@*                    </ul>*@
+@*                </div>*@
+@*                <table class="mws-datatable-fn mws-table" id="table">*@
+@*                    <thead>*@
+@*                        <tr>*@
+@*                            <th>任务编号</th>*@
+@*                            <th>软件名称</th>*@
+@*                            <th>提交时间</th>*@
+@*                            <th>结束时间</th>*@
+@*                            <th>状态</th>*@
+@*                        </tr>*@
+@*                    </thead>*@
+@*                </table>*@
+@*            </div>*@
+@*        </div>*@
     </div>
 
-    <script type="text/javascript" src="/assets/plugins/jquery.dataTables.js"></script>
-    <script type="text/javascript" src="/assets/plugins/colorpicker/colorpicker.js"></script>
-    <script type="text/javascript" src="/assets/plugins/spinner/ui.spinner.js"></script>
-    <script type="text/javascript" src="/assets/js/jquery-ui.js"></script>
+    @*jquery datatable*@
+@*    <script type="text/javascript" src="/assets/plugins/jquery.dataTables.js"></script>*@
+@*    <script type="text/javascript" src="/assets/plugins/colorpicker/colorpicker.js"></script>*@
+@*    <script type="text/javascript" src="/assets/plugins/spinner/ui.spinner.js"></script>*@
+@*    <script type="text/javascript" src="/assets/js/jquery-ui.js"></script>*@
 
     <script>
 
@@ -53,131 +179,176 @@
             }
 
             $(document).ready(function () {
-
-                var mytask;
                 loading();
 
-                function loading() {
-                    mytask=$("#table").dataTable({
-                        searching:true,
-                        bPaginate:true,
-                        bLengthChange: true,
-                        bFilter:true,
-                        destroy:true,
-                        bSort:true,
-                        sPaginationType: "full_numbers",
-                        sAjaxSource:"/CloudPlatform/MyTasks/getDutys",
-                        sAjaxDataProp:'rows',
-                        fnServerData: function ( sSource, aoData, fnCallback ) {
-                            $.ajax( {
-                                dataType: 'json',
-                                type: "POST",
-                                url: sSource,
-                                data: aoData,
-                                success: fnCallback
-                            } );
-                        },
-                        aoColumns:[
-                            {mDataProp:"taskname"},
-                            {mDataProp:"sname"},
-                            {mDataProp:"submit"},
-                            {mDataProp:"finish"},
-                            {mDataProp:"status"}
-                        ],
-                        aaSorting:[[2,"desc"]], //设置默认排序
-                        contentType: "application/x-www-form-urlencoded"
+                //jquery datatable
+                // var mytask;
+                // function loading() {
+                //     mytask=$("#table").dataTable({
+                //         searching:true,
+                //         bPaginate:true,
+                //         bLengthChange: true,
+                //         bFilter:true,
+                //         destroy:true,
+                //         bSort:true,
+                //         sPaginationType: "full_numbers",
+                //         sAjaxSource:"/CloudPlatform/MyTasks/getDutys",
+                //         sAjaxDataProp:'rows',
+                //         fnServerData: function ( sSource, aoData, fnCallback ) {
+                //             $.ajax( {
+                //                 dataType: 'json',
+                //                 type: "POST",
+                //                 url: sSource,
+                //                 data: aoData,
+                //                 success: fnCallback
+                //             } );
+                //         },
+                //         aoColumns:[
+                //             {mDataProp:"taskname"},
+                //             {mDataProp:"sname"},
+                //             {mDataProp:"submit"},
+                //             {mDataProp:"finish"},
+                //             {mDataProp:"status"}
+                //         ],
+                //         aaSorting:[[2,"desc"]], //设置默认排序
+                //         contentType: "application/x-www-form-urlencoded"
+                //
+                //     });
+                //
+                // }
 
-                    });
-
-                }
-
-                function refresh() {
-                    mytask.fnClearTable();
-                    mytask.fnDestroy();
-                    loading();
-                }
-
-                $("#refresh").click(function() {
-                    var element = "<div id='content'><span id='info'>刷新中，请耐心等待...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>";
-                    var index = layer.alert(element, {
-                        skin: 'layui-layer-lan',
-                        closeBtn: 0,
-                        title: "提醒",
-                        btn: []
-                    });
-                    refresh();
-                    window.setTimeout(function () {
-                        layer.close(index);
-                    }, 2000)
-                });
-
-                $("#table tbody").on('click','tr',function (){
-                    if($(this).hasClass('selected')){
-                        $(this).removeClass('selected');
+                $("#remove").on("click", function () {
+                    console.log(111);
+                    if ($("input:checked")[0] == null) {
+                        alert("请选择需要删除的消息");
+                        return;
+                    }
+                    var rows = $("#table").bootstrapTable('getSelections');// 获得要删除的数据
+                    console.log(rows);
+                    if (rows.length == 0) {// rows 主要是为了判断是否选中，下面的else内容才是主要
+                        alert("请先选择要删除的记录!");
+                        return;
                     } else {
-                        $('tr.selected').removeClass('selected');
-                        $(this).addClass('selected');
-                    }
-                });
-
-                $("#delete").click(function () {
-                    var taskname=$('tr.selected').find("#taskname").text();
-                    if(taskname===""){
-                        swal({
-                            title: "未选择任务",
-                            text: "请选择要删除的任务记录！",
-                            type: "warning",
-                            confirmButtonText: "确认"
-                        });
-                    }else{
-                        $.ajax({
-                            url:"/CloudPlatform/MyTasks/deleteDutys?uid=@session.get("userId")"+"&taskname="+taskname,
-                            type:"post",
-                            success:function (data) {
-                                if(data.valid==="false"){
-                                    swal({
-                                        title: "错误",
-                                        text: "删除失败！"+data.message,
-                                        type: "error",
-                                        confirmButtonText: "确认"
-                                    });
-                                }else{
-                                    swal({
-                                        title: "删除成功",
-                                        text: "任务记录删除成功！",
-                                        type: "success",
-                                        confirmButtonText: "确认"
-                                    });
-                                    refresh();
+                        if (confirm("确认删除吗？")) {
+                            var ids = "";// 声明一个数组
+                            $(rows).each(function () {// 通过获得别选中的来进行遍历
+                                var x = this.taskname;
+                                var taskname = x.toString().substring(x.toString().indexOf(">") + 1, x.toString().indexOf("<", 5));
+                                ids = ids + taskname + ",";// cid为获得到的整条数据中的一列
+                            });
+                            ids = ids.substring(0, ids.length - 1);
+                            console.log(ids);
+                            $.ajax({
+                                url: "/CloudPlatform/MyTasks/deleteDutys?ids=" + ids,
+                                type: "post",
+                                success: function (data) {
+                                    if (data.valid === "false") {
+                                        swal({
+                                            title: "错误",
+                                            text: "删除失败！" + data.message,
+                                            type: "error",
+                                            confirmButtonText: "确认"
+                                        });
+                                    } else {
+                                        $('#table').bootstrapTable('destroy');
+                                        loading();
+                                        swal({
+                                            title: "删除成功",
+                                            text: "任务记录删除成功！",
+                                            type: "success",
+                                            confirmButtonText: "确认"
+                                        });
+                                    }
                                 }
-                            }
-                        })
-                    }
-                });
-
-                $("#download").click(function () {
-                    var taskname=$('tr.selected').find("#taskname").text();
-                    if(taskname===""){
-                        swal({
-                            title: "未选择任务",
-                            text: "请选择要下载的任务记录！",
-                            type: "warning",
-                            confirmButtonText: "确认"
-                        });
-                    }else{
-                        if($('tr.selected').find("#status").text()==="已完成"){
-                            window.location.href = "/CloudPlatform/SoftTool/downloadZip?taskname="+taskname;
-                        }else{
-                            swal({
-                                title: "无法下载",
-                                text: "任务未完成,无法下载！",
-                                type: "warning",
-                                confirmButtonText: "确认"
                             });
                         }
                     }
                 });
             });
+
+            function refresh() {
+                $('#table').bootstrapTable('destroy');
+                loading();
+            }
+
+            function loading() {
+                $('#table').bootstrapTable({
+                    method: 'post',
+                    url: "/CloudPlatform/MyTasks/getAllDutys",
+                    sidePagination: "server",
+                    pageNumber: 1,
+                    pagination: true,
+                    pageList: [10, 25, 50, 100],
+                    contentType: "application/x-www-form-urlencoded",
+                    clickToSelect: true, //点击行选中
+                    columns: [{
+                        checkbox: true
+                    }, {
+                        title: '任务编号',
+                        field: 'taskname',
+                        sortable: 'true'
+                    }, {
+                        title: '软件名称',
+                        field: 'sname',
+                        sortable: 'true'
+                    }, {
+                        title: '提交时间',
+                        field: 'subtime',
+                        sortable: 'true'
+                    }, {
+                        title: '结束时间',
+                        field: 'finitime',
+                        sortable: 'true'
+                    }, {
+                        title: '状态',
+                        field: 'status',
+                        sortable: 'true'
+                    }, {
+                        title: '操作',
+                        field: 'control'
+                    }]
+                });
+            }
+
+            function deltask(taskname) {
+                $.ajax({
+                    url: "/CloudPlatform/MyTasks/deleteDuty?taskname=" + taskname,
+                    type: "post",
+                    success: function (data) {
+                        if (data.valid === "false") {
+                            swal({
+                                title: "错误",
+                                text: "删除失败！" + data.message,
+                                type: "error",
+                                confirmButtonText: "确认"
+                            });
+                        } else {
+                            $('#table').bootstrapTable('destroy');
+                            loading();
+                            swal({
+                                title: "删除成功",
+                                text: "任务记录删除成功！",
+                                type: "success",
+                                confirmButtonText: "确认"
+                            });
+
+                        }
+                    }
+                });
+            }
+
+            function downtask(taskname,status) {
+                if(status==="已完成"){
+                    window.location.href = "/CloudPlatform/SoftTool/downloadZip?taskname="+taskname;
+                }else{
+                    swal({
+                        title: "无法下载",
+                        text: "任务未完成,无法下载！",
+                        type: "warning",
+                        confirmButtonText: "确认"
+                    });
+                }
+            }
 
             function formValidation() {
                 $('#passwordForm').formValidation({

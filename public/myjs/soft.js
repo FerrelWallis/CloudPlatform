@@ -25,8 +25,8 @@ function checktaskname() {
         alert('任务编号里不能有空格!');
         return false;
     }
-    if(val.toString().length>13){
-        alert('任务编号最长13位!');
+    if(val.toString().length>20){
+        alert('任务编号最长20位!');
         return false;
     }
     return true;
@@ -72,7 +72,7 @@ function loadHistory(abbre){
             if(data.run==true) running=true;
             else running=false;
             $.each(data.rows,function (i,v) {
-                html += "<li class='hislist'><div class='his_name'><span>"+v.taskname+"</span></div><div class='his_time'><span>"+v.subtime+"</span></div><div class='his_time'><span>"+v.finitime+"</span></div><div class='his_name'>"+v.status+"</div><hr></li>";
+                html += "<li class='hislist'><div class='his_time'><span>"+v.taskname+"</span></div><div class='his_time'><span>"+v.finitime+"</span></div><div class='his_name'>"+v.status+"</div><hr></li>";
             });
             $("#hislist").after(html);
             if(running==true){
@@ -117,8 +117,7 @@ function checkrunning(abbre) {
 function removeul(){
     $("#hisul li").remove();
     $("#hisul").append("<li id=\"hislist\" class=\"hislist\">\n" +
-        "                                    <div class=\"his_name\"><span>任务编号</span></div>\n" +
-        "                                    <div class=\"his_time\"><span>提交时间</span></div>\n" +
+        "                                    <div class=\"his_time\"><span>任务编号</span></div>\n" +
         "                                    <div class=\"his_time\"><span style='margin-left: -20px;'>结束时间</span></div>\n" +
         "                                    <div class=\"his_name\"><span style='margin-left: -23px;'>状态</span></div>\n" +
         "                                    <hr>\n" +
