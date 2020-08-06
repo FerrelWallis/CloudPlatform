@@ -1,5 +1,5 @@
-@(abbre:String,sname:String)(implicit session: Session)
-@home.main("维恩图") {
+@(abbre:String)(implicit session: Session)
+@home.main("Venn") {
 
 @*    <link href="@routes.Assets.versioned("bootstrap/css/bootstrap.css")" rel="stylesheet" media="screen">*@
     <link href="@routes.Assets.versioned("jvenn/css/prettify.css")" rel="stylesheet" media="screen">
@@ -99,18 +99,55 @@
             div#mws-sidebar {
                 padding-top: 43px;
             }
+            .nav-tabs > li.active {
+              z-index: 5;
+            }
+            .nav-tabs > li > a {
+                margin-right: -8px;
+                line-height: 1.53846154;
+                border-bottom: 1px solid transparent;
+                border-radius: 4px 4px 0 0;
+                background: #f1f1f1;
+
+            }
+            .loadtab>.nav-tabs > li > a {
+                margin-right: 2px;
+                line-height: 1.53846154;
+                border-bottom: 1px solid transparent;
+                border-radius: 4px 4px 0 0;
+                background: #f1f1f1;
+
+            }
+            .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+                color: gray;
+                cursor: default;
+                background-color: #fff;
+                border: 1px solid transparent;
+                border-bottom-color: rgb(221, 221, 221);
+                border-bottom-color: transparent;
+
+            }
+            .loadtab>.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+                color: gray;
+                cursor: default;
+                background-color: #fff;
+                border: 1px solid #ddd;
+                border-bottom-color: rgb(221, 221, 221);
+                border-bottom-color: transparent;
+
+            }
     </style>
 
-    <div class="row-fluid" style="padding-top: 60px">
+    <div class="row-fluid" style="margin-top: 50px; padding-top: 5px;">
 
-        <div class="col-md-6 col-sm-6" style="width: 45%;">
+        <div class="col-md-6 col-sm-6" style="width: 45%;background: white; margin-left: 10px; padding-top: 10px;">
             <div class="portlet blue-soft box">
                 <div class="portlet-title">
                     <div class="caption" style="font-size: 20px">
                         <i class='fa fa-pie-chart' style="margin-right: 10px"></i>维恩图（Jvenn图）
                     </div>
                 </div>
-                <div class="portlet-body" style="background: white">
+                <div class="portlet-body" style="background: white; border: 1px solid lightgray;">
                     <div id="jvenn-container" class="div-align-center">
                     </div>
                 </div>
@@ -123,444 +160,614 @@
             </div>
         </div>
 
-        <div class="col-md-6 col-sm-6">
-            <div class="portlet blue-soft box">
-                <div class="portlet-title">
-                    <div class="caption">
-                        设置参数
+        <div class="col-md-6 col-sm-6" style="margin-left: 3px">
+            <ul class="nav nav-tabs" style="margin: 0px;">
+                <li role="presentation" class="active">
+                    <a data-toggle="tab" href="#drawpa">设置绘图参数</a>
+                </li>
+                <li role="presentation">
+                    <a data-toggle="tab" href="#instruc">使用说明</a>
+                </li>
+                <li role="presentation">
+                    <a data-toggle="tab" href="#outexample">示例结果</a>
+                </li>
+            </ul>
+
+            <div class="tab-content clearfix" style="margin: 0px; padding: 20px; border-radius: 0 0 4px 4px;background: white;height: 960px;overflow: auto; scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.2); scrollbar-width: thin;">
+                <div class="tab-pane active" id="drawpa">
+                    <div class="portlet blue-soft box">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                设置参数
+                            </div>
+                        </div>
+                        <div class="portlet-body">
+
+                            <img src="/assets/jvenn/img/bullet.png" class="bullet">
+                            Display mode:
+                            <div class="btn-group" data-toggle="buttons-radio">
+                                <button id="dm_classic" type="button" class="btn btn-mini active">Arial</button>
+                                <button id="dm_edwards" type="button" class="btn btn-mini">Sans-serif</button>
+                            </div><br>
+                            <img src="/assets/jvenn/img/bullet.png" class="bullet">
+                            Font family:
+                            <div class="btn-group" data-toggle="buttons-radio">
+                                <button id="ff_arial" type="button" class="btn btn-mini active">Arial</button>
+                                <button id="ff_sserif" type="button" class="btn btn-mini">Sans-serif</button>
+                                <button id="ff_serif" type="button" class="btn btn-mini">Serif</button>
+                                <button id="ff_mono" type="button" class="btn btn-mini">Monospace</button>
+                            </div><br>
+                            <img src="/assets/jvenn/img/bullet.png" class="bullet">
+                            Font size:
+                            <div class="btn-group" data-toggle="buttons-radio">
+                                <button id="fs_8" type="button" class="btn btn-mini">8px</button>
+                                <button id="fs_9" type="button" class="btn btn-mini">9px</button>
+                                <button id="fs_10" type="button" class="btn btn-mini">10px</button>
+                                <button id="fs_11" type="button" class="btn btn-mini">11px</button>
+                                <button id="fs_12" type="button" class="btn btn-mini active">12px</button>
+                                <button id="fs_13" type="button" class="btn btn-mini">13px</button>
+                                <button id="fs_14" type="button" class="btn btn-mini">14px</button>
+                            </div><br>
+                            <img src="/assets/jvenn/img/bullet.png" class="bullet">
+                            Display some statistics based on input lists:
+                            <div class="btn-group" data-toggle="buttons-radio">
+                                <button id="ds_yes" type="button" class="btn btn-mini active">Yes</button>
+                                <button id="ds_no" type="button" class="btn btn-mini">No</button>
+                            </div><br>
+                            <img src="/assets/jvenn/img/bullet.png" class="bullet">
+                            Display the switch button panel (if more than 3 lists are provided):
+                            <div class="btn-group" data-toggle="buttons-radio">
+                                <button id="dsw_yes" type="button" class="btn btn-mini active">Yes</button>
+                                <button id="dsw_no" type="button" class="btn btn-mini">No</button>
+                            </div><br>
+                            <img src="/assets/jvenn/img/bullet.png" class="bullet">
+                            Substitute intersection count size by a question mark:
+                            <div class="btn-group" data-toggle="buttons-radio">
+                                <button id="qm_yes" type="button" class="btn btn-mini active">Yes</button>
+                                <button id="qm_no" type="button" class="btn btn-mini">No</button>
+                            </div>
+
+
+                            <hr style="margin-bottom: 12px;
+                                margin-left: 50px;
+                                margin-right: 50px">
+                            <img src="/assets/jvenn/img/bullet.png" class="bullet">
+                            Find an element in list(s):
+                            <input id="search-field" type="text" style="margin-top: 8px" placeholder="enter an element name...">
+                            <span id="search-status" class="label label-info" style="vertical-align: 16px;
+                                margin-left: -35px;"></span>
+
+                            <div class="loadtab">
+                                <ul class="nav nav-tabs" style="margin: 0px;border-bottom: 1px solid lightgray;">
+                                    <li role="presentation" id="paste-tab" class="active">
+                                        <a data-toggle="tab" href="#paste">Paste lists</a>
+                                    </li>
+                                    <li role="presentation" id="upload-tab">
+                                        <a data-toggle="tab" href="#upload">Upload lists type1</a>
+                                    </li>
+                                    <li role="presentation" id="upload2-tab">
+                                        <a data-toggle="tab" href="#upload2">Upload lists type2</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="tab-content clearfix" style="margin: 0px;  padding: 20px;  border-left: 1px solid lightgrey;  border-right: 1px solid lightgrey;  border-bottom: 1px solid lightgrey;  border-radius: 0 0 4px 4px;">
+                                <div class="tab-pane active" id="paste">
+                                    <p style="clear: both;">
+                                        <button id="clear-all" class="btn">Clear all</button>
+                                        <button id="example" class="btn btn-primary">Load an example...</button>
+                                    </p>
+                                    <div class="row-fluid">
+
+                                        <div class="span6">
+                                            <div class="control-group color1">
+                                                <input class="span6" id="name_pa_1" type="text" style="font-weight: bold;" value="List 1" maxlength="11">
+                                                <div id="colorp_pa_1" class="input-append colorpicker-component">
+                                                    <input type="text" value="#006600" class="form-control input-lg" style="display: none">
+                                                    <span class="input-group-addon"><i style="background-color: rgb(0, 102, 0);"></i></span>
+                                                </div>
+                                                <div class="btn-group" style="margin-left: 15px">
+                                                    <button id="colord_pa_1" style="margin-bottom: 10px" class="btn btn-mini"><i class="fa fa-refresh"></i></button>
+                                                    <button id="clear_pa_1" style="margin-bottom: 10px" class="btn btn-mini"><i class="fa fa-trash"></i></button>
+                                                </div>
+                                                <div class="controls controls-row">
+                                                    <textarea class="span11" id="area_pa_1" wrap="off" rows="4" style="resize: none"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="span6">
+                                            <div class="control-group color2">
+                                                <input class="span6" id="name_pa_2" type="text" style="font-weight: bold;" value="List 2" maxlength="11">
+                                                <div id="colorp_pa_2" class="input-append  colorpicker-component colorpicker-element">
+                                                    <input type="text" value="#5a9bd4" class="form-control input-lg" style="display: none">
+                                                    <span class="input-group-addon"><i style="background-color: rgb(90, 155, 212);"></i></span>
+                                                </div>
+                                                <div class="btn-group" style="margin-left: 15px">
+                                                    <button id="colord_pa_2" style="margin-bottom: 10px" class="btn btn-mini"><i class="fa fa-refresh"></i></button>
+                                                    <button id="clear_pa_2" style="margin-bottom: 10px" class="btn btn-mini"><i class="fa fa-trash"></i></button>
+                                                </div>
+                                                <div class="controls controls-row">
+                                                    <textarea class="span11" id="area_pa_2" wrap="off" rows="4" style="resize: none"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row-fluid">
+                                        <div class="span6">
+                                            <div class="control-group color3">
+                                                <input class="span6" id="name_pa_3" type="text" style="font-weight: bold;" value="List 3" maxlength="11">
+                                                <div id="colorp_pa_3" class="input-append colorpicker-component">
+                                                    <input type="text" value="#f15a60" class="form-control input-lg" style="display: none">
+                                                    <span class="input-group-addon"><i style="background-color: rgb(241, 90, 96);"></i></span>
+                                                </div>
+                                                <div class="btn-group" style="margin-left: 15px">
+                                                    <button id="colord_pa_3" style="margin-bottom: 10px" class="btn btn-mini"><i class="fa fa-refresh"></i></button>
+                                                    <button id="clear_pa_3" style="margin-bottom: 10px" class="btn btn-mini"><i class="fa fa-trash"></i></button>
+                                                </div>
+                                                <div class="controls controls-row">
+                                                    <textarea class="span11" id="area_pa_3" wrap="off" rows="4" style="resize: none"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="span6">
+                                            <div class="control-group color4">
+                                                <input class="span6" id="name_pa_4" type="text" style="font-weight: bold;" value="List 4" maxlength="11">
+                                                <div id="colorp_pa_4" class="input-append colorpicker-component">
+                                                    <input type="text" value="#cfcf1b" class="form-control input-lg" style="display: none">
+                                                    <span class="input-group-addon"><i style="background-color: rgb(207, 207, 27);"></i></span>
+                                                </div>
+                                                <div class="btn-group" style="margin-left: 15px">
+                                                    <button id="colord_pa_4" style="margin-bottom: 10px" class="btn btn-mini"><i class="fa fa-refresh"></i></button>
+                                                    <button id="clear_pa_4" style="margin-bottom: 10px" class="btn btn-mini"><i class="fa fa-trash"></i></button>
+                                                </div>
+                                                <div class="controls controls-row">
+                                                    <textarea class="span11" id="area_pa_4" wrap="off" rows="4" style="resize: none"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row-fluid">
+                                        <div class="span6">
+                                            <div class="control-group color5">
+                                                <input class="span6" id="name_pa_5" type="text" style="font-weight: bold;" value="List 5" maxlength="11">
+                                                <div id="colorp_pa_5" class="input-append colorpicker-component">
+                                                    <input type="text" value="#ff7500" class="form-control  input-lg" style="display: none">
+                                                    <span class="input-group-addon"><i style="background-color: rgb(255, 117, 0);"></i></span>
+                                                </div>
+                                                <div class="btn-group" style="margin-left: 15px">
+                                                    <button id="colord_pa_5" style="margin-bottom: 10px" class="btn btn-mini"><i class="fa fa-refresh"></i></button>
+                                                    <button id="clear_pa_5" style="margin-bottom: 10px" class="btn btn-mini"><i class="fa fa-trash"></i></button>
+                                                </div>
+                                                <div class="controls controls-row">
+                                                    <textarea class="span11" id="area_pa_5" wrap="off" rows="4" style="resize: none"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="span6">
+                                            <div class="control-group color6">
+                                                <input class="span6" id="name_pa_6" type="text" style="font-weight: bold;" value="List 6" maxlength="11">
+                                                <div id="colorp_pa_6" class="input-append colorpicker-component">
+                                                    <input type="text" value="#c09853" class="form-control input-lg" style="display: none">
+                                                    <span class="input-group-addon"><i style="background-color: rgb(192, 152, 83);"></i></span>
+                                                </div>
+                                                <div class="btn-group" style="margin-left: 15px">
+                                                    <button id="colord_pa_6" style="margin-bottom: 10px" class="btn btn-mini"><i class="fa fa-refresh"></i></button>
+                                                    <button id="clear_pa_6" style="margin-bottom: 10px" class="btn btn-mini"><i class="fa fa-trash"></i></button>
+                                                </div>
+                                                <div class="controls controls-row">
+                                                    <textarea class="span11" id="area_pa_6" wrap="off" rows="4" style="resize: none"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="upload">
+                                    <img src="/assets/jvenn/img/bullet.png" style="vertical-align: initial;
+                                        padding-top: 10px">
+                                    <b>Step1</b> - Define upload parameters
+                                    <br/>
+                                    <img src="/assets/jvenn/img/bullet.png" style="vertical-align: initial;
+                                        margin-left: 10px;
+                                        padding-top: 10px">
+                                    Field separator:
+                                    <div class="btn-group" data-toggle="buttons-radio">
+                                        <button id="sep_tab" name="\t" type="button" class="btn btn-mini active">tabular</button>
+                                        <button id="sep_comma" name="," type="button" class="btn btn-mini">comma</button>
+                                        <button id="sep_semicolon" name=";" type="button" class="btn btn-mini">semicolon</button>
+                                    </div>
+                                    <br/>
+                                    <img src="/assets/jvenn/img/bullet.png" style="vertical-align: initial;
+                                        margin-left: 10px;
+                                        padding-top: 10px">
+                                    Use the first row as headers:
+                                    <div class="btn-group" data-toggle="buttons-radio">
+                                        <button id="header_yes" name="True" type="button" class="btn btn-mini active">Yes</button>
+                                        <button id="header_no" name="" type="button" class="btn btn-mini">No</button>
+                                    </div>
+
+                                    <br/>
+                                    <img src="/assets/jvenn/img/bullet.png" style="vertical-align: initial;
+                                        padding-top: 20px">
+                                    <b>Step2</b> - Browse to select a file
+                                    <div class="row-fluid" style="margin-top: 5px;">
+                                        <div class="control-group">
+                                            <div id="progress" class="span8 progress" style="width: 60%;height: 33px;">
+                                                <div class="bar progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="padding-top: 5px;min-width: 2em;">
+                                                    <span class="sr-only">0%</span>
+                                                </div>
+                                            </div>
+                                            <div class="input-append">
+                                                <input style="display: none;" name="browse_upload" id="browse_upload" accept=".txt" type="file" data-url="/CloudPlatform/SoftTool/getJvennData" >
+                                                <span id="upload_and_draw" class="add-on btn btn-default" style="border-radius: 0 4px 4px 0;height: 22px">Browse  <i class="fa fa-folder-open"></i></span>
+                                                <a href="/assets/files/venn.txt" target="_blank" style="margin-left: 10px">e.g., example</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <hr style="margin: 0 50px 20px 50px"/>
+
+                                    <div class="row-fluid">
+                                        <div class="span6">
+                                            <div class="control-group color1">
+                                                <input class="span6" id="name_up_1" type="text" style="font-weight: bold;" value="List 1" maxlength="11"/>
+                                                <div id="colorp_up_1" class="input-group colorpicker-component">
+                                                    <input type="text" value="#006600" class="form-control input-lg" style="display: none"/>
+                                                    <span class="input-group-addon"><i></i></span>
+                                                </div>
+                                                <div class="btn-group" style="margin-left: 15px">
+                                                    <button id="colord_up_1" style="margin-bottom: 10px" class="btn btn-mini"><i class="fa fa-refresh"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="span6">
+                                            <div class="control-group color2">
+                                                <input class="span6" id="name_up_2" type="text" style="font-weight: bold;" value="List 2" maxlength="11"/>
+                                                <div id="colorp_up_2" class="input-append colorpicker-component">
+                                                    <input type="text" value="#5a9bd4" class="form-control  input-lg" style="display: none"/>
+                                                    <span class="input-group-addon"><i></i></span>
+                                                </div>
+                                                <div class="btn-group" style="margin-left: 15px">
+                                                    <button id="colord_up_2" style="margin-bottom: 10px" class="btn btn-mini"><i class="fa fa-refresh"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row-fluid">
+                                        <div class="span6">
+                                            <div class="control-group color3">
+                                                <input class="span6" id="name_up_3" type="text" style="font-weight: bold;" value="List 3" maxlength="11"/>
+                                                <div id="colorp_up_3" class="input-append colorpicker-component">
+                                                    <input type="text" value="#f15a60" class="form-control  input-lg" style="display: none"/>
+                                                    <span class="input-group-addon"><i></i></span>
+                                                </div>
+                                                <div class="btn-group" style="margin-left: 15px">
+                                                    <button id="colord_up_3" style="margin-bottom: 10px" class="btn btn-mini"><i class="fa fa-refresh"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="span6">
+                                            <div class="control-group color4">
+                                                <input class="span6" id="name_up_4" type="text" style="font-weight: bold;" value="List 4" maxlength="11"/>
+                                                <div id="colorp_up_4" class="input-append colorpicker-component">
+                                                    <input type="text" value="#cfcf1b" class="form-control input-lg" style="display: none"/>
+                                                    <span class="input-group-addon"><i></i></span>
+                                                </div>
+                                                <div class="btn-group" style="margin-left: 15px">
+                                                    <button id="colord_up_4" style="margin-bottom: 10px" class="btn btn-mini"><i class="fa fa-refresh"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row-fluid">
+                                        <div class="span6">
+                                            <div class="control-group color5">
+                                                <input class="span6" id="name_up_5" type="text" style="font-weight: bold;" value="List 5" maxlength="11"/>
+                                                <div id="colorp_up_5" class="input-append colorpicker-component">
+                                                    <input type="text" value="#ff7500" class="form-control input-lg" style="display: none"/>
+                                                    <span class="input-group-addon"><i></i></span>
+                                                </div>
+                                                <div class="btn-group" style="margin-left: 15px">
+                                                    <button id="colord_up_5" style="margin-bottom: 10px" class="btn btn-mini"><i class="fa fa-refresh"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="span6">
+                                            <div class="control-group color6">
+                                                <input class="span6" id="name_up_6" type="text" style="font-weight: bold;" value="List 6" maxlength="11"/>
+                                                <div id="colorp_up_6" class="input-append colorpicker-component">
+                                                    <input type="text" value="#c09853" class="form-control input-lg" style="display: none"/>
+                                                    <span class="input-group-addon"><i></i></span>
+                                                </div>
+                                                <div class="btn-group" style="margin-left: 15px">
+                                                    <button id="colord_up_6" style="margin-bottom: 10px" class="btn btn-mini"><i class="fa fa-refresh"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="tab-pane" id="upload2">
+                                    <form id="UP2" method="GET" enctype="multipart/form-data">
+                                        <img src="/assets/jvenn/img/bullet.png" style="vertical-align: initial;
+                                            padding-top: 10px">
+                                        <b>Step1</b> - Browse to select a table file
+                                        <div class="row-fluid" style="margin-top: 5px;">
+                                            <div class="control-group">
+                                                <div id="progress2" class="span8 progress" style="width: 60%;height: 33px;">
+                                                    <div class="bar2 progress-bar2" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="padding-top: 5px;min-width: 2em;">
+                                                        <span class="sr-only2">0%</span>
+                                                    </div>
+                                                </div>
+                                                <div class="input-append">
+                                                    <input style="display: none;" name="browse_upload2" id="browse_upload2" accept=".txt" type="file" onchange="upload()">
+                                                    <span id="upload_and_draw2" class="add-on btn btn-default" style="border-radius: 0 4px 4px 0;height: 22px">Browse  <i class="fa fa-folder-open"></i></span>
+                                                    <a href="/assets/files/VennChart.txt" target="_blank" style="margin-left: 10px">e.g., example</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <img src="/assets/jvenn/img/bullet.png" style="vertical-align: initial;
+                                            padding-top: 20px">
+                                        <b>Step2</b> - Browse to select a group file
+                                        <div class="row-fluid" style="margin-top: 5px;">
+                                            <div class="control-group">
+                                                <div id="progress3" class="span8 progress" style="width: 60%;height: 33px;">
+                                                    <div class="bar3 progress-bar3" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="padding-top: 5px;min-width: 2em;">
+                                                        <span class="sr-only3">0%</span>
+                                                    </div>
+                                                </div>
+                                                <div class="input-append">
+                                                    <input style="display: none;" name="browse_upload3" id="browse_upload3" accept=".txt" type="file" onchange="upload3()">
+                                                    <span id="upload_and_draw3" class="add-on btn btn-default" style="border-radius: 0 4px 4px 0;height: 22px">Browse  <i class="fa fa-folder-open"></i></span>
+                                                    <a href="/assets/files/VennChartGroup.txt" target="_blank" style="margin-left: 10px">e.g., example</a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <hr style="margin: 0 50px 20px 50px"/>
+
+                                        <div class="row-fluid">
+                                            <div class="span6">
+                                                <div class="control-group color1">
+                                                    <input class="span6" id="name_up2_1" type="text" style="font-weight: bold;" value="List 1" maxlength="11"/>
+                                                    <div id="colorp_up2_1" class="input-group colorpicker-component">
+                                                        <input type="text" value="#006600" class="form-control input-lg" style="display: none"/>
+                                                        <span class="input-group-addon"><i></i></span>
+                                                    </div>
+                                                    <div class="btn-group" style="margin-left: 15px">
+                                                        <button id="colord_up2_1" type="button" style="margin-bottom: 10px" class="btn btn-mini"><i class="fa fa-refresh"></i></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="span6">
+                                                <div class="control-group color2">
+                                                    <input class="span6" id="name_up2_2" type="text" style="font-weight: bold;" value="List 2" maxlength="11"/>
+                                                    <div id="colorp_up2_2" class="input-append colorpicker-component">
+                                                        <input type="text" value="#5a9bd4" class="form-control  input-lg" style="display: none"/>
+                                                        <span class="input-group-addon"><i></i></span>
+                                                    </div>
+                                                    <div class="btn-group" style="margin-left: 15px">
+                                                        <button id="colord_up2_2" type="button" style="margin-bottom: 10px" class="btn btn-mini"><i class="fa fa-refresh"></i></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row-fluid">
+                                            <div class="span6">
+                                                <div class="control-group color3">
+                                                    <input class="span6" id="name_up2_3" type="text" style="font-weight: bold;" value="List 3" maxlength="11"/>
+                                                    <div id="colorp_up2_3" class="input-append colorpicker-component">
+                                                        <input type="text" value="#f15a60" class="form-control  input-lg" style="display: none"/>
+                                                        <span class="input-group-addon"><i></i></span>
+                                                    </div>
+                                                    <div class="btn-group" style="margin-left: 15px">
+                                                        <button id="colord_up2_3" type="button" style="margin-bottom: 10px" class="btn btn-mini"><i class="fa fa-refresh"></i></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="span6">
+                                                <div class="control-group color4">
+                                                    <input class="span6" id="name_up2_4" type="text" style="font-weight: bold;" value="List 4" maxlength="11"/>
+                                                    <div id="colorp_up2_4" class="input-append colorpicker-component">
+                                                        <input type="text" value="#cfcf1b" class="form-control input-lg" style="display: none"/>
+                                                        <span class="input-group-addon"><i></i></span>
+                                                    </div>
+                                                    <div class="btn-group" style="margin-left: 15px">
+                                                        <button id="colord_up2_4" type="button" style="margin-bottom: 10px" class="btn btn-mini"><i class="fa fa-refresh"></i></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row-fluid">
+                                            <div class="span6">
+                                                <div class="control-group color5">
+                                                    <input class="span6" id="name_up2_5" type="text" style="font-weight: bold;" value="List 5" maxlength="11"/>
+                                                    <div id="colorp_up2_5" class="input-append colorpicker-component">
+                                                        <input type="text" value="#ff7500" class="form-control input-lg" style="display: none"/>
+                                                        <span class="input-group-addon"><i></i></span>
+                                                    </div>
+                                                    <div class="btn-group" style="margin-left: 15px">
+                                                        <button id="colord_up2_5" type="button" style="margin-bottom: 10px" class="btn btn-mini"><i class="fa fa-refresh"></i></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="span6">
+                                                <div class="control-group color6">
+                                                    <input class="span6" id="name_up2_6" type="text" style="font-weight: bold;" value="List 6" maxlength="11"/>
+                                                    <div id="colorp_up2_6" class="input-append colorpicker-component">
+                                                        <input type="text" value="#c09853" class="form-control input-lg" style="display: none"/>
+                                                        <span class="input-group-addon"><i></i></span>
+                                                    </div>
+                                                    <div class="btn-group" style="margin-left: 15px">
+                                                        <button id="colord_up2_6" type="button" style="margin-bottom: 10px" class="btn btn-mini"><i class="fa fa-refresh"></i></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="portlet-body">
-
-                    <img src="/assets/jvenn/img/bullet.png" class="bullet">
-                    Display mode:
-                    <div class="btn-group" data-toggle="buttons-radio">
-                        <button id="dm_classic" type="button" class="btn btn-mini active">Arial</button>
-                        <button id="dm_edwards" type="button" class="btn btn-mini">Sans-serif</button>
-                    </div><br>
-                    <img src="/assets/jvenn/img/bullet.png" class="bullet">
-                    Font family:
-                    <div class="btn-group" data-toggle="buttons-radio">
-                        <button id="ff_arial" type="button" class="btn btn-mini active">Arial</button>
-                        <button id="ff_sserif" type="button" class="btn btn-mini">Sans-serif</button>
-                        <button id="ff_serif" type="button" class="btn btn-mini">Serif</button>
-                        <button id="ff_mono" type="button" class="btn btn-mini">Monospace</button>
-                    </div><br>
-                    <img src="/assets/jvenn/img/bullet.png" class="bullet">
-                    Font size:
-                    <div class="btn-group" data-toggle="buttons-radio">
-                        <button id="fs_8" type="button" class="btn btn-mini">8px</button>
-                        <button id="fs_9" type="button" class="btn btn-mini">9px</button>
-                        <button id="fs_10" type="button" class="btn btn-mini">10px</button>
-                        <button id="fs_11" type="button" class="btn btn-mini">11px</button>
-                        <button id="fs_12" type="button" class="btn btn-mini active">12px</button>
-                        <button id="fs_13" type="button" class="btn btn-mini">13px</button>
-                        <button id="fs_14" type="button" class="btn btn-mini">14px</button>
-                    </div><br>
-                    <img src="/assets/jvenn/img/bullet.png" class="bullet">
-                    Display some statistics based on input lists:
-                    <div class="btn-group" data-toggle="buttons-radio">
-                        <button id="ds_yes" type="button" class="btn btn-mini active">Yes</button>
-                        <button id="ds_no" type="button" class="btn btn-mini">No</button>
-                    </div><br>
-                    <img src="/assets/jvenn/img/bullet.png" class="bullet">
-                    Display the switch button panel (if more than 3 lists are provided):
-                    <div class="btn-group" data-toggle="buttons-radio">
-                        <button id="dsw_yes" type="button" class="btn btn-mini active">Yes</button>
-                        <button id="dsw_no" type="button" class="btn btn-mini">No</button>
-                    </div><br>
-                    <img src="/assets/jvenn/img/bullet.png" class="bullet">
-                    Substitute intersection count size by a question mark:
-                    <div class="btn-group" data-toggle="buttons-radio">
-                        <button id="qm_yes" type="button" class="btn btn-mini active">Yes</button>
-                        <button id="qm_no" type="button" class="btn btn-mini">No</button>
-                    </div>
-
-
-                    <hr style="margin-bottom: 12px;
-                        margin-left: 50px;
-                        margin-right: 50px">
-                    <img src="/assets/jvenn/img/bullet.png" class="bullet">
-                    Find an element in list(s):
-                    <input id="search-field" type="text" style="margin-top: 8px" placeholder="enter an element name...">
-                    <span id="search-status" class="label label-info" style="vertical-align: 16px;
-                        margin-left: -35px;"></span>
-
-                    <ul class="nav nav-tabs" style="margin: 0px">
-                        <li role="presentation" id="paste-tab" class="active">
-                            <a data-toggle="tab" href="#paste">Paste lists</a>
-                        </li>
-                        <li role="presentation" id="upload-tab">
-                            <a data-toggle="tab" href="#upload">Upload lists type1</a>
-                        </li>
-                        <li role="presentation" id="upload2-tab">
-                            <a data-toggle="tab" href="#upload2">Upload lists type2</a>
-                        </li>
-                    </ul>
-
-                    <div class="tab-content clearfix" style="margin: 0px;  padding: 20px 0 0 20px;  border-left: 1px solid #fff;  border-right: 1px solid #fff;  border-bottom: 1px solid #fff;  border-radius: 0 0 4px 4px;">
-                        <div class="tab-pane active" id="paste">
-                            <p style="clear: both;">
-                                <button id="clear-all" class="btn">Clear all</button>
-                                <button id="example" class="btn btn-primary">Load an example...</button>
-                            </p>
-                            <div class="row-fluid">
-
-                                <div class="span6">
-                                    <div class="control-group color1">
-                                        <input class="span6" id="name_pa_1" type="text" style="font-weight: bold;" value="List 1" maxlength="11">
-                                        <div id="colorp_pa_1" class="input-append colorpicker-component">
-                                            <input type="text" value="#006600" class="form-control input-lg" style="display: none">
-                                            <span class="input-group-addon"><i style="background-color: rgb(0, 102, 0);"></i></span>
-                                        </div>
-                                        <div class="btn-group" style="margin-left: 15px">
-                                            <button id="colord_pa_1" style="margin-bottom: 10px" class="btn btn-mini"><i class="fa fa-refresh"></i></button>
-                                            <button id="clear_pa_1" style="margin-bottom: 10px" class="btn btn-mini"><i class="fa fa-trash"></i></button>
-                                        </div>
-                                        <div class="controls controls-row">
-                                            <textarea class="span11" id="area_pa_1" wrap="off" rows="4" style="resize: none"></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="span6">
-                                    <div class="control-group color2">
-                                        <input class="span6" id="name_pa_2" type="text" style="font-weight: bold;" value="List 2" maxlength="11">
-                                        <div id="colorp_pa_2" class="input-append  colorpicker-component colorpicker-element">
-                                            <input type="text" value="#5a9bd4" class="form-control input-lg" style="display: none">
-                                            <span class="input-group-addon"><i style="background-color: rgb(90, 155, 212);"></i></span>
-                                        </div>
-                                        <div class="btn-group" style="margin-left: 15px">
-                                            <button id="colord_pa_2" style="margin-bottom: 10px" class="btn btn-mini"><i class="fa fa-refresh"></i></button>
-                                            <button id="clear_pa_2" style="margin-bottom: 10px" class="btn btn-mini"><i class="fa fa-trash"></i></button>
-                                        </div>
-                                        <div class="controls controls-row">
-                                            <textarea class="span11" id="area_pa_2" wrap="off" rows="4" style="resize: none"></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row-fluid">
-                                <div class="span6">
-                                    <div class="control-group color3">
-                                        <input class="span6" id="name_pa_3" type="text" style="font-weight: bold;" value="List 3" maxlength="11">
-                                        <div id="colorp_pa_3" class="input-append colorpicker-component">
-                                            <input type="text" value="#f15a60" class="form-control input-lg" style="display: none">
-                                            <span class="input-group-addon"><i style="background-color: rgb(241, 90, 96);"></i></span>
-                                        </div>
-                                        <div class="btn-group" style="margin-left: 15px">
-                                            <button id="colord_pa_3" style="margin-bottom: 10px" class="btn btn-mini"><i class="fa fa-refresh"></i></button>
-                                            <button id="clear_pa_3" style="margin-bottom: 10px" class="btn btn-mini"><i class="fa fa-trash"></i></button>
-                                        </div>
-                                        <div class="controls controls-row">
-                                            <textarea class="span11" id="area_pa_3" wrap="off" rows="4" style="resize: none"></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="span6">
-                                    <div class="control-group color4">
-                                        <input class="span6" id="name_pa_4" type="text" style="font-weight: bold;" value="List 4" maxlength="11">
-                                        <div id="colorp_pa_4" class="input-append colorpicker-component">
-                                            <input type="text" value="#cfcf1b" class="form-control input-lg" style="display: none">
-                                            <span class="input-group-addon"><i style="background-color: rgb(207, 207, 27);"></i></span>
-                                        </div>
-                                        <div class="btn-group" style="margin-left: 15px">
-                                            <button id="colord_pa_4" style="margin-bottom: 10px" class="btn btn-mini"><i class="fa fa-refresh"></i></button>
-                                            <button id="clear_pa_4" style="margin-bottom: 10px" class="btn btn-mini"><i class="fa fa-trash"></i></button>
-                                        </div>
-                                        <div class="controls controls-row">
-                                            <textarea class="span11" id="area_pa_4" wrap="off" rows="4" style="resize: none"></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row-fluid">
-                                <div class="span6">
-                                    <div class="control-group color5">
-                                        <input class="span6" id="name_pa_5" type="text" style="font-weight: bold;" value="List 5" maxlength="11">
-                                        <div id="colorp_pa_5" class="input-append colorpicker-component">
-                                            <input type="text" value="#ff7500" class="form-control  input-lg" style="display: none">
-                                            <span class="input-group-addon"><i style="background-color: rgb(255, 117, 0);"></i></span>
-                                        </div>
-                                        <div class="btn-group" style="margin-left: 15px">
-                                            <button id="colord_pa_5" style="margin-bottom: 10px" class="btn btn-mini"><i class="fa fa-refresh"></i></button>
-                                            <button id="clear_pa_5" style="margin-bottom: 10px" class="btn btn-mini"><i class="fa fa-trash"></i></button>
-                                        </div>
-                                        <div class="controls controls-row">
-                                            <textarea class="span11" id="area_pa_5" wrap="off" rows="4" style="resize: none"></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="span6">
-                                    <div class="control-group color6">
-                                        <input class="span6" id="name_pa_6" type="text" style="font-weight: bold;" value="List 6" maxlength="11">
-                                        <div id="colorp_pa_6" class="input-append colorpicker-component">
-                                            <input type="text" value="#c09853" class="form-control input-lg" style="display: none">
-                                            <span class="input-group-addon"><i style="background-color: rgb(192, 152, 83);"></i></span>
-                                        </div>
-                                        <div class="btn-group" style="margin-left: 15px">
-                                            <button id="colord_pa_6" style="margin-bottom: 10px" class="btn btn-mini"><i class="fa fa-refresh"></i></button>
-                                            <button id="clear_pa_6" style="margin-bottom: 10px" class="btn btn-mini"><i class="fa fa-trash"></i></button>
-                                        </div>
-                                        <div class="controls controls-row">
-                                            <textarea class="span11" id="area_pa_6" wrap="off" rows="4" style="resize: none"></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane" id="upload">
-                            <img src="/assets/jvenn/img/bullet.png" style="vertical-align: initial;
-                                padding-top: 10px">
-                            <b>Step1</b> - Define upload parameters
-                            <br/>
-                            <img src="/assets/jvenn/img/bullet.png" style="vertical-align: initial;
-                                margin-left: 10px;
-                                padding-top: 10px">
-                            Field separator:
-                            <div class="btn-group" data-toggle="buttons-radio">
-                                <button id="sep_tab" name="\t" type="button" class="btn btn-mini active">tabular</button>
-                                <button id="sep_comma" name="," type="button" class="btn btn-mini">comma</button>
-                                <button id="sep_semicolon" name=";" type="button" class="btn btn-mini">semicolon</button>
-                            </div>
-                            <br/>
-                            <img src="/assets/jvenn/img/bullet.png" style="vertical-align: initial;
-                                margin-left: 10px;
-                                padding-top: 10px">
-                            Use the first row as headers:
-                            <div class="btn-group" data-toggle="buttons-radio">
-                                <button id="header_yes" name="True" type="button" class="btn btn-mini active">Yes</button>
-                                <button id="header_no" name="" type="button" class="btn btn-mini">No</button>
-                            </div>
-
-                            <br/>
-                            <img src="/assets/jvenn/img/bullet.png" style="vertical-align: initial;
-                                padding-top: 20px">
-                            <b>Step2</b> - Browse to select a file
-                            <div class="row-fluid" style="margin-top: 5px;">
-                                <div class="control-group">
-                                    <div id="progress" class="span8 progress" style="width: 60%;height: 33px;">
-                                        <div class="bar progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="padding-top: 5px;min-width: 2em;">
-                                            <span class="sr-only">0%</span>
-                                        </div>
-                                    </div>
-                                    <div class="input-append">
-                                        <input style="display: none;" name="browse_upload" id="browse_upload" accept=".txt" type="file" data-url="/CloudPlatform/SoftTool/getJvennData" >
-                                        <span id="upload_and_draw" class="add-on btn btn-default" style="border-radius: 0 4px 4px 0;height: 22px">Browse  <i class="fa fa-folder-open"></i></span>
-                                        <a href="/CloudPlatform/SoftTool/downloadExamples?name=venn.txt" target="_blank" style="margin-left: 10px">e.g., example</a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <hr style="margin: 0 50px 20px 50px"/>
-
-                            <div class="row-fluid">
-                                <div class="span6">
-                                    <div class="control-group color1">
-                                        <input class="span6" id="name_up_1" type="text" style="font-weight: bold;" value="List 1" maxlength="11"/>
-                                        <div id="colorp_up_1" class="input-group colorpicker-component">
-                                            <input type="text" value="#006600" class="form-control input-lg" style="display: none"/>
-                                            <span class="input-group-addon"><i></i></span>
-                                        </div>
-                                        <div class="btn-group" style="margin-left: 15px">
-                                            <button id="colord_up_1" style="margin-bottom: 10px" class="btn btn-mini"><i class="fa fa-refresh"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="span6">
-                                    <div class="control-group color2">
-                                        <input class="span6" id="name_up_2" type="text" style="font-weight: bold;" value="List 2" maxlength="11"/>
-                                        <div id="colorp_up_2" class="input-append colorpicker-component">
-                                            <input type="text" value="#5a9bd4" class="form-control  input-lg" style="display: none"/>
-                                            <span class="input-group-addon"><i></i></span>
-                                        </div>
-                                        <div class="btn-group" style="margin-left: 15px">
-                                            <button id="colord_up_2" style="margin-bottom: 10px" class="btn btn-mini"><i class="fa fa-refresh"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row-fluid">
-                                <div class="span6">
-                                    <div class="control-group color3">
-                                        <input class="span6" id="name_up_3" type="text" style="font-weight: bold;" value="List 3" maxlength="11"/>
-                                        <div id="colorp_up_3" class="input-append colorpicker-component">
-                                            <input type="text" value="#f15a60" class="form-control  input-lg" style="display: none"/>
-                                            <span class="input-group-addon"><i></i></span>
-                                        </div>
-                                        <div class="btn-group" style="margin-left: 15px">
-                                            <button id="colord_up_3" style="margin-bottom: 10px" class="btn btn-mini"><i class="fa fa-refresh"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="span6">
-                                    <div class="control-group color4">
-                                        <input class="span6" id="name_up_4" type="text" style="font-weight: bold;" value="List 4" maxlength="11"/>
-                                        <div id="colorp_up_4" class="input-append colorpicker-component">
-                                            <input type="text" value="#cfcf1b" class="form-control input-lg" style="display: none"/>
-                                            <span class="input-group-addon"><i></i></span>
-                                        </div>
-                                        <div class="btn-group" style="margin-left: 15px">
-                                            <button id="colord_up_4" style="margin-bottom: 10px" class="btn btn-mini"><i class="fa fa-refresh"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row-fluid">
-                                <div class="span6">
-                                    <div class="control-group color5">
-                                        <input class="span6" id="name_up_5" type="text" style="font-weight: bold;" value="List 5" maxlength="11"/>
-                                        <div id="colorp_up_5" class="input-append colorpicker-component">
-                                            <input type="text" value="#ff7500" class="form-control input-lg" style="display: none"/>
-                                            <span class="input-group-addon"><i></i></span>
-                                        </div>
-                                        <div class="btn-group" style="margin-left: 15px">
-                                            <button id="colord_up_5" style="margin-bottom: 10px" class="btn btn-mini"><i class="fa fa-refresh"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="span6">
-                                    <div class="control-group color6">
-                                        <input class="span6" id="name_up_6" type="text" style="font-weight: bold;" value="List 6" maxlength="11"/>
-                                        <div id="colorp_up_6" class="input-append colorpicker-component">
-                                            <input type="text" value="#c09853" class="form-control input-lg" style="display: none"/>
-                                            <span class="input-group-addon"><i></i></span>
-                                        </div>
-                                        <div class="btn-group" style="margin-left: 15px">
-                                            <button id="colord_up_6" style="margin-bottom: 10px" class="btn btn-mini"><i class="fa fa-refresh"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="tab-pane" id="upload2">
-                            <form id="UP2" method="GET" enctype="multipart/form-data">
-                                <img src="/assets/jvenn/img/bullet.png" style="vertical-align: initial;
-                                    padding-top: 10px">
-                                <b>Step1</b> - Browse to select a table file
-                                <div class="row-fluid" style="margin-top: 5px;">
-                                    <div class="control-group">
-                                        <div id="progress2" class="span8 progress" style="width: 60%;height: 33px;">
-                                            <div class="bar2 progress-bar2" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="padding-top: 5px;min-width: 2em;">
-                                                <span class="sr-only2">0%</span>
-                                            </div>
-                                        </div>
-                                        <div class="input-append">
-                                            <input style="display: none;" name="browse_upload2" id="browse_upload2" accept=".txt" type="file" onchange="upload2()">
-                                            <span id="upload_and_draw2" class="add-on btn btn-default" style="border-radius: 0 4px 4px 0;height: 22px">Browse  <i class="fa fa-folder-open"></i></span>
-                                            <a href="/CloudPlatform/SoftTool/downloadExamples?name=VennChart.txt" target="_blank" style="margin-left: 10px">e.g., example</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <img src="/assets/jvenn/img/bullet.png" style="vertical-align: initial;
-                                    padding-top: 20px">
-                                <b>Step2</b> - Browse to select a group file
-                                <div class="row-fluid" style="margin-top: 5px;">
-                                    <div class="control-group">
-                                        <div id="progress3" class="span8 progress" style="width: 60%;height: 33px;">
-                                            <div class="bar3 progress-bar3" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="padding-top: 5px;min-width: 2em;">
-                                                <span class="sr-only3">0%</span>
-                                            </div>
-                                        </div>
-                                        <div class="input-append">
-                                            <input style="display: none;" name="browse_upload3" id="browse_upload3" accept=".txt" type="file" onchange="upload3()">
-                                            <span id="upload_and_draw3" class="add-on btn btn-default" style="border-radius: 0 4px 4px 0;height: 22px">Browse  <i class="fa fa-folder-open"></i></span>
-                                            <a href="/CloudPlatform/SoftTool/downloadExamples?name=VennChartGroup.txt" target="_blank" style="margin-left: 10px">e.g., example</a>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <hr style="margin: 0 50px 20px 50px"/>
-
-                                <div class="row-fluid">
-                                    <div class="span6">
-                                        <div class="control-group color1">
-                                            <input class="span6" id="name_up2_1" type="text" style="font-weight: bold;" value="List 1" maxlength="11"/>
-                                            <div id="colorp_up2_1" class="input-group colorpicker-component">
-                                                <input type="text" value="#006600" class="form-control input-lg" style="display: none"/>
-                                                <span class="input-group-addon"><i></i></span>
-                                            </div>
-                                            <div class="btn-group" style="margin-left: 15px">
-                                                <button id="colord_up2_1" style="margin-bottom: 10px" class="btn btn-mini"><i class="fa fa-refresh"></i></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="span6">
-                                        <div class="control-group color2">
-                                            <input class="span6" id="name_up2_2" type="text" style="font-weight: bold;" value="List 2" maxlength="11"/>
-                                            <div id="colorp_up2_2" class="input-append colorpicker-component">
-                                                <input type="text" value="#5a9bd4" class="form-control  input-lg" style="display: none"/>
-                                                <span class="input-group-addon"><i></i></span>
-                                            </div>
-                                            <div class="btn-group" style="margin-left: 15px">
-                                                <button id="colord_up2_2" style="margin-bottom: 10px" class="btn btn-mini"><i class="fa fa-refresh"></i></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row-fluid">
-                                    <div class="span6">
-                                        <div class="control-group color3">
-                                            <input class="span6" id="name_up2_3" type="text" style="font-weight: bold;" value="List 3" maxlength="11"/>
-                                            <div id="colorp_up2_3" class="input-append colorpicker-component">
-                                                <input type="text" value="#f15a60" class="form-control  input-lg" style="display: none"/>
-                                                <span class="input-group-addon"><i></i></span>
-                                            </div>
-                                            <div class="btn-group" style="margin-left: 15px">
-                                                <button id="colord_up2_3" style="margin-bottom: 10px" class="btn btn-mini"><i class="fa fa-refresh"></i></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="span6">
-                                        <div class="control-group color4">
-                                            <input class="span6" id="name_up2_4" type="text" style="font-weight: bold;" value="List 4" maxlength="11"/>
-                                            <div id="colorp_up2_4" class="input-append colorpicker-component">
-                                                <input type="text" value="#cfcf1b" class="form-control input-lg" style="display: none"/>
-                                                <span class="input-group-addon"><i></i></span>
-                                            </div>
-                                            <div class="btn-group" style="margin-left: 15px">
-                                                <button id="colord_up2_4" style="margin-bottom: 10px" class="btn btn-mini"><i class="fa fa-refresh"></i></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row-fluid">
-                                    <div class="span6">
-                                        <div class="control-group color5">
-                                            <input class="span6" id="name_up2_5" type="text" style="font-weight: bold;" value="List 5" maxlength="11"/>
-                                            <div id="colorp_up2_5" class="input-append colorpicker-component">
-                                                <input type="text" value="#ff7500" class="form-control input-lg" style="display: none"/>
-                                                <span class="input-group-addon"><i></i></span>
-                                            </div>
-                                            <div class="btn-group" style="margin-left: 15px">
-                                                <button id="colord_up2_5" style="margin-bottom: 10px" class="btn btn-mini"><i class="fa fa-refresh"></i></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="span6">
-                                        <div class="control-group color6">
-                                            <input class="span6" id="name_up2_6" type="text" style="font-weight: bold;" value="List 6" maxlength="11"/>
-                                            <div id="colorp_up2_6" class="input-append colorpicker-component">
-                                                <input type="text" value="#c09853" class="form-control input-lg" style="display: none"/>
-                                                <span class="input-group-addon"><i></i></span>
-                                            </div>
-                                            <div class="btn-group" style="margin-left: 15px">
-                                                <button id="colord_up2_6" style="margin-bottom: 10px" class="btn btn-mini"><i class="fa fa-refresh"></i></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+                <div class="tab-pane" id="instruc" style="padding-bottom: 20px">
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>1.背景介绍</strong></span><br>
+                        韦恩图（Venn diagram），是用于展现集合之间大致关系的一类图形，常见于多个或多组样本共有或特有信息的可视化展示。其中，圆形或椭圆形重合部分（overlap区域）就是集合与集合元素的交集（共有部分），非重叠部分即为特定集合的特有元素（独有部分）。韦恩图常用于微生物组研究（扩增子测序，宏组学研究）及转录组相关研究中。
+                        <br>
+                    </p>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>2.操作方法</strong></span><br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/venn1.png" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;padding-left: 44%">
+                        操作界面
+                    </p>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>2.1.参数设置</strong></span><br>
+                        (1) 展示模式（Display mode）： Arial  或Sens-seirf<br>
+                        (2) 字体选择（Font family）：Arial  或Sens-seirf  或Serif 或Monospace<br>
+                        (3) 字体大小（Font size）：8px  9px  10px  11px  12px  13px  14px<br>
+                        (4) 是否需要根据统计列表显示统计信息：是 或 否<br>
+                        (5) 是否显示开关按钮面板（如提供三个以上列表）：是 或 否<br>
+                        (6) 是否用问号(?)代替交叉点计数大小：是 或 否<br>
+                        (7) 选择列表中的元素： 输入元素名<br>
+                    </p>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>2.2.信息上传</strong></span><br>
+                        有三种形式可开展VENN图得绘制：<br>
+                    </p>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;">2.2.1</span><br>
+                        第一种：直接粘贴：将对应每个分组（样品名或分组名）中包含的元素直接粘贴到对应的List列表中；在对应样品名或分组名的文本框中，可直接修改样本名/分组名。如下图示：<br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/venn2.png" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        数据上传后，将在左侧做图框，直接展现venn图及对应列的统计柱状图：<br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/venn3.png" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;">2.2.2.单文件上传（适用于一组内只有一个样本的分析）：</span><br>
+                        第一步：定义上传参数<br>
+                        > 分隔方式： 表格；逗号；分号<br>
+                        >使用第一行作为标题：是   否<br>
+                        第二步：浏览并选择文件：这里的文件格式为txt格式，首行为样本名/分组名，每列为对应样本名/分组名包含的元素信息。如图示：
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/venn4.png" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        数据上传后，将在左侧做图框，直接展现venn图及对应列的统计柱状图：<br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/venn5.png" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;">2.2.3.元素文件及分组文件上传（适用于一组包含多个样本信息的分析）</span><br>
+                        第一步：上传元素列表。这里的文件格式为txt格式，首行为样本名/分组名，每列为对应样本名/分组名包含的元素信息。如图示：
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/venn6.png" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        第二步：上传分组列表。这里的文件格式为txt格式，每一行为一组，一行内包含每组的每个样本名称信息，样本间可以用逗号分隔开，如图示：
+                    </p>
+                    <img src="/assets/images/softpic/instruction/venn7.png" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        数据上传后，将在左侧做图框，直接展现venn图及对应列的统计柱状图：<br>
+                    </p>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>2.3. 作图调整</strong></span><br>
+                        <span style="font-weight:700;">2.3.1. 颜色调整：</span><br>
+                        点击对应分组名或样本名后的色块，可以直接调整该列显示的作图颜色，点击选择颜色，对应列展饰的颜色会自动调整为选择的颜色：<br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/venn8.png" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;">2.3.2. 元素构成展现：</span><br>
+                        在Venn图中点击对应色块位置，会在左下方提示框中显示该色块内包含的元素构成，例如：<br>
+                        *点击UQ特有部分的位置，<br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/venn9.png" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        下方提示框显示UQ特有元素：<br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/venn10.png" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        *点击中心全部样本的共有部分，<br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/venn11.png" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        下方提示框显示六个分组的共有元素<br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/venn12.png" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>2.4.结果导出：</strong></span><br>
+                        点击Venn 图右上角按钮，可以选择以PNG、SVG或CSV列表格式导出venn图分析图片及分析结果列表。<br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/venn13.png" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        其中CSV列表中，包含全部样本组的共有与特有元素信息，如图示（局部）：<br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/venn14.png" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>3.示例结果：</strong></span><br>
+                        <span style="font-weight:700;"><strong>3.1.微生物组研究中，展现样本的共有物种及特有物种数目：</strong></span><br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/venn15.png" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>3.2.转录组研究中，可用于展现样本的差异表达基因状况：</strong></span><br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/venn16.png" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                </div>
+                <div class="tab-pane" id="outexample">
+                    <p>1. 微生物组研究中，展现样本的共有物种及特有物种数目：</p>
+                    <br>
+                    <img src="/assets/images/softpic/exampleResult/venn_example1.png">
+                    <br>
+                    <br>
+                    <p>2. 转录组研究中，可用于展现样本的差异表达基因状况：</p>
+                    <br>
+                    <img src="/assets/images/softpic/exampleResult/venn_example2.png">
                 </div>
             </div>
+
+
         </div>
     </div>
     <hr>
@@ -587,7 +794,7 @@
 
             $("#upload_and_draw3").click(function(){
                 if($("#browse_upload2").val()==""){
-                    alert("请先上传矩阵文件！");
+                    alert("未上传矩阵文件或矩阵文件格式有误！");
                 }else{
                     $('.progress-bar3').removeClass("bar-danger");
                     $('.bar3').css('width', '0%');
@@ -595,23 +802,9 @@
                     $("#upload_and_draw3").val("");
                     $("#browse_upload3").click();
                 }
-
             });
 
-            function upload2(){
-                var total=0;
-                var progress=total;
-                var tim=setInterval(function () {
-                    if(progress==100){
-                        clearInterval(tim);
-                        $('.sr-only2').html(progress + "% - Upload file: " + $("#browse_upload2").val().toString().substring($("#browse_upload2").val().toString().lastIndexOf('\\')+1));
-                    }else {
-                        progress=progress+10;
-                        $('.bar2').css('width', progress + '%');
-                        $('.sr-only2').html(progress + "%");
-                    }
-                },10);
-            }
+
 
 
     </script>

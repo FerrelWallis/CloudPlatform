@@ -1,16 +1,5 @@
 $(document).ready(function() {
 	/* Core JS Functions */
-	
-	/* Collapsible Panels */
-	$(".mws-panel.mws-collapsible .mws-panel-header")
-		.append("<div class=\"mws-collapse-button mws-inset\"><span></span></div>")
-			.find(".mws-collapse-button span")
-				.on("click", function(event) {
-					$(this).toggleClass("mws-collapsed")
-						.parents(".mws-panel")
-							.find(".mws-panel-body")
-								.slideToggle("fast");
-				});
 
 	/* Side dropdown menu */
 	$("div#mws-navigation ul li a, div#mws-navigation ul li span")

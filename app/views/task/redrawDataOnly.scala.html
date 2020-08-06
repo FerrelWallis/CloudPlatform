@@ -1,0 +1,61 @@
+@import models.Tables.DutysRow
+@(row:DutysRow)(implicit session: Session)
+@home.main("Task Preview"){
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("font-awesome-4.7.0/css/font-awesome.min.css")" media="screen" />
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("bootstrap-fileinput-master/css/fileinput.css")" media="screen" />
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("palette/evol-colorpicker.min.css")" media="screen" />
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("mycss/redraw.css")" media="screen" />
+
+    <script type="text/javascript" src="@routes.Assets.versioned("js/jquery-ui.js")"></script>
+    <script src="@routes.Assets.versioned("layer-v3.0/layer/layer.js")" type="text/javascript"></script>
+    <script type="text/javascript" src="@routes.Assets.versioned("palette/evol-colorpicker.min.js")"></script>
+
+    <div class="container" style="width: 98.5%;margin: unset;max-width: unset;padding: 5px">
+        @task.preview(row)
+    </div>
+
+    <script>
+
+            $(document).ready(function () {
+                @*if("@row.status"=="已完成"){*@
+                @*    $("#Boxplot").show();*@
+                @*    *@@*$.ajax({*@
+                @*    *@@*    url:"/CloudPlatform/SoftTool/getBoxData?taskname=@row.taskname",*@
+                @*    *@@*    type:"post",*@
+                @*    *@@*    success:function (data) {*@
+                @*    *@@*        $("#redraw_pic").attr("src","/CloudPlatform/pic?path="+data.pics[0]+"&num="+Math.random());*@
+                @*    *@@*        $("#downPic").attr("href","/CloudPlatform/SoftTool/download?path="+data.downpics);*@
+                @*    *@@*        $("#downPng").attr("href","/CloudPlatform/SoftTool/download?path="+data.downpng);*@
+                @*    *@@*        $("#downTiff").attr("href","/CloudPlatform/SoftTool/download?path="+data.downtiffs);*@
+                @*    *@@*        colornum=data.group.length;*@
+                @*    *@
+                @*    *@@*        $.each(data.elements,function (i,v) {*@
+                @*    *@@*            $("#"+i).val(v);*@
+                @*    *@@*        });*@
+                @*    *@@*        colornum=data.group.length;*@
+                @*    *@@*        var colo="";*@
+                @*    *@@*        $.each(data.group,function (i,v) {*@
+                @*    *@@*            colo +="<li class='form-group' style='width: 100%'><div style='float: left;width: 30%;margin-top: 5px;'><label>"+v+"</label></div><div style='float: left;width: 70%;'><input id='color"+i+"'  name='color"+i+"' class='colorPicker evo-cp0'></div></li>";*@
+                @*    *@@*        });*@
+                @*    *@@*        $("#mycolor").html(colo);*@
+                @*    *@@*        $.each(data.group,function (i,v) {*@
+                @*    *@@*            $("#Boxplot").formValidation('addField','color'+i, colorValidators);*@
+                @*    *@@*            $("#color"+i).colorpicker({color: data.color[i], defaultPalette: 'web',showOn:"button"})*@
+                @*    *@@*                    .on("change.color", function(event, color){ //选择颜色事件*@
+                @*    *@@*                        //formValidation重新验证颜色*@
+                @*    *@@*                        $("#Boxplot").formValidation("revalidateField", "color"+i);*@
+                @*    *@@*                    });*@
+                @*    *@@*        });*@
+                @*    *@@*        $(".evo-cp-wrap").css("float", "left");*@
+                @*    *@@*        $(".evo-cp-wrap").css("width", "200px");*@
+                @*    *@@*        checkupdate();*@
+                @*    *@@*    }*@
+                @*    *@@*});*@
+                @*}*@
+            });
+
+    </script>
+
+
+
+}

@@ -12,7 +12,7 @@
     <script type="text/javascript" src="@routes.Assets.versioned("palette/evol-colorpicker.min.js")"></script>
 
     <div class="container" style="width: 98.5%;margin: unset;max-width: unset;padding: 5px">
-        @task.preview(row,"Heatmap")
+        @task.preview(row)
         <div class="mws-panel grid_8" style="background: white!important;">
             <div class="mws-panel-body" style="border: unset">
                 <div class="mws-panel-content" style="width: 96%;padding-top: 0;padding-right: 0">
@@ -35,7 +35,7 @@
                         <div style="width: 60%;float: left">
                             <img id="redraw_pic" src="" style="width: 100%;height: auto" >
                         </div>
-                        <div class="redraw-right" style="width: 40%;float: left;margin-bottom: 30px;">
+                        <div class="redraw_panel redraw-right" style="width: 40%;float: left;margin-bottom: 30px;">
                             <div class="form-group-p">
                                 <div class="form-group">
                                     <label>热图显示部分：</label>
@@ -123,13 +123,13 @@
                             <div class="form-group-p" id="showinr">
                                 <div class="form-group">
                                     <label for="format">选择用于作图的行：</label>
-                                    <input type="text" name="inr" id="inr" value="" placeholder="如1,2,3,4,5" class="form-control input-sm" style="width:200px;display: inline-block">
+                                    <input type="text" name="inr" id="inr" value="" placeholder="如1-10,13,15-20" class="form-control input-sm" style="width:200px;display: inline-block">
                                 </div>
                             </div>
                             <div class="form-group-p" id="showinc">
                                 <div class="form-group">
                                     <label for="format">选择用于作图的列：</label>
-                                    <input type="text" name="inc" id="inc" value="" placeholder="如1,2,3,4,5" class="form-control input-sm" style="width:200px;display: inline-block">
+                                    <input type="text" name="inc" id="inc" value="" placeholder="如1-10,13,15-20" class="form-control input-sm" style="width:200px;display: inline-block">
                                 </div>
                             </div>
                             <div class="form-group-p">
@@ -162,10 +162,8 @@
                                 </div>
                                 <div class="form-group" style="width: 150px;">
                                     <select name="color" id="color" onchange="show()" style="width: 100%;">
-                                        <option value="#E41A1C:#1E90FF:#FF8C00:#4DAF4A:#984EA3:#40E0D0">浅蓝-紫-绿-橙-蓝-红</option>
-                                        <option value="#1E90FF:#FFFFFF:#E41A1C">蓝-白-红</option>
-                                        <option value="black:red">黑-红</option>
-                                        <option value="green:black:red">绿-黑-红</option>
+                                        <option value="#E41A1C:#FFFF00:#1E90FF">蓝-黄-红</option>
+                                        <option value="#E41A1C:#FFFFFF:#1E90FF">蓝-白-红</option>
                                         <option value="0">手动输入</option>
                                     </select>
                                 </div>
@@ -207,8 +205,8 @@
                                     <label>缺失值数据颜色：</label>
                                 </div>
                                 <div class="form-group">
-                                    <div  class="evo-cp-wrap">
-                                        <input id="nc"  name="nc" value="" class="colorPicker evo-cp0" readonly="readonly">
+                                    <div style="float: left; width: 100%;">
+                                        <input id="nc"  name="nc" value="" class="colorPicker evo-cp0">
                                     </div>
                                 </div>
                             </div>
@@ -228,8 +226,8 @@
                                     <label>边界颜色：</label>
                                 </div>
                                 <div class="form-group">
-                                    <div  class="evo-cp-wrap">
-                                        <input id="cbc"  name="cbc" value="" class="colorPicker evo-cp0" readonly="readonly">
+                                    <div style="float: left; width: 100%;">
+                                        <input id="cbc"  name="cbc" value="" class="colorPicker evo-cp0">
                                     </div>
                                 </div>
                             </div>
@@ -277,6 +275,27 @@
                                 </div>
                             </div>
                             <div class="form-group-p">
+                                <div class="form-group">
+                                    <label>x轴字体旋转角度：</label>
+                                </div>
+                                <div class="form-group right">
+                                    <select id="xfa" name="xfa" style="width: 45%;">
+                                        <option value="90">90</option>
+                                        <option value="0">0</option>
+                                        <option value="315">45</option>
+                                        <option value="270">270</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group-p">
+                                <div class="form-group" style="margin-top: 5px;">
+                                    <label for="">格子内字体大小：</label>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="fn" name="fn" class="form-control" placeholder="数字" value="8" style="width: 50px;float: left;margin-right: 5px;margin-top: 5px">
+                                </div>
+                            </div>
+                            <div class="form-group-p">
                                 <div class="form-group" style="margin-top: 5px;">
                                     <label for="">XY 轴字体大小：</label>
                                 </div>
@@ -290,6 +309,12 @@
                             <br>
                             <input type="button" value="绘&nbsp;&nbsp;制" name="submit" class="btn btn-primary btn-dark" onclick="DrawHeat()" style="margin-left: 30px">
                         </div>
+                        <div class="update_panel redraw-right" style="width: 40%;float: left;margin-bottom: 30px;">
+                            <div style="padding: 20px">
+                                <h3 style="color: red">通知：</h3>
+                                <span style="color: red">软件版本已在<label class="update"></label>更新！<label class="update"></label> 前运行的 @row.sname 任务仅可下载结果文件，不支持重新绘图。</span>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -301,6 +326,31 @@
     <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/locales/zh.js")" type="text/javascript"></script>
 
     <script>
+
+            const updatetime="2020-07-29";
+
+            function checkupdate(){
+                $(".update").text(updatetime);
+                if("@row.subtime".split(" ")[0]<=updatetime) {
+                    $(".update_panel").show();
+                    $(".redraw_panel").hide();
+                } else {
+                    $(".redraw_panel").show();
+                    $(".update_panel").hide();
+                }
+            }
+
+            const colorValidators = {
+                validators: {
+                    notEmpty:{
+                        message: '不能为空!'
+                    },
+                    regexp: {
+                        regexp: /^#([0-9a-fA-F]{6})$/,
+                        message: "色值不合法！色值必须以#开头，色值需为6位"
+                    }
+                }
+            };
 
         var colornum=0;
         var allcol=0;
@@ -392,7 +442,19 @@
                                     message: '必须为数字！'
                                 }
                             }
-                        }
+                        },
+                        fn: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        nc:colorValidators,
+                        cbc:colorValidators
                     }
                 });
             }
@@ -421,7 +483,10 @@
                                     }
                                     splitcolor(v);
                                 } else if(i=="nc" || i=="cbc") {
-                                    $("#"+i).colorpicker({color: v, defaultPalette: 'web'});
+                                    $("#"+i).colorpicker({color: v, defaultPalette: 'web', showOn:"button"})
+                                            .on("change.color",function (event,color){
+                                                $("#Heatmap").formValidation("revalidateField",i);
+                                            });
                                 } else $("#"+i).val(v);
                             });
                             if(data.groupr) $("#showinr").hide();
@@ -429,23 +494,16 @@
                             bordercolor();
                             showr();
                             showc();
-                            $(".colorPicker").attr("readonly", "readonly");
                             $("#borcolor .evo-cp-wrap").css("float", "left");
                             $("#borcolor .evo-cp-wrap").css("width", "120px");
                             $("#nacolor .evo-cp-wrap").css("float", "left");
                             $("#nacolor .evo-cp-wrap").css("width", "120px");
+                            checkupdate();
                         }
                     });
                 }
             });
 
-        // $("#cbc").colorpicker({color: '#ffffff', defaultPalette: 'web'});
-        // $("#nc").colorpicker({color: '#DDDDDD', defaultPalette: 'web'});
-        // $(".colorPicker").attr("readonly", "readonly");
-        // $("#borcolor .evo-cp-wrap").css("float", "left");
-        // $("#borcolor .evo-cp-wrap").css("width", "120px");
-        // $("#nacolor .evo-cp-wrap").css("float", "left");
-        // $("#nacolor .evo-cp-wrap").css("width", "120px");
 
             function splitcolor(param) {
                 console.log("split="+param);
@@ -453,13 +511,16 @@
                 var colors=param.toString().split(":");
                 colornum=colors.length;
                 $.each(colors,function (i,v) {
-                    colo +="<li><div class='evo-cp-wrap'><input id='color"+i+"'  name='color"+i+"' class='colorPicker evo-cp0' readonly='readonly'></div></li>";
+                    colo +="<li id='li_color"+i+"' class='form-group' style='width: 100%'><div style=' width: 100%;float: left;'><input id='color"+i+"'  name='color"+i+"' class='colorPicker evo-cp0'></div></li>";
                 });
                 $("#mycolor").html(colo);
                 $.each(colors,function (i,v) {
-                    $("#color"+i).colorpicker({color: v, defaultPalette: 'web'});
+                    $("#Heatmap").formValidation('addField','color'+i, colorValidators);
+                    $("#color"+i).colorpicker({color: v, defaultPalette: 'web', showOn: "button"})
+                            .on("change.color",function (event,color){
+                                $("#Heatmap").formValidation("revalidateField",'color'+i);
+                            });
                 });
-                $(".colorPicker").attr("readonly", "readonly");
                 $("#inputcolor .evo-cp-wrap").css("float", "left");
                 $("#inputcolor .evo-cp-wrap").css("width", "200px");
             }
@@ -489,13 +550,18 @@
                         confirmButtonText: "确认"
                     });
                 }else{
-                    var colo = "<li><div class='evo-cp-wrap'><input id='color"+colornum+"'  name='color"+colornum+"' class='colorPicker evo-cp0' readonly='readonly'></div></li>";
+                    var coloid='color'+colornum;
+                    var colo = "<li id='li_color"+colornum+"' class='form-group' style='width: 100%'><div style=' width: 100%;float: left;'><input id='"+coloid+"'  name='"+coloid+"' class='colorPicker evo-cp0'></div></li>";
                     $("#mycolor").append(colo);
-                    $("#color"+colornum).colorpicker({color: '#E41A1C', defaultPalette: 'web'});
-                    $(".colorPicker").attr("readonly", "readonly");
-                    $(".evo-cp-wrap").css("float", "left");
-                    $(".evo-cp-wrap").css("width", "200px");
+                    $("#Heatmap").formValidation('addField',coloid, colorValidators);
+                    $("#"+coloid).colorpicker({color: '#E41A1C', defaultPalette: 'web', showOn:"button"});
+                    $("#"+coloid).on("change.color",function (event,color){
+                        $("#Heatmap").formValidation("revalidateField",coloid);
+                    });
+                    $("#inputcolor .evo-cp-wrap").css("float", "left");
+                    $("#inputcolor .evo-cp-wrap").css("width", "200px");
                     colornum=colornum+1;
+                    console.log(colornum);
                 }
 
             }
@@ -509,9 +575,11 @@
                         confirmButtonText: "确认"
                     });
                 }else{
-                    $("#color"+(colornum-1)).remove();
+                    $("#li_color"+(colornum-1)).remove();
                     colornum=colornum-1;
+                    $("#Heatmap").formValidation('removeField','color'+(colornum-1));
                 }
+                console.log(colornum);
             }
 
             function DrawHeat() {
@@ -533,7 +601,7 @@
                         $("#designcolor").val(colors.join(":"));
                         var form1 = new FormData($("#Heatmap")[0]);
                         $.ajax({
-                            url: "/CloudPlatform/SoftTool/redrawHeat?rtree="+$("#rtree").val()+"&ctree="+$("#ctree").val()+"&xfs="+$("#xfs").val()+"&yfs="+$("#yfs").val()+"&sc="+$("#sc").val()+"&taskname=@row.taskname",
+                            url: "/CloudPlatform/SoftTool/redrawHeat?rtree="+$("#rtree").val()+"&ctree="+$("#ctree").val()+"&xfs="+$("#xfs").val()+"&yfs="+$("#yfs").val()+"&sc="+$("#sc").val()+"&xfa="+$("#xfa").val()+"&fn="+$("#fn").val()+"&taskname=@row.taskname",
                             type: "post",
                             processData: false,
                             contentType: false,
@@ -560,7 +628,6 @@
 
             function checkrpcp() {
                 if($("#inr").val()==""){
-                    console.log(allrow);
                     if(parseInt($("#rp").val())>allrow) {
                         swal({
                             title: "行聚类分割数错误",
@@ -571,7 +638,20 @@
                         return false;
                     }
                 }else{
-                    var num=$("#inr").val().toString().split(",").length;
+                    var split1=$("#inr").val().toString().split(",");
+                    var split2=0;
+                    split1.filter(function (x) {
+                        if(x.indexOf("-")>=0){
+                            var tmp=x.split("-");
+                            split2+=parseInt(tmp[1])-parseInt(tmp[0])+1;
+                        }
+                    });
+                    var temp=0;
+                    split1.length-split1.filter(function (x) {
+                        if(x.indexOf("-")>=0) temp+=1;
+                    });
+                    var num=split1.length-temp+split2;
+                    console.log("rnum="+num);
                     if(parseInt($("#rp").val())>num){
                         swal({
                             title: "行聚类分割数错误",
@@ -583,7 +663,6 @@
                     }
                 }
                 if($("#inc").val()==""){
-                    console.log(allcol);
                     if(parseInt($("#cp").val())>allcol) {
                         swal({
                             title: "列聚类分割数错误",
@@ -594,7 +673,20 @@
                         return false;
                     }
                 }else{
-                    var num=$("#inc").val().toString().split(",").length;
+                    var split1=$("#inc").val().toString().split(",");
+                    var split2=0;
+                    split1.filter(function (x) {
+                        if(x.indexOf("-")>=0){
+                            var tmp=x.split("-");
+                            split2+=parseInt(tmp[1])-parseInt(tmp[0])+1;
+                        }
+                    });
+                    var temp=0;
+                    split1.length-split1.filter(function (x) {
+                        if(x.indexOf("-")>=0) temp+=1;
+                    });
+                    var num=split1.length-temp+split2;
+                    console.log("cnum="+num);
                     if(parseInt($("#cp").val())>num){
                         swal({
                             title: "列聚类分割数错误",
@@ -640,7 +732,7 @@
 
         function checkrow() {
             if($("#inr").val()!="") {
-                var r=$("#inr").val().toString().split(",");
+                var r=$("#inr").val().toString().split(/[,\-]/);
                 if(r.length>allrow){
                     swal({
                         title: "作图的行格式错误",
@@ -667,7 +759,7 @@
 
         function checkcol() {
             if($("#inc").val()!="") {
-                var c=$("#inc").val().toString().split(",");
+                var c=$("#inc").val().toString().split(/[,\-]/);
                 if(c.length>allcol){
                     swal({
                         title: "作图的列格式错误",

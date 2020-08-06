@@ -1,0 +1,13 @@
+A	B	C	D
+a1	a2	a1	d1
+a2	a6	a2	d2
+a3	b2	a7	d3
+b1	b6	b1	d4
+b2	c2	b2	d5
+b2		b7	d6
+c1		c1	d7
+c2		c2	d8
+c3		c7	d9
+d1		d1	d10
+d2		d2	d11
+d3		d7	d12

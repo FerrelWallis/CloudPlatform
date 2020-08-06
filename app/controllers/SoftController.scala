@@ -11,33 +11,33 @@ import scala.concurrent.duration.Duration
 
 class SoftController @Inject()(cc: ControllerComponents,softdao:softDao,userdao:usersDao) extends AbstractController(cc) {
 
-  def pca(abbre:String,sname:String)=Action{implicit request=>
-    Ok(views.html.soft.pca(abbre,sname))
+  def pca(abbre:String)=Action{implicit request=>
+    Ok(views.html.soft.pca(abbre))
   }
 
-  def heatmap(abbre:String,sname:String)=Action{implicit request=>
-    Ok(views.html.soft.heatmap(abbre,sname))
+  def heatmap(abbre:String)=Action{implicit request=>
+    Ok(views.html.soft.heatmap(abbre))
   }
 
-  def go(abbre:String,sname:String)=Action{implicit request=>
-    Ok(views.html.soft.go(abbre,sname))
+  def go(abbre:String)=Action{implicit request=>
+    Ok(views.html.soft.go(abbre))
   }
 
-  def kegg(abbre:String,sname:String)=Action{implicit request=>
-    Ok(views.html.soft.kegg(abbre,sname))
+  def kegg(abbre:String)=Action{implicit request=>
+    Ok(views.html.soft.kegg(abbre))
   }
 
-  def boxplot(abbre:String,sname:String)=Action{implicit request=>
-    Ok(views.html.soft.boxplot(abbre,sname))
+  def boxplot(abbre:String)=Action{implicit request=>
+    Ok(views.html.soft.boxplot(abbre))
   }
 
-  def cca(abbre:String,sname:String)=Action{implicit request=>
-    Ok(views.html.soft.cca(abbre,sname))
+  def cca(abbre:String)=Action{implicit request=>
+    Ok(views.html.soft.cca(abbre))
   }
 
 
-  def netWeight(abbre:String,sname:String)=Action{implicit request=>
-    Ok(views.html.soft.netWeight(abbre,sname))
+  def netWeight(abbre:String)=Action{implicit request=>
+    Ok(views.html.soft.netWeight(abbre))
   }
 
   def netDirected=Action{implicit request=>
@@ -48,23 +48,22 @@ class SoftController @Inject()(cc: ControllerComponents,softdao:softDao,userdao:
     Ok(views.html.soft.net())
   }
 
-  def venn(abbre:String,sname:String)=Action{implicit request=>
-    Ok(views.html.soft.jvenn(abbre,sname))
+  def venn(abbre:String)=Action{implicit request=>
+    Ok(views.html.soft.jvenn(abbre))
   }
 
-  def vennChart(abbre:String,sname:String)=Action{implicit request=>
-    Ok(views.html.soft.vennChart(abbre,sname))
+  def innergroup(abbre:String)=Action{implicit request=>
+    Ok(views.html.soft.innerGroupCorrelation(abbre))
   }
 
-  def innergroup(abbre:String,sname:String)=Action{implicit request=>
-    Ok(views.html.soft.innerGroupCorrelation(abbre,sname))
-  }
-
-  def scaplot(abbre:String,sname:String)=Action{implicit request=>
-    Ok(views.html.soft.scatterplots(abbre,sname))
+  def tax4fun(abbre:String)=Action{implicit request=>
+    Ok(views.html.soft.tax4fun(abbre))
   }
 
 
+  def scaplot(abbre:String)=Action{implicit request=>
+    Ok(views.html.soft.scatterplots(abbre))
+  }
 
   //test below
   def softpage=Action{implicit request=>
@@ -87,7 +86,7 @@ class SoftController @Inject()(cc: ControllerComponents,softdao:softDao,userdao:
   def getlatestSix = Action { implicit request =>
     val table=Await.result(softdao.getLastestSix,Duration.Inf)
     val row = table.map{x=>
-      val pics=s"<a onclick=checklog('/CloudPlatform/SoftPage/"+x.abbrename+"?abbre="+x.abbrename+"&sname="+x.sname+"')><div class='mws-report-icon mws-ic "+x.abbrename+"'></div></a>"
+      val pics=s"<a onclick=checklog('/CloudPlatform/SoftPage/"+x.abbrename+"')><div class='mws-report-icon mws-ic "+x.abbrename+"'></div></a>"
       val descrip=s"<a><h4>"+x.sname+"</h4><p style='padding-right: 10px'>"+x.descreption+"</p></a>"
       val likeclass=
         if(request.session.get("userId").isEmpty)
@@ -98,7 +97,7 @@ class SoftController @Inject()(cc: ControllerComponents,softdao:softDao,userdao:
           else "icon icon-star-empty"
         }
       val like= s"<i class='"+likeclass+"' onmouseover='mover($(this))' onmouseout='mout($(this))' onclick='collect($(this),"+x.id+")'></i>"
-      val onclick="<div style='height: 115px' onclick=checklog('/CloudPlatform/SoftPage/"+x.abbrename+"?abbre="+x.abbrename+"&sname="+x.sname+"')>" + descrip + "</div>"
+      val onclick="<div style='height: 115px' onclick=checklog('/CloudPlatform/SoftPage/"+x.abbrename+"')>" + descrip + "</div>"
 
       Json.obj("description"->onclick,"pics"->pics,"like"->like)
     }
@@ -108,7 +107,7 @@ class SoftController @Inject()(cc: ControllerComponents,softdao:softDao,userdao:
   def gethotestSix = Action { implicit request =>
     val table=Await.result(softdao.gethotestSix,Duration.Inf)
     val row = table.map{x=>
-      val pics=s"<a onclick=checklog('/CloudPlatform/SoftPage/"+x.abbrename+"?abbre="+x.abbrename+"&sname="+x.sname+"')><div class='mws-report-icon mws-ic "+x.abbrename+"'></div></a>"
+      val pics=s"<a onclick=checklog('/CloudPlatform/SoftPage/"+x.abbrename+"')><div class='mws-report-icon mws-ic "+x.abbrename+"'></div></a>"
       val descrip=s"<a><h4>"+x.sname+"</h4><p style='padding-right: 10px'>"+x.descreption+"</p></a>"
       val likeclass=
         if(request.session.get("userId").isEmpty)
@@ -119,7 +118,7 @@ class SoftController @Inject()(cc: ControllerComponents,softdao:softDao,userdao:
           else "icon icon-star-empty"
         }
       val like= s"<i class='"+likeclass+"' onmouseover='mover($(this))' onmouseout='mout($(this))' onclick='collect($(this),"+x.id+")'></i>"
-      val onclick="<div style='height: 115px' onclick=checklog('/CloudPlatform/SoftPage/"+x.abbrename+"?abbre="+x.abbrename+"&sname="+x.sname+"')>" + descrip + "</div>"
+      val onclick="<div style='height: 115px' onclick=checklog('/CloudPlatform/SoftPage/"+x.abbrename+"')>" + descrip + "</div>"
       Json.obj("description"->onclick,"pics"->pics,"like"->like)
     }
     Ok(Json.obj("rows"->row))
@@ -127,7 +126,7 @@ class SoftController @Inject()(cc: ControllerComponents,softdao:softDao,userdao:
 
   def getAllSoft = Action { implicit request =>
     val row = TableUtils.SoftsMap.map{x=>
-      val pics=s"<a onclick=checklog('/CloudPlatform/SoftPage/"+x.abbrename+"?abbre="+x.abbrename+"&sname="+x.sname+"')><div class='mws-report-icon mws-ic "+x.abbrename+"'></div></a>"
+      val pics=s"<a onclick=checklog('/CloudPlatform/SoftPage/"+x.abbrename+"')><div class='mws-report-icon mws-ic "+x.abbrename+"'></div></a>"
       val descrip=s"<a><h4>"+x.sname+"</h4><p style='padding-right: 10px'>"+x.descreption+"</p></a>"
       val likeclass=
         if(request.session.get("userId").isEmpty)
@@ -138,7 +137,7 @@ class SoftController @Inject()(cc: ControllerComponents,softdao:softDao,userdao:
           else "icon icon-star-empty"
         }
       val like= s"<i class='"+likeclass+"' onmouseover='mover($(this))' onmouseout='mout($(this))' onclick='collect($(this),"+x.id+")'></i>"
-      val onclick="<div style='height: 115px' onclick=checklog('/CloudPlatform/SoftPage/"+x.abbrename+"?abbre="+x.abbrename+"&sname="+x.sname+"')>" + descrip + "</div>"
+      val onclick="<div style='height: 115px' onclick=checklog('/CloudPlatform/SoftPage/"+x.abbrename+"')>" + descrip + "</div>"
       Json.obj("description"-> onclick,"pics"->pics,"like"->like)
     }
     Ok(Json.obj("rows"->row))
@@ -146,7 +145,7 @@ class SoftController @Inject()(cc: ControllerComponents,softdao:softDao,userdao:
 
   def getTypes(types:String)= Action { implicit request =>
     val row = TableUtils.SoftsMap.filter(_.types==types).map{x=>
-      val pics=s"<a onclick=checklog('/CloudPlatform/SoftPage/"+x.abbrename+"?abbre="+x.abbrename+"&sname="+x.sname+"')><div class='mws-report-icon mws-ic "+x.abbrename+"'></div></a>"
+      val pics=s"<a onclick=checklog('/CloudPlatform/SoftPage/"+x.abbrename+"')><div class='mws-report-icon mws-ic "+x.abbrename+"'></div></a>"
       val descrip=s"<a><h4>"+x.sname+"</h4><p style='padding-right: 10px'>"+x.descreption+"</p></a>"
       val likeclass=
         if(request.session.get("userId").isEmpty)
@@ -157,7 +156,7 @@ class SoftController @Inject()(cc: ControllerComponents,softdao:softDao,userdao:
           else "icon icon-star-empty"
         }
       val like= s"<i class='"+likeclass+"' onmouseover='mover($(this))' onmouseout='mout($(this))' onclick='collect($(this),"+x.id+")'></i>"
-      val onclick="<div style='height: 115px' onclick=checklog('/CloudPlatform/SoftPage/"+x.abbrename+"?abbre="+x.abbrename+"&sname="+x.sname+"')>" + descrip + "</div>"
+      val onclick="<div style='height: 115px' onclick=checklog('/CloudPlatform/SoftPage/"+x.abbrename+"')>" + descrip + "</div>"
       Json.obj("description"-> onclick,"pics"->pics,"like"->like)
     }
     Ok(Json.obj("rows"->row))
@@ -166,7 +165,7 @@ class SoftController @Inject()(cc: ControllerComponents,softdao:softDao,userdao:
   def getLike= Action { implicit request =>
     val mylike=Await.result(userdao.getLike(request.session.get("userId").get),Duration.Inf).split("/").filter(_.trim!="")
     val row = TableUtils.SoftsMap.filter(x => mylike.contains(String.valueOf(x.id))).map{ x=>
-      val pics=s"<a href='/CloudPlatform/SoftPage/"+x.abbrename+"?abbre="+x.abbrename+"&sname="+x.sname+"'><div class='mws-report-icon mws-ic "+x.abbrename+"'></div></a>"
+      val pics=s"<a href='/CloudPlatform/SoftPage/"+x.abbrename+"'><div class='mws-report-icon mws-ic "+x.abbrename+"'></div></a>"
       val descrip=s"<a><h4>"+x.sname+"</h4><p style='padding-right: 10px'>"+x.descreption+"</p></a>"
       val likeclass=
         if(request.session.get("userId").isEmpty)
@@ -177,7 +176,7 @@ class SoftController @Inject()(cc: ControllerComponents,softdao:softDao,userdao:
           else "icon icon-star-empty"
         }
       val like= s"<i class='"+likeclass+"' onmouseover='mover($(this))' onmouseout='mout($(this))' onclick='collect($(this),"+x.id+")'></i>"
-      val onclick="<div style='height: 115px' onclick=checklog('/CloudPlatform/SoftPage/"+x.abbrename+"?abbre="+x.abbrename+"&sname="+x.sname+"')>" + descrip + "</div>"
+      val onclick="<div style='height: 115px' onclick=checklog('/CloudPlatform/SoftPage/"+x.abbrename+"')>" + descrip + "</div>"
       Json.obj("description"-> onclick,"pics"->pics,"like"->like)
     }
     Ok(Json.obj("rows"->row))
@@ -186,7 +185,7 @@ class SoftController @Inject()(cc: ControllerComponents,softdao:softDao,userdao:
   def getLikebrief= Action { implicit request =>
     val mylike=Await.result(userdao.getLike(request.session.get("userId").get),Duration.Inf).split("/").filter(_.trim!="")
     val row = TableUtils.SoftsMap.filter(x => mylike.contains(String.valueOf(x.id))).map{ x=>
-      val pics=s"<a href='/CloudPlatform/SoftPage/"+x.abbrename+"?abbre="+x.abbrename+"&sname="+x.sname+"'><div class='mws-report-icon mws-ic "+x.abbrename+"'></div></a>"
+      val pics=s"<a href='/CloudPlatform/SoftPage/"+x.abbrename+"'><div class='mws-report-icon mws-ic "+x.abbrename+"'></div></a>"
       val descrip=s"<a><h4>"+x.sname+"</h4></a>"
       val likeclass=
         if(request.session.get("userId").isEmpty)
@@ -197,7 +196,7 @@ class SoftController @Inject()(cc: ControllerComponents,softdao:softDao,userdao:
           else "icon icon-star-empty"
         }
       val like= s"<i class='"+likeclass+"' onmouseover='mover($(this))' onmouseout='mout($(this))' onclick='collect($(this),"+x.id+")'></i>"
-      val onclick="<div style='height: 115px' onclick=checklog('/CloudPlatform/SoftPage/"+x.abbrename+"?abbre="+x.abbrename+"&sname="+x.sname+"')>" + descrip + "</div>"
+      val onclick="<div style='height: 115px' onclick=checklog('/CloudPlatform/SoftPage/"+x.abbrename+"')>" + descrip + "</div>"
       Json.obj("description"-> onclick,"pics"->pics,"like"->like)
     }
     Ok(Json.obj("rows"->row))
@@ -220,5 +219,9 @@ class SoftController @Inject()(cc: ControllerComponents,softdao:softDao,userdao:
     }
     Ok(Json.obj("rows"->row))
   }
+
+//  def getExampleFile(filename:String)= Action { implicit request =>
+//    Ok()
+//  }
 
 }

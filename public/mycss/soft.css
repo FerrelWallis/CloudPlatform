@@ -137,3 +137,6 @@ blockquote {
     background-position: center center;
     vertical-align: middle;
 }
+.fileinput-remove{
+    display: none!important;
+}

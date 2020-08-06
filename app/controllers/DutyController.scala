@@ -29,7 +29,6 @@ class DutyController @Inject()(cc: ControllerComponents,dutydao:dutyDao)(implici
   def insertDuty(taskname:String,uid:String,sabbrename:String,sname:String,input:String,param:String,elements:String) ={
 //    val date=Calendar.getInstance(Locale.CHINA).getTime
     val time=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())
-    println(time)
     val row = DutysRow(0,taskname,Integer.parseInt(uid),sabbrename,sname,time,"","运行中",input,param,elements)
     Await.result(dutydao.addDuty(row),Duration.Inf)
     time
@@ -38,7 +37,6 @@ class DutyController @Inject()(cc: ControllerComponents,dutydao:dutyDao)(implici
   def updateFini(uid:String,taskname:String) ={
 //    val date=Calendar.getInstance(Locale.CHINA).getTime
     val finitime=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())
-    println(finitime)
     Await.result(dutydao.updateFini(uid,taskname,finitime),Duration.Inf)
     finitime
   }
@@ -67,7 +65,7 @@ class DutyController @Inject()(cc: ControllerComponents,dutydao:dutyDao)(implici
     val table=Await.result(dutydao.getAllDutyById(uid),Duration.Inf)
     val row = table.map{x=>
       val taskname = s"<a id='taskname' href='/CloudPlatform/Mytask/teskPreview/"+x.sabbrename+"?taskname="+x.taskname+"' target='_blank'>" + x.taskname + "</a>"
-      val sname=s"<a href='/CloudPlatform/SoftPage/"+x.sabbrename+"?abbre="+x.sabbrename+"&sname="+x.sname+"' target='_blank'>" + x.sname + "</a>"
+      val sname=s"<a href='/CloudPlatform/SoftPage/"+x.sabbrename+"' target='_blank'>" + x.sname + "</a>"
       val color=if(x.status=="已完成") "success"
       else if(x.status=="运行失败") "failed"
       else if(x.status=="运行中") "running"
@@ -97,7 +95,7 @@ class DutyController @Inject()(cc: ControllerComponents,dutydao:dutyDao)(implici
     val tmpX = orderX.slice(page.offset, page.offset + page.limit)
     val row = tmpX.asInstanceOf[Seq[DutysRow]].map{x=>
       val taskname = s"<a id='taskname' href='/CloudPlatform/Mytask/teskPreview/"+x.sabbrename+"?taskname="+x.taskname+"' target='_blank'>" + x.taskname + "</a>"
-      val sname=s"<a href='/CloudPlatform/SoftPage/"+x.sabbrename+"?abbre="+x.sabbrename+"&sname="+x.sname+"' target='_blank'>" + x.sname + "</a>"
+      val sname=s"<a href='/CloudPlatform/SoftPage/"+x.sabbrename+"' target='_blank'>" + x.sname + "</a>"
       val color=if(x.status=="已完成") "success"
       else if(x.status=="运行失败") "failed"
       else if(x.status=="运行中") "running"

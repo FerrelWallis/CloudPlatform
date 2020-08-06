@@ -1,4 +1,4 @@
-@(abbre:String,sname:String)(implicit session: Session)
+@(abbre:String)(implicit session: Session)
 @home.main("Heatmap"){
 
     <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("css/test/mysoft.css")" media="screen" />
@@ -14,8 +14,8 @@
     <div class="col-md-12 mysoft-content" style="width: 98%;">
         <div class="mysoft-content-left whitebox" style="width: 771px;overflow-y: auto">
             <form id="heatmap" method="GET" novalidate="novalidate" enctype="multipart/form-data" class="well form-inline" style="box-sizing: border-box!important;">
-                <div class="softpic mws-ic @abbre"> </div>
-                <h3 class="tools-title">@sname</h3>
+                <div class="softpic mws-ic Heatmap"> </div>
+                <h3 class="tools-title">热图（Heatmap）</h3>
                 <div class="form-group">
                     <h2>
                     </h2>
@@ -39,7 +39,7 @@
                         </div>
                     </div>
                     <div class="form-group-extra">
-                        <em><a href="/CloudPlatform/SoftTool/downloadExamples?name=heatmap.xls">示例文件</a></em><span class="must" style="margin-left: 10px">*</span>&nbsp;&nbsp;
+                        <em><a href="/assets/files/heatmap.txt" target='_blank'>示例文件</a></em><span class="must" style="margin-left: 10px">*</span>&nbsp;&nbsp;
                     </div>
                     <br>
                     <br>
@@ -87,7 +87,7 @@
                             <input type="file" class="form-control file" id="table2" name="table2">
                         </div>
                         <div class="form-group-extra">
-                            <em><a href="/CloudPlatform/SoftTool/downloadExamples?name=heat_inputrow.tre">示例文件</a></em>
+                            <em><a href="/assets/files/heat_inputrow.txt" target='_blank'>示例文件</a></em>
                         </div>
                     </div>
                     <br>
@@ -136,7 +136,7 @@
                             <input type="file" class="form-control file" id="table3" name="table3">
                         </div>
                         <div class="form-group-extra">
-                            <em><a href="/CloudPlatform/SoftTool/downloadExamples?name=heat_inputcol.tre">示例文件</a></em>
+                            <em><a href="/assets/files/heat_inputcol.txt" target='_blank'>示例文件</a></em>
                         </div>
                     </div>
                     <br>
@@ -146,7 +146,7 @@
                     <div class="form-group">
                         <input type="checkbox" name="isgroupr" id="isgroupr" class="form-control" style="height: 13px;width: auto;float: left;margin-top: 3px;">&nbsp;&nbsp;
                     </div>
-                    <span class="pointer" >是否行分组</span>
+                    <span>是否行分组</span>
                 </div>
                 <br>
                 <div id="groupr" class="one-line" style="display: none;">
@@ -160,7 +160,7 @@
                             <input type="file" class="form-control file" id="table4" name="table4" onchange="checkGroupRow()">
                         </div>
                         <div class="form-group-extra">
-                            <em><a href="/CloudPlatform/SoftTool/downloadExamples?name=heat_rowgroup.xls">示例文件</a></em>
+                            <em><a href="/assets/files/heat_rowgroup.txt" target='_blank'>示例文件</a></em>
                         </div>
                     </div>
                     <br>
@@ -170,7 +170,7 @@
                     <div class="form-group">
                         <input type="checkbox" name="isgroupc" id="isgroupc" class="form-control" style="height: 13px;width: auto;float: left;margin-top: 3px;">&nbsp;&nbsp;
                     </div>
-                    <span class="pointer" >是否列分组</span>
+                    <span>是否列分组</span>
                 </div>
                 <br>
                 <div id="groupc" class="one-line" style="display: none;">
@@ -184,24 +184,7 @@
                             <input type="file" class="form-control file" id="table5" name="table5" onchange="checkGroupCol()">
                         </div>
                         <div class="form-group-extra">
-                            <em><a href="/CloudPlatform/SoftTool/downloadExamples?name=heat_colgroup.xls">示例文件</a></em>
-                        </div>
-                    </div>
-                    <br>
-                    <br>
-                </div>
-                <div id="groupr" class="one-line" style="display: none;">
-                    <div class="form-group-p" style="width: 500px">
-                        <div class="form-group">
-                            <label for="exampleInputName0">
-                                行分组文件：
-                            </label>
-                        </div>
-                        <div class="form-group" style="width: 350px;display: inline-block">
-                            <input type="file" class="form-control file" id="table3" name="table3" onchange="checkGroupfile()">
-                        </div>
-                        <div class="form-group-extra">
-                            <em><a href="/CloudPlatform/SoftTool/downloadExamples?name=CCA_group.txt">示例文件</a></em>
+                            <em><a href="/assets/files/heat_colgroup.txt" target='_blank'>示例文件</a></em>
                         </div>
                     </div>
                     <br>
@@ -211,7 +194,7 @@
                     <div class="form-group">
                         <input type="checkbox" name="istag" id="istag" class="form-control" style="height: 13px;width: auto;float: left;margin-top: 3px;">&nbsp;&nbsp;
                     </div>
-                    <span class="pointer" >是否自定义格子标签</span>
+                    <span>是否自定义格子标签</span>
                 </div>
                 <br>
                 <div id="showtag" class="one-line" style="display: none;">
@@ -225,7 +208,7 @@
                             <input type="file" class="form-control file" id="table6" name="table6" onchange="checkTag()">
                         </div>
                         <div class="form-group-extra">
-                            <em><a href="/CloudPlatform/SoftTool/downloadExamples?name=heat_tag.xls">示例文件</a></em>
+                            <em><a href="/assets/files/heat_tag.txt" target='_blank'>示例文件</a></em>
                         </div>
                     </div>
                     <br>
@@ -244,14 +227,14 @@
                             <div class="form-group-p">
                                 <div class="form-group">
                                     <label for="format">选择用于作图的行：</label>
-                                    <input type="text" name="inr" id="inr" value="" placeholder="如1,2,3,4,5" class="form-control input-sm" style="width:200px;">
+                                    <input type="text" name="inr" id="inr" value="" placeholder="如1-10,13,15-20" class="form-control input-sm" style="width:200px;">
                                 </div>
                             </div>
                             <br><br>
                             <div class="form-group-p">
                                 <div class="form-group">
                                     <label for="format">选择用于作图的列：</label>
-                                    <input type="text" name="inc" id="inc" value="" placeholder="如1,2,3,4,5" class="form-control input-sm" style="width:200px;">
+                                    <input type="text" name="inc" id="inc" value="" placeholder="如1-10,13,15-20" class="form-control input-sm" style="width:200px;">
                                 </div>
                             </div>
                             <br><br>
@@ -287,10 +270,8 @@
                             </div>
                             <div class="form-group">
                                 <select name="color" id="color" style="width: 170px">
-                                    <option value="#E41A1C:#1E90FF:#FF8C00:#4DAF4A:#984EA3:#40E0D0">浅蓝-紫-绿-橙-蓝-红</option>
-                                    <option value="#1E90FF:#FFFFFF:#E41A1C">蓝-白-红</option>
-                                    <option value="black:red">黑-红</option>
-                                    <option value="green:black:red">绿-黑-红</option>
+                                    <option value="#E41A1C:#FFFF00:#1E90FF">蓝-黄-红</option>
+                                    <option value="#E41A1C:#FFFFFF:#1E90FF">蓝-白-红</option>
                                 </select>
                             </div>
                             <br>
@@ -365,137 +346,71 @@
                     <a href="###" data-target="#instruction" data-toggle="tab">使用说明</a>
                 </li>
                 <li class="" id="out_tab1">
-                    <a href="###" data-target="#example" data-toggle="tab">示例结果</a>
+                    <a href="###" data-target="#example" data-toggle="tab">教学视频</a>
                 </li>
                 <li class="" id="his_tab1">
-                    <a href="#" data-target="#history" data-toggle="tab">Heatmap历史任务</a>
+                    <a href="#" data-target="#history" data-toggle="tab">历史任务</a>
                 </li>
             </ul>
             <div class="tab-content" style="box-sizing: border-box!important;">
                 <div class="tab-pane fade active in" id="instruction">
                     <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
                         <span style="font-weight:700;"><strong>1.背景介绍</strong></span><br>
-                        GO（Gene Ontology）数据库由基因本体论联合会建立，该数据库将全世界所有与基因有关的研究结果进行分类汇总。对不同数据库中关于基因和基因产物的生物学术语进行标准化，对基因和蛋白功能进行统一的限定和描述。利用GO数据库，可以从BP（Biological Process,生物过程）、MF（Molecular Function,分子功能）和CC（Cellular Component,细胞组分）三个方面对基因和基因产物进行分类注释。
+                        作为目前最常见的一种可视化手段，热图因其丰富的色彩变化和生动饱满的信息表达被广泛应用于各种大数据分析场景，云平台也提供了在线绘制热图工具。
                         <br>
                     </p>
                     <br>
                     <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
                         <span style="font-weight:700;"><strong>2.操作方法</strong></span>
                     </p>
-                    <img src="/assets/images/softpic/instruction/go1.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <img src="/assets/images/softpic/instruction/heat1.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
                     <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
                     <br>
                     <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;padding-left: 44%">
                         操作界面
                     </p>
                     <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>2.1.上传基因数据文件</strong></span><br>
-                        可以选择输入文件或手动输入两种上传数据的方式，云平台支持两种数据格式：仅富集的Geneid列表或基因表达差异分析结果，输入文件必须为txt格式文件，示例文件如下。
+                        <span style="font-weight:700;"><strong>2.1.输入文件</strong></span><br>
+                        首先上传二维矩阵文件，第一行为样本，第一列为基因名，示例文件如下。
                         <br>
                     </p>
-                    <img src="/assets/images/softpic/instruction/go2.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;padding-left: 34%">
-                        图1. 仅包含富集的geneid
-                    </p>
-                    <img src="/assets/images/softpic/instruction/go3.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <img src="/assets/images/softpic/instruction/heat2.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
                     <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
                     <br>
                     <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        图2. 基因差异表达分析结果（geneid列输入富集的geneid，logFC列为差异倍数取log2，大于0表示基因上调，小于0表示基因下调）
-                    </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>2.2.选择背景基因文件</strong></span><br>
-                        背景基因文件可以分为有参考基因组和无参考基因组两种情况。
+                        <span style="font-weight:700;"><strong>2.2.选择参数</strong></span><br>
+                        上传矩阵文件后，选择作图参数，包括用于作图的列、是否归一化、是否取对数、是否对行列聚类等。选择完成后点击“提交”按钮即可。
                         <br>
                     </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;">1）有参考基因组</span><br>
-                        选择“2：使用已有参考”条目，下拉菜单中提供的物种有水稻、拟南芥、小鼠、大鼠、斑马鱼、鸡、秀丽线虫、果蝇、人等模式物种。选择完成后点击提交即可。
-                        <br>
-                    </p>
-                    <img src="/assets/images/softpic/instruction/go4.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;">2）无参考基因组</span><br>
-                        非模式物种没有参考基因组可以选择，需要自备GO背景基因文件，文件格式必须为txt，示例文件如下，第一行为基因id，第二行为该基因对应的所有GO号，以“;”分隔
-                        <br>
-                    </p>
-                    <img src="/assets/images/softpic/instruction/go5.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        将文件上传到“3:背景基因文件”中，点击“提交”即可
-                        <br>
-                    </p>
-                    <img src="/assets/images/softpic/instruction/go6.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <img src="/assets/images/softpic/instruction/heat3.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
                     <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
                     <br>
                     <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
                         <span style="font-weight:700;"><strong>2.3.查看任务</strong></span><br>
-                        提交任务后，点击界面右侧的“GO历史任务”模块，可以看到任务编号、提交时间、结束时间和状态。
+                        提交任务后，点击界面右侧的“heatmap历史任务”模块，可以看到任务编号、提交时间、结束时间和状态。通过点击界面“我的任务”也可以查看任务编号、软件名称和状态等信息，点击任务编号，即可查看分析结果。
                         <br>
                     </p>
-                    <img src="/assets/images/softpic/instruction/go7.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        通过点击界面“我的任务”可以查看任务编号、软件名称和状态等信息，点击任务编号，即可查看分析结果。
-                        <br>
-                    </p>
-                    <img src="/assets/images/softpic/instruction/go8.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <img src="/assets/images/softpic/instruction/heat4.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
                     <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
                     <br>
                     <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
                         在任务详情界面，展示的是任务参数、结果文件列表和在线调整图片3个区域，提供结果文件下载和图片调整功能。
                         <br>
                     </p>
-                    <img src="/assets/images/softpic/instruction/go9.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>3.示例图片</strong></span><br>
+                        生成的图片根据设置的参数不同会出现差异，示例图片如下，参数选择按前5列绘制、按列进行归一化处理、不取lg、不对行和列聚类。
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/heat5.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
                     <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
                     <br>
                     <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>3.结果调整</strong></span><br>
-                        云平台提供在线调整图片功能，可以通过调整显示行数、条形宽度、图片大小、添加自定义颜色等参数，调整GO富集分析柱状图图片展示效果，调整完成后点击“绘制”，即可生成新图片，新图片可以在下载区域进行下载。
+                        <span style="font-weight:700;"><strong>4.结果文件列表</strong></span><br>
+                        结果文件仅包含生成的热图pdf格式文件，但该热图可以通过以下参数进行在线调整。
                         <br>
                     </p>
-                    <img src="/assets/images/softpic/instruction/go10.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>4.结果解读</strong></span><br>
-                        <span style="font-weight:700;"><strong>4.1.GO富集分析柱状图</strong></span><br>
-                        纵坐标为GO三个大类的下一层级的GO term，横坐标为注释到该term下(包括该term的子 term)的差异基因个数。 3种不同分类表示Go term的三种基本分类(按颜色分类分别为MF、CC和BP)
-                        <br>
-                    </p>
-                    <img src="/assets/images/softpic/instruction/go11.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>4.2.GO富集分析结果图</strong></span><br>
-                        GO富集程度通过Rich factor、pvalue和富集到此term上的基因个数来衡量。其中Rich factor指差异表达的基因中位于该term条目的基因数目与所有有注释基因中位于该pathway条目的基因总数的比值。pvalue的取值范围为[0-1]，越接近于零，表示富集越显著。
-                        <br>
-                        纵轴表示term名称，横轴表示term对应的Rich factor，qvalue的大小用点的颜色来表示，qvalue越小则颜色越接近红色，每个pathway下包含的差异基因的多少用点的大小来表示。
-                        <br>
-                    </p>
-                    <img src="/assets/images/softpic/instruction/go12.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
-                    <br>
-
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>4.3.GO富集分析结果</strong></span><br>
-                        (1) ID:GO 名<br>
-                        (2) enrichment:是否富集，e:显著富集<br>
-                        (3) description:GO 具体功能描述<br>
-                        (4) ratio_in_study:该 GO 下差异基因数量/总差异基因数量<br>
-                        (5) ratio_in_pop: 该 GO 下总基因数量/总基因数量<br>
-                        (6) p_uncorrected:富集分析统计学显著水平<br>
-                        (7) p_fdr: fdr 方法矫正后的统计学显著水平该通路的具体网络链接<br>
-                        (8) Namespace:GO 通路类型<br>
-                        (9) genes_in_study: 在该 GO 下的具体差异基因信息<br>
-                    </p>
-                    <img src="/assets/images/softpic/instruction/go13.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <img src="/assets/images/softpic/instruction/heat6.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
                     <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
                     <br>
                 </div>
@@ -611,9 +526,11 @@
                 if($("#isgroupr").prop("checked")){
                     if($("#table1").val()==""){
                         flaggroupRow=false;
-                        var file = document.getElementById('table4');
-                        file.value = '';
-                        $(".file-caption-name").attr("title","");
+                        $("#heatmap").formValidation("revalidateField", "table1");
+                        $("#groupr").find(".fileinput-remove").click();
+                        // var file = document.getElementById('table4');
+                        // file.value = '';
+                        // $(".file-caption-name").attr("title","");
                         swal({
                             title: "请先上传矩阵文件",
                             text: "请先上传矩阵文件！",
@@ -665,9 +582,11 @@
                 if($("#isgroupc").prop("checked")) {
                     if($("#table1").val()==""){
                         flaggroupCol=false;
-                        var file = document.getElementById('table5');
-                        file.value = '';
-                        $(".file-caption-name").attr("title","");
+                        $("#heatmap").formValidation("revalidateField", "table1");
+                        $("#groupc").find(".fileinput-remove").click();
+                        // var file = document.getElementById('table5');
+                        // file.value = '';
+                        // $(".file-caption-name").attr("title","");
                         swal({
                             title: "请先上传矩阵文件",
                             text: "请先上传矩阵文件！",
@@ -719,9 +638,11 @@
                 if($("#istag").prop("checked")) {
                     if($("#table1").val()==""){
                         flagTag=false;
-                        var file = document.getElementById('table6');
-                        file.value = '';
-                        $(".file-caption-name").attr("title","");
+                        $("#heatmap").formValidation("revalidateField", "table1");
+                        $("#showtag").find(".fileinput-remove").click();
+                        // var file = document.getElementById('table6');
+                        // file.value = '';
+                        // $(".file-caption-name").attr("title","");
                         swal({
                             title: "请先上传矩阵文件",
                             text: "请先上传矩阵文件！",
@@ -808,7 +729,7 @@
 
             function checkrow() {
                 if($("#inr").val()!="") {
-                    var r=$("#inr").val().toString().split(",");
+                    var r=$("#inr").val().toString().split(/[,\-]/);
                     if(r.length>row){
                         swal({
                             title: "作图的行格式错误",
@@ -835,7 +756,7 @@
 
             function checkcol() {
                 if($("#inc").val()!="") {
-                    var c=$("#inc").val().toString().split(",");
+                    var c=$("#inc").val().toString().split(/[,\-]/);
                     if(c.length>col){
                         swal({
                             title: "作图的列格式错误",

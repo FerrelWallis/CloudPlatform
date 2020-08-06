@@ -1,6 +1,6 @@
 package controllers
 
-import dao.{usersDao, utilsDao}
+import dao.{danmuDao, usersDao, utilsDao}
 import services.onStart
 import javax.inject.Inject
 import play.api.libs.json.Json
@@ -10,12 +10,11 @@ import utils.Utils
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, ExecutionContext}
 
-class UtilsController @Inject()(cc: ControllerComponents,onstart:onStart,utilsdao:utilsDao,usersdao:usersDao)(implicit exec: ExecutionContext) extends AbstractController(cc) {
+class UtilsController @Inject()(cc: ControllerComponents,onstart:onStart,utilsdao:utilsDao,usersdao:usersDao,danmusdao:danmuDao)(implicit exec: ExecutionContext) extends AbstractController(cc) {
 
   def sendMSG(phone:String,where:String)=Action{
-    println(111)
     val checkphone=Await.result(usersdao.checkPhoneExist(phone),Duration.Inf)
-    if(checkphone.length==1 || where=="upphone") {//注册发邮件不用理会是否exist
+    if(checkphone.length==1 || where=="upphone" || where=="mailnewphone") {//注册发邮件不用理会是否exist
       val ak=Await.result(utilsdao.getAk,Duration.Inf)
       val(valid,code,responsecode)=Utils.sendMessage(phone,ak.accesskeyid,ak.accesskeysecret)
       onstart.verifyMap.put(phone,code)
@@ -30,4 +29,19 @@ class UtilsController @Inject()(cc: ControllerComponents,onstart:onStart,utilsda
   def getver(phone:String)=Action{
     Ok(Json.obj("verify"->onstart.verifyMap.toList))
   }
+
+  def insertDanmu(sabbre:String,text:String,color:String,size:Int,position:Int,time:Int)=Action{
+    val origindanmus=Await.result(danmusdao.getDanmus(sabbre),Duration.Inf)
+    val danmus=origindanmus+","+Json.obj("text"->text,"color"->color,"size"->size,"position"->position,"time"->time).toString()
+    Await.result(danmusdao.updateDanmus(sabbre,danmus),Duration.Inf)
+    Ok(Json.obj("valid"->"true"))
+  }
+
+  def getDanmus(sabbre:String)=Action{
+    val danmus=Await.result(danmusdao.getDanmus(sabbre),Duration.Inf)
+    println(danmus)
+    Ok(Json.toJson(danmus))
+  }
+
+
 }

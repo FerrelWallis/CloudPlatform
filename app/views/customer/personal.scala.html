@@ -52,6 +52,13 @@
                 color: white;
                 margin: 0px 30px 0px 30px!important;
             }
+            .running{
+                padding: 6px 10px;
+                background: #a08c5f;
+                border-radius: 16px;
+                color: white;
+                margin: 0px 30px 0px 30px!important;
+            }
             .mws-re {
                 width: 20% !important;
                 min-width: 170px;
@@ -124,10 +131,22 @@
                 margin: 0px 0px 16px 0;
                 font-size: 14px;
             }
+            .mws-panel-body::-webkit-scrollbar {
+                width: 7px;
+                height: 11px;
+                background-color: rgba(0, 0, 0, 0.2);
+            }
+            .mws-panel-body {
+                scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.2);
+                scrollbar-width: thin;
+            }
+            .mws-panel .mws-panel-body {
+                border: unset;
+            }
     </style>
 
     <div class="container" style="margin: 0 10px;width: 98%;margin-top: 20px">
-        <div class="mws-panel  grid_5" style="width: 53%">
+        <div class="mws-panel  grid_5" style="width: 53%;margin-bottom: 20px">
             <div class="mws-panel-header">
                 <span class="mws-i-24 i-user">个人资料</span>
             </div>
@@ -159,7 +178,7 @@
             </div>
         </div>
 
-        <div class="mws-panel grid_3" style="width: 42%">
+        <div class="mws-panel grid_3" style="width: 43%;margin-bottom: 20px">
             <div class="mws-panel-header">
                 <span class="mws-i-24 i-favorite">我的收藏</span>
             </div>
@@ -173,11 +192,11 @@
             </div>
         </div>
 
-        <div class="mws-panel  mws-collapsible grid_8">
+        <div class="mws-panel  mws-collapsible grid_8" style="margin-bottom: 10px">
             <div class="mws-panel-header">
                 <span class="mws-i-24 i-clipboard-1">任务记录</span>
             </div>
-            <div class="mws-panel-body" style="height: 325px;overflow-y: scroll;background: white">
+            <div class="mws-panel-body" style="height: 430px;overflow-y: scroll;background: white">
                 <div class="mws-panel-content" style="padding: 0 20px 0 20px">
                     <ul id="hisul" style="margin-top: 15px">
                         <li id="hislist" class="hislist">

@@ -1,5 +1,14 @@
 @import models.Tables.DutysRow
-@(row:DutysRow,types:String)(implicit session: Session)
+@(row:DutysRow)(implicit session: Session)
+
+<script type="text/javascript" src="@routes.Assets.versioned("bootstrap/js/bootstrap.js")"></script>
+<style>
+    /*p内部内容不换行*/
+    p{
+        white-space: nowrap;
+    }
+</style>
+
 <div class="mws-panel grid_8" style="background: white!important;">
     <div class="mws-panel-body" style="border: unset">
         <div class="mws-panel-content grid_3">
@@ -14,7 +23,7 @@
                     <span class="title">使用软件:</span>
                     <span class="content align">@row.sname</span>
                 </li>
-                <li>
+                <li class="inputfile">
                     <div style="width: 25%;float: left">
                         <span class="title" >输入文件名:</span>
                     </div>
@@ -23,12 +32,12 @@
                         </div>
                     </div>
                 </li>
-                <li>
+                <li class="inputpara">
                     <div style="width: 20%;float: left">
                         <span class="title" >使用参数:</span>
                     </div>
-                    <div style="width: 80%;float: left">
-                        <div id="para" style="padding-left: 50px;padding-top: 10px;">
+                    <div class="reference">
+                        <div id="para" style="padding-left: 50px;padding-top: 10px;max-width: 500px">
                         </div>
                     </div>
                 </li>
@@ -75,19 +84,31 @@
 
     <script>
 
-        var input="@row.input";
-        var inp="";
-        $.each(input.split("/"),function (i,v) {
-            inp += "<p class='content'>"+v+"</p>";
-        });
-        $("#input").html(inp);
+        if("@row.input"=="/"){
+            $(".inputfile").hide();
+        }else{
+            var input="@row.input";
+            var inp="";
+            $.each(input.split("/"),function (i,v) {
+                inp += "<p class='content'>"+v+"</p>";
+            });
+            $("#input").html(inp);
+        }
 
-        var param="@row.param";
-        var par="";
-        $.each(param.split("/"),function (i,v) {
-            par += "<p class='content'>"+v+"</p>";
-        });
-        $("#para").html(par);
+        if("@row.param"=="/"){
+            $(".inputpara").hide();
+        }else{
+            var param="@row.param";
+            var par="";
+            $.each(param.split("/"),function (i,v) {
+                par += "<p class='content'>"+v+"</p>";
+            });
+            $("#para").html(par);
+        }
+
+
+
+
         if("@row.status"==="已完成"){
             $("#status").addClass('success');
             $.ajax({

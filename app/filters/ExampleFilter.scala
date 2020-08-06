@@ -33,9 +33,8 @@ class ExampleFilter @Inject()(
 //  }
 
   override def apply(f: (RequestHeader) => Future[Result])(rh: RequestHeader): Future[Result] = {
-    if (rh.session.get("userId").isEmpty && rh.path != "/" && !rh.path.contains("home") && !rh.path.contains("allsoft") && !rh.path.contains("/assets/") && !rh.path.contains("/CloudPlatform/User/") && !rh.path.contains("/CloudPlatform/Utils/")) {
-//      println("111"+rh)
-      Future.successful(Results.Redirect(routes.HomeController.home()))
+    if (rh.session.get("userId").isEmpty && rh.path != "/" && rh.path != "/CloudPlatform" && !rh.path.contains("home") && !rh.path.contains("/assets/") && !rh.path.contains("/CloudPlatform/User/") && !rh.path.contains("/CloudPlatform/Utils/") ) {
+      Future.successful(Results.Redirect(routes.HomeController.home2()))
     } else {
       f(rh)
     }

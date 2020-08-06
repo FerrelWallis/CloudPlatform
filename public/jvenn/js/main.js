@@ -11,6 +11,12 @@ $(document).ready(function () {
     $('#colorp_up_4').children("span").children("i").css("background-color", colorDefault[3]);
     $('#colorp_up_5').children("span").children("i").css("background-color", colorDefault[4]);
     $('#colorp_up_6').children("span").children("i").css("background-color", colorDefault[5]);
+    $('#colorp_up2_1').children("span").children("i").css("background-color", colorDefault[0]);
+    $('#colorp_up2_2').children("span").children("i").css("background-color", colorDefault[1]);
+    $('#colorp_up2_3').children("span").children("i").css("background-color", colorDefault[2]);
+    $('#colorp_up2_4').children("span").children("i").css("background-color", colorDefault[3]);
+    $('#colorp_up2_5').children("span").children("i").css("background-color", colorDefault[4]);
+    $('#colorp_up2_6').children("span").children("i").css("background-color", colorDefault[5]);
     updateJvenn();
 
 });
@@ -28,6 +34,7 @@ var colorDefault = ["#006600", "#5a9bd4", "#f15a60", "#cfcf1b", "#ff7500", "#c09
     upload2 = new Array();
 
 function updateJvenn() {
+
     var char=["A","B","C","D","E","F"];
     if ($("#paste-tab").hasClass("active")) {
         var type = "pa",
@@ -172,7 +179,7 @@ $('[id^="colorp"]').colorpicker().on('changeColor.colorpicker', function(event) 
         $("#area_" + type + "_" + index).css("color",        event.color.toHex());
         $("#area_" + type + "_" + index).css("border-color", event.color.toHex());
     }
-    // updateJvenn();
+    updateJvenn();
 });
 
 $('[id^="colord"]').click(function() {
@@ -202,7 +209,7 @@ $('#clear-all').click(function() {
     location.reload(true);
 });
 
-$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+$(".loadtab").find('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
     updateJvenn();
     $("#names").val("");
     $("#search-field").val("");
@@ -217,6 +224,7 @@ function switchListOn2(index, switchon, value) {
         $("#colord_up2_" + index).prop("disabled", false);
         $("#colorp_up2_" + index).colorpicker('setValue', colorDefault[index-1]);
     } else {
+        $("#name_up2_"   + index).val(value);
         $("#name_up2_"   + index).prop("disabled", true);
         $("#colorp_up2_" + index).colorpicker('setValue', "lightgrey");
         $("#colorp_up2_" + index).colorpicker('disable');
@@ -232,6 +240,7 @@ function switchListOn(index, switchon, value) {
         $("#colord_up_" + index).prop("disabled", false);
         $("#colorp_up_" + index).colorpicker('setValue', colorDefault[index-1]);
     } else {
+        $("#name_up_"   + index).val(value);
         $("#name_up_"   + index).prop("disabled", true);
         $("#colorp_up_" + index).colorpicker('setValue', "lightgrey");
         $("#colorp_up_" + index).colorpicker('disable');
@@ -256,22 +265,30 @@ $('#browse_upload').fileupload({
         if ("error" in data.result[0]) {
             $('.progress-bar').addClass("bar-danger");
             $('.sr-only').html("100% - " + data.result[0].error);
+            uploadSeries = new Array();
+            switchListOn(1, false, "List 1");
+            switchListOn(2, false, "List 2");
+            switchListOn(3, false, "List 3");
+            switchListOn(4, false, "List 4");
+            switchListOn(5, false, "List 5");
+            switchListOn(6, false, "List 6");
+            updateJvenn();
         }
         else {
             $('.sr-only').html("100% - Upload file: " + vennData.files[0].name);
             uploadSeries = new Array({name: data.result[0].name, data: data.result[0].data, values: data.result[0].values});
             if(vennData.result[0].name["A"]) { switchListOn(1, true, vennData.result[0].name["A"]); }
-            else                             { switchListOn(1, false, ""); }
+            else                             { switchListOn(1, false, "List 1"); }
             if(vennData.result[0].name["B"]) { switchListOn(2, true, vennData.result[0].name["B"]); }
-            else                             { switchListOn(2, false, ""); }
+            else                             { switchListOn(2, false, "List 2"); }
             if(vennData.result[0].name["C"]) { switchListOn(3, true, vennData.result[0].name["C"]); }
-            else                             { switchListOn(3, false, ""); }
+            else                             { switchListOn(3, false, "List 3"); }
             if(vennData.result[0].name["D"]) { switchListOn(4, true, vennData.result[0].name["D"]); }
-            else                             { switchListOn(4, false, ""); }
+            else                             { switchListOn(4, false, "List 4"); }
             if(vennData.result[0].name["E"]) { switchListOn(5, true, vennData.result[0].name["E"]); }
-            else                             { switchListOn(5, false, ""); }
+            else                             { switchListOn(5, false, "List 5"); }
             if(vennData.result[0].name["F"]) { switchListOn(6, true, vennData.result[0].name["F"]); }
-            else                             { switchListOn(6, false, ""); }
+            else                             { switchListOn(6, false, "List 6"); }
             updateJvenn();
         }
     },
@@ -701,13 +718,142 @@ $("#example").click(function() {
     updateJvenn();
 });
 
+var sample;
+
+function upload(){
+    var total=0;
+    var progress=total;
+    var tim=setInterval(function () {
+        if(progress==100){
+            clearInterval(tim);
+            var reader=new FileReader();
+            reader.readAsText(document.getElementById('browse_upload2').files[0],"UTF-8");
+            reader.onload=function () {
+                let text=reader.result;
+                let line=text.trim().split('\n');
+                sample=line[0].trim().split('\t');
+                var length=sample.length;
+                for(let i in line){
+                    var r=parseInt(i)+1;
+                    let row=line[i].trim().split('\t');
+                    var name=[];
+                    if(row.length!=length){
+                        $('.progress-bar2').addClass("bar-danger");
+                        $('.sr-only2').html("100% - " + "矩阵文件第"+r+"行数据数量不一致");
+                        $("#browse_upload2").val("");
+                        return;
+                    }
+                    for(let j in row){
+                        var c=parseInt(j)+1;
+                        if(i!=0){
+                            if(j!=0 && !checkRate(row[j].trim())){
+                                $('.progress-bar2').addClass("bar-danger");
+                                $('.sr-only2').html("100% - " + "矩阵文件第"+r+"行,第"+c+"列数据不是数字");
+                                $("#browse_upload2").val("");
+                                return;
+                            }
+                        }else {
+                            if(name.indexOf(row[j])>=0){
+                                $('.progress-bar2').addClass("bar-danger");
+                                $('.sr-only2').html("100% - " + "矩阵文件第1行,第"+c+"列样品名重复存在！");
+                                $("#browse_upload2").val("");
+                                return;
+                            }else name.push(row[j]);
+                        }
+                    }
+                }
+                $('.sr-only2').html("100% - Upload file: " + $("#browse_upload2").val().toString().substring($("#browse_upload2").val().toString().lastIndexOf('\\')+1));
+            };
+        }else {
+            progress=progress+10;
+            $('.bar2').css('width', progress + '%');
+            $('.sr-only2').html(progress + "%");
+        }
+    },10);
+}
+
+function checkRate(input) {
+    // var re = /^(-?\d+)(\.\d+)?$/;
+    var re=/^[+-]?[\d]+([\.][\d]+)?([Ee][+-]?[\d]+)?$/;//判断字符串是否为浮点数或科学计数法
+    if (!re.test(input)) {
+        return false;
+    }else return true;
+}
+
 function upload3() {
     var total=0;
     var progress=total;
     var tim=setInterval(function () {
         if(progress==100){
             clearInterval(tim);
-            $('.sr-only3').html(progress + "% - Upload file: " + $("#browse_upload3").val().toString().substring($("#browse_upload3").val().toString().lastIndexOf('\\')+1));
+            var reader=new FileReader();
+            reader.readAsText(document.getElementById('browse_upload3').files[0],"UTF-8");
+            reader.onload=function () {
+                let text=reader.result;
+                let line=text.trim().split('\n');
+                if(line.length>6){
+                    $('.progress-bar3').addClass("bar-danger");
+                    $('.sr-only3').html("100% - " + "分组不能超过6组！当前分组数量:"+line.length);
+                    $("#browse_upload3").val("");
+                    upload2 = new Array();
+                    switchListOn2(1, false, "List 1");
+                    switchListOn2(2, false, "List 2");
+                    switchListOn2(3, false, "List 3");
+                    switchListOn2(4, false, "List 4");
+                    switchListOn2(5, false, "List 5");
+                    switchListOn2(6, false, "List 6");
+                    updateJvenn();
+                    return;
+                }
+                for(let i in line){
+                    var r=parseInt(i)+1;
+                    let row=line[i].trim().split(',');
+                    var name=[];
+                    for(let j in row){
+                        var c=parseInt(j)+1;
+                        if(sample.indexOf(row[j])<0){
+                            $('.progress-bar3').addClass("bar-danger");
+                            $('.sr-only3').html("100% - " + "第"+r+"行,第"+c+"个样品名不存在，请核实矩阵文件");
+                            $("#browse_upload3").val("");
+                            upload2 = new Array();
+                            switchListOn2(1, false, "List 1");
+                            switchListOn2(2, false, "List 2");
+                            switchListOn2(3, false, "List 3");
+                            switchListOn2(4, false, "List 4");
+                            switchListOn2(5, false, "List 5");
+                            switchListOn2(6, false, "List 6");
+                            updateJvenn();
+                            return;
+                        }
+                    }
+                }
+                $('.sr-only3').html(progress + "% - Upload file: " + $("#browse_upload3").val().toString().substring($("#browse_upload3").val().toString().lastIndexOf('\\')+1));
+                var form1 = new FormData($("#UP2")[0]);
+                $.ajax({
+                    url: "/CloudPlatform/SoftTool/getJvennData2",
+                    type: "post",
+                    processData: false,
+                    contentType: false,
+                    data: form1,
+                    success: function (data) {
+                        var vennData = jQuery.extend(true, {}, data);
+                        upload2 = new Array({name: data.name, data: data.data, values: data.values});
+                        if(vennData.name["A"]) { switchListOn2(1, true, vennData.name["A"]); }
+                        else                             { switchListOn2(1, false, "List 1"); }
+                        if(vennData.name["B"]) { switchListOn2(2, true, vennData.name["B"]); }
+                        else                             { switchListOn2(2, false, "List 2"); }
+                        if(vennData.name["C"]) { switchListOn2(3, true, vennData.name["C"]); }
+                        else                             { switchListOn2(3, false, "List 3"); }
+                        if(vennData.name["D"]) { switchListOn2(4, true, vennData.name["D"]); }
+                        else                             { switchListOn2(4, false, "List 4"); }
+                        if(vennData.name["E"]) { switchListOn2(5, true, vennData.name["E"]); }
+                        else                             { switchListOn2(5, false, "List 5"); }
+                        if(vennData.name["F"]) { switchListOn2(6, true, vennData.name["F"]); }
+                        else                             { switchListOn2(6, false, "List 6"); }
+                        updateJvenn();
+                    }
+                });
+            };
         }else {
             progress=progress+10;
             $('.bar3').css('width', progress + '%');
@@ -715,28 +861,4 @@ function upload3() {
         }
     },10);
 
-    var form1 = new FormData($("#UP2")[0]);
-    $.ajax({
-        url: "/CloudPlatform/SoftTool/getJvennData2",
-        type: "post",
-        processData: false,
-        contentType: false,
-        data: form1,
-        success: function (data) {
-            upload2 = new Array({name: data.name, data: data.data, values: data.values});
-            if(data.name["A"]) { switchListOn2(1, true, data.name["A"]); }
-            else                             { switchListOn2(1, false, ""); }
-            if(data.name["B"]) { switchListOn2(2, true, data.name["B"]); }
-            else                             { switchListOn2(2, false, ""); }
-            if(data.name["C"]) { switchListOn2(3, true, data.name["C"]); }
-            else                             { switchListOn2(3, false, ""); }
-            if(data.name["D"]) { switchListOn2(4, true, data.name["D"]); }
-            else                             { switchListOn2(4, false, ""); }
-            if(data.name["E"]) { switchListOn2(5, true, data.name["E"]); }
-            else                             { switchListOn2(5, false, ""); }
-            if(data.name["F"]) { switchListOn2(6, true, data.name["F"]); }
-            else                             { switchListOn2(6, false, ""); }
-            updateJvenn();
-        }
-    });
-};
+}

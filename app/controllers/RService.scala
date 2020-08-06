@@ -128,7 +128,7 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
     val id=request.session.get("userId").get
     val path=Utils.path+"/users/"+id+"/"+taskname
 
-    val elements=jsonToMap(Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf).elements)
+    val elements=jsonToMap(Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf).head.elements)
     val color=elements("color").split(":")
 
     val head=FileUtils.readFileToString(new File(path+"/table.txt")).trim.split("\n")
@@ -282,7 +282,7 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
     val id=request.session.get("userId").get
     val path=Utils.path+"/users/"+id+"/"+taskname
 
-    val elements=jsonToMap(Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf).elements)
+    val elements=jsonToMap(Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf).head.elements)
     val color=elements("color").split(":")
 
     val head=FileUtils.readFileToString(new File(path+"/table.txt")).trim.split("\n")
@@ -443,7 +443,7 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
       "rp"->"1","cluster_cols"->data.cluster_cols,"ccm"->data.ccm,"cp"->"1","inr"->data.inr,
       "inc"->data.inc,"sc"->data.sc,"lg"->data.lg,"color"->data.color,"cc"->"30","nc"->"#DDDDDD",
       "hasborder"->data.hasborder,"cbc"->"#ffffff","hasnum"->data.hasnum,"hasrname"->data.hasrname,
-      "hascname"->data.hascname,"rtree"->"50","ctree"->"50","xfs"->"10","yfs"->"10").toString()
+      "hascname"->data.hascname,"rtree"->"50","ctree"->"50","xfs"->"10","yfs"->"10","xfa"->"90","fn"->"8").toString()
 
     //数据库加入duty（运行中）
     val start=dutyController.insertDuty(data.taskname,id,"Heatmap","Heatmap 热图",input,param,elements)
@@ -469,7 +469,7 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
       val command = "Rscript "+Utils.path+"R/heatmap/heatMap.R -i "+ tableFile.getAbsolutePath +
         " -o " +dutyDir+"/out" + trf + tcf + ari + aci + lfi + rowclu + colclu + inr + inc +
         " -lg " + data.lg + " -sc " + data.sc + " -sn " +  data.hasrname + ":" + data.hascname +
-        ":" + data.hasnum + " -c " + data.color + " -cbc " + data.hasborder + " -if pdf -cln TRUE"
+        ":" + data.hasnum + " -c " + data.color + " -cbc " + data.hasborder + " -if pdf -cln TRUE -fn 8"
 
       println(command)
 
@@ -498,15 +498,30 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
     val groupr=new File(path,"groupr.txt").exists()
     val groupc=new File(path,"groupc.txt").exists()
 
-    val elements=jsonToMap(Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf).elements)
+    val elements=jsonToMap(Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf).head.elements)
 
     val head=FileUtils.readFileToString(new File(path+"/table.txt")).trim.split("\n")
     val rnum=
       if(elements("inr")=="") head.length-1
-      else elements("inr").split(",").length
+      else {
+        val r1=elements("inr").split(",").length-elements("inr").split(",").filter(_.contains("-")).length
+        val r2=elements("inr").split(",").filter(_.contains("-")).map{x=>
+          val temp=x.split("-")
+          temp(1).toInt-temp(0).toInt+1
+        }.sum
+        if((r1+r2)>(head.length-1)) head.length-1 else r1+r2
+      }
     val cnum=
       if(elements("inc")=="") head(1).trim.split("\t").length-1
-      else elements("inc").split(",").length
+      else {
+        val c1=elements("inc").split(",").length-elements("inc").split(",").filter(_.contains("-")).length
+        val c2=elements("inc").split(",").filter(_.contains("-")).map{x=>
+          val temp=x.split("-")
+          temp(1).toInt-temp(0).toInt+1
+        }.sum
+        if((c1+c2)>head(1).trim.split("\t").length-1) head(1).trim.split("\t").length-1 else c1+c2
+      }
+
     //获取图片
     val pics=getReDrawPics(path)
     val (downpics,downpng,downtiffs)=(path+"/out/heatmap.pdf",path+"/out/heatmap.png",path+"/out/heatmap.tiff")
@@ -542,7 +557,7 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
     )(ReHeatData.apply)(ReHeatData.unapply)
   )
 
-  def redrawHeatmap(taskname:String,rtree:String,ctree:String,xfs:String,yfs:String,sc:String)=Action(parse.multipartFormData) { implicit request =>
+  def redrawHeatmap(taskname:String,rtree:String,ctree:String,xfs:String,yfs:String,sc:String,xfa:String,fn:String)=Action(parse.multipartFormData) { implicit request =>
     val data=ReHeatForm.bindFromRequest.get
     val id=request.session.get("userId").get
     val dutyDir=Utils.path+"users/"+id+"/"+taskname
@@ -568,7 +583,7 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
         else " -trf " + treerFile.getAbsolutePath + " -rp " + data.rp
       val colclu=
         if(data.cluster_cols=="TRUE") " -ccl " + data.cluster_cols + " -ccm " + data.ccm + " -cp " + data.cp
-        else if(data.cluster_rows=="FALSE") " -ccl " + data.cluster_cols
+        else if(data.cluster_cols=="FALSE") " -ccl " + data.cluster_cols
         else " -tcf " + treecFile.getAbsolutePath + " -cp " + data.cp
 
       val color= if(data.color=="0") data.designcolor else data.color
@@ -580,24 +595,38 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
         "rp"->data.rp,"cluster_cols"->data.cluster_cols,"ccm"->data.ccm,"cp"->data.cp,"inr"->data.inr,
         "inc"->data.inc,"sc"->sc,"lg"->data.lg,"color"->color,"cc"->data.cc,"nc"->data.nc,
         "hasborder"->data.hasborder,"cbc"->data.cbc,"hasnum"->data.hasnum, "hasrname"->data.hasrname,
-        "hascname"->data.hascname,"rtree"->rtree,"ctree"->ctree,"xfs"->xfs,"yfs"->yfs).toString()
+        "hascname"->data.hascname,"rtree"->rtree,"ctree"->ctree,"xfs"->xfs,"yfs"->yfs,"xfa"->xfa,"fn"->fn).toString()
 
-      println(elements)
       Await.result(dutydao.updateElements(id,taskname,elements),Duration.Inf)
 
       val head=FileUtils.readFileToString(tableFile).trim.split("\n")
       val rnum =
         if(data.inr=="") (head.length-1).toString
-        else data.inr.split(",").length.toString
+        else {
+          val r1=data.inr.split(",").length-data.inr.split(",").filter(_.contains("-")).length
+          val r2=data.inr.split(",").filter(_.contains("-")).map{x=>
+            val temp=x.split("-")
+            temp(1).toInt-temp(0).toInt+1
+          }.sum
+          if((r1+r2)>(head.length-1)) (head.length-1).toString else (r1+r2).toString
+        }
       val cnum =
         if(data.inc=="") (head(1).trim.split("\t").length-1).toString
-        else data.inc.split(",").length.toString
+        else {
+          val c1=data.inc.split(",").length-data.inc.split(",").filter(_.contains("-")).length
+          val c2=data.inc.split(",").filter(_.contains("-")).map{x=>
+            val temp=x.split("-")
+            temp(1).toInt-temp(0).toInt+1
+          }.sum
+          if((c1+c2)>head(1).trim.split("\t").length-1) (head(1).trim.split("\t").length-1).toString else (c1+c2).toString
+        }
+
 
       val command = "Rscript "+Utils.path+"R/heatmap/heatMap.R -i "+ tableFile.getAbsolutePath +
         " -o " +dutyDir+"/out"+ " -smt " + data.smt + ari + aci + lfi + rowclu + colclu + inr + inc +
         " -sc " + sc + " -lg " + data.lg + " -c " + color + " -cc " + data.cc + " -nc " + data.nc +
         cbc + " -sn " + data.hasrname + ":" + data.hascname + ":" + data.hasnum + " -th " +
-        rtree + ":" + ctree + " -fs " + xfs + ":" + yfs + " -if pdf -cln TRUE"
+        rtree + ":" + ctree + " -fs " + yfs + ":" + xfs + " -if pdf -cln TRUE -xfa " + xfa + " -fn " + fn
 
       println(command)
 
@@ -695,7 +724,7 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
     val id=request.session.get("userId").get
     val path=Utils.path+"/users/"+id+"/"+taskname
 
-    val elements=jsonToMap(Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf).elements)
+    val elements=jsonToMap(Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf).head.elements)
 
     val color=elements("color").split(":")
 
@@ -823,7 +852,10 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
     val input= file1.filename+"/"+file2.filename
     val param= "相关分析方法:"+data.anatype
 
-    val elements=Json.obj("gshape"->"ellipse","color1"->"#555555","gopa"->"1","gsize"->"5","gfont"->"12","color2"->"#ffffff","eshape"->"diamond","color3"->"#5da5fb","eopa"->"1","esize"->"10","efont"->"12","color4"->"#ffffff","color5"->"#d0b7d5","opacity"->"0.4").toString()
+    val elements=Json.obj("gshape"->"ellipse","color1"->"#555555","gopa"->"1","gsize"->"5",
+      "gfont"->"20","color2"->"#ffffff","eshape"->"diamond","color3"->"#5da5fb","eopa"->"1","esize"->"10",
+      "efont"->"20","color4"->"#ffffff","color5"->"#737373","opacity"->"0.6","dot"->"3","pthres"->"0.1",
+      "cthres"->"1").toString()
 
     //数据库加入duty（运行中）
     val start=dutyController.insertDuty(data.taskname,id,"NetWeight","权重网络图",input,param,elements)
@@ -856,7 +888,7 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
     val id=request.session.get("userId").get
     val path=Utils.path+"/users/"+id+"/"+taskname
 
-    val elements=jsonToMap(Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf).elements)
+    val elements=jsonToMap(Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf).head.elements)
 
     val genus=FileUtils.readLines(new File(path+"/table.txt")).asScala
     val g=genus.map{line=>
@@ -883,14 +915,26 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
 
     val result=FileUtils.readLines(new File(path+"/out/result.xls")).asScala
     var eid=0;
-    val edges=result.drop(1).map{x=>
+
+    var resultFilter = Array("")
+    result.drop(1).foreach{x=>
+      val ei = x.split("\"").filter(_.trim!="")
+      val w=ei(3).trim.split("\t").last.toDouble
+      val c=ei(3).trim.split("\t").head.toDouble
+      if(w<elements("pthres").toDouble && Math.abs(c)<elements("cthres").toDouble) {
+        resultFilter=resultFilter:+x
+      }
+    }
+
+    val edges=resultFilter.drop(1).map{x=>
       eid=eid+1
       val id="e"+eid
       val e = x.split("\"").filter(_.trim!="")
       val source=list.indexOf(e(1))
       val target=list.indexOf(e(2))
       val weight=e(3).trim.split("\t").last.toDouble
-      val lab="pvalue="+weight
+      val cc=e(3).trim.split("\t").head.toDouble
+      val lab="c="+cc.formatted("%."+elements("dot")+"f")+"；p="+weight.formatted("%."+elements("dot")+"f")
       val data=Json.obj("source"->source,"target"->target,"weight"->weight,"label"->lab)
       Json.obj("data"->data,"group"->"edges","id"->id)
     }
@@ -921,12 +965,16 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
     Ok(Json.obj("rows"->rows,"elements"->elements,"selector"->selector))
   }
 
-  case class ReNetData(gshape:String, color1:String,gopa:String,gsize:String,gfont:String,
-                       color2:String,eshape:String,color3:String,eopa:String,esize:String,
-                       efont:String,color4:String,color5:String, opacity:String)
+  case class ReNetData(dot:String,pthres:String,cthres:String,gshape:String, color1:String,
+                       gopa:String,gsize:String,gfont:String,color2:String,eshape:String,
+                       color3:String,eopa:String,esize:String,efont:String,color4:String,
+                       color5:String, opacity:String)
 
   val ReNetForm: Form[ReNetData] =Form(
     mapping (
+      "dot"->text,
+      "pthres"->text,
+      "cthres"->text,
       "gshape"->text,
       "color1"->text,
       "gopa"->text,
@@ -948,7 +996,7 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
     val data=ReNetForm.bindFromRequest.get
     val id=request.session.get("userId").get
 
-    val elements=Json.obj("gshape"->data.gshape,"color1"->data.color1,"gopa"->data.gopa,"gsize"->data.gsize,"gfont"->data.gfont,"color2"->data.color2,"eshape"->data.eshape,"color3"->data.color3,"eopa"->data.eopa,"esize"->data.esize,"efont"->data.efont,"color4"->data.color4,"color5"->data.color5,"opacity"->data.opacity).toString()
+    val elements=Json.obj("gshape"->data.gshape,"color1"->data.color1,"gopa"->data.gopa,"gsize"->data.gsize,"gfont"->data.gfont,"color2"->data.color2,"eshape"->data.eshape,"color3"->data.color3,"eopa"->data.eopa,"esize"->data.esize,"efont"->data.efont,"color4"->data.color4,"color5"->data.color5,"opacity"->data.opacity,"dot"->data.dot,"pthres"->data.pthres,"cthres"->data.cthres).toString()
     Await.result(dutydao.updateElements(id,taskname,elements),Duration.Inf)
 
     Ok(Json.obj("valid"->"true"))
@@ -1023,8 +1071,6 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
             " -o " + dutyDir + "/out/go" , "Rscript " + Utils.path + "R/gokegg/plot/Go_stack_plot.R -i " + dutyDir +
             "/out/go.Go.bar.dat" + " -o " + dutyDir + "/out" + " -in go_stack -if pdf -sm 50 -n 15",
             dutyController.insertDuty(data.taskname,id,"GO","GO富集分析",input,param,elements))
-
-
       val command3 = "dos2unix "+ tableFile.getAbsolutePath
       val command4 = "dos2unix "+koFile.getAbsolutePath
       val commandpack1=
@@ -1042,7 +1088,6 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
         println(command2)
 
         if (execCommand2.isSuccess) {
-          val finish=dutyController.updateFini(id,data.taskname)
           FileUtils.writeStringToFile(new File(dutyDir,"log.txt"),"")
           creatZip(dutyDir)
           if(types=="ko"){
@@ -1056,6 +1101,7 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
             Utils.pdf2Png(dutyDir+"/out/go_stack.pdf",dutyDir+"/out/go_stack.png")
             Utils.pdf2Png(dutyDir+"/out/go_stack.pdf",dutyDir+"/out/go_stack.tiff")
           }
+          val finish=dutyController.updateFini(id,data.taskname)
         } else {
           dutydao.updateFailed(id,data.taskname)
           FileUtils.writeStringToFile(new File(dutyDir,"log.txt"),"Start Time:"+start+"\n\n错误信息：\n"+execCommand2.getErrStr+"\n\n运行失败！")
@@ -1072,7 +1118,7 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
     val id=request.session.get("userId").get
     val path=Utils.path+"/users/"+id+"/"+taskname
 
-    val elements=jsonToMap(Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf).elements)
+    val elements=jsonToMap(Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf).head.elements)
     val color=elements("cs").split(":")
     //获取图片
     val (pics,downpics,downpngs,downtiffs)=
@@ -1142,11 +1188,7 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
     val buffer = FileUtils.readLines(file).asScala
 
     val checkfile = buffer.map(_.split("[\t|;|,]").length).distinct
-    Ok(Json.toJson(Array(if (buffer.length == 0) {
-      Json.obj("error" -> "请上传一个带有分隔符的TXT文件！")
-    } /*else if (checkfile.length != 1) {
-    Json.obj("error" -> "文件字段行数不一样！")
-  } */ else if (checkfile.head > 6) {
+    Ok(Json.toJson(Array(if (checkfile.head > 6) {
       Json.obj("error" -> "文件中列数过多！")
     } else {
       val matrix = buffer.map(_.split("[\t|;|,]"))
@@ -1182,22 +1224,21 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
   //getVennData2
   def getJvennData2 = Action(parse.multipartFormData) { implicit request =>
     val file = request.body.file("browse_upload2").get.ref.file
-    val buffer = FileUtils.readLines(file).asScala
+    val buffer = FileUtils.readLines(file).asScala.filter(_!="")
     val file2 = request.body.file("browse_upload3").get.ref.file
-    val head = FileUtils.readLines(file2).asScala
+    val head = FileUtils.readLines(file2).asScala.filter(_!="")
 
     val sample=buffer(0).split("\t")
     val char = Array("A", "B", "C", "D", "E", "F")
 
     val result=buffer.map{x=>
-      val body=x.split("\t")
-      val gene=x.split("\t")(0)
+      val body=x.trim.split("\t")
+      val gene=x.trim.split("\t")(0).trim
       val key=head.map{y=>
-        val test = y.split(",").map{z=>
-          val index=sample.indexOf(z)
-          if(body(index)!="0") z else ""
+        val test = y.trim.split(",").map{z=>
+          val index=sample.indexOf(z.trim)
+          if(body(index)!="0") z.trim else ""
         }
-//        println(test.toList)
         if(!test.contains("")) char(head.indexOf(y)) else ""
       }.mkString
       (key,gene)
@@ -1206,76 +1247,83 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
     val data = result.groupBy(_._1).map(x => x._1 -> x._2.map(_._2))
     val name = head.zipWithIndex.map(x => char(x._2) -> x._1).toMap
     val values = result.groupBy(_._1).map(x => x._1 -> x._2.map(_._2).length)
-
     Ok(Json.obj("data" -> data, "name" -> name, "values" -> values))
   }
 
 
 
   //innergroup correlation
-  case class InnerGroupData(taskname:String,anatype:String,vector:String,color:String,hasnum:String,
-                            hasborder:String, hasrname:String,hascname:String)
+  case class InnerGroupData(taskname:String,anatype:String)
 
   val InnerGroupForm: Form[InnerGroupData] =Form(
     mapping (
       "taskname"->text,
-      "anatype"->text,
-      "vector"->text,
-      "color"->text,
-      "hasnum"->text,
-      "hasborder"->text,
-      "hasrname"->text,
-      "hascname"->text,
+      "anatype"->text
     )(InnerGroupData.apply)(InnerGroupData.unapply)
   )
 
-  def doIGC=Action(parse.multipartFormData) { implicit request =>
+  def doIGC(tablenum:Int)=Action(parse.multipartFormData) { implicit request =>
     val data = InnerGroupForm.bindFromRequest.get
     val id=request.session.get("userId").get
     val dutyDir=creatUserDir(id,data.taskname)
     //在用户下创建任务文件夹和结果文件夹
-    val file1=request.body.file("table1").get
-    val tableFile=new File(dutyDir,"table.txt")
-    val input= file1.filename
+    val tableFile1=new File(dutyDir,"table1.txt")
+    val tableFile2=new File(dutyDir,"table2.txt")
 
-    val param= "分析类型：" + data.anatype + "/计算向量：" + data.vector + "/颜色：" + data.color +
-      "/在格子上显示数字：" + data.hasnum + "/画出格子的边界：" + data.hasborder + "/是否显示行名：" +
-      data.hasrname + "/是否显示列名：" + data.hascname
+    val file1 = request.body.file("table1").get
+    val file2 = request.body.file("table2")
+    val (input,tablepath) =
+      if(file2.isEmpty) {
+        file1.ref.moveTo(tableFile1)
+        (file1.filename," -i1 "+tableFile1.getAbsolutePath)
+      } else {
+        file1.ref.moveTo(tableFile1)
+        file2.get.ref.moveTo(tableFile2)
+        (file1.filename+"/" + file2.get.filename," -i1 "+tableFile1.getAbsolutePath+" -i2 "+tableFile2.getAbsolutePath)
+      }
 
-//    val elements=Json.obj("cluster_rows"->"FALSE","cluster_cols"->"FALSE","rtree"->"50","ctree"->"50","rp"->"1","cp"->"1","color"->data.color,"cc"->"30","xfs"->"10","yfs"->"10","hasborder"->data.hasborder,"colorborder"->"#000000","hasnum"->data.hasnum,"hasrname"->data.hasrname,"hascname"->data.hascname).toString()
+    val param= "分析类型：" + data.anatype
+
+    val elements=Json.obj("smt"->"full","cluster_rows"->"FALSE","crm"->"complete",
+      "rp"->"1","cluster_cols"->"FALSE","ccm"->"complete","cp"->"1","sc"->"col","lg"->"none",
+      "color"->"#E41A1C:#FFFF00:#1E90FF","cc"->"30","nc"->"#DDDDDD","hasborder"->"white",
+      "cbc"->"#ffffff","hasnum"->"FALSE","hasrname"->"TRUE","hascname"->"TRUE",
+      "rtree"->"50","ctree"->"50","xfs"->"10","yfs"->"10","xfa"->"90","fn"->"15","lfi"->"TRUE").toString() + "/" +
+      Json.obj("gshape"->"ellipse","netcolor1"->"#555555","gopa"->"1","gsize"->"5",
+        "gfont"->"20","netcolor2"->"#ffffff","eshape"->"diamond","netcolor3"->"#5da5fb","eopa"->"1",
+        "esize"->"10","efont"->"20","netcolor4"->"#ffffff","netcolor5"->"#737373","opacity"->"0.6",
+        "dot"->"3","pthres"->"0.1","cthres"->"0.5").toString()
+
 
     //数据库加入duty（运行中）
-    val start=dutyController.insertDuty(data.taskname,id,"IGC","组内相关性分析",input,param,"")
+    val start=dutyController.insertDuty(data.taskname,id,"IGC","组内相关性分析",input,param,elements)
     //矩阵文件读取写入任务文件下table.txt
-    file1.ref.moveTo(tableFile)
 
     Future{
-      val color= " -c "+ data.color
 
-      val border=
-        if(data.hasborder=="TRUE") " -cbc #000000 "
-        else ""
+      val command1 = "Rscript "+Utils.path+"R/igc/cor_pvalue_calculate.R" + tablepath +
+        " -o " + dutyDir + "/out" + " -m " + data.anatype
 
-      val command1 = "Rscript "+Utils.path+"R/igc/cormap_data.R -i " + tableFile.getAbsolutePath +
-        " -o " + dutyDir + "/out" + " -m " + data.vector + " -am " + data.anatype
+      val command2 = "Rscript "+Utils.path+"R/heatmap/heatMap.R -i "+ dutyDir+"/out/cor.xls" +
+        " -o " +dutyDir+"/out -c #E41A1C:#FFFF00:#1E90FF -lfi " + dutyDir+"/out/p_star.xls" + " -if pdf"
 
-      val command2 = ""
-//
-//      println(command)
-//
-//      val execCommand = new ExecCommand
-//      execCommand.exect(command,dutyDir+"/temp")
-//
-//      if (execCommand.isSuccess) {
-//        val finish=dutyController.updateFini(id,data.taskname)
-//        FileUtils.writeStringToFile(new File(dutyDir,"log.txt"),"")
-//        creatZip(dutyDir)
-//        Utils.pdf2Png(dutyDir+"/out/heatmap.pdf",dutyDir+"/out/heatmap.png")
-//        Utils.pdf2Png(dutyDir+"/out/heatmap.pdf",dutyDir+"/out/heatmap.tiff")
-//      } else {
-//        dutydao.updateFailed(id,data.taskname)
-//        FileUtils.writeStringToFile(new File(dutyDir,"log.txt"),"Start Time:"+start+"\n\n错误信息：\n"+execCommand.getErrStr+"\n\n运行失败！")
-//      }
+      println(command2)
+
+      val commandpack1=Array(command1,command2)
+
+      val execCommand = new ExecCommand
+      execCommand.exec(commandpack1)
+
+      if (execCommand.isSuccess) {
+        val finish=dutyController.updateFini(id,data.taskname)
+        FileUtils.writeStringToFile(new File(dutyDir,"log.txt"),"")
+        creatZip(dutyDir)
+        Utils.pdf2Png(dutyDir+"/out/heatmap.pdf",dutyDir+"/out/heatmap.png")
+        Utils.pdf2Png(dutyDir+"/out/heatmap.pdf",dutyDir+"/out/heatmap.tiff")
+      } else {
+        dutydao.updateFailed(id,data.taskname)
+        FileUtils.writeStringToFile(new File(dutyDir,"log.txt"),"Start Time:"+start+"\n\n错误信息：\n"+execCommand.getErrStr+"\n\n运行失败！")
+      }
     }
     Ok(Json.obj("valid" -> "运行中！"))
   }
@@ -1284,84 +1332,266 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
     val id=request.session.get("userId").get
     val path=Utils.path+"/users/"+id+"/"+taskname
 
-    val elements=jsonToMap(Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf).elements)
-
-    val head=FileUtils.readFileToString(new File(path+"/table.txt")).trim.split("\n")
+    val splitele=Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf).head.elements.split("/")
+    val elements1=jsonToMap(splitele(0))
+    val elements2=jsonToMap(splitele(1))
+    val head=FileUtils.readFileToString(new File(path+"/out/cor.xls")).trim.split("\n")
     val rnum=head.length-1
-    val cnum=
-      if(elements("col")=="") head(1).trim.split("\t").length-1
-      else elements("col").split(",").length
+    val cnum=head(1).trim.split("\t").length-1
+
     //获取图片
     val pics=getReDrawPics(path)
     val (downpics,downpng,downtiffs)=(path+"/out/heatmap.pdf",path+"/out/heatmap.png",path+"/out/heatmap.tiff")
-    Ok(Json.obj("pics"->pics,"downpng"->downpng,"downpics"->downpics,"downtiffs"->downtiffs,"rnum"->rnum,"cnum"->cnum,"elements"->elements))
+
+    val tableFile1=new File(path,"table1.txt")
+    val tableFile2=new File(path,"table2.txt")
+    val g=FileUtils.readLines(tableFile1).asScala.head.trim.split("\t")
+    val e=
+      if(tableFile2.exists()) {
+        FileUtils.readLines(tableFile2).asScala.head.trim.split("\t")
+      }else g
+
+    val list=e.drop(1)++g.drop(1)
+    var count=0;
+    val nodes=list.map{x=>
+      count=count+1
+      val id=list.indexOf(x).toString
+      val xy=Json.obj("x"->Math.random()*500,"y"->Math.random()*500)
+      val (group,score)=
+        if(tableFile2.exists()){
+          if(count<=e.drop(1).length) ("evi",elements2("esize").toDouble) //环境node
+          else ("gene",elements2("gsize").toDouble) //基因node
+        }else ("gene",elements2("gsize").toDouble)
+      val data=Json.obj("id"->id,"name"->x,"score"->score,"group"->group)
+      Json.obj("data"->data,"position"->xy,"group"->"nodes")
+    }
+
+
+    val result=FileUtils.readLines(new File(path+"/out/pandv.xls")).asScala
+    var eid=0;
+
+    var soutar:List[List[String]]=List(List(""))
+    var resultFilter = Array("")
+    result.drop(1).foreach{x=>
+      val ei = x.split("\"").filter(_.trim!="")
+      val source=ei(1)
+      val target=ei(2)
+      val w=ei(3).trim.split("\t").last.toDouble
+      val c=ei(3).trim.split("\t").head.toDouble
+      if((!soutar.contains(List(source,target)) || !soutar.contains(List(target,source))) && source!=target && w<elements2("pthres").toDouble && Math.abs(c)<elements2("cthres").toDouble) {
+        soutar=soutar:+List(source,target):+List(target,source)
+        resultFilter=resultFilter:+x
+      }
+    }
+
+    val edges=resultFilter.drop(1).map{x=>
+      val ei = x.split("\"").filter(_.trim!="")
+      val source=list.indexOf(ei(1))
+      val target=list.indexOf(ei(2))
+      eid=eid+1
+      val id="e"+eid
+      val weight=ei(3).trim.split("\t").last.toDouble
+      val cc=ei(3).trim.split("\t").head.toDouble
+      val lab="c="+cc.formatted("%."+elements2("dot")+"f")+"；p="+weight.formatted("%."+elements2("dot")+"f")
+      val data=Json.obj("source"->source,"target"->target,"weight"->weight,"label"->lab)
+      Json.obj("data"->data,"group"->"edges","id"->id)
+    }
+
+    val rows=nodes++edges
+
+    val node=Json.obj("selector"->"node", "style"->Json.obj("width"->"mapData(score, 0, 10, 10, 100)", "height"->"mapData(score, 0, 10, 10, 100)", "content"-> "data(name)", "font-size"-> "12px", "text-valign"-> "center", "text-halign"-> "center", "text-outline-width"-> "2px"))
+
+    val font1=elements2("gfont")+"px"
+    val nodegene=Json.obj("selector"-> "node[group='gene']","style"->Json.obj( "shape"-> elements2("gshape"), "background-color"-> elements2("netcolor1"), "text-outline-color"-> elements2("netcolor1"), "opacity"-> elements2("gopa"), "font-size"->font1,"color"->elements2("netcolor2")))
+
+    val font2=elements2("efont")+"px"
+    val nodeevi=Json.obj("selector"-> "node[group='evi']","style"->Json.obj("shape"-> elements2("eshape"), "background-color"-> elements2("netcolor3"), "text-outline-color"-> elements2("netcolor3"), "opacity"-> elements2("eopa"), "font-size"->font2,"color"->elements2("netcolor4")))
+
+    val nodesele=Json.obj("selector"-> "node:selected","style"->Json.obj("border-width"-> "6px", "border-color"-> "#AAD8FF", "border-opacity"-> "0.5", "background-color"-> "#993399", "text-outline-color"-> "#993399"))
+
+    //    val edgehigh=Json.obj("selector"-> "edge.highlighted","style"->Json.obj("line-color"-> "#2a6cd6", "target-arrow-color"-> "#2a6cd6", "opacity"-> 0.7))
+
+    val edgehigh=Json.obj("selector"-> "edge.highlighted","style"->Json.obj("line-color"-> "#2a6cd6", "target-arrow-color"-> "#2a6cd6", "opacity"-> 0.7, "label"-> "data(label)", "edge-text-rotation"-> "autorotate"))
+
+
+    //    val edgesele=Json.obj("selector"-> "edge[label]:selected","style"->Json.obj("line-color"-> "#2a6cd6", "target-arrow-color"-> "#2a6cd6", "opacity"-> 0.7, "label"-> "data(label)", "edge-text-rotation"-> "autorotate"))
+
+    val edge=Json.obj("selector"-> "edge","style"->Json.obj("curve-style"-> "haystack", "haystack-radius"-> "0.5", "opacity"-> elements2("opacity"), "line-color"-> elements2("netcolor5"), "width"-> "mapData(weight, 0, 1, 1, 8)", "overlay-padding"-> "3px"))
+
+    val selector=Array(node,nodegene,nodeevi,nodesele,edge,edgehigh)
+
+    Ok(Json.obj("pics"->pics,"downpng"->downpng,"downpics"->downpics,"downtiffs"->downtiffs,"rnum"->rnum,"cnum"->cnum,"elements1"->elements1,"elements2"->elements2,"allcol"->(head(1).trim.split("\t").length-1),"allrow"->(head.length-1),"rows"->rows,"selector"->selector,"table2"->tableFile2.exists()))
   }
 
-  case class ReIGCData(col:String, scale:String, lg:String, cluster_rows:String, cluster_cols:String, rtree:String, ctree:String,
-                        rp:String, cp:String, color:String, designcolor:String, cc:String, xfs:String, yfs:String,
-                        hasborder:String, colorborder:String, hasnum:String, hasrname:String, hascname:String)
 
-  val ReIGCForm: Form[ReIGCData] =Form(
+  case class ReIGCHeatData(smt:String,lfi:String,cluster_rows:String,crm:String,rp:String, cluster_cols:String,
+                           ccm:String, cp:String,designcolor:String,lg:String,color:String,cc:String,nc:String,
+                           hasborder:String,cbc:String,hasrname:String, hascname:String,hasnum:String)
+
+  val ReIGCHeatForm: Form[ReIGCHeatData] =Form(
     mapping (
-      "col"->text,
-      "scale"->text,
-      "lg"->text,
+      "smt"->text,
+      "lfi"->text,
       "cluster_rows"->text,
-      "cluster_cols"->text,
-      "rtree"->text,
-      "ctree"->text,
+      "crm"->text,
       "rp"->text,
+      "cluster_cols"->text,
+      "ccm"->text,
       "cp"->text,
-      "color"->text,
       "designcolor"->text,
+      "lg"->text,
+      "color"->text,
       "cc"->text,
-      "xfs"->text,
-      "yfs"->text,
+      "nc"->text,
       "hasborder"->text,
-      "colorborder"->text,
-      "hasnum"->text,
+      "cbc"->text,
       "hasrname"->text,
-      "hascname"->text
-    )(ReIGCData.apply)(ReIGCData.unapply)
+      "hascname"->text,
+      "hasnum"->text
+    )(ReIGCHeatData.apply)(ReIGCHeatData.unapply)
   )
 
-  def redrawIGC(taskname:String)=Action(parse.multipartFormData) { implicit request =>
-    val data=ReIGCForm.bindFromRequest.get
+  def redrawIGCHeat(taskname:String,rtree:String,ctree:String,xfs:String,yfs:String,sc:String,xfa:String,fn:String)=Action(parse.multipartFormData) { implicit request =>
+    val data=ReIGCHeatForm.bindFromRequest.get
     val id=request.session.get("userId").get
     val dutyDir=Utils.path+"users/"+id+"/"+taskname
-    val tableFile=new File(dutyDir,"table.txt")
+
+    val tableFile=new File(dutyDir+"/out","cor.xls")
+    val tagFile=new File(dutyDir+"/out","p_star.xls")
+
+    val lfi=
+      if(data.lfi=="TRUE") " -lfi " + tagFile.getAbsolutePath
+      else ""
+
+    val rowclu=
+      if(data.cluster_rows=="TRUE") " -crw " + data.cluster_rows + " -crm " + data.crm + " -rp " + data.rp
+      else " -crw " + data.cluster_rows
+    val colclu=
+      if(data.cluster_cols=="TRUE") " -ccl " + data.cluster_cols + " -ccm " + data.ccm + " -cp " + data.cp
+      else " -ccl " + data.cluster_cols
 
     val color= if(data.color=="0") data.designcolor else data.color
-    val border= if(data.hasborder=="FALSE") "" else " -cbc " + data.colorborder
-    val ics= if(data.col=="") "" else " -ics " + data.col
+    val cbc= if(data.hasborder=="white") " -cbc " + data.cbc else " -cbc " + data.hasborder
+
+    val elenet=Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf).head.elements.split("/")(1)
+
+    val elements=Json.obj("smt"->data.smt,"cluster_rows"->data.cluster_rows,"crm"->data.crm,
+      "rp"->data.rp,"cluster_cols"->data.cluster_cols,"ccm"->data.ccm,"cp"->data.cp,"sc"->sc,"lg"->data.lg,
+      "color"->color,"cc"->data.cc,"nc"->data.nc,"hasborder"->data.hasborder,"cbc"->data.cbc,
+      "hasnum"->data.hasnum, "hasrname"->data.hasrname, "hascname"->data.hascname,"rtree"->rtree,
+      "ctree"->ctree,"xfs"->xfs, "yfs"->yfs,"xfa"->xfa,"fn"->fn,"lfi"->data.lfi).toString()+"/"+elenet
 
 
-    val elements=Json.obj("col"->data.col,"scale"->data.scale,"lg"->data.lg,"cluster_rows"->data.cluster_rows,"cluster_cols"->data.cluster_cols,"rtree"->data.rtree,"ctree"->data.ctree,"rp"->data.rp,"cp"->data.cp,"color"->color,"cc"->data.cc,"xfs"->data.xfs,"yfs"->data.yfs,"hasborder"->data.hasborder,"colorborder"->data.colorborder,"hasnum"->data.hasnum,"hasrname"->data.hasrname,"hascname"->data.hascname).toString()
-    println(elements)
     Await.result(dutydao.updateElements(id,taskname,elements),Duration.Inf)
 
-    val command = "Rscript "+Utils.path+"R/heatmap/heatMap_plot.R -i "+ tableFile.getAbsolutePath +
-      " -o " +dutyDir+"/out -s " + data.scale + " -lg " + data.lg + ics + " -cls " +data.cluster_rows+":"+
-      data.cluster_cols + " -th " + data.rtree + ":" + data.ctree + " -rp " + data.rp + " -cp " + data.cp +
-      " -c " + color + " -cc " + data.cc + " -fs " + data.xfs + ":" + data.yfs + border + " -sn " +
-      data.hascname + ":" + data.hasrname + ":" + data.hasnum
+    val head=FileUtils.readFileToString(tableFile).trim.split("\n")
+      val rnum = (head.length-1).toString
+      val cnum = (head(1).trim.split("\t").length-1).toString
 
-    val execCommand = new ExecCommand
-    execCommand.exect(command,dutyDir+"/temp")
+      val command = "Rscript "+Utils.path+"R/heatmap/heatMap.R -i "+ tableFile.getAbsolutePath +
+        " -o " +dutyDir+"/out"+ " -smt " + data.smt + lfi + rowclu + colclu + " -sc " + sc +
+        " -lg " + data.lg + " -c " + color + " -cc " + data.cc + " -nc " + data.nc + cbc +
+        " -sn " + data.hasrname + ":" + data.hascname + ":" + data.hasnum + " -th " +
+        rtree + ":" + ctree + " -fs " + yfs + ":" + xfs + " -if pdf -cln TRUE -xfa " + xfa + " -fn " + fn
 
-    if (execCommand.isSuccess) {
-      creatZip(dutyDir) //替换压缩文件包
-      Utils.pdf2Png(dutyDir+"/out/heatmap.pdf",dutyDir+"/out/heatmap.png") //替换图片
-      Utils.pdf2Png(dutyDir+"/out/heatmap.pdf",dutyDir+"/out/heatmap.tiff") //替换图片
-      val pics=dutyDir+"/out/heatmap.png"
-      Ok(Json.obj("valid"->"true","pics"->pics))
-    } else {
-      Ok(Json.obj("valid"->"false"))
-    }
+      println(command)
+
+      val execCommand = new ExecCommand
+      execCommand.exect(command,dutyDir+"/temp")
+
+      if (execCommand.isSuccess) {
+        creatZip(dutyDir) //替换压缩文件包
+        Utils.pdf2Png(dutyDir+"/out/heatmap.pdf",dutyDir+"/out/heatmap.png") //替换图片
+        Utils.pdf2Png(dutyDir+"/out/heatmap.pdf",dutyDir+"/out/heatmap.tiff") //替换图片
+        val pics=dutyDir+"/out/heatmap.png"
+        Ok(Json.obj("valid"->"true","pics"->pics,"cnum"->cnum,"rnum"->rnum))
+      } else {
+        Ok(Json.obj("valid"->"false","message"->execCommand.getErrStr))
+      }
+
+  }
+
+  case class ReIGCNetData(dot:String,pthres:String,cthres:String,gshape:String, netcolor1:String,gopa:String,gsize:String,gfont:String,
+                       netcolor2:String,eshape:String,netcolor3:String,eopa:String,esize:String,
+                       efont:String,netcolor4:String,netcolor5:String, opacity:String)
+
+  val ReIGCNetForm: Form[ReIGCNetData] =Form(
+    mapping (
+      "dot"->text,
+      "pthres"->text,
+      "cthres"->text,
+      "gshape"->text,
+      "netcolor1"->text,
+      "gopa"->text,
+      "gsize"->text,
+      "gfont"->text,
+      "netcolor2"->text,
+      "eshape"->text,
+      "netcolor3"->text,
+      "eopa"->text,
+      "esize"->text,
+      "efont"->text,
+      "netcolor4"->text,
+      "netcolor5"->text,
+      "opacity"->text
+    )(ReIGCNetData.apply)(ReIGCNetData.unapply)
+  )
+
+  def redrawIGCNet(taskname:String)=Action(parse.multipartFormData) { implicit request =>
+    val data=ReIGCNetForm.bindFromRequest.get
+    val id=request.session.get("userId").get
+
+    val eleheat=Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf).head.elements.split("/")(0)
+
+    val elements=eleheat+"/"+Json.obj("gshape"->data.gshape,"netcolor1"->data.netcolor1,"gopa"->data.gopa,"gsize"->data.gsize,"gfont"->data.gfont,"netcolor2"->data.netcolor2,"eshape"->data.eshape,"netcolor3"->data.netcolor3,"eopa"->data.eopa,"esize"->data.esize,"efont"->data.efont,"netcolor4"->data.netcolor4,"netcolor5"->data.netcolor5,"opacity"->data.opacity,"dot"->data.dot,"pthres"->data.pthres,"cthres"->data.cthres).toString()
+    Await.result(dutydao.updateElements(id,taskname,elements),Duration.Inf)
+
+    Ok(Json.obj("valid"->"true"))
   }
 
 
+  //Tax4Fun
+  case class TaxFunData(taskname:String)
 
+  val TaxFunForm: Form[TaxFunData] =Form(
+    mapping (
+      "taskname"->text
+    )(TaxFunData.apply)(TaxFunData.unapply)
+  )
+
+
+  def doTax4Fun=Action(parse.multipartFormData) { implicit request =>
+    val data = TaxFunForm.bindFromRequest.get
+    val id=request.session.get("userId").get
+    val dutyDir=creatUserDir(id,data.taskname)
+    //在用户下创建任务文件夹和结果文件夹
+    val otuFile=new File(dutyDir,"out.txt")
+
+    val file1 = request.body.file("table1").get
+    file1.ref.moveTo(otuFile)
+
+    //数据库加入duty（运行中）
+    val start=dutyController.insertDuty(data.taskname,id,"TAX","Tax4Fun功能预测",file1.filename,"/","")
+    //矩阵文件读取写入任务文件下table.txt
+
+    Future{
+      val command = "java -jar "+Utils.path+"R/Tax4Fun/Tax4Fun.jar -i " + otuFile.getAbsolutePath +
+        " -o " + dutyDir + "/out"
+
+      val execCommand = new ExecCommand
+      execCommand.exect(command,dutyDir+"/temp")
+
+      if (execCommand.isSuccess) {
+        val finish=dutyController.updateFini(id,data.taskname)
+        FileUtils.writeStringToFile(new File(dutyDir,"log.txt"),"")
+        creatZip(dutyDir)
+      } else {
+        dutydao.updateFailed(id,data.taskname)
+        FileUtils.writeStringToFile(new File(dutyDir,"log.txt"),"Start Time:"+start+"\n\n错误信息：\n"+execCommand.getErrStr+"\n\n运行失败！")
+      }
+    }
+    Ok(Json.obj("valid" -> "运行中！"))
+  }
 
 
   val userDutyDir: String =Utils.path+"users/"
@@ -1414,6 +1644,9 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
   var Net: Array[String] =Array("result.xls")
   var Netins: Array[String] =Array("相关性系数及P值分析结果")
 
+  var IGC: Array[String] =Array("cor.xls","pvalue.xls","pandv.xls","p_star.xls","heatmap.pdf")
+  var IGCins: Array[String] =Array("相关性系数矩阵","p值矩阵","相关性系数c值和p值分析结果","根据p值生成的星星矩阵","热图")
+
 
   def getDownloadFiles(taskname:String,soft:String): Action[AnyContent] =Action { implicit request=>
     val id=request.session.get("userId").get
@@ -1425,6 +1658,7 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
       else if(soft=="NetWeight") (Net,Netins)
       else if(soft=="KEGG") (KEGG,KEGGins)
       else if(soft=="GO") (GO,GOins)
+      else if(soft=="IGC") (IGC,IGCins)
       else (Array(""),Array(""))
 
     val files=outfiles.map{x=>

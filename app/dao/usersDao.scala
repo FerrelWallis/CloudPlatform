@@ -17,7 +17,7 @@ class usersDao @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
   }
 
   def addUser(row:UsersRow) : Future[Int] = {
-    db.run(Users returning  Users.map(_.id)+=row)
+    db.run(Users returning Users.map(_.id)+=row)
   }
 
   def checkPhoneExist(phone:String):Future[Seq[UsersRow]]={
@@ -43,6 +43,10 @@ class usersDao @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
 
   def updateLike(id:String,like:String) : Future[Unit] = {
     db.run(Users.filter(_.id === Integer.parseInt(id)).map(_.like).update(like)).map(_=>())
+  }
+
+  def updateIp(id:String,ip:String) : Future[Unit] = {
+    db.run(Users.filter(_.id === Integer.parseInt(id)).map(_.ip).update(ip)).map(_=>())
   }
 
   def updatePhone(id:String,newphone:String) : Future[Unit] = {

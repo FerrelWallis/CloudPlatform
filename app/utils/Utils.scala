@@ -31,7 +31,13 @@ object Utils{
     if (new File(windowsPath).exists()) windowsPath else linuxPath
   }
 
-  //验证码
+  def jsonToMap(json:String): Map[String, String] = {
+    scala.util.parsing.json.JSON.parseFull(json).get.asInstanceOf[Map[String, String]]
+  }
+
+  def mapToJson(map:Map[String,String]): String = {
+    Json.toJson(map).toString()
+  }
 
 
   //短信验证

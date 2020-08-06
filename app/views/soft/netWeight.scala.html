@@ -1,4 +1,4 @@
-@(abbre:String,sname:String)(implicit session: Session)
+@(abbre:String)(implicit session: Session)
 @home.main("Net"){
 
     <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("css/test/mysoft.css")" media="screen" />
@@ -12,8 +12,8 @@
     <div class="col-md-12 mysoft-content" style="width: 98%;">
         <div class="mysoft-content-left whitebox" style="width: 715px;">
             <form id="Net" method="GET" enctype="multipart/form-data" class="well form-inline" style="box-sizing: border-box!important;">
-                <div class="softpic mws-ic @abbre"> </div>
-                <h3 class="tools-title">@sname</h3>
+                <div class="softpic mws-ic NetWeight"></div>
+                <h3 class="tools-title">权重网络图</h3>
                 <div class="form-group">
                     <h2>
                     </h2>
@@ -39,7 +39,7 @@
                             </div>
                         </div>
                         <div class="form-group-extra">
-                            <em><a href="/CloudPlatform/SoftTool/downloadExamples?name=Net_genus.txt" target="_blank">示例文件</a></em>
+                            <em><a href="/assets/files/Net_genus.txt" target="_blank">示例文件</a></em>
                         </div>
                         <br>
                         <br>
@@ -56,7 +56,7 @@
                             </div>
                         </div>
                         <div class="form-group-extra">
-                            <em><a href="/CloudPlatform/SoftTool/downloadExamples?name=Net_env.txt" target="_blank">示例文件</a></em>
+                            <em><a href="/assets/files/Net_env.txt" target="_blank">示例文件</a></em>
                         </div>
                         <br>
                         <br>
@@ -89,53 +89,87 @@
                     <a href="###" data-target="#instruction" data-toggle="tab">使用说明</a>
                 </li>
                 <li class="" id="out_tab1">
-                    <a href="###" data-target="#example" data-toggle="tab">示例结果</a>
+                    <a href="###" data-target="#example" data-toggle="tab">教学视频</a>
                 </li>
                 <li class="" id="his_tab1">
-                    <a href="#" data-target="#history" data-toggle="tab">NetWeight历史任务</a>
+                    <a href="#" data-target="#history" data-toggle="tab">历史任务</a>
                 </li>
             </ul>
             <div class="tab-content" style="box-sizing: border-box!important;">
                 <div class="tab-pane fade active in" id="instruction">
                     <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span><a href="" target="_blank"><i class="icon icon-question-sign" style="font-size: 14px!important;"></i><strong><span style="color:#337FE5;">了解该工具的原理与详细解析，请点击＞＞</span></strong></a></span>
-                    </p>
-                    <p class="MsoNormal">
+                        <span style="font-weight:700;"><strong>1.背景介绍</strong></span><br>
+                        权重网络图，可以将基因间的调控互作关系绘制成一个有权重的网络图，展示基因间的共表达关系和相关性强弱关系。
                         <br>
                     </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;">功能：</span><br>
-                        将基因间的调控互作关系绘制成一个有权重的网络图。
-                    </p>
                     <br>
                     <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;">输入：</span>
+                        <span style="font-weight:700;"><strong>2.操作方法</strong></span>
                     </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        ①需要输入一个边界文件。<br>
-                        ②边界文件格式说明:边界文件至少包含三列，其中，<br>
-                        第一列和第二列为基因名称或基因ID，在同一行中，表示第一列的基因和第二列的基因有相互作用关系(没有方向的区分)。第三列为权重，即两个基因间的相关系数。<br>
-                        在权重网络图中，不同的权重将用不同的线条类型表示。之后还可以有其他数据，比如基迪奥WGCNA结题报告中给出的cytoscape配置文件edge文件，总共有六列。<br>
-                        边界文件必需包含表头，表头可以自定义，如：fromNode, toNode, weight
-                    </p>
+                    <img src="/assets/images/softpic/instruction/netw1.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
                     <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;">参数：</span>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;padding-left: 44%">
+                        操作界面
                     </p>
                     <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        ①连通性：连通性的计算方法有硬阈值和软阈值两种方法。硬阈值是指一个基因与多少个基因有联系。例如基因A总共与10个基因有相互作用，则基因A的连通性为10。软阈值是指一个基因与其他基因的相关系数（权重，weight）的总和。例如基因A与基因B 的权重为0.2，与基因C的权重为0.3，与基因D的权重为0.5，则基因A的连通性为0.2+0.3+0.5=1。
-                    </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        ②权重范围：可自行设置权重范围，展示特定权重范围下的基因间调控关系。 注意：如果连通性方法选择的是硬阈值，则是先筛选权重范围再在这个范围内计算基因的连通性；如果连通性方法选择的是软阈值，则是先计算每个基因的连通性后再筛选权重范围进行展示。
-                    </p>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;">输出：</span><br>
-                        输出一个可以编辑的网络图。自行编辑后，可以保存为png, pdf, svg格式。同时输出连通性的颜色图例，可以另行下载，格式为.svg。
-                    </p>
-                    <p>
+                        <span style="font-weight:700;"><strong>2.1.输入文件</strong></span><br>
+                        需要输入基因文件和环境因子列表文件，文件格式都必须为txt文件。
                         <br>
-                    </p>                        </div>
+                        基因文件第一列为聚类的OTUid，第一行为样本名，可以直接输入公司提供的OTU丰度表。
+                        <br>
+                        环境因子列表文件第一列为环境因子，第一行为样品名，示例文件如下
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/netw2.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;padding-left: 44%">
+                        基因文件
+                    </p>
+                    <img src="/assets/images/softpic/instruction/netw3.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;padding-left: 40%">
+                        环境因子列表
+                    </p>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        上传完成后，选择相关性分析方法，可选项有spearman、pearson和kendall，选择完成后点击“提交”按钮即可
+                        <br>
+                    </p>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>2.2.查看任务</strong></span><br>
+                        提交任务后，点击界面右侧的“NetWeight历史任务”模块，可以看到任务编号、提交时间、结束时间和状态。通过点击界面“我的任务”也可以查看任务编号、软件名称和状态等信息，点击任务编号，即可查看分析结果。
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/netw4.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        在任务详情界面，展示的是任务参数、结果文件列表和在线调整图片3个区域，提供结果文件下载和图片调整功能。
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/netw5.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>3.示例图片</strong></span><br>
+                        生成的图片根据设置的参数不同会出现差异，示例图片如下，相关性分析方法为pearson。
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/netw6.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>4.结果文件列表</strong></span><br>
+                        结果文件包含生成的相关性系数及P值分析结果，网络图可以通过在线调整后下载。
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/netw7.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                </div>
                 <div class="tab-pane fade" id="example">
                     <h5>输出结果：</h5>
                     <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/net_example.png" alt="生物云平台">
@@ -166,6 +200,13 @@
                 formValidation();
                 loadHistory("@abbre");
                 getTaskName("Net","NET");
+            });
+
+            //bootstrap fileinput 选择文件后处理事件
+            $("#table1").on("filebatchselected", function(event, files) {
+                // $("#div2").find(".fileinput-remove").click();
+                // $("#PCA1").formValidation("revalidateField", "table2");
+                if($("#table2").val()!="") checkEvi();
             });
 
         function netweight() {
@@ -270,6 +311,18 @@
             }
 
             function checkEvi() {
+                if($("#table1").val()==""){
+                    flagevi=false;
+                    $("#Net").formValidation("revalidateField", "table1");
+                    $("#mydiv0").find(".fileinput-remove").click();
+                    swal({
+                        title: "请先上传基因文件",
+                        text: "请先上传基因文件！",
+                        type: "warning",
+                        confirmButtonText: "确认"
+                    });
+                    return;
+                }
                 var reader=new FileReader();
                 reader.readAsText(document.getElementById('table2').files[0],"UTF-8");
                 reader.onload=function () {

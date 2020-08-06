@@ -1,4 +1,4 @@
-@(abbre:String,sname:String)(implicit session: Session)
+@(abbre:String)(implicit session: Session)
 @home.main("GO"){
 
     <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("css/test/mysoft.css")" media="screen" />
@@ -23,11 +23,10 @@
     <div class="col-md-12 mysoft-content" style="width: 98%">
         <div class="whitebox mysoft-content-left" style="width: 730px;">
             <form id="GO" method="GET" enctype="multipart/form-data" class="well form-inline" style="box-sizing: border-box!important;">
-                <div class="softpic mws-ic @abbre"></div>
-                <h3 class="tools-title">@sname</h3>
+                <div class="softpic mws-ic GO"></div>
+                <h3 class="tools-title">GO富集分析</h3>
                 <div class="form-group">
-                    <h2>
-                    </h2>
+                    <h2></h2>
                 </div><br><br>
                 <div class="form-group-p">
                     <div class="form-group">
@@ -148,7 +147,7 @@
                                 <input type="file" class="form-control file" id="table2" name="table2" >
                             </div>
                             <div class="form-group-extra" style="margin-left: 20px">
-                                <em><a href="/CloudPlatform/SoftTool/downloadExamples?name=golist.lst">示例文件</a></em>
+                                <em><a href="/assets/files/golist.txt" target='_blank'>示例文件</a></em>
                             </div>
                         </div>
                     </div>
@@ -169,7 +168,7 @@
                     <a href="###" data-target="#example" data-toggle="tab">示例结果</a>
                 </li>
                 <li class="" id="his_tab1">
-                    <a href="#" data-target="#history" data-toggle="tab">GO历史任务</a>
+                    <a href="#" data-target="#history" data-toggle="tab">历史任务</a>
                 </li>
             </ul>
             <div class="tab-content" style="box-sizing: border-box!important;">
@@ -212,7 +211,7 @@
                         <br>
                     </p>
                     <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;">1）有参考基因组</span><br>
+                        <span style="font-weight:700;">2.2.1.有参考基因组</span><br>
                         选择“2：使用已有参考”条目，下拉菜单中提供的物种有水稻、拟南芥、小鼠、大鼠、斑马鱼、鸡、秀丽线虫、果蝇、人等模式物种。选择完成后点击提交即可。
                         <br>
                     </p>
@@ -220,7 +219,7 @@
                     <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
                     <br>
                     <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;">2）无参考基因组</span><br>
+                        <span style="font-weight:700;">2.2.2.无参考基因组</span><br>
                         非模式物种没有参考基因组可以选择，需要自备GO背景基因文件，文件格式必须为txt，示例文件如下，第一行为基因id，第二行为该基因对应的所有GO号，以“;”分隔
                         <br>
                     </p>
@@ -487,8 +486,8 @@
                         $("#GO").formValidation("revalidateField", "txdata1");
                     }
                     else {
-                        if(param==1) window.location.href = "/CloudPlatform/SoftTool/downloadExamples?name=gokegg1.txt"
-                        else window.location.href = "/CloudPlatform/SoftTool/downloadExamples?name=gokegg2.txt"
+                        if(param==1) window.open("/assets/files/gokegg1.txt");
+                        else window.open("/assets/files/gokegg2.txt");
                     }
                 }
             }

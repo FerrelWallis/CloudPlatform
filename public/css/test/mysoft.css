@@ -1019,7 +1019,7 @@ input[type=checkbox], input[type=radio] {
 
 /*å·¥å…·é¡µé¢*/
 .mysoft-content {
-    height: 840px;
+    height: 810px;
     margin-top:5px;
 }
 
@@ -1061,6 +1061,11 @@ div.handler {
     padding-top: 0 !important;
     display: inline-block;
     float: left;
+    scrollbar-width:thin;
+}
+.mysoft-content-left::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
 }
 .one-line .sdl{
     display: inline-block;
@@ -1107,6 +1112,14 @@ div.handler {
     scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.2);
     scrollbar-width: thin;
 }
+
+.tab-content::-webkit-scrollbar {
+    width: 7px;
+    height: 11px;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+
 
 .mysoft-content-left form {
     margin-top: 0;
@@ -1314,4 +1327,3 @@ label {
 .mysoft-content-left .nav-tabs {
     border: 0;
 }
-

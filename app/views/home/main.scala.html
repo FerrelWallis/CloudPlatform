@@ -6,6 +6,7 @@
         @* 360极速模式*@
         <meta name="renderer" content="webkit">
         <meta name="viewport" content="width=device-width,initial-scale=1.0, shrink-to-fit=no">
+        <meta http-equiv="Access-Control-Allow-Origin" content="*">
 
         <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE"> <!--以IE9模式渲染-->
         <meta http-equiv="X-UA-Compatible" content="IE=8"> <!--以IE8模式渲染-->
@@ -25,7 +26,7 @@
         <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("css/themify-icons.css")" media="screen" />
 
         <!--主页内容-->
-        <link rel="stylesheet" href="/assets/zui/zui.min.css" media="screen" />
+        <link rel="stylesheet" href="@routes.Assets.versioned("zui/zui.min.css")" media="screen" />
         <link rel="stylesheet" type="text/css" href="/assets/css/fluid.css" media="screen" />
         <link rel="stylesheet" type="text/css" href="/assets/css/jui/jquery.ui.css" media="screen" />
         <link rel="stylesheet" type="text/css" href="/assets/css/demo.css" media="screen" />
@@ -37,6 +38,7 @@
 
         <!--JavaScript-->
         <script type="text/javascript" src="@routes.Assets.versioned("bootstrap/js/jquery-3.1.1.min.js")"></script>
+        <script type="text/javascript" src="@routes.Assets.versioned("jquery-cookie/jquery.cookie-1.4.1.min.js")"></script>
 @*        <script type="text/javascript" src="@routes.Assets.versioned("bootstrap/js/bootstrap.js")"></script>*@
 
             <!--主页下导航栏,个人中心-->
@@ -91,18 +93,19 @@
                         <li>
                             <a href="#"  class="mws-i-24 i-blocks-images">软件中心</a>
                             <ul style="padding-top: 8px;padding-bottom: 5px;height: 272px">
-                                <li style="margin-top: 10px"><a href="/CloudPlatform/allsoft?types=li_like">我的收藏</a></li>
-                                <li><a href="/CloudPlatform/allsoft?types=li_allsoft">所有软件</a></li>
-                                <li><a href="/CloudPlatform/allsoft?types=li_function">功能分析</a></li>
-                                <li><a href="/CloudPlatform/allsoft?types=li_cluster">聚类分析</a></li>
-                                <li><a href="/CloudPlatform/allsoft?types=li_paint">基础绘图</a></li>
-                                <li><a href="/CloudPlatform/allsoft?types=li_checkdiff">统计检验与差异分析</a></li>
-                                <li><a href="/CloudPlatform/allsoft?types=li_sequence">序列处理</a></li>
-                                <li><a href="/CloudPlatform/allsoft?types=li_annotation">注释工具</a></li>
-                                <li><a href="/CloudPlatform/allsoft?types=li_chart">表格与格式转化</a></li>
+                                <li style="margin-top: 10px"><a href="/CloudPlatform/home/allsoft?types=li_like">我的收藏</a></li>
+                                <li><a href="/CloudPlatform/home/allsoft?types=li_allsoft">所有软件</a></li>
+                                <li><a href="/CloudPlatform/home/allsoft?types=li_function">功能分析</a></li>
+                                <li><a href="/CloudPlatform/home/allsoft?types=li_cluster">聚类分析</a></li>
+                                <li><a href="/CloudPlatform/home/allsoft?types=li_paint">基础绘图</a></li>
+                                <li><a href="/CloudPlatform/home/allsoft?types=li_checkdiff">统计检验与差异分析</a></li>
+                                <li><a href="/CloudPlatform/home/allsoft?types=li_sequence">序列处理</a></li>
+                                <li><a href="/CloudPlatform/home/allsoft?types=li_annotation">注释工具</a></li>
+                                <li><a href="/CloudPlatform/home/allsoft?types=li_chart">表格与格式转化</a></li>
                             </ul>
                         </li>
                         <li><a onclick="checklog('/CloudPlatform/myTask')"  class="mws-i-24 i-clipboard-1">我的任务</a></li>
+                        <li><a href="/CloudPlatform/home/updateNews" class="mws-i-24 i-info-about">更新日志</a></li>
                     </ul>
                 </div>
             </div>

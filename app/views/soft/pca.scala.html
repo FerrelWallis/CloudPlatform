@@ -1,9 +1,12 @@
-@(abbre:String,sname:String)(implicit session: Session)
+@(abbre:String)(implicit session: Session)
 @home.main("PCA"){
 
     <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("css/test/mysoft.css")" media="screen" />
     <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("bootstrap-fileinput-master/css/fileinput.css")" media="screen" />
     <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("mycss/soft.css")" media="screen" />
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("video-js/video-js.min.css")" media="screen" />
+
+    <script type="text/javascript" src="@routes.Assets.versioned("video-js/video.js")"></script>
         <!--button弹出操作-->
     <script src="@routes.Assets.versioned("layer-v3.0/layer/layer.js")" type="text/javascript"></script>
     <script type="text/javascript" src="@routes.Assets.versioned("js/myzui.min.js")"></script>
@@ -12,13 +15,14 @@
             .file-input{
                 width: 330px;
             }
+
     </style>
 
     <div class="col-md-12 mysoft-content" style="width: 98%">
         <div class="mysoft-content-left whitebox" style="width: 771px;overflow-y: auto">
             <form id="PCA1" method="GET" enctype="multipart/form-data" class="form1 well form-inline tab-pane fade active in" style="box-sizing: border-box!important;">
-                <div class="softpic mws-ic @abbre"> </div>
-                <h3 class="tools-title">@sname</h3>
+                <div class="softpic mws-ic PCA"> </div>
+                <h3 class="tools-title">主成分分析（PCA）</h3>
                 <div class="form-group">
                     <h2>
                     </h2>
@@ -209,10 +213,10 @@
                             <a href="#" data-target="#instruction1" data-toggle="tab">使用说明</a>
                         </li>
                         <li class="" id="out_tab1">
-                            <a href="#" data-target="#form1" data-toggle="tab" id="outcome">示例结果</a>
+                            <a href="#" data-target="#form1" data-toggle="tab" id="outcome">教学视频</a>
                         </li>
                         <li class="" id="his_tab1">
-                            <a href="#" data-target="#history" data-toggle="tab">PCA历史任务</a>
+                            <a href="#" data-target="#history" data-toggle="tab">历史任务</a>
                         </li>
                     </ul>
                     <div class="tab-content" style="box-sizing: border-box!important;">
@@ -330,49 +334,12 @@
                             <br>
                         </div>
                         <div id="form1" class="tab-pane fade">
-                            <h3 style="margin-bottom: 10px;">输出类型1:</h3>
-                            <h5 style="margin-bottom: 2px">示例参数: </h5>
-                            <p>1. 无分组文件</p>
-                            <p>（在无分组文件的情况下，输出图片显示样本名，且不能画分组圈）</p>
-                            <br>
-                            <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/pca_example0.png" alt="生物云平台">
-                            <br>
-                            <br>
-                            <h3 style="margin-bottom: 10px;">输出类型2:</h3>
-                            <h5 style="margin-bottom: 2px">示例参数: </h5>
-                            <p>1. 有分组文件</p>
-                            <p>2. 是否显示样本名:no</p>
-                            <p>3. 是否绘制样本分组圈:no</p>
-                            <br>
-                            <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/pca_example1.png" alt="生物云平台">
-                            <br>
-                            <br>
-                            <h3 style="margin-bottom: 10px;">输出类型3:</h3>
-                            <h5 style="margin-bottom: 2px">示例参数: </h5>
-                            <p>1. 有分组文件</p>
-                            <p>2. 是否显示样本名:yes</p>
-                            <p>3. 是否绘制样本分组圈:no</p>
-                            <br>
-                            <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/pca_example2.png" alt="生物云平台">
-                            <br>
-                            <br>
-                            <h3 style="margin-bottom: 10px;">输出类型4:</h3>
-                            <h5 style="margin-bottom: 2px">示例参数: </h5>
-                            <p>1. 有分组文件</p>
-                            <p>2. 是否显示样本名:no</p>
-                            <p>3. 是否绘制样本分组圈:yes</p>
-                            <br>
-                            <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/pca_example3.png" alt="生物云平台">
-                            <br>
-                            <br>
-                            <h3 style="margin-bottom: 10px;">输出类型5:</h3>
-                            <h5 style="margin-bottom: 2px">示例参数: </h5>
-                            <p>1. 有分组文件</p>
-                            <p>2. 是否显示样本名:yes</p>
-                            <p>3. 是否绘制样本分组圈:yes</p>
-                            <br>
-                            <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/pca_example4.png" alt="生物云平台">
-
+                            <video id="my-player" class="video-js vjs-default-skin" controls preload="none" width="100%" height="400px" data-setup="{}">
+                                <source src="//13125180.s21v.faiusr.com/58/ABUIABA6GAAg_Z2K_QUojLX0pwY.mp4" type='video/mp4' />
+                                <track kind="captions" src="demo.captions.vtt" srclang="en" label="English"></track><!-- Tracks need an ending tag thanks to IE9 -->
+                                <track kind="subtitles" src="demo.captions.vtt" srclang="en" label="English"></track><!-- Tracks need an ending tag thanks to IE9 -->
+                                <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
+                            </video>
                         </div>
                         <div id="history" class="form1_ins tab-pane fade">
                             <a id="btn-refresh" class="btn_refresh mws-i-24 i-refresh-3" onclick="refresh('@abbre')">刷新状态</a>
@@ -399,6 +366,33 @@
     <script src="@routes.Assets.versioned("myjs/soft.js")" type="text/javascript"></script>
     <script type="text/javascript">
 
+            videojs('my-player', {
+                autoplay: false, //自动播放：true/false
+                controls: true, //是否显示底部控制栏：true/false
+                loop: false, //是否循环播放:true/false
+                muted: false, //设置默认播放音频：true/false
+                poster:"/assets/images/softpic/video/pca_video.png", //视频开始播放前显示的图像的URL。这通常是一个帧的视频或自定义标题屏幕。一旦用户点击“播放”图像就会消失
+                techOrder: ['html5', 'flash'], //使用播放器的顺序,下面的示例说明优先使用html5播放器，如果不支持将使用flash
+                notSupportedMessage: false, //是否允许重写默认的消息显示出来时，video.js无法播放媒体源
+                aspectRatio:"1:1", //将播放器置于流体模式下，计算播放器动态大小时使用该值。//该值应该是比用冒号隔开的两个数字（如“16:9”或“4:3”）。
+                fluid: false,	//是否自适应布局,播放器将会有流体体积。换句话说，它将缩放以适应容器。// 如果<video>标签有“vjs-fluid”样式时，这个选项会自动设置为true。
+                preload: "metadata", //建议浏览器是否在加载<video>元素时开始下载视频数据。(预加载)// metadata:只加载视频的元数据，其中包括视频的持续时间和尺寸等信息。有时，元数据会通过下载几帧视频来加载。
+                controlBar:{
+                    captionsButton: false,
+                    chaptersButton: false,
+                    playbackRateMenuButton: true,
+                    LiveDisplay: true,
+                    subtitlesButton: false,
+                    remainingTimeDisplay: true,
+                    progressControl: true,
+                    volumeMenuButton: {
+                        inline: false,
+                        vertical: true
+                    },//竖着的音量条
+                    fullscreenToggle: true
+                }
+            });
+
             $(document).ready(function () {
                 formValidation();
                 loadHistory("@abbre");
@@ -412,6 +406,13 @@
                 } else {
                     $("#group").hide();
                 }
+            });
+
+            //bootstrap fileinput 选择文件后处理事件
+            $("#table1").on("filebatchselected", function(event, files) {
+                // $("#div2").find(".fileinput-remove").click();
+                // $("#PCA1").formValidation("revalidateField", "table2");
+                if($("#table2").val()!="") checkGroupfile();
             });
 
         function PCA() {
@@ -549,19 +550,21 @@
         }
 
         function checkGroupfile() {
-            if($("#table1").val()==""&&$("#txdata1").val()==""){
-                flaggroupfile=false;
-                var file = document.getElementById('table2');
-                file.value = '';
-                $(".file-caption-name").attr("title","");
-                swal({
-                    title: "请先上传矩阵文件",
-                    text: "请先上传矩阵文件！",
-                    type: "warning",
-                    confirmButtonText: "确认"
-                });
-                return;
-            }
+            // if($("#table1").val()==""&&$("#txdata1").val()==""){
+            //     flaggroupfile=false;
+            //     // var file = document.getElementById('table2');
+            //     // file.value = '';
+            //     // $(".file-caption-name").attr("title","");
+            //     // $(".file-caption-name").text("");
+            //     $("#div2").find(".fileinput-remove").click();
+            //     swal({
+            //         title: "请先上传矩阵文件",
+            //         text: "请先上传矩阵文件！",
+            //         type: "warning",
+            //         confirmButtonText: "确认"
+            //     });
+            //     return;
+            // }
             if(!$("#isgroup").prop("checked")) {
                 flaggroupfile=true;
                 return;
@@ -696,12 +699,18 @@
 
         function showexample(type) {
             if(type=="table"){
-                if(table==1) $("#txdata1").val(ta);
-                else window.location.href = "/CloudPlatform/SoftTool/downloadExamples?name=PCA_table.txt"
+                if(table==1) {
+                    $("#txdata1").val(ta);
+                    $("#PCA1").formValidation("revalidateField", "txdata1");
+                }
+                else window.open("/assets/files/PCA_table.txt");
             }
             if(type=="group"){
-                if(group==1) $("#txdata2").val(go);
-                else window.location.href = "/CloudPlatform/SoftTool/downloadExamples?name=PCA_group.txt"
+                if(group==1) {
+                    $("#txdata2").val(go);
+                    $("#PCA1").formValidation("revalidateField", "txdata2");
+                }
+                else window.open("/assets/files/PCA_group.txt");
             }
         }
 
@@ -737,6 +746,33 @@
                                 // type: 'image/jpeg,image/png',
                                 maxSize: 5*1024*1024,
                                 message: '文件不得大于5M！'
+                            }
+                        }
+                    },
+                    txdata1: {
+                        validators: {
+                            notEmpty: {
+                                message: '必须输入矩阵表格文件!'
+                            }
+                        }
+                    },
+                    table2: {
+                        validators: {
+                            notEmpty: {
+                                message: '必须上传分组文件!或者取消分组绘图'
+                            },
+                            file: {
+                                // extension: 'jpeg,jpg,png',
+                                // type: 'image/jpeg,image/png',
+                                maxSize: 5*1024*1024,
+                                message: '文件不得大于5M！'
+                            }
+                        }
+                    },
+                    txdata2: {
+                        validators: {
+                            notEmpty: {
+                                message: '必须输入分组文件!或者取消分组绘图'
                             }
                         }
                     }

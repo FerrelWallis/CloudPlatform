@@ -218,6 +218,6 @@ input[type="text"],textarea{
 }
 
 .bar-danger{
-    background-color: #dd514c;
+    background-color: #dd514c!important;
     background-image: unset;
 }

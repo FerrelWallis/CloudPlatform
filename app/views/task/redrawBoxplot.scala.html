@@ -11,7 +11,7 @@
     <script type="text/javascript" src="@routes.Assets.versioned("palette/evol-colorpicker.min.js")"></script>
 
     <div class="container" style="width: 98.5%;margin: unset;max-width: unset;padding: 5px">
-        @task.preview(row,"Boxplot")
+        @task.preview(row)
         <div class="mws-panel grid_8" style="background: white!important;">
             <div class="mws-panel-body" style="border: unset">
                 <div class="mws-panel-content" style="width: 96%;padding-top: 0;padding-right: 0">
@@ -34,7 +34,7 @@
                         <div style="width: 60%;float: left">
                             <img id="redraw_pic" src="" style="width: 100%;height: auto" >
                         </div>
-                        <div class="redraw-right" style="width: 40%;float: left;margin-bottom: 30px;">
+                        <div class="redraw_panel redraw-right" style="width: 40%;float: left;margin-bottom: 30px;display: none">
                             <div class="form-group-p">
                                 <div class="form-group">
                                     <label>是否绘制数据点：</label>
@@ -146,6 +146,12 @@
                             <br>
                             <input type="button" value="绘&nbsp;&nbsp;制" name="submit" class="btn btn-primary btn-dark" onclick="DrawBox()" style="margin-left: 30px">
                         </div>
+                        <div class="update_panel redraw-right" style="width: 40%;float: left;margin-bottom: 30px;">
+                            <div style="padding: 20px">
+                                <h3 style="color: red">通知：</h3>
+                                <span style="color: red">软件版本已在<label class="update"></label>更新！<label class="update"></label> 前运行的 @row.sname 任务仅可下载结果文件，不支持重新绘图。</span>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -158,8 +164,30 @@
 
     <script>
 
+        const updatetime="2020-07-29";
 
+        function checkupdate(){
+            $(".update").text(updatetime);
+            if("@row.subtime".split(" ")[0]<=updatetime) {
+                $(".update_panel").show();
+                $(".redraw_panel").hide();
+            } else {
+                $(".redraw_panel").show();
+                $(".update_panel").hide();
+            }
+        }
 
+            const colorValidators = {
+                validators: {
+                    notEmpty:{
+                        message: '不能为空!'
+                    },
+                    regexp: {
+                        regexp: /^#([0-9a-fA-F]{6})$/,
+                        message: "色值不合法！色值必须以#开头，色值需为6位"
+                    }
+                }
+            };
 
             var colornum=0;
 
@@ -182,36 +210,22 @@
                             colornum=data.group.length;
                             var colo="";
                             $.each(data.group,function (i,v) {
-                                colo +="<li><div style='float: left;width: 30%;margin-top: 5px;'><label>"+v+"</label></div><div class='evo-cp-wrap'><input id='color"+i+"'  name='color"+i+"' class='colorPicker evo-cp0' readonly='readonly'></div></li>";
+                                colo +="<li class='form-group' style='width: 100%'><div style='float: left;width: 30%;margin-top: 5px;'><label>"+v+"</label></div><div style='float: left;width: 70%;'><input id='color"+i+"'  name='color"+i+"' class='colorPicker evo-cp0'></div></li>";
                             });
                             $("#mycolor").html(colo);
                             $.each(data.group,function (i,v) {
-                                $("#color"+i).colorpicker({color: data.color[i], defaultPalette: 'web'});
+                                $("#Boxplot").formValidation('addField','color'+i, colorValidators);
+                                $("#color"+i).colorpicker({color: data.color[i], defaultPalette: 'web',showOn:"button"})
+                                        .on("change.color", function(event, color){ //选择颜色事件
+                                            //formValidation重新验证颜色
+                                            $("#Boxplot").formValidation("revalidateField", "color"+i);
+                                        });
                             });
-                            $(".colorPicker").attr("readonly", "readonly");
                             $(".evo-cp-wrap").css("float", "left");
                             $(".evo-cp-wrap").css("width", "200px");
+                            checkupdate();
                         }
                     });
-                }
-            });
-
-            $('#color1').colorpicker({color: '#00BFFF', defaultPalette: 'web'});
-            $('#link').on('click', function (evt) {
-                evt.stopImmediatePropagation();
-                var newcolor = $("#color1").val();
-                if (newcolor != '') {
-                    var oldcolor = $("#color").val();
-                    if (oldcolor.indexOf(newcolor) >= 0) {
-                        alert('不能有重复颜色');
-                        return;
-                    }
-                    if (oldcolor == '') {
-                        $("#color").val(newcolor);
-                    } else {
-                        var allcolor = oldcolor + ',' + newcolor;
-                        $("#color").val(allcolor);
-                    }
                 }
             });
 

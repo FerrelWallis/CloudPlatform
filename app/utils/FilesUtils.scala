@@ -16,41 +16,82 @@ object FilesUtils {
 
   def main(args: Array[String]): Unit = {
 
-    val buffer=FileUtils.readLines(new File("F:\\CloudPlatform\\files\\examples\\VennChart.txt")).asScala
-    val sample=buffer(0).split("\t")
-    val gene=buffer.map{x=>
-      x.split("\t")(0)
-    }.drop(1)
-    println(gene.toList)
-    println(sample.toList)
-    val head=FileUtils.readLines(new File("F:\\CloudPlatform\\files\\examples\\VennChartGroup.txt")).asScala
-    println(head.toList)
+    val tableFile1=new File("F:\\CloudPlatform\\users\\6\\IGC8510520\\table1.txt")
+    val g = FileUtils.readLines(tableFile1).asScala.head.trim.split("\t")
+    val e = g
 
-    val char = Array("A", "B", "C", "D", "E", "F")
+    val list=e.drop(1)++g.drop(1).distinct
 
-    val result=buffer.map{x=>
-      val body=x.split("\t")
-      val gene=x.split("\t")(0)
-      val key=head.map{y=>
-        val test = y.split("&").map{z=>
-          val index=sample.indexOf(z)
-          println("z="+z)
-          println("index="+index)
-          println("body="+body(index))
-          if(body(index)!="0") z else ""
-        }
-        println(test.toList)
-        println()
-        if(!test.contains("")) char(head.indexOf(y)) else ""
-      }.mkString
-      (key,gene)
-    }.filter(r=>r._1!="")
 
-    val data = result.groupBy(_._1).map(x => x._1 -> x._2.map(_._2))
-    val name = head.zipWithIndex.map(x => char(x._2) -> x._1).toMap
-    val values = result.groupBy(_._1).map(x => x._1 -> x._2.map(_._2).length)
+    val result=FileUtils.readLines(new File("F:\\CloudPlatform\\users\\6\\IGC8510520\\out\\pandv.xls")).asScala
+    var eid=0;
 
-    println(result)
+    var soutar:List[List[String]]=List(List(""))
+    var resultFilter = Array("")
+    result.drop(1).foreach{x=>
+      val ei = x.split("\"").filter(_.trim!="")
+      val source=ei(1)
+      val target=ei(2)
+      if(!soutar.contains(List(source,target)) || !soutar.contains(List(target,source))) {
+        soutar=soutar:+List(source,target):+List(target,source)
+        resultFilter=resultFilter:+x
+      }
+    }
+
+    println(resultFilter.drop(1).toList)
+
+
+//    println(edges)
+
+
+
+
+
+//    val buffer=FileUtils.readLines(new File("F:\\CloudPlatform\\files\\examples\\VennChart.txt")).asScala
+//    val sample=buffer(0).split("\t")
+//    val gene=buffer.map{x=>
+//      x.split("\t")(0)
+//    }.drop(1)
+////    println(gene.toList)
+////    println(sample.toList)
+//    val head=FileUtils.readLines(new File("F:\\CloudPlatform\\files\\examples\\VennChartGroup.txt")).asScala
+//    println(head.toList)
+//
+//    val char = Array("A", "B", "C", "D", "E", "F")
+//
+//    val result=buffer.map{x=>
+//      val body=x.split("\t")
+//      val gene=x.split("\t")(0)
+//      val key=head.map{y=>
+//        val test = y.split(",").map{z=>
+//          val index=sample.indexOf(z)
+//          println("z="+z)
+//          println("index="+index)
+//          println("body="+body(index))
+//          if(body(index)!="0") z else ""
+//        }
+//        println(test.toList)
+//        println()
+//        if(!test.contains("")) char(head.indexOf(y)) else ""
+//      }.mkString
+//      (key,gene)
+//    }.filter(r=>r._1!="")
+//
+//    val data = result.groupBy(_._1).map(x => x._1 -> x._2.map(_._2))
+//    val name = head.zipWithIndex.map(x => char(x._2) -> x._1).toMap
+//    val values = result.groupBy(_._1).map(x => x._1 -> x._2.map(_._2).length)
+//
+//    println(result)
+
+//    val test=head.map(_.split(",").map(sample.indexOf(_))).filter(!_.contains(-1))
+//
+//    println(test)
+//
+//    test.foreach(x=>println(x.toList))
+
+//    head.map(_.split(",").map(sample.indexOf(_)))
+
+//    buffer.map(_.split("[\t|;|,]").length).distinct
 
 //        val body=head.map{x=>
 //          println(x)

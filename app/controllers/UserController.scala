@@ -131,8 +131,10 @@ class UserController  @Inject()(cc: ControllerComponents,onstart:onStart,usersda
 
 
   def signInSuccess(path:String,id:String) = Action.async{implicit request=>
+    println(request.remoteAddress)
+    usersdao.updateIp(id,request.remoteAddress)
     val session = new Session
-    val direct=if(path.indexOf("allsoft")>=0) "/CloudPlatform/home" else path
+    val direct=if(path.indexOf("allsoft")>=0 || path=="/CloudPlatform") "/CloudPlatform/home" else path
     usersdao.getById(id).map{x=>
       Redirect(direct).withNewSession.withSession(session + ("userId" -> x.id.toString) + ("userPhone"->x.phone) + ("userName"->x.name) + ("userEmail"->x.email) + ("userCompany"->x.company))
     }
@@ -156,7 +158,7 @@ class UserController  @Inject()(cc: ControllerComponents,onstart:onStart,usersda
   def addUser = Action { implicit request =>
     try{
       val form = userForm2.bindFromRequest.get
-      val row = UsersRow(0,form.phone,form.email,form.password,form.name,form.company,"user"," ")
+      val row = UsersRow(0,form.phone,form.email,form.password,form.name,form.company,"user"," ","")
       val checkPhone=Await.result(usersdao.checkPhoneExist(form.phone),Duration.Inf)
       val checkEmail=Await.result(usersdao.checkEmailExist(form.email),Duration.Inf)
       if(checkPhone.length>0) {

@@ -1,4 +1,4 @@
-@(abbre:String,sname:String)(implicit session: Session)
+@(abbre:String)(implicit session: Session)
 @home.main("Scatter Plots"){
 
     <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("css/test/mysoft.css")" media="screen" />
@@ -27,7 +27,7 @@
         <div class="  mysoft-content-left  whitebox" style="width: 590px;">
             <form id="Scaplot" method="GET" enctype="multipart/form-data" class="well form-inline" style="box-sizing: border-box!important;">
                 <div class="softpic mws-ic @abbre"></div>
-                <h3 class="tools-title">@sname</h3>
+                <h3 class="tools-title">高级散点图</h3>
                 <div class="form-group">
                     <h2>
                     </h2>

@@ -317,3 +317,18 @@ a, a:visited {
     display: block;
     box-sizing: border-box;
 }
+.reference{
+    width: 80%;
+    float: left;
+    overflow: auto;
+    max-height: 210px;
+    scrollbar-width: thin;
+}
+.reference::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+}
+
+.update{
+    color: red;
+}

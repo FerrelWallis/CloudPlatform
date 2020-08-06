@@ -1,0 +1,6 @@
+sample	species	type
+Aa	animal	kk
+Bb	animal	kk
+Cc	plant	kk
+Dd	plant	kk
+Ee	plant	gg

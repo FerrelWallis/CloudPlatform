@@ -1,0 +1,22 @@
+@(errornum:String,message:String)
+
+<link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("css/reset.css")" media="screen" />
+<link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("css/mws.style.css")" media="screen" />
+<link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("css/icons/icons.css")" media="screen" />
+<link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("css/text.css")" media="screen" />
+<link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("css/mws.theme.css")" media="screen" />
+<link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("css/icons/ic.css")" media="screen" />
+<link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("css/core/error.css")" media="screen" />
+
+<body style="background: white!important;">
+    <div id="mws-container" class="clearfix">
+        <div class="container">
+            <div id="mws-error-container" style="height: 200px;margin-left: 15%">
+                <h1 id="mws-error-code">Error <span>@errornum</span></h1>
+                <h5 style="text-align: center">@message</h5>
+                <p id="mws-error-message"></p>
+            </div>
+        </div>
+    </div>
+
+</body>

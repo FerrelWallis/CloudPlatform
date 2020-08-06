@@ -1,0 +1,170 @@
+[{
+  "text":"这是弹幕1" ,
+  "color":"white",
+  "size":1,
+  "position":1,
+  "time":2
+},{
+  "text":"这是弹幕2" ,
+  "color":"white",
+  "size":1,
+  "position":2,
+  "time":100
+},{
+  "text":"这是弹幕3" ,
+  "color":"white",
+  "size":1,
+  "position":3,
+  "time":110
+},{
+  "text":"这是弹幕4" ,
+  "color":"white",
+  "size":1,
+  "position":4,
+  "time":200
+},{
+  "text":"这是弹幕1" ,
+  "color":"white",
+  "size":1,
+  "position":5,
+  "time":220
+},{
+  "text":"这是弹幕2" ,
+  "color":"white",
+  "size":1,
+  "position":1,
+  "time":300
+},{
+  "text":"这是弹幕3" ,
+  "color":"white",
+  "size":1,
+  "position":2,
+  "time":330
+},{
+  "text":"这是弹幕4" ,
+  "color":"white",
+  "size":1,
+  "position":3,
+  "time":400
+},{
+  "text":"这是弹幕1" ,
+  "color":"white",
+  "size":1,
+  "position":4,
+  "time":440
+},{
+  "text":"这是弹幕2" ,
+  "color":"white",
+  "size":1,
+  "position":5,
+  "time":500
+},{
+  "text":"这是弹幕3" ,
+  "color":"white",
+  "size":1,
+  "position":1,
+  "time":550
+},{
+  "text":"这是弹幕4" ,
+  "color":"white",
+  "size":1,
+  "position":2,
+  "time":600
+},{
+  "text":"这是弹幕1" ,
+  "color":"white",
+  "size":1,
+  "position":3,
+  "time":660
+},{
+  "text":"这是弹幕2" ,
+  "color":"white",
+  "size":1,
+  "position":4,
+  "time":700
+},{
+  "text":"这是弹幕3" ,
+  "color":"white",
+  "size":1,
+  "position":5,
+  "time":770
+},{
+  "text":"这是弹幕4" ,
+  "color":"white",
+  "size":1,
+  "position":6,
+  "time":800
+},{
+  "text":"这是弹幕1" ,
+  "color":"white",
+  "size":1,
+  "position":1,
+  "time":880
+},{
+  "text":"这是弹幕2" ,
+  "color":"white",
+  "size":1,
+  "position":2,
+  "time":900
+},{
+  "text":"这是弹幕3" ,
+  "color":"white",
+  "size":1,
+  "position":3,
+  "time":990
+},{
+  "text":"这是弹幕4" ,
+  "color":"white",
+  "size":1,
+  "position":4,
+  "time":1100
+},{
+  "text":"这是弹幕1" ,
+  "color":"white",
+  "size":1,
+  "position":5,
+  "time":1110
+},{
+  "text":"这是弹幕2" ,
+  "color":"white",
+  "size":1,
+  "position":1,
+  "time":1300
+},{
+  "text":"这是弹幕3" ,
+  "color":"white",
+  "size":1,
+  "position":1,
+  "time":1500
+},{
+  "text":"这是弹幕4" ,
+  "color":"white",
+  "size":1,
+  "position":1,
+  "time":1800
+},{
+  "text":"这是弹幕1" ,
+  "color":"white",
+  "size":1,
+  "position":1,
+  "time":2000
+},{
+  "text":"这是弹幕2" ,
+  "color":"white",
+  "size":1,
+  "position":1,
+  "time":2200
+},{
+  "text":"这是弹幕3" ,
+  "color":"white",
+  "size":1,
+  "position":1,
+  "time":2400
+},{
+  "text":"这是弹幕4" ,
+  "color":"white",
+  "size":1,
+  "position":1,
+  "time":2600
+}
+]

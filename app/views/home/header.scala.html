@@ -173,15 +173,31 @@
                         <label for="exampleInputPassword1">密码：</label>
                     </div>
                     <div class="logright">
-                        <input type="password" id="exampleInputPassword1" name="password" class="log_re_chan">
+                        <input type="password" id="exampleInputPassword1" onfocus="pwdfocus('pwdwarn1')" onblur="pwdblur('pwdwarn1')" name="password" class="log_re_chan">
                         <i class="ti-lock"></i>
+                    </div>
+                    <div class='pwdwarn' style='float:right;'>
+                        <div id='pwdwarn1' style='display:none;'>
+                            <div class='tooltip fade right in' style='width: 200px;bottom: -40px;right: -220px;display: block;'>
+                                <div class='tooltip-arrow'></div>
+                                <div class='tooltip-inner'>安全起见，建议不要使用qq、微信、支付宝等常用密码。</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="form-gp form-group">
                     <div class="logleft"><label for="exampleInputPassword2">确认密码：</label></div>
                     <div class="logright">
-                        <input type="password" id="exampleInputPassword2" name="password1" class="log_re_chan">
+                        <input type="password" id="exampleInputPassword2" name="password1" onfocus="pwdfocus('pwdwarn2')" onblur="pwdblur('pwdwarn2')" class="log_re_chan">
                         <i class="ti-lock"></i>
+                    </div>
+                    <div class='pwdwarn' style='float:right;'>
+                        <div id='pwdwarn2' style='display:none;'>
+                            <div class='tooltip fade right in' style='width: 200px;bottom: -40px;right: -220px;display: block;'>
+                                <div class='tooltip-arrow'></div>
+                                <div class='tooltip-inner'>安全起见，建议不要使用qq、微信、支付宝等常用密码。</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="form-gp form-group">
@@ -420,6 +436,13 @@
             $(this).parent('.logright').parent('.form-gp').removeClass('focused');
         });
 
+        function pwdfocus(para) {
+            $("#"+para).show();
+        }
+        function pwdblur(para) {
+            $("#"+para).hide();
+        }
+
         var path = window.location.pathname;
 
         var code ; //在全局定义验证码
@@ -453,6 +476,8 @@
         }
 
         function Signout() {
+            //cookie销毁
+            // $.cookie("cloudUserId",null);
             window.location.href = "/CloudPlatform/User/signout";
         }
 
@@ -478,6 +503,7 @@
                         if (data.valid === "false") {
                             layer.close(index);
                             createCode();
+                            $("#signinForm").formValidation("revalidateField", "validnumber");
                             swal({
                                 title: "错误",
                                 text: "账号或密码错误",
@@ -526,7 +552,6 @@
                     }
                 });
             }
-
         }
 
         //短信登陆
@@ -691,7 +716,6 @@
         }
 
         function Verify(param,sendcode) {
-            console.log(111);
             if($("#"+param).val()==""){
                 swal({
                     title: "请输入手机号",
@@ -703,21 +727,8 @@
         }
 
         var count = 60;
-        // var curCount = 0;
-        // var interValObj = 0;
-
-        // function setRemainTime() {
-        //     if (curCount == 0) {
-        //         window.clearInterval(interValObj);
-        //         $(".sendcode").val("重发验证码").attr("disabled", false).css("background","white");
-        //     } else {
-        //         curCount -= 1;
-        //         $(".sendcode").val("重新发送（" + curCount + "s）");
-        //     }
-        // }
 
         function sendEmail(phone,param,sendcode) {
-            console.log(222);
             $.ajax({
                 url: "/CloudPlatform/Utils/sendMSG?phone="+phone+"&where="+param,
                 type: "post",
@@ -760,6 +771,7 @@
                 }
             });
         }
+
 
 
 </script>

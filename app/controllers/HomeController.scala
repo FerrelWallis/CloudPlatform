@@ -26,6 +26,10 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
     Ok(views.html.home.index())
   }
 
+  def home2= Action {implicit request=>
+    Ok(views.html.home.index2())
+  }
+
   def personal=Action{implicit request=>
     Ok(views.html.customer.personal())
   }
@@ -36,6 +40,10 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
 
   def allsoft(types:String)=Action{implicit request=>
     Ok(views.html.category.allsofts(types))
+  }
+
+  def updatenews=Action{implicit request=>
+    Ok(views.html.news.news())
   }
 
 
@@ -52,7 +60,7 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
   }
 
   def testlog= Action {implicit request=>
-    Ok(views.html.test.header())
+    Ok(views.html.news.news())
   }
 
   def testSlider=Action{implicit request=>

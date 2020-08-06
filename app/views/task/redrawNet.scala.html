@@ -24,7 +24,7 @@
     </style>
 
     <div class="container" style="width: 98.5%;margin: unset;max-width: unset;padding: 5px">
-        @task.preview(row,"Net")
+        @task.preview(row)
         <div class="mws-panel grid_8" style="background: white!important;">
             <div class="mws-panel-body" style="border: unset">
                 <div class="mws-panel-content" style="width: 96%;padding-top: 0;padding-right: 0">
@@ -41,12 +41,39 @@
                                 <a class="dropdown-item" onclick="downJson()">下载 json</a>
                             </div>
                         </div>
+                        <span style="margin-right: 30px; color: gray; float: right; margin-top: 30px;">提示：点击连线或结点，可查看对应的p值和c值</span>
                     </div>
                     <br>
                     <form id="Net" style="display: none" method="GET" enctype="multipart/form-data">
                         <div id="cy" style="height: 600px;border:1px solid #8b8b8b9c;margin: 10px 0px 10px 0px;width: 67%;float: left;"></div>
-                        <div style="width: 26%;margin-left: 40px;display: inline-block">
-                            <hr>
+                        <div class="redraw_panel" style="width: 26%;margin-left: 40px;display: inline-block">
+                            <hr style="margin-top: 10px;">
+                            <h3>绘图数据筛选：</h3>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label>显示数据保留小数点位数：</label>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="dot" name="dot" class="form-control" placeholder="数字" value="3" style="width: 65px;float: left;margin-right: 5px;margin-left: 10px;">
+                                </div>
+                            </div>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label>p值检验阈值(0-1)：</label>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="pthres" name="pthres" class="form-control" placeholder="数字" value="0.1" style="width: 65px;float: left;margin-right: 5px;margin-left: 10px;">
+                                </div>
+                            </div>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label>c值(绝对值)检验阈值(0-1)：</label>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="cthres" name="cthres" class="form-control" placeholder="数字" value="0.5" style="width: 65px;float: left;margin-right: 5px;margin-left: 10px;">
+                                </div>
+                            </div>
+                            <hr style="margin-top: 0px">
                             <div class="form-group-p">
                                 <div class="form-group">
                                     <label for="">基因节点形状：</label>
@@ -80,13 +107,13 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-group-p" id="borcolor">
-                                <div class="form-group">
+                            <div class="form-group-p form-group" id="borcolor">
+                                <div style="float: left">
                                     <label>基因节点颜色：</label>
                                 </div>
-                                <div class="form-group">
-                                    <div  class="evo-cp-wrap">
-                                        <input id="color1"  name="color1" value="" class="colorPicker evo-cp0" readonly="readonly">
+                                <div style="float: left;width: 60%">
+                                    <div style="float: left;width: 100%">
+                                        <input id="color1"  name="color1" value="" class="colorPicker evo-cp0">
                                     </div>
                                 </div>
                             </div>
@@ -115,13 +142,13 @@
                                         <input type="text" id="gfont" name="gfont" class="form-control" placeholder="数字" value="12" style="width: 65px;float: left;margin-right: 5px;margin-left: 10px;">
                                     </div>
                                 </div>
-                                <div class="form-group-p">
-                                    <div class="form-group">
+                                <div class="form-group-p  form-group">
+                                    <div style="float: left">
                                         <label>基因名颜色：</label>
                                     </div>
-                                    <div class="form-group">
-                                        <div  class="evo-cp-wrap">
-                                            <input id="color2"  name="color2" value="" class="colorPicker evo-cp0" readonly="readonly">
+                                    <div style="float: left;width: 65%">
+                                        <div style="float: left;width: 100%">
+                                            <input id="color2"  name="color2" value="" class="colorPicker evo-cp0">
                                         </div>
                                     </div>
                                 </div>
@@ -160,13 +187,13 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-group-p" id="borcolor">
-                                <div class="form-group">
+                            <div class="form-group-p  form-group" id="borcolor">
+                                <div style="float: left">
                                     <label>环境因子节点颜色：</label>
                                 </div>
-                                <div class="form-group">
-                                    <div  class="evo-cp-wrap">
-                                        <input id="color3"  name="color3" value="" class="colorPicker evo-cp0" readonly="readonly" >
+                                <div style="float: left;width: 50%">
+                                    <div style="float: left;width: 100%">
+                                        <input id="color3"  name="color3" value="" class="colorPicker evo-cp0">
                                     </div>
                                 </div>
                             </div>
@@ -180,7 +207,7 @@
                             </div>
                             <div class="form-group-p">
                                 <div class="form-group">
-                                    <label>基因节点大小(0-10)：</label>
+                                    <label>环境因子节点大小(0-10)：</label>
                                 </div>
                                 <div class="form-group">
                                     <input type="text" id="esize" name="esize" class="form-control" placeholder="数字" value="10" style="width: 65px;float: left;margin-right: 5px;margin-left: 10px;">
@@ -195,25 +222,25 @@
                                         <input type="text" id="efont" name="efont" class="form-control" placeholder="数字" value="12" style="width: 60px;float: left;margin-right: 5px;margin-left: 10px;">
                                     </div>
                                 </div>
-                                <div class="form-group-p">
-                                    <div class="form-group">
+                                <div class="form-group-p form-group">
+                                    <div style="float: left">
                                         <label>环境因子名颜色：</label>
                                     </div>
-                                    <div class="form-group">
-                                        <div  class="evo-cp-wrap">
-                                            <input id="color4"  name="color4" value="" class="colorPicker evo-cp0" readonly="readonly">
+                                    <div style="float: left; width: 55%;">
+                                        <div  style="float: left; width: 100%;">
+                                            <input id="color4"  name="color4" value="" class="colorPicker evo-cp0">
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <hr style="margin-top: 0px;">
-                            <div class="form-group-p" id="borcolor">
-                                <div class="form-group">
+                            <div class="form-group-p form-group" id="borcolor">
+                                <div style="float: left;">
                                     <label>连线颜色：</label>
                                 </div>
-                                <div class="form-group">
-                                    <div  class="evo-cp-wrap">
-                                        <input id="color5"  name="color5" value="" class="colorPicker evo-cp0" readonly="readonly">
+                                <div style="float: left; width: 70%;">
+                                    <div  style="float: left; width: 100%;">
+                                        <input id="color5"  name="color5" value="" class="colorPicker evo-cp0">
                                     </div>
                                 </div>
                             </div>
@@ -227,6 +254,12 @@
                             </div>
                             <input type="button" value="绘&nbsp;&nbsp;制" name="submit" class="btn btn-primary btn-dark" onclick="saveNet()" style="margin-left: 30px">
                         </div>
+                        <div class="update_panel" style="width: 26%;margin-left: 40px;display: inline-block">
+                            <div style="padding: 20px">
+                                <h3 style="color: red">通知：</h3>
+                                <span style="color: red">软件版本已在<label class="update"></label>更新！<label class="update"></label> 前运行的 @row.sname 任务仅可下载结果文件，不支持重新绘图。</span>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -234,6 +267,31 @@
     </div>
 
     <script>
+
+            const updatetime="2020-08-04";
+
+            function checkupdate(){
+                $(".update").text(updatetime);
+                if("@row.subtime".split(" ")[0]<=updatetime) {
+                    $(".update_panel").show();
+                    $(".redraw_panel").hide();
+                } else {
+                    $(".redraw_panel").show();
+                    $(".update_panel").hide();
+                }
+            }
+
+            const colorValidators = {
+                validators: {
+                    notEmpty:{
+                        message: '不能为空!'
+                    },
+                    regexp: {
+                        regexp: /^#([0-9a-fA-F]{6})$/,
+                        message: "色值不合法！色值必须以#开头，色值需为6位"
+                    }
+                }
+            };
 
             function formValidation() {
                 $('#Net').formValidation({
@@ -244,6 +302,52 @@
                         validating: 'glyphicon glyphicon-refresh'
                     },
                     fields: {
+                        dot: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        pthres: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                },
+                                greaterThan: {
+                                    value: 0,
+                                    message: "必须大于等于0！"
+                                },
+                                lessThan: {
+                                    value: 1,
+                                    message: "必须小于等于1！"
+                                }
+                            }
+                        },
+                        cthres: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                },
+                                greaterThan: {
+                                    value: 0,
+                                    message: "必须大于等于0！"
+                                },
+                                lessThan: {
+                                    value: 1,
+                                    message: "必须小于等于1！"
+                                }
+                            }
+                        },
                         gopa: {
                             validators: {
                                 notEmpty: {
@@ -329,7 +433,12 @@
                                     message: '必须为数字！'
                                 }
                             }
-                        }
+                        },
+                        color1:colorValidators,
+                        color2:colorValidators,
+                        color3:colorValidators,
+                        color4:colorValidators,
+                        color5:colorValidators
                     }
                 });
             }
@@ -357,11 +466,11 @@
                 console.log(JSON.stringify(cy.json()));
             }
 
-
             // function refresh() {
             //     window.cy.elements().remove();
             //     loading();
             // }
+
             var cy;
 
             function loading(){
@@ -369,7 +478,6 @@
                     url:"/CloudPlatform/SoftTool/getNetData?taskname=@row.taskname",
                     type:"post",
                     success:function (data) {
-
                         cy = window.cy = cytoscape({
                             container: document.getElementById('cy'),
                             layout: {
@@ -416,12 +524,16 @@
                             }
                         });
                         $.each(data.elements,function (i,v) {
-                            if(i.indexOf("color")>=0) $("#"+i).colorpicker({color: v, defaultPalette: 'web'});
+                            if(i.indexOf("color")>=0)
+                                $("#"+i).colorpicker({color: v, defaultPalette: 'web',showOn:"button"})
+                                        .on("change.color", function(event, color){ //选择颜色事件
+                                            //formValidation重新验证颜色
+                                            $("#Net").formValidation("revalidateField", i);
+                                        });
                             else $("#"+i).val(v);
                         });
                         $(".evo-cp-wrap").css("width", "120px");
                         $(".evo-cp-wrap").css("float", "left");
-                        $(".colorPicker").attr("readonly", "readonly");
                     }
                 });
             }
@@ -433,6 +545,7 @@
                 if("@row.status"=="已完成"){
                     $("#Net").show();
                     loading();
+                    checkupdate();
                 }
             });
 

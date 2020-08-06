@@ -6,6 +6,7 @@
     <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("bootstrap-table-master/dist/bootstrap.min.css")">
     <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("bootstrap-table-master/dist/bootstrap-table.min.css")">
 
+    <script type="text/javascript" src="@routes.Assets.versioned("bootstrap/js/bootstrap.js")"></script>
     <script src="@routes.Assets.versioned("bootstrap-table-master/dist/bootstrap-table.js")" type="text/javascript"></script>
     <script src="@routes.Assets.versioned("bootstrap-table-master/dist/locale/bootstrap-table-en-US.min.js")" type="text/javascript"></script>
     <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/fileinput.min.js")" type="text/javascript"></script>
@@ -92,15 +93,6 @@
     .pull-right{
         margin-right: 10px;
     }
-    /*div#mws-user-tools #mws-user-info {*/
-    /*    display: block;*/
-    /*    height: auto;*/
-    /*    padding: 4px;*/
-    /*    margin-top: 9px;*/
-    /*}*/
-    /*div#mws-header {*/
-    /*    height: auto;*/
-    /*}*/
     * {
         -webkit-box-sizing:unset;
         -moz-box-sizing:unset;
@@ -131,38 +123,8 @@
         data-toolbar="#toolbar" data-page-list="[10, 25, 50, 100, all]" data-search-align="left" data-multiple-search="true">
         </table>
 
-@*        <div class="mws-panel grid_8">*@
-@*            <div class="mws-panel-header">*@
-@*                <span class="mws-i-24 i-table-1">我的任务</span>*@
-@*            </div>*@
-@*            <div class="mws-panel-body">*@
-@*                <div class="mws-panel-toolbar top clearfix">*@
-@*                    <ul>*@
-@*                        <li><a class="mws-ic-16 ic-cloud-download-1" style="color: cadetblue" id="download">下载</a></li>*@
-@*                        <li><a class="mws-ic-16 ic-delete2" style="color: cadetblue" id="delete">删除</a></li>*@
-@*                        <li><a class="mws-ic-16 ic-refresh2" style="color: cadetblue" id="refresh">刷新任务状态</a></li>*@
-@*                    </ul>*@
-@*                </div>*@
-@*                <table class="mws-datatable-fn mws-table" id="table">*@
-@*                    <thead>*@
-@*                        <tr>*@
-@*                            <th>任务编号</th>*@
-@*                            <th>软件名称</th>*@
-@*                            <th>提交时间</th>*@
-@*                            <th>结束时间</th>*@
-@*                            <th>状态</th>*@
-@*                        </tr>*@
-@*                    </thead>*@
-@*                </table>*@
-@*            </div>*@
-@*        </div>*@
     </div>
 
-    @*jquery datatable*@
-@*    <script type="text/javascript" src="/assets/plugins/jquery.dataTables.js"></script>*@
-@*    <script type="text/javascript" src="/assets/plugins/colorpicker/colorpicker.js"></script>*@
-@*    <script type="text/javascript" src="/assets/plugins/spinner/ui.spinner.js"></script>*@
-@*    <script type="text/javascript" src="/assets/js/jquery-ui.js"></script>*@
 
     <script>
 
@@ -180,42 +142,6 @@
 
             $(document).ready(function () {
                 loading();
-
-                //jquery datatable
-                // var mytask;
-                // function loading() {
-                //     mytask=$("#table").dataTable({
-                //         searching:true,
-                //         bPaginate:true,
-                //         bLengthChange: true,
-                //         bFilter:true,
-                //         destroy:true,
-                //         bSort:true,
-                //         sPaginationType: "full_numbers",
-                //         sAjaxSource:"/CloudPlatform/MyTasks/getDutys",
-                //         sAjaxDataProp:'rows',
-                //         fnServerData: function ( sSource, aoData, fnCallback ) {
-                //             $.ajax( {
-                //                 dataType: 'json',
-                //                 type: "POST",
-                //                 url: sSource,
-                //                 data: aoData,
-                //                 success: fnCallback
-                //             } );
-                //         },
-                //         aoColumns:[
-                //             {mDataProp:"taskname"},
-                //             {mDataProp:"sname"},
-                //             {mDataProp:"submit"},
-                //             {mDataProp:"finish"},
-                //             {mDataProp:"status"}
-                //         ],
-                //         aaSorting:[[2,"desc"]], //设置默认排序
-                //         contentType: "application/x-www-form-urlencoded"
-                //
-                //     });
-                //
-                // }
 
                 $("#remove").on("click", function () {
                     console.log(111);
@@ -311,30 +237,33 @@
             }
 
             function deltask(taskname) {
-                $.ajax({
-                    url: "/CloudPlatform/MyTasks/deleteDuty?taskname=" + taskname,
-                    type: "post",
-                    success: function (data) {
-                        if (data.valid === "false") {
-                            swal({
-                                title: "错误",
-                                text: "删除失败！" + data.message,
-                                type: "error",
-                                confirmButtonText: "确认"
-                            });
-                        } else {
-                            $('#table').bootstrapTable('destroy');
-                            loading();
-                            swal({
-                                title: "删除成功",
-                                text: "任务记录删除成功！",
-                                type: "success",
-                                confirmButtonText: "确认"
-                            });
+                if (confirm("确认删除吗？")) {
+                    $.ajax({
+                        url: "/CloudPlatform/MyTasks/deleteDuty?taskname=" + taskname,
+                        type: "post",
+                        success: function (data) {
+                            if (data.valid === "false") {
+                                swal({
+                                    title: "错误",
+                                    text: "删除失败！" + data.message,
+                                    type: "error",
+                                    confirmButtonText: "确认"
+                                });
+                            } else {
+                                $('#table').bootstrapTable('destroy');
+                                loading();
+                                swal({
+                                    title: "删除成功",
+                                    text: "任务记录删除成功！",
+                                    type: "success",
+                                    confirmButtonText: "确认"
+                                });
 
+                            }
                         }
-                    }
-                });
+                    });
+                }
+
             }
 
             function downtask(taskname,status) {

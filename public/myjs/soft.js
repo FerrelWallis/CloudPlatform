@@ -1,3 +1,33 @@
+
+
+function loadVideo(url,pic) {
+    var id=md5(url);
+    new DPlayer({
+        container: document.getElementById('dplayer'),
+        autoplay: false,
+        loop: false,
+        lang: 'zh-cn',
+        screenshot: true,
+        hotkey: true,
+        preload: 'auto',
+        volume: 0.7,
+        mutex: true,
+        airplay:false,
+        video: {
+            url: url,
+            pic: pic,
+            thumbnails: pic,
+            type: 'auto',
+        },
+        danmaku: {
+            id: id,
+            api: 'https://dplayer.alone88.cn/',
+        }
+    });
+}
+
+
+
 function getTaskName(formid,prename) {
     let date = new Date();
     let month = date.getMonth() + 1;
@@ -128,6 +158,6 @@ function removeul(){
 $(".file").fileinput({
     showPreview: false,
     showUpload:false,
-    showRemove:false,
+    showRemove:true,
     browseLabel: "选择文件"
 });
