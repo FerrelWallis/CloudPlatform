@@ -6,11 +6,12 @@
         @* 360极速模式*@
         <meta name="renderer" content="webkit">
         <meta name="viewport" content="width=device-width,initial-scale=1.0, shrink-to-fit=no">
-        <meta http-equiv="Access-Control-Allow-Origin" content="*">
 
         <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE"> <!--以IE9模式渲染-->
         <meta http-equiv="X-UA-Compatible" content="IE=8"> <!--以IE8模式渲染-->
         <meta http-equiv="X-UA-Compatible" content="IE=7"> <!--以IE7模式渲染-->
+
+        <link rel="shortcut icon" href="#"/>
         <!--整体页面-->
         <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("css/reset.css")" media="screen" />
         <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("css/mws.style.css")" media="screen" />
@@ -71,7 +72,54 @@
             ul{
                 padding-left: 0px!important;
             }
+            .noteContent table tr th,.noteContent table tr td {
+                border: 1px solid rgba(120, 130, 140, 0.82) !important;
+            }
+            /* table 样式 */
+            .noteContent table {
+                border-top: 1px solid #ccc;
+                border-left: 1px solid #ccc;
+            }
+            .noteContent table td,
+            .noteContent table th {
+                border-bottom: 1px solid #ccc;
+                border-right: 1px solid #ccc;
+                padding: 3px 5px;
+            }
+            .noteContent table th {
+                border-bottom: 2px solid #ccc;
+                text-align: center;
+            }
 
+            /* blockquote 样式 */
+            .noteContent blockquote {
+                display: block;
+                border-left: 8px solid #d0e5f2;
+                padding: 5px 10px;
+                margin: 10px 0;
+                line-height: 1.4;
+                font-size: 100%;
+                background-color: #f1f1f1;
+            }
+
+            /* code 样式 */
+            .noteContent code {
+                display: inline-block;
+                *display: inline;
+                *zoom: 1;
+                background-color: #f1f1f1;
+                border-radius: 3px;
+                padding: 3px 5px;
+                margin: 0 3px;
+            }
+            .noteContent pre code {
+                display: block;
+            }
+
+            /* ul ol 样式 */
+            .noteContent ul,.noteContent ol {
+                margin: 10px 0 10px 20px;
+            }
         </style>
         @home.header()
 
@@ -105,7 +153,9 @@
                             </ul>
                         </li>
                         <li><a onclick="checklog('/CloudPlatform/myTask')"  class="mws-i-24 i-clipboard-1">我的任务</a></li>
+                        <li><a onclick="checklog('/CloudPlatform/NoticeList')" class="mws-i-24 i-megaphone">公告列表</a><a id="liNotice" data-reveal-id="latestNotice" style="display: none"></a></li>
                         <li><a href="/CloudPlatform/home/updateNews" class="mws-i-24 i-info-about">更新日志</a></li>
+                        <li id="manager" style="display: none"><a href="/CloudPlatform/managerPanel" class="mws-i-24 i-computer-imac">管理员面板</a></li>
                     </ul>
                 </div>
             </div>
@@ -119,11 +169,63 @@
 
 
         <script>
+
+            if("@session.get("uAuthority")"=="admin") $("#manager").show();
+
+            if(!@session.get("userId").isEmpty) {
+                $.ajax({
+                    url: "/CloudPlatform/Utils/checkReadNote",
+                    type: "post",
+                    success: function (data) {
+                        if(data.valid=="false"){
+                            openLatestNotice();
+                        }
+                    }
+                });
+            }
+
+
+
+
                 $(function () {
                     createCode();
                     formValidation();
-
                 });
+
+            function openNotice(noteid) {
+                $.ajax({
+                    url: "/CloudPlatform/Utils/getNoteById?noteid="+noteid,
+                    type: "post",
+                    success: function (data) {
+                        $("#noteHead").text(data.title);
+                        $("#notePubtime").text(data.pubtime);
+                        $("#noteContent").html("");
+                        $("#noteContent").append(data.content);
+                        $("#latestNotice").css("width",data.width);
+                        $("#latestNotice").css("top",data.top+"%");
+                        $("#latestNotice").css("left",data.left+"%");
+                        $("#liNotice").click();
+                    }
+                });
+            }
+
+
+            function openLatestNotice() {
+                $.ajax({
+                    url: "/CloudPlatform/Utils/getLateNote",
+                    type: "post",
+                    success: function (data) {
+                        $("#noteHead").text(data.title);
+                        $("#notePubtime").text(data.pubtime);
+                        $("#noteContent").html("");
+                        $("#noteContent").append(data.content);
+                        $("#latestNotice").css("width",data.width);
+                        $("#latestNotice").css("top",data.top+"%");
+                        $("#latestNotice").css("left",data.left+"%");
+                        $("#liNotice").click();
+                    }
+                });
+            }
 
                 function checklog(url) {
                     if(@session.get("userId").isEmpty){
@@ -131,6 +233,15 @@
                     }else {
                         window.location.href = url;
                     }
+                };
+
+                function waiting() {
+                    swal({
+                        title: "功能开发中",
+                        text: "功能开发中，敬请期待！",
+                        type: "warning",
+                        confirmButtonText: "确认"
+                    });
                 };
 
 
@@ -149,16 +260,35 @@
                 });
 
                 //submit回车自动提交表单事件，回车事件
-                document.onkeydown = function (e) {
-                    var theEvent = window.event || e;
-                    var code = theEvent.keyCode || theEvent.which;
-                    if (code == 13) {
-                        if($("#newpassword").css("visibility")=="visible") changePassword();
-                        else if($("#signin").css("visibility")=="visible") Signin();
-                        else if($("#signup").css("visibility")=="visible") Signup();
-                        else return;
-                    }
+            $("input[type='text']").keydown(function () {
+                var theEvent = window.event || e;
+                var code = theEvent.keyCode || theEvent.which;
+                if (code == 13) {
+                    if($("#newpassword").css("visibility")=="visible") changePassword();
+                    else if($("#signin").css("visibility")=="visible") Signin();
+                    else if($("#signup").css("visibility")=="visible") Signup();
+                    else if($("#mail_signin").css("visibility")=="visible") MailSignin();
+                    else if($("#changephone").css("visibility")=="visible") changePhone();
+                    else if($("#changedetail").css("visibility")=="visible") changeDe();
+                    else return false;
+                    return false;
                 }
+            });
+                // document.onkeydown = function (e) {
+                //     var theEvent = window.event || e;
+                //     var code = theEvent.keyCode || theEvent.which;
+                //     if (code == 13) {
+                //         if($("#newpassword").css("visibility")=="visible") changePassword();
+                //         else if($("#signin").css("visibility")=="visible") Signin();
+                //         else if($("#signup").css("visibility")=="visible") Signup();
+                //         else if($("#mail_signin").css("visibility")=="visible") MailSignin();
+                //         else if($("#changephone").css("visibility")=="visible") changePhone();
+                //         else if($("#changedetail").css("visibility")=="visible") changeDe();
+                //         else if($("#noteContent").css("visibility")=="visible") return true;
+                //         else return false;
+                //         return false;
+                //     }
+                // }
 
         </script>
 

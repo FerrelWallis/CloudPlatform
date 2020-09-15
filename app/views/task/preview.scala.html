@@ -1,6 +1,7 @@
 @import models.Tables.DutysRow
 @(row:DutysRow)(implicit session: Session)
 
+@*<link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("bootstrap-slider-master/css/bootstrap.min.css")" media="screen" />*@
 <script type="text/javascript" src="@routes.Assets.versioned("bootstrap/js/bootstrap.js")"></script>
 <style>
     /*p内部内容不换行*/
@@ -82,7 +83,11 @@
     </div>
 </div>
 
+
+
+
     <script>
+
 
         if("@row.input"=="/"){
             $(".inputfile").hide();
@@ -107,8 +112,6 @@
         }
 
 
-
-
         if("@row.status"==="已完成"){
             $("#status").addClass('success');
             $.ajax({
@@ -120,7 +123,16 @@
                         var colo="";
                         if((i+1)%2==0) colo="even";
                         else colo="odd";
-                        html += "<tr class='"+ colo +"'><td>" + data.name[i] + "</td><td>" + data.ins[i] + "</td><td><a href='/CloudPlatform/SoftTool/download?path=" + v + "' class='fa fa-download'></a></td></tr>";
+                        var readfile="";
+                        if(data.name[i].indexOf("pdf")>=0){
+                            readfile="";
+                        } else if(data.name[i].indexOf("xls")>=0) {
+                            readfile="";
+                        } else {
+                            readfile="'/CloudPlatform/Utils/previewFile?taskname=@row.taskname&filename="+data.name[i]+"'";
+                        }
+                        html += "<tr class='"+ colo +"'><td>" + data.name[i] + "</td><td>" + data.ins[i] + "</td><td><a onclick='downloadFile(\""+data.name[i]+"\")' class='fa fa-download'></a></td></tr>";
+                        // html += "<tr class='"+ colo +"'><td>" + data.name[i] + "</td><td>" + data.ins[i] + "</td><td><a onclick='downloadFile(\""+data.name[i]+"\")' class='fa fa-download'></a><a href="+readfile+" class='fa fa-eye' target='_blank' style='margin-left=10px;'></a></td></tr>";
                     });
                     $("#filesUrl").html(html);
                 }
@@ -133,6 +145,23 @@
             $("#filesUrl").html("<span>运行中，暂无结果！</span>");
         }
 
+        function viewFile(filename) {
+
+        }
+
+        function downloadFile(filename){
+            if("@row.status"!=="已完成"){
+                swal({
+                    title: "无法下载",
+                    text: "任务未完成，无法下载！",
+                    type: "warning",
+                    confirmButtonText: "确认"
+                });
+            }else{
+                window.location.href = "/CloudPlatform/SoftTool/downloadFile?taskname=@row.taskname&filename=" + filename + "&num="+ Math.random();
+            }
+        }
+
             function downloadZip(){
                 if("@row.status"!=="已完成"){
                     swal({
@@ -142,7 +171,7 @@
                         confirmButtonText: "确认"
                     });
                 }else{
-                    window.location.href = "/CloudPlatform/SoftTool/downloadZip?taskname=@row.taskname";
+                    window.location.href = "/CloudPlatform/SoftTool/downloadZip?taskname=@row.taskname&num="+Math.random();
                 }
             }
     </script>

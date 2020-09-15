@@ -275,7 +275,8 @@
             return !(a.isFunction(g) && g.call(this.element[0], c, d) === !1 || c.isDefaultPrevented())
         }
     }
-})(jQuery);/*!
+})(jQuery);
+/*!
  * jQuery UI Mouse 1.8.17
  *
  * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)

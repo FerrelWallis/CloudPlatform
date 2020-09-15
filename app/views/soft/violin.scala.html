@@ -1,0 +1,1346 @@
+@(abbre:String)(implicit session: Session)
+@home.main("TreeMap"){
+
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("css/test/mysoft.css")" media="screen" />
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("bootstrap-fileinput-master/css/fileinput.css")" media="screen" />
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("mycss/soft.css")" media="screen" />
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("DPlayer-1.26.0/mycss/myvideo.css")" media="screen" />
+
+    <script type="text/javascript" src="@routes.Assets.versioned("DPlayer-1.26.0/dist/DPlayer.min.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.versioned("md5/md5.js")"></script>
+        <!--button弹出操作-->
+    <script src="@routes.Assets.versioned("layer-v3.0/layer/layer.js")" type="text/javascript"></script>
+    <script type="text/javascript" src="@routes.Assets.versioned("js/myzui.min.js")"></script>
+
+    <style>
+            .file-input{
+                width: 330px;
+            }
+
+    </style>
+
+    <div class="col-md-12 mysoft-content" style="width: 98%">
+        <div class="mysoft-content-left whitebox" style="width: 771px;overflow-y: auto">
+            <form id="VIO" method="GET" enctype="multipart/form-data" class="form1 well form-inline tab-pane fade active in" style="box-sizing: border-box!important;">
+                <div class="softpic mws-ic @abbre"> </div>
+                <h3 class="tools-title">小提琴图</h3>
+                <div class="form-group">
+                    <h2></h2>
+                </div><br><br>
+                <div class="form-group-p">
+                    <div class="form-group">
+                        <label for="mytaskname">任务编号：</label>
+                    </div>
+                    <div class="form-group">
+                        <input id="mytaskname" type="text" class="form-control" name="taskname">
+                    </div>
+                </div>
+                <br><br>
+                <div class="form-group-p" style="width: 100%">
+                    <label for="exampleInputName2">
+                        <em>1： </em>上传矩阵表格文件：<span class="must">&nbsp;&nbsp;*</span>
+                    </label>
+                    <br>
+                    <div class="one-line">
+                        <div class="form-group-p" style="width: auto">
+                            <div class="form-group">
+                                <ul class="nav nav-tabs" style="width: 300px">
+                                    <li class="active">
+                                        <a href="###" onclick="curtable(1)" data-target="#tab1Content2" data-toggle="tab">手动输入</a>
+                                    </li>
+                                    <li>
+                                        <a href="###" onclick="curtable(2)" data-target="#tab1Content1" data-toggle="tab">输入文件</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="form-group-p" style="width: auto">
+                            <div class="form-group">
+                                <em>
+                                    <a onclick="showexample('table')">示例文件</a>
+                                </em>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-content">
+                        <div class="tab-pane fade" id="tab1Content1">
+                            <p><br></p>
+                            <div id="div1" class="one-line">
+                                <div class="form-group-p">
+                                    <div class="form-group">
+                                        <label for="exampleInputName2">上传矩阵文件：</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="file" class="form-control file" id="table1" name="table1" onchange="checkTablefile()">
+                                    </div>
+                                </div>
+                                <br>
+                                <br>
+                            </div>
+                            <p></p>
+                        </div>
+                        <div class="tab-pane fade active in" id="tab1Content2">
+                            <p>
+                            </p>
+                            <div class="tab-pane form-group" id="tabContent2">
+                                <textarea id="txdata1" name="txdata1" class="form-control kindeditorSimple" style="width: 100%;height:150px;" placeholder="手动输入时,点击示例文件，示例将导入文本框。上传文件时，点击示例文件，将直接下载文件。文本框右下角可调节文本框大小。"></textarea>
+                            </div>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <br>
+                <h4>可选输入：</h4>
+                <br>
+                <div class="form-group-p">
+                    <div class="form-group">
+                        <label style="float: left;"><em>2： </em>是否分组绘图</label>
+                        <input type="checkbox" name="isgroup" value="A" id="isgroup" class="form-control" style="height: 13px;width: auto;float: left;margin-top: 9px;margin-left: 5px">
+                    </div>
+                </div>
+                <br>
+                <div id="group" style="display: none;">
+                    <div class="form-group-p">
+                        <label>上传或输入分组文件</label>
+                        <br>
+                        <div class="one-line">
+                            <div class="form-group-p" style="width: auto">
+                                <div class="form-group">
+                                    <ul class="nav nav-tabs" style="width: 300px">
+                                        <li class="active">
+                                            <a href="###" onclick="curgroup(1)" data-target="#tab2Content2" data-toggle="tab">手动输入</a>
+                                        </li>
+                                        <li>
+                                            <a href="###" onclick="curgroup(2)" data-target="#tab2Content1" data-toggle="tab">输入文件</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="form-group-p" style="width: auto">
+                                <div class="form-group">
+                                    <em>
+                                        <a onclick="showexample('group')">示例文件</a>
+                                    </em>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-content">
+                            <div class="tab-pane fade" id="tab2Content1">
+                                <p><br></p>
+                                <div id="div2" class="one-line">
+                                    <div class="form-group-p" style="width: auto">
+                                        <div class="form-group">
+                                            <label for="exampleInputName2">输入分组文件：</label>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <input type="file" class="form-control file" id="table2" name="table2" onchange="checkGroupfile()">
+                                            <img id="tempimg2" dynsrc="" src="" style="display:none">
+                                        </div>
+                                    </div>
+                                    <br>
+                                </div>
+                                <p></p>
+                            </div>
+                            <div class="tab-pane fade active in" id="tab2Content2">
+                                <p>
+                                </p>
+                                <div class="tab-pane form-group" id="tabContent2">
+                                    <textarea id="txdata2" name="txdata2" class="form-control kindeditorSimple" style="width: 100%;height:150px;" placeholder="手动输入时,点击示例文件，示例将导入文本框。上传文件时，点击示例文件，将直接下载文件。文本框右下角可调节文本框大小。"></textarea>
+                                </div>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+                <br>
+                <div class="form-group-p">
+                    <div class="form-group">
+                        <label><em>3： </em>读取数据行数（默认全部）：</label>
+                    </div>
+                    <div class="form-group right">
+                        <input type="text" name="un" class="form-control" placeholder="数字" value="" style="width: 60px">
+                    </label>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <div class="form-group-p">
+                    <div class="form-group">
+                        <label><em>4： </em>图片展示方式：</label>
+                    </div>
+                    <div class="form-group">
+                        <select name="fp" style="width: 45%;">
+                            <option value="FALSE">纵向显示</option>
+                            <option value="TRUE">横向显示</option>
+                        </select>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <br>
+                <input type="hidden" value="upload" name="act">
+                <input type="hidden" value="pca" name="action">
+                <input type="button" value="提&nbsp;&nbsp;交" name="submit" class="btn btn-primary" style="margin-bottom: 20px" onclick="treemap()">
+            </form>
+        </div>
+
+        <div class="handler"></div>
+
+        <div class="mysoft-content-right" style="width: 279px;">
+            <div class="tab-content" style="box-sizing: border-box!important;padding: 0;">
+                <div class="form1 tab-pane fade active in">
+                    <ul class="nav nav-tabs">
+                        <li class="active" id="ins_tab1">
+                            <a href="#" data-target="#instruction1" data-toggle="tab">使用说明</a>
+                        </li>
+                        <li class="" id="out_tab1">
+                            <a href="#" data-target="#form1" data-toggle="tab" id="outcome">教学视频</a>
+                        </li>
+                        <li class="" id="his_tab1">
+                            <a href="#" data-target="#history" data-toggle="tab">历史任务</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" style="box-sizing: border-box!important;">
+                        <div id="instruction1" class="form1_ins tab-pane fade active in">
+                            <h5 style="margin-bottom: 2px">更详细使用说明编写中...敬请期待！</h5>
+                        </div>
+                        <div id="form1" class="tab-pane fade">
+                            <h5 style="margin-bottom: 2px">视频录制中...敬请期待！</h5>
+                            <div id="dplayer"></div>
+                        </div>
+                        <div id="history" class="form1_ins tab-pane fade">
+                            <a id="btn-refresh" class="btn_refresh mws-i-24 i-refresh-3" onclick="refresh('@abbre')">刷新状态</a>
+                            <ul id="hisul" style="margin-top: 15px">
+                                <li id="hislist" class="hislist">
+                                    <div class="his_time"><span>任务编号</span></div>
+                                    <div class="his_time"><span style="margin-left: -20px;">结束时间</span></div>
+                                    <div class="his_name"><span style="margin-left: -23px;">状态</span></div>
+                                    <hr>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="@routes.Assets.versioned("js/toolsAdjust.js")"></script>
+    @*    <script src="@routes.Assets.versioned("bootstrap-table-master/bootstrap-table.js")" type="text/javascript"></script>*@
+    @*    <script src="@routes.Assets.versioned("bootstrap-table-master/locale/bootstrap-table-en-US.min.js")" type="text/javascript"></script>*@
+    <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/fileinput.min.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/locales/zh.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("myjs/soft.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+
+            $(document).ready(function () {
+                formValidation();
+                loadHistory("@abbre");
+                getTaskName("VIO","VIO");
+                loadVideo("//13125180.s21v.faiusr.com/58/ABUIABA6GAAg_Z2K_QUojLX0pwY.mp4","/assets/images/softpic/video/pca_video.png")
+            });
+
+            $("#isgroup").click(function () {
+                var isSelected = this.checked;
+                if (isSelected === true) {
+                    $("#group").show();
+                } else {
+                    $("#group").hide();
+                }
+            });
+
+            //bootstrap fileinput 选择文件后处理事件
+            $("#table1").on("filebatchselected", function(event, files) {
+                if($("#table2").val()!="") checkGroupfile();
+            });
+
+            function treemap() {
+                var form = $("#VIO");
+                var fv = form.data("formValidation");
+                fv.validate();
+                if (fv.isValid()) {
+                    flagtable=true;
+                    sample=[];
+                    var check=[];
+                    check.push(checkTablefile());
+                    check.push(checkGroupfile());
+                    Promise.all(check).then((r)=>{
+                        if(flagtable && checktaskname()){
+                            var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
+                            var index = layer.alert(element, {
+                                skin: 'layui-layer-lan',
+                                closeBtn: 0,
+                                title: "提醒",
+                                btn: []
+                            });
+                            setTimeout(function () {
+                                layer.close(index);
+                                var form1 = new FormData($("#VIO")[0]);
+                                $.ajax({
+                                    url: "/CloudPlatform/SoftTool/runViolin?isgroup=" + $("#isgroup").prop("checked") + "&table=" + table + "&group=" + group,
+                                    type: "post",
+                                    processData: false,
+                                    contentType: false,
+                                    data: form1,
+                                    success: function (data) {
+                                        removeul();
+                                        loadHistory("@abbre");
+                                        $("#his_tab1").addClass("active");
+                                        $("#out_tab1").removeClass("active");
+                                        $("#ins_tab1").removeClass("active");
+                                        $("#history").addClass("active").addClass("in");
+                                        $("#form1").removeClass("active");
+                                        $("#instruction1").removeClass("active");
+                                        getTaskName("VIO","VIO");
+                                    }
+                                });
+
+                            }, 2000);
+                        }
+                    });
+                }
+            }
+
+            var sample;
+            var flagtable=true;
+
+            function checkTablefile() {
+                return new Promise((resolve,reject) =>{
+                    if(table==2 && $("#table1").val()==""){
+                        flagtable=flagtable&&false;
+                        swal({
+                            title: "矩阵文件错误",
+                            text: "请上传矩阵文件！",
+                            type: "warning",
+                            confirmButtonText: "确认"
+                        });
+                        resolve(false);
+                    }
+                    else if(table==2 && $("#table1").val()!=""){
+                        var reader=new FileReader();
+                        reader.readAsText(document.getElementById('table1').files[0],"UTF-8");
+                        reader.onload=function () {
+                            let text=reader.result;
+                            let line=text.trim().split('\n');
+                            resolve(checktable(line));
+                        };
+                    }
+                    else if(table==1 && $("#txdata1").val()==""){
+                        flagtable=flagtable&&false;
+                        swal({
+                            title: "矩阵文件错误",
+                            text: "请上传矩阵文件！",
+                            type: "warning",
+                            confirmButtonText: "确认"
+                        });
+                        resolve(false);
+                    }
+                    else if(table==1 && $("#txdata1").val()!=""){
+                        let line=$("#txdata1").val().trim().split('\n');
+                        resolve(checktable(line));
+                    }
+                });
+            }
+
+            function checktable(line) {
+                sample=line[0].trim().split('\t');
+                var length=sample.length;
+                for(let i in line){
+                    var r=parseInt(i)+1;
+                    let row=line[i].trim().split('\t');
+                    var name=[];
+                    if(row.length!=length){
+                        flagtable=flagtable&&false;
+                        swal({
+                            title: "矩阵文件格式错误",
+                            text: "矩阵文件第"+r+"行数据数量不一致",
+                            type: "warning",
+                            confirmButtonText: "确认"
+                        });
+                        return false;
+                    }
+                    for(let j in row){
+                        var c=parseInt(j)+1;
+                        if(i!=0){
+                            if(j!=0 && !checkRate(row[j].trim())){
+                                flagtable=flagtable&&false;
+                                swal({
+                                    title: "矩阵文件格式错误",
+                                    text: "矩阵文件第"+r+"行,第"+c+"列数据不是数字",
+                                    type: "warning",
+                                    confirmButtonText: "确认"
+                                });
+                                return false;
+                            }
+                        }else {
+                            if(name.indexOf(row[j])>=0){
+                                flagtable=flagtable&&false;
+                                swal({
+                                    title: "矩阵文件错误",
+                                    text: "矩阵文件第1行,第"+c+"列样品名重复存在，请核实！",
+                                    type: "warning",
+                                    confirmButtonText: "确认"
+                                });
+                                return false;
+                            }else name.push(row[j]);
+                        }
+                    }
+                }
+                flagtable=flagtable&&true;
+                return true;
+            }
+
+            function checkGroupfile() {
+                return new Promise((resolve, reject) => {
+                    if(!$("#isgroup").prop("checked")) {
+                        flagtable=flagtable&&true;
+                        resolve(true);
+                    }
+                    else if(group==2 && $("#table2").val()==""){
+                        flagtable=flagtable&&false;
+                        swal({
+                            title: "分组文件错误",
+                            text: "请上传分组，或取消分组绘图！",
+                            type: "warning",
+                            confirmButtonText: "确认"
+                        });
+                        resolve(false);
+                    }
+                    else if(group==2 && $("#table2").val()!=""){
+                        var reader=new FileReader();
+                        reader.readAsText(document.getElementById('table2').files[0],"UTF-8");
+                        reader.onload=function () {
+                            let text=reader.result;
+                            let line=text.trim().split('\n');
+                            resolve(checkgroup(line));
+                        };
+                    }
+                    else if(group==1 && $("#txdata2").val()==""){
+                        flagtable=flagtable&&false;
+                        swal({
+                            title: "分组文件错误",
+                            text: "请上传分组，或取消分组绘图！",
+                            type: "warning",
+                            confirmButtonText: "确认"
+                        });
+                        resolve(false);
+                    }
+                    else if(group==1 && $("#txdata2").val()!=""){
+                        let line=$("#txdata2").val().trim().split('\n');
+                        resolve(checkgroup(line));
+                    }
+                });
+            }
+
+            function checkgroup(line) {
+                var name=[];
+                console.log(line.length);
+                for(let i in line) {
+                    let row=line[i].trim().split('\t');
+                    var r=parseInt(i)+1;
+                    if(row.length!=2){
+                        flagtable=flagtable&&false;
+                        swal({
+                            title: "分组文件格式错误",
+                            text: "分组文件第"+r+"行格式错误，必须为两列！",
+                            type: "warning",
+                            confirmButtonText: "确认"
+                        });
+                        return false;
+                    }
+                    if(sample.indexOf(row[0])<0){
+                        flagtable=flagtable&&false;
+                        swal({
+                            title: "分组文件格式错误",
+                            text: "分组文件第"+r+"行样品名不存在，请核对矩阵文件！",
+                            type: "warning",
+                            confirmButtonText: "确认"
+                        });
+                        return false;
+                    }
+                    if(name.indexOf(row[0])>=0){
+                        flagtable=flagtable&&false;
+                        swal({
+                            title: "分组文件错误",
+                            text: "分组文件第"+r+"行样品名重复存在，请核实！",
+                            type: "warning",
+                            confirmButtonText: "确认"
+                        });
+                        return false;
+                    }else name.push(row[0]);
+                }
+                flagtable=flagtable&&true;
+                return true;
+            }
+
+            function checkRate(input) {
+                // var re = /^(-?\d+)(\.\d+)?$/;
+                var re=/^[+-]?[\d]+([\.][\d]+)?([Ee][+-]?[\d]+)?$/;//判断字符串是否为浮点数或科学计数法
+                if (!re.test(input)) {
+                    return false;
+                }else return true;
+            }
+
+            var table=1;
+            var group=1;
+
+            function curtable(param) {
+                table=param;
+            }
+            function curgroup(param) {
+                group=param;
+            }
+
+            function showexample(type) {
+                if(type=="table"){
+                    if(table==1) {
+                        $("#txdata1").val(ta);
+                        $("#VIO").formValidation("revalidateField", "txdata1");
+                    }
+                    else window.open("/assets/files/violin_data.txt");
+                }
+                if(type=="group"){
+                    if(group==1) {
+                        $("#txdata2").val(go);
+                        $("#VIO").formValidation("revalidateField", "txdata2");
+                    }
+                    else window.open("/assets/files/violin_group.txt");
+                }
+            }
+
+            var ta="Geneid\tA05-12-1\tA05-12-2\tA05-12-3\tA05-16-2\tA05-16-3\tA05-16\n" +
+                    "Glyma.01G000100\t1.044\t1.198\t1.478\t3.025\t1.910\t2.279\n" +
+                    "Glyma.01G000137\t5.897\t4.987\t4.199\t13.884\t11.448\t10.103\n" +
+                    "Glyma.01G000174\t1.129\t0.920\t0.885\t3.680\t3.280\t2.219\n" +
+                    "Glyma.01G000211\t2.517\t1.770\t1.680\t3.112\t3.986\t2.797\n" +
+                    "Glyma.01G000248\t3.594\t2.251\t2.031\t4.230\t4.069\t4.587\n" +
+                    "Glyma.01G000285\t1.213\t0.871\t1.132\t1.820\t2.122\t1.682\n" +
+                    "Glyma.01G000322\t0.842\t0.809\t0.451\t0.921\t0.895\t1.064\n" +
+                    "Glyma.01G000359\t3.219\t3.740\t3.737\t3.905\t4.600\t5.143\n" +
+                    "Glyma.01G000400\t3.248\t3.691\t3.372\t4.344\t3.958\t4.922\n" +
+                    "Glyma.01G000600\t2.254\t2.009\t1.501\t3.311\t2.972\t3.489\n" +
+                    "Glyma.01G000900\t3.065\t3.011\t3.203\t3.572\t3.246\t3.366\n" +
+                    "Glyma.01G001000\t5.081\t5.223\t5.876\t4.908\t4.648\t5.701\n" +
+                    "Glyma.01G001100\t5.259\t5.154\t5.217\t5.334\t5.357\t5.415\n" +
+                    "Glyma.01G001150\t0.361\t0.000\t0.477\t0.691\t0.163\t0.237\n" +
+                    "Glyma.01G001200\t0.170\t0.122\t0.163\t0.325\t0.375\t0.364\n" +
+                    "Glyma.01G001300\t7.212\t7.984\t7.524\t5.971\t5.614\t6.147\n" +
+                    "Glyma.01G001350\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G001450\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G001500\t0.081\t0.198\t0.125\t0.335\t0.328\t0.265\n" +
+                    "Glyma.01G001600\t1.367\t1.393\t1.108\t2.925\t2.377\t2.861\n" +
+                    "Glyma.01G001700\t2.118\t1.749\t1.602\t5.188\t3.775\t4.368\n" +
+                    "Glyma.01G001800\t0.226\t0.204\t0.372\t0.050\t0.071\t0.026\n" +
+                    "Glyma.01G001900\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G002000\t23.029\t22.651\t24.396\t54.587\t56.738\t51.816\n" +
+                    "Glyma.01G002100\t3.503\t3.645\t2.844\t2.542\t2.264\t2.264\n" +
+                    "Glyma.01G002200\t1.612\t1.777\t1.497\t2.074\t1.782\t1.896\n" +
+                    "Glyma.01G002250\t1.300\t1.376\t1.050\t1.298\t0.957\t1.192\n" +
+                    "Glyma.01G002300\t0.000\t0.000\t0.000\t0.017\t0.000\t0.000\n" +
+                    "Glyma.01G002400\t15.154\t13.843\t14.035\t1.112\t1.363\t0.941\n" +
+                    "Glyma.01G002501\t4.006\t3.908\t3.749\t0.300\t0.414\t0.260\n" +
+                    "Glyma.01G002600\t8.739\t8.556\t8.479\t5.296\t5.683\t6.356\n" +
+                    "Glyma.01G002700\t7.350\t7.987\t8.204\t9.435\t10.690\t10.568\n" +
+                    "Glyma.01G002800\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G002902\t16.582\t16.764\t16.949\t15.111\t14.503\t14.100\n" +
+                    "Glyma.01G003000\t43.352\t43.179\t46.874\t0.743\t0.434\t0.763\n" +
+                    "Glyma.01G003100\t2.804\t2.629\t2.946\t2.962\t3.089\t3.043\n" +
+                    "Glyma.01G003200\t0.150\t0.398\t0.199\t0.288\t0.475\t0.690\n" +
+                    "Glyma.01G003300\t0.023\t0.085\t0.061\t0.030\t0.000\t0.000\n" +
+                    "Glyma.01G003400\t3.800\t3.800\t3.873\t4.397\t4.408\t4.475\n" +
+                    "Glyma.01G003450\t0.000\t0.000\t0.000\t0.066\t0.047\t0.000\n" +
+                    "Glyma.01G003500\t0.068\t0.083\t0.000\t0.000\t0.031\t0.000\n" +
+                    "Glyma.01G003600\t1.596\t1.196\t1.548\t2.274\t1.559\t2.003\n" +
+                    "Glyma.01G003700\t4.145\t3.959\t4.294\t3.582\t3.877\t3.294\n" +
+                    "Glyma.01G003800\t6.370\t6.410\t6.401\t6.609\t7.556\t7.157\n" +
+                    "Glyma.01G003900\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G004000\t0.101\t0.000\t0.030\t0.172\t0.333\t0.220\n" +
+                    "Glyma.01G004100\t1.521\t1.449\t1.474\t3.352\t2.317\t3.430\n" +
+                    "Glyma.01G004200\t0.788\t0.798\t0.933\t18.502\t15.553\t18.800\n" +
+                    "Glyma.01G004300\t24.759\t27.176\t27.860\t20.138\t19.811\t20.241\n" +
+                    "Glyma.01G004500\t4.374\t4.947\t4.973\t5.954\t5.536\t6.325\n" +
+                    "Glyma.01G004600\t0.704\t0.397\t0.382\t0.104\t0.122\t0.142\n" +
+                    "Glyma.01G004700\t0.278\t0.339\t0.223\t0.676\t0.501\t0.529\n" +
+                    "Glyma.01G004800\t0.055\t0.000\t0.072\t0.175\t0.197\t0.099\n" +
+                    "Glyma.01G004900\t0.041\t0.067\t0.097\t0.088\t0.148\t0.180\n" +
+                    "Glyma.01G005000\t5.931\t5.534\t5.930\t20.554\t27.111\t23.526\n" +
+                    "Glyma.01G005100\t0.167\t0.272\t0.262\t0.000\t0.000\t0.024\n" +
+                    "Glyma.01G005200\t0.620\t0.550\t0.539\t9.718\t9.609\t8.813\n" +
+                    "Glyma.01G005300\t6.167\t6.680\t7.442\t8.285\t8.469\t7.790\n" +
+                    "Glyma.01G005400\t25.795\t26.277\t26.068\t18.841\t18.549\t18.069\n" +
+                    "Glyma.01G005500\t0.322\t0.234\t0.355\t0.126\t0.195\t0.195\n" +
+                    "Glyma.01G005600\t0.174\t0.239\t0.217\t0.120\t0.052\t0.057\n" +
+                    "Glyma.01G005800\t0.348\t0.277\t0.240\t0.096\t0.191\t0.040\n" +
+                    "Glyma.01G005900\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G006000\t1.819\t1.783\t1.581\t15.941\t12.052\t16.377\n" +
+                    "Glyma.01G006100\t8.479\t8.509\t8.112\t10.138\t10.105\t11.844\n" +
+                    "Glyma.01G006200\t10.714\t12.382\t10.171\t31.531\t47.837\t33.148\n" +
+                    "Glyma.01G006300\t0.520\t0.000\t0.000\t0.000\t0.821\t0.511\n" +
+                    "Glyma.01G006400\t5.684\t6.204\t5.858\t5.964\t5.788\t5.453\n" +
+                    "Glyma.01G006500\t0.739\t0.849\t0.795\t1.940\t2.105\t1.928\n" +
+                    "Glyma.01G006600\t2.369\t2.519\t2.037\t3.966\t3.541\t4.336\n" +
+                    "Glyma.01G006700\t1.125\t0.881\t1.068\t5.957\t6.748\t5.327\n" +
+                    "Glyma.01G006800\t0.789\t0.885\t0.894\t0.041\t0.015\t0.042\n" +
+                    "Glyma.01G006900\t9.559\t11.051\t11.255\t12.962\t12.745\t13.163\n" +
+                    "Glyma.01G007000\t0.421\t0.386\t0.570\t0.345\t0.447\t0.492\n" +
+                    "Glyma.01G007100\t0.000\t0.000\t0.000\t0.101\t0.321\t0.181\n" +
+                    "Glyma.01G007200\t7.944\t7.369\t7.676\t3.781\t3.529\t3.370\n" +
+                    "Glyma.01G007300\t1.265\t1.159\t1.102\t1.181\t0.930\t1.154\n" +
+                    "Glyma.01G007400\t0.485\t0.518\t0.534\t3.505\t3.091\t3.928\n" +
+                    "Glyma.01G007500\t0.022\t0.018\t0.013\t0.197\t0.226\t0.337\n" +
+                    "Glyma.01G007600\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G007700\t3.108\t3.077\t3.299\t1.606\t1.803\t2.013\n" +
+                    "Glyma.01G007650\t0.421\t0.000\t0.000\t0.269\t0.569\t1.104\n" +
+                    "Glyma.01G007800\t0.382\t0.304\t0.376\t0.170\t0.176\t0.291\n" +
+                    "Glyma.01G007900\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G008000\t2.269\t2.844\t2.763\t2.056\t1.507\t2.151\n" +
+                    "Glyma.01G008100\t0.725\t1.025\t0.689\t1.216\t1.152\t1.200\n" +
+                    "Glyma.01G008200\t0.000\t0.008\t0.006\t0.016\t0.006\t0.033\n" +
+                    "Glyma.01G008300\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G008400\t1.158\t1.307\t1.361\t3.825\t3.035\t2.826\n" +
+                    "Glyma.01G008500\t56.659\t56.762\t56.523\t58.425\t53.799\t55.352\n" +
+                    "Glyma.01G008600\t6.146\t6.130\t5.773\t6.017\t9.422\t6.028\n" +
+                    "Glyma.01G008700\t0.294\t0.259\t0.331\t0.792\t0.545\t0.503\n" +
+                    "Glyma.01G008800\t4.500\t4.555\t4.021\t9.827\t10.167\t9.166\n" +
+                    "Glyma.01G008900\t2.737\t3.040\t2.917\t4.208\t3.489\t4.323\n" +
+                    "Glyma.01G009000\t0.078\t0.158\t0.228\t0.165\t0.093\t0.068\n" +
+                    "Glyma.01G009100\t0.023\t0.014\t0.020\t0.015\t0.010\t0.075\n" +
+                    "Glyma.01G009200\t49.181\t51.470\t48.969\t8.931\t5.035\t7.758\n" +
+                    "Glyma.01G009300\t9.361\t8.006\t8.508\t8.668\t7.982\t8.854\n" +
+                    "Glyma.01G009400\t1.439\t1.475\t1.364\t2.776\t2.627\t3.279\n" +
+                    "Glyma.01G009500\t0.914\t0.468\t0.806\t1.090\t0.904\t0.657\n" +
+                    "Glyma.01G009600\t0.822\t0.794\t0.860\t1.244\t0.844\t1.152\n" +
+                    "Glyma.01G009700\t2.603\t2.505\t2.371\t0.110\t0.199\t0.016\n" +
+                    "Glyma.01G009800\t6.387\t6.337\t4.996\t4.857\t5.486\t4.793\n" +
+                    "Glyma.01G009900\t7.096\t6.433\t6.585\t7.235\t6.113\t7.207\n" +
+                    "Glyma.01G010000\t0.900\t1.358\t1.057\t0.797\t0.923\t0.786\n" +
+                    "Glyma.01G010100\t1.318\t1.324\t1.452\t1.371\t1.243\t1.488\n" +
+                    "Glyma.01G010200\t242.476\t243.196\t251.163\t78.265\t78.346\t79.015\n" +
+                    "Glyma.01G010300\t11.749\t12.564\t11.870\t6.980\t5.301\t6.729\n" +
+                    "Glyma.01G010400\t7.641\t7.219\t7.455\t10.737\t11.886\t10.948\n" +
+                    "Glyma.01G010500\t0.474\t0.589\t0.452\t0.843\t0.729\t0.846\n" +
+                    "Glyma.01G010600\t18.924\t19.047\t21.263\t30.715\t45.989\t30.979\n" +
+                    "Glyma.01G010700\t0.000\t0.007\t0.000\t0.038\t0.038\t0.031\n" +
+                    "Glyma.01G010800\t1.234\t1.317\t1.115\t2.539\t2.337\t2.568\n" +
+                    "Glyma.01G010900\t2.853\t2.899\t3.085\t3.546\t3.652\t2.701\n" +
+                    "Glyma.01G011000\t1.252\t1.444\t1.196\t0.133\t0.125\t0.046\n" +
+                    "Glyma.01G011100\t8.017\t9.928\t10.293\t8.203\t5.398\t6.870\n" +
+                    "Glyma.01G011200\t2.631\t2.667\t2.468\t2.669\t2.387\t2.813\n" +
+                    "Glyma.01G011300\t5.590\t6.077\t5.680\t2.447\t2.465\t2.586\n" +
+                    "Glyma.01G011400\t1.573\t1.921\t1.516\t2.883\t1.019\t2.575\n" +
+                    "Glyma.01G011500\t0.142\t0.157\t0.250\t0.016\t0.000\t0.000\n" +
+                    "Glyma.01G011600\t0.039\t0.000\t0.070\t0.168\t0.261\t0.121\n" +
+                    "Glyma.01G011700\t0.233\t0.320\t0.168\t0.325\t0.357\t0.259\n" +
+                    "Glyma.01G011800\t0.000\t0.000\t0.000\t0.027\t0.000\t0.000\n" +
+                    "Glyma.01G011900\t1.637\t1.772\t1.417\t0.025\t0.000\t0.013\n" +
+                    "Glyma.01G012000\t0.270\t0.316\t0.207\t0.000\t0.005\t0.038\n" +
+                    "Glyma.01G012100\t2.808\t2.777\t2.765\t0.016\t0.011\t0.000\n" +
+                    "Glyma.01G012200\t0.029\t0.036\t0.013\t0.056\t0.053\t0.019\n" +
+                    "Glyma.01G012300\t2.597\t2.254\t2.683\t3.942\t3.008\t4.096\n" +
+                    "Glyma.01G012400\t7.576\t7.118\t8.107\t7.231\t7.012\t7.965\n" +
+                    "Glyma.01G012500\t7.625\t6.955\t6.842\t11.964\t12.599\t11.818\n" +
+                    "Glyma.01G012700\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G012800\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G013000\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G013100\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G013200\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G013300\t0.000\t0.000\t0.000\t0.000\t0.000\t0.012\n" +
+                    "Glyma.01G013500\t4.618\t4.143\t4.434\t6.475\t5.060\t5.924\n" +
+                    "Glyma.01G013600\t3.296\t3.543\t3.480\t4.090\t4.295\t3.850\n" +
+                    "Glyma.01G013800\t0.465\t0.518\t0.527\t1.090\t1.496\t1.038\n" +
+                    "Glyma.01G013900\t2.386\t2.559\t2.440\t33.402\t34.556\t34.314\n" +
+                    "Glyma.01G014000\t0.207\t0.188\t0.135\t0.490\t0.442\t0.232\n" +
+                    "Glyma.01G014100\t0.629\t0.621\t0.672\t0.000\t0.022\t0.000\n" +
+                    "Glyma.01G014200\t2.735\t2.468\t2.774\t3.032\t2.304\t3.295\n" +
+                    "Glyma.01G014400\t5.524\t5.406\t6.233\t7.618\t6.940\t6.836\n" +
+                    "Glyma.01G014500\t1.224\t1.457\t1.173\t2.692\t2.702\t2.645\n" +
+                    "Glyma.01G014600\t0.742\t0.664\t0.762\t1.142\t1.814\t1.444\n" +
+                    "Glyma.01G014700\t2.967\t2.585\t2.574\t1.973\t1.775\t2.159\n" +
+                    "Glyma.01G014800\t4.514\t3.327\t4.665\t3.308\t3.297\t2.923\n" +
+                    "Glyma.01G014900\t7.757\t7.251\t7.235\t11.234\t10.045\t10.996\n" +
+                    "Glyma.01G015000\t26.103\t24.873\t23.153\t28.955\t28.027\t30.063\n" +
+                    "Glyma.01G015100\t34.087\t32.371\t33.602\t32.318\t29.307\t30.185\n" +
+                    "Glyma.01G015200\t0.128\t0.115\t0.316\t0.326\t0.292\t0.190\n" +
+                    "Glyma.01G015300\t3.314\t2.710\t3.416\t3.653\t4.429\t3.569\n" +
+                    "Glyma.01G015400\t27.662\t29.072\t30.716\t6.918\t11.188\t7.811\n" +
+                    "Glyma.01G015500\t8.274\t8.533\t7.860\t8.392\t7.500\t8.465\n" +
+                    "Glyma.01G015600\t2.396\t2.069\t2.048\t1.312\t1.538\t1.823\n" +
+                    "Glyma.01G015700\t0.520\t0.451\t0.976\t1.027\t1.058\t0.989\n" +
+                    "Glyma.01G015800\t0.019\t0.000\t0.000\t0.000\t0.034\t0.000\n" +
+                    "Glyma.01G015900\t4.838\t4.311\t4.368\t6.676\t7.522\t7.631\n" +
+                    "Glyma.01G016000\t0.298\t0.509\t0.367\t1.821\t2.038\t1.871\n" +
+                    "Glyma.01G016100\t0.297\t0.242\t0.161\t0.417\t0.322\t0.439\n" +
+                    "Glyma.01G016200\t1.502\t1.174\t1.589\t4.061\t3.285\t3.700\n" +
+                    "Glyma.01G016300\t2.783\t2.384\t2.379\t6.038\t6.026\t5.822\n" +
+                    "Glyma.01G016400\t0.898\t0.932\t1.002\t1.895\t1.798\t2.114\n" +
+                    "Glyma.01G016500\t7.835\t8.007\t7.365\t4.902\t4.352\t5.043\n" +
+                    "Glyma.01G016600\t0.018\t0.000\t0.016\t0.069\t0.049\t0.142\n" +
+                    "Glyma.01G016700\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G016800\t15.959\t15.251\t16.845\t15.539\t14.366\t16.121\n" +
+                    "Glyma.01G016900\t2.754\t3.134\t2.927\t4.587\t4.546\t5.092\n" +
+                    "Glyma.01G017000\t9.041\t9.565\t8.297\t12.451\t12.285\t13.943\n" +
+                    "Glyma.01G017100\t6.849\t7.371\t7.693\t7.775\t9.315\t8.425\n" +
+                    "Glyma.01G017150\t0.000\t0.053\t0.000\t0.028\t0.000\t0.000\n" +
+                    "Glyma.01G017200\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G017300\t0.534\t0.494\t0.471\t0.186\t0.131\t0.106\n" +
+                    "Glyma.01G017400\t9.819\t9.265\t9.727\t21.970\t19.653\t22.599\n" +
+                    "Glyma.01G017700\t11.926\t10.805\t11.690\t15.522\t13.317\t14.196\n" +
+                    "Glyma.01G017800\t2.039\t2.134\t1.782\t0.371\t1.050\t0.539\n" +
+                    "Glyma.01G017900\t2.488\t2.640\t2.592\t3.686\t6.251\t3.227\n" +
+                    "Glyma.01G018000\t10.536\t11.898\t11.039\t210.071\t220.969\t196.625\n" +
+                    "Glyma.01G018100\t5.994\t6.216\t4.101\t0.040\t0.113\t0.000\n" +
+                    "Glyma.01G018200\t0.105\t0.097\t0.139\t0.101\t0.190\t0.035\n" +
+                    "Glyma.01G018300\t1.261\t1.096\t1.255\t0.832\t0.628\t1.049\n" +
+                    "Glyma.01G018400\t40.835\t40.380\t38.519\t22.604\t27.304\t25.736\n" +
+                    "Glyma.01G018500\t0.000\t0.000\t0.000\t0.000\t0.028\t0.000\n" +
+                    "Glyma.01G018600\t2.552\t1.159\t2.019\t1.586\t1.947\t2.272\n" +
+                    "Glyma.01G018651\t0.962\t0.940\t1.865\t1.226\t0.693\t1.260\n" +
+                    "Glyma.01G018700\t3.227\t3.173\t2.764\t3.563\t3.795\t3.678\n" +
+                    "Glyma.01G018800\t1.425\t0.973\t1.405\t2.125\t1.828\t1.234\n" +
+                    "Glyma.01G018900\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G019000\t0.126\t0.115\t0.138\t0.721\t0.496\t0.618\n" +
+                    "Glyma.01G019100\t5.418\t5.484\t5.965\t7.276\t5.521\t6.244\n" +
+                    "Glyma.01G019200\t2.146\t1.736\t1.779\t1.812\t1.784\t1.746\n" +
+                    "Glyma.01G019300\t3.292\t3.544\t3.354\t2.481\t2.685\t2.913\n" +
+                    "Glyma.01G019400\t8.451\t9.047\t9.635\t6.255\t5.940\t5.956\n" +
+                    "Glyma.01G019500\t1.137\t1.151\t0.859\t0.041\t0.117\t0.043\n" +
+                    "Glyma.01G019600\t0.515\t0.341\t0.558\t1.126\t1.445\t1.233\n" +
+                    "Glyma.01G019700\t1.630\t1.570\t1.824\t0.440\t0.367\t0.596\n" +
+                    "Glyma.01G019800\t4.922\t5.363\t4.700\t142.574\t160.878\t143.932\n" +
+                    "Glyma.01G019900\t2.330\t2.492\t2.362\t7.708\t5.736\t7.620\n" +
+                    "Glyma.01G020000\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G020100\t0.165\t0.143\t0.080\t0.388\t0.284\t0.413\n" +
+                    "Glyma.01G020200\t3.608\t3.507\t3.762\t4.453\t4.896\t4.219\n" +
+                    "Glyma.01G020300\t17.378\t16.701\t17.031\t19.339\t18.914\t20.069\n" +
+                    "Glyma.01G020400\t0.030\t0.073\t0.053\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G020450\t0.000\t0.000\t0.000\t0.586\t0.518\t0.903\n" +
+                    "Glyma.01G020500\t0.000\t0.060\t0.022\t0.250\t0.287\t0.256\n" +
+                    "Glyma.01G020600\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G020700\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G020800\t0.154\t0.244\t0.072\t0.243\t0.155\t0.226\n" +
+                    "Glyma.01G020900\t6.032\t6.328\t5.860\t0.092\t0.310\t0.309\n" +
+                    "Glyma.01G021000\t86.700\t90.518\t90.260\t3.176\t3.652\t3.056\n" +
+                    "Glyma.01G021100\t0.835\t1.070\t0.857\t0.087\t0.136\t0.179\n" +
+                    "Glyma.01G021200\t0.140\t0.099\t0.175\t0.047\t0.047\t0.077\n" +
+                    "Glyma.01G021301\t1.694\t1.565\t1.311\t1.559\t1.500\t1.408\n" +
+                    "Glyma.01G021400\t3.880\t3.689\t3.242\t6.659\t7.192\t7.150\n" +
+                    "Glyma.01G021450\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G021500\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G021600\t3.720\t3.304\t3.453\t5.273\t7.593\t5.566\n" +
+                    "Glyma.01G021700\t3.423\t2.975\t3.177\t10.613\t10.661\t10.155\n" +
+                    "Glyma.01G021800\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G021900\t1.494\t1.002\t1.523\t11.542\t13.570\t11.819\n" +
+                    "Glyma.01G022100\t23.358\t24.476\t24.909\t15.913\t15.695\t13.934\n" +
+                    "Glyma.01G022300\t0.229\t0.187\t0.210\t0.268\t0.404\t0.338\n" +
+                    "Glyma.01G022400\t0.369\t0.391\t0.369\t2.103\t1.720\t1.903\n" +
+                    "Glyma.01G022500\t0.115\t0.078\t0.124\t0.131\t0.115\t0.067\n" +
+                    "Glyma.01G022600\t9.292\t8.797\t9.269\t4.874\t4.751\t4.378\n" +
+                    "Glyma.01G022700\t1.221\t1.338\t1.219\t1.145\t1.368\t1.565\n" +
+                    "Glyma.01G022800\t0.890\t0.812\t0.895\t2.239\t2.159\t2.580\n" +
+                    "Glyma.01G022900\t0.319\t0.290\t0.327\t0.132\t0.047\t0.019\n" +
+                    "Glyma.01G023000\t8.454\t7.731\t7.890\t6.688\t5.216\t7.729\n" +
+                    "Glyma.01G023100\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G023200\t5.518\t5.628\t5.430\t3.068\t2.677\t2.986\n" +
+                    "Glyma.01G023300\t30.883\t30.531\t29.693\t10.445\t9.967\t10.731\n" +
+                    "Glyma.01G023400\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G023500\t1.698\t1.636\t1.463\t6.374\t4.743\t5.214\n" +
+                    "Glyma.01G023600\t2.018\t2.275\t1.982\t3.019\t2.049\t2.889\n" +
+                    "Glyma.01G023700\t0.737\t0.940\t0.564\t1.963\t1.877\t2.261\n" +
+                    "Glyma.01G023767\t0.445\t0.487\t0.325\t0.822\t0.816\t0.623\n" +
+                    "Glyma.01G023833\t0.000\t0.000\t0.043\t0.031\t0.089\t0.065\n" +
+                    "Glyma.01G023900\t2.447\t2.695\t2.518\t3.316\t3.022\t3.053\n" +
+                    "Glyma.01G024000\t16.462\t18.776\t18.180\t18.816\t23.116\t19.123\n" +
+                    "Glyma.01G024100\t0.012\t0.014\t0.010\t0.000\t0.011\t0.000\n" +
+                    "Glyma.01G024200\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G024300\t0.648\t0.535\t0.537\t3.717\t3.280\t3.719\n" +
+                    "Glyma.01G024400\t0.127\t0.039\t0.084\t0.323\t0.400\t0.166\n" +
+                    "Glyma.01G024500\t0.377\t0.354\t0.460\t0.555\t0.497\t0.627\n" +
+                    "Glyma.01G024600\t6.872\t7.257\t7.492\t9.858\t8.032\t7.901\n" +
+                    "Glyma.01G024700\t1.173\t1.582\t1.128\t2.059\t1.799\t2.395\n" +
+                    "Glyma.01G024800\t0.149\t0.243\t0.230\t0.032\t0.078\t0.098\n" +
+                    "Glyma.01G024900\t0.428\t0.339\t0.467\t0.032\t0.000\t0.000\n" +
+                    "Glyma.01G025000\t0.882\t1.048\t0.948\t0.262\t0.338\t0.127\n" +
+                    "Glyma.01G025100\t166.568\t167.212\t172.863\t76.313\t107.727\t75.797\n" +
+                    "Glyma.01G025200\t2.835\t2.162\t2.446\t4.362\t4.516\t4.265\n" +
+                    "Glyma.01G025300\t1.057\t0.935\t0.810\t1.097\t1.170\t1.146\n" +
+                    "Glyma.01G025400\t0.083\t0.122\t0.132\t0.043\t0.000\t0.022\n" +
+                    "Glyma.01G025500\t2.411\t3.061\t2.694\t2.348\t2.122\t1.666\n" +
+                    "Glyma.01G025600\t3.775\t3.311\t3.728\t7.040\t5.500\t7.418\n" +
+                    "Glyma.01G025800\t1.172\t1.087\t1.246\t6.245\t4.601\t6.132\n" +
+                    "Glyma.01G025700\t0.000\t0.416\t0.450\t4.990\t0.767\t5.795\n" +
+                    "Glyma.01G025900\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G026000\t7.235\t7.468\t6.701\t5.598\t5.969\t5.542\n" +
+                    "Glyma.01G026100\t28.670\t26.602\t29.601\t21.558\t17.364\t20.003\n" +
+                    "Glyma.01G026200\t0.056\t0.068\t0.123\t0.303\t0.252\t0.220\n" +
+                    "Glyma.01G026400\t0.549\t0.537\t0.591\t1.191\t1.535\t1.209\n" +
+                    "Glyma.01G026500\t3.948\t3.687\t4.035\t13.030\t13.275\t12.690\n" +
+                    "Glyma.01G026600\t0.252\t0.447\t0.423\t0.088\t0.041\t0.030\n" +
+                    "Glyma.01G026700\t130.845\t133.748\t135.631\t87.684\t76.626\t87.817\n" +
+                    "Glyma.01G026800\t4.498\t4.417\t4.228\t2.611\t1.939\t2.369\n" +
+                    "Glyma.01G026900\t0.030\t0.074\t0.054\t0.155\t0.027\t0.239\n" +
+                    "Glyma.01G027000\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G027100\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G027200\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G027300\t6.355\t5.907\t6.177\t6.490\t5.583\t6.615\n" +
+                    "Glyma.01G027400\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G027433\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G027466\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G027500\t8.513\t8.899\t8.665\t0.738\t0.720\t0.641\n" +
+                    "Glyma.01G027600\t0.009\t0.046\t0.083\t0.048\t0.034\t0.061\n" +
+                    "Glyma.01G027700\t3.841\t4.333\t4.232\t4.252\t3.413\t3.599\n" +
+                    "Glyma.01G027800\t0.726\t0.801\t0.664\t0.463\t0.390\t0.494\n" +
+                    "Glyma.01G027900\t0.011\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G027967\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G028033\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G028100\t1.268\t1.296\t1.281\t2.380\t2.125\t2.603\n" +
+                    "Glyma.01G028200\t4.159\t3.542\t4.172\t0.523\t0.888\t0.717\n" +
+                    "Glyma.01G028300\t0.000\t0.018\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G028400\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G028500\t0.365\t0.356\t0.578\t0.558\t0.460\t0.621\n" +
+                    "Glyma.01G028600\t6.446\t6.604\t6.278\t0.746\t0.738\t0.868\n" +
+                    "Glyma.01G028700\t4.562\t4.723\t4.366\t8.556\t7.124\t8.550\n" +
+                    "Glyma.01G028800\t5.776\t5.285\t5.389\t4.430\t7.120\t3.901\n" +
+                    "Glyma.01G028900\t27.439\t27.678\t26.824\t11.188\t10.290\t9.857\n" +
+                    "Glyma.01G029000\t7.630\t7.758\t8.038\t7.779\t6.065\t8.925\n" +
+                    "Glyma.01G029100\t7.668\t7.792\t8.213\t9.418\t8.681\t10.292\n" +
+                    "Glyma.01G029200\t60.649\t60.692\t61.774\t41.594\t46.370\t43.166\n" +
+                    "Glyma.01G029250\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G029300\t0.200\t0.245\t0.144\t0.488\t0.427\t0.262\n" +
+                    "Glyma.01G029400\t3.506\t3.286\t3.701\t8.422\t7.275\t7.210\n" +
+                    "Glyma.01G029500\t3.417\t3.069\t3.920\t6.225\t5.963\t6.584\n" +
+                    "Glyma.01G029600\t11.594\t12.759\t11.779\t11.569\t11.874\t10.701\n" +
+                    "Glyma.01G029700\t0.786\t0.720\t0.606\t3.008\t1.949\t2.833\n" +
+                    "Glyma.01G029800\t29.247\t32.622\t30.108\t23.722\t24.510\t22.319\n" +
+                    "Glyma.01G029900\t0.030\t0.000\t0.013\t0.057\t0.027\t0.059\n" +
+                    "Glyma.01G030000\t3.569\t2.615\t3.517\t0.083\t0.146\t0.255\n" +
+                    "Glyma.01G030200\t0.000\t0.000\t0.000\t0.000\t0.008\t0.000\n" +
+                    "Glyma.01G030300\t2.526\t2.548\t2.349\t1.301\t1.504\t1.883\n" +
+                    "Glyma.01G030400\t1.873\t1.994\t1.818\t8.132\t6.925\t9.142\n" +
+                    "Glyma.01G030500\t12.242\t11.116\t13.365\t10.437\t9.136\t10.032\n" +
+                    "Glyma.01G030600\t8.111\t9.791\t8.801\t11.765\t12.077\t12.677\n" +
+                    "Glyma.01G030800\t10.948\t12.065\t11.539\t18.781\t16.035\t17.890\n" +
+                    "Glyma.01G030900\t9.355\t9.637\t9.286\t0.747\t0.772\t0.889\n" +
+                    "Glyma.01G031000\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G031300\t0.285\t0.212\t0.295\t0.032\t0.000\t0.065\n" +
+                    "Glyma.01G031400\t9.938\t9.814\t9.036\t15.170\t13.941\t15.798\n" +
+                    "Glyma.01G031500\t3.501\t3.659\t3.444\t2.641\t2.488\t2.648\n" +
+                    "Glyma.01G031700\t31.744\t30.958\t33.399\t14.708\t11.552\t13.358\n" +
+                    "Glyma.01G031800\t1.153\t1.116\t1.118\t4.557\t5.155\t4.786\n" +
+                    "Glyma.01G031900\t2.073\t2.090\t1.661\t2.770\t2.337\t2.839\n" +
+                    "Glyma.01G032000\t2.171\t2.355\t1.722\t0.065\t0.161\t0.184\n" +
+                    "Glyma.01G032100\t4.807\t4.532\t4.747\t3.923\t3.234\t4.174\n" +
+                    "Glyma.01G032200\t0.273\t0.412\t0.283\t0.348\t0.130\t0.189\n" +
+                    "Glyma.01G032300\t0.419\t0.480\t0.462\t1.805\t1.370\t1.751\n" +
+                    "Glyma.01G032400\t0.092\t0.192\t0.100\t0.145\t0.073\t0.149\n" +
+                    "Glyma.01G032500\t10.132\t9.398\t8.994\t8.266\t7.943\t8.718\n" +
+                    "Glyma.01G032600\t1.424\t1.581\t1.532\t0.094\t0.067\t0.000\n" +
+                    "Glyma.01G032700\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G032800\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G032900\t0.390\t0.355\t0.249\t0.390\t0.262\t0.440\n" +
+                    "Glyma.01G033000\t0.558\t0.664\t0.530\t0.986\t0.839\t0.900\n" +
+                    "Glyma.01G033101\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G033200\t0.695\t0.561\t0.565\t0.824\t0.823\t0.840\n" +
+                    "Glyma.01G033300\t0.000\t0.000\t0.000\t0.015\t0.005\t0.008\n" +
+                    "Glyma.01G033400\t0.000\t0.000\t0.000\t0.574\t0.000\t0.884\n" +
+                    "Glyma.01G033500\t0.017\t0.041\t0.044\t0.021\t0.091\t0.044\n" +
+                    "Glyma.01G033700\t1.265\t1.905\t1.877\t0.833\t0.551\t0.801\n" +
+                    "Glyma.01G033800\t12.583\t11.461\t12.634\t18.176\t19.780\t19.298\n" +
+                    "Glyma.01G033900\t3.554\t3.497\t3.220\t6.966\t6.628\t7.523\n" +
+                    "Glyma.01G034000\t16.405\t14.992\t15.099\t0.192\t0.082\t0.119\n" +
+                    "Glyma.01G034100\t0.623\t0.879\t0.871\t1.521\t1.056\t1.633\n" +
+                    "Glyma.01G034200\t1.044\t0.990\t1.277\t1.987\t1.840\t2.103\n" +
+                    "Glyma.01G034300\t1.579\t1.929\t1.475\t2.133\t2.207\t1.999\n" +
+                    "Glyma.01G034402\t0.175\t0.409\t0.347\t0.353\t0.539\t0.745\n" +
+                    "Glyma.01G034500\t0.000\t0.000\t0.000\t0.000\t0.000\t0.038\n" +
+                    "Glyma.01G034600\t0.133\t0.090\t0.104\t0.358\t0.333\t0.348\n" +
+                    "Glyma.01G034700\t13.589\t11.628\t13.373\t5.029\t4.551\t5.397\n" +
+                    "Glyma.01G034800\t1.115\t1.297\t1.173\t0.891\t0.957\t1.056\n" +
+                    "Glyma.01G034900\t6.364\t7.077\t7.131\t0.000\t0.014\t0.059\n" +
+                    "Glyma.01G035000\t0.075\t0.077\t0.122\t0.032\t0.000\t0.000\n" +
+                    "Glyma.01G035100\t3.288\t3.291\t3.225\t2.282\t1.762\t2.163\n" +
+                    "Glyma.01G035202\t0.000\t0.000\t0.023\t0.000\t0.000\t0.034\n" +
+                    "Glyma.01G035300\t5.040\t5.823\t5.808\t4.298\t4.433\t4.217\n" +
+                    "Glyma.01G035350\t0.000\t0.000\t0.252\t0.728\t0.257\t0.374\n" +
+                    "Glyma.01G035400\t0.047\t0.211\t0.159\t0.070\t0.071\t0.051\n" +
+                    "Glyma.01G035500\t6.363\t6.445\t7.661\t1.187\t0.699\t0.000\n" +
+                    "Glyma.01G035600\t2.891\t2.425\t2.956\t0.049\t0.087\t0.177\n" +
+                    "Glyma.01G035700\t4.741\t5.244\t5.187\t7.821\t7.081\t7.101\n" +
+                    "Glyma.01G035800\t0.565\t0.709\t0.470\t0.300\t0.453\t0.411\n" +
+                    "Glyma.01G036000\t18.286\t18.061\t17.618\t0.860\t0.347\t0.273\n" +
+                    "Glyma.01G036050\t0.000\t0.000\t0.000\t0.063\t0.000\t0.000\n" +
+                    "Glyma.01G036100\t0.000\t0.119\t0.000\t0.248\t0.058\t0.212\n" +
+                    "Glyma.01G036200\t4.733\t3.967\t4.699\t6.199\t5.171\t5.935\n" +
+                    "Glyma.01G036300\t0.000\t0.000\t0.104\t1.200\t1.696\t1.387\n" +
+                    "Glyma.01G036400\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G036500\t6.743\t7.235\t7.074\t4.087\t3.097\t4.367\n" +
+                    "Glyma.01G036550\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G036600\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G036700\t4.824\t4.365\t4.845\t5.416\t6.182\t6.991\n" +
+                    "Glyma.01G036751\t0.737\t0.225\t0.487\t0.705\t0.166\t0.483\n" +
+                    "Glyma.01G036800\t0.152\t0.167\t0.081\t0.874\t1.112\t0.678\n" +
+                    "Glyma.01G036900\t0.492\t0.621\t0.781\t1.527\t1.508\t1.612\n" +
+                    "Glyma.01G037000\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G037100\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G037200\t0.599\t0.355\t0.448\t2.732\t4.254\t2.901\n" +
+                    "Glyma.01G037300\t11.817\t11.577\t11.002\t10.862\t11.848\t11.385\n" +
+                    "Glyma.01G037400\t1.572\t2.117\t2.131\t4.189\t3.560\t3.749\n" +
+                    "Glyma.01G037500\t0.395\t0.362\t0.152\t0.441\t0.290\t0.194\n" +
+                    "Glyma.01G037600\t0.009\t0.021\t0.046\t0.320\t0.398\t0.329\n" +
+                    "Glyma.01G037700\t3.928\t3.791\t3.523\t3.457\t2.971\t3.995\n" +
+                    "Glyma.01G037800\t1.568\t1.276\t1.236\t0.140\t0.050\t0.072\n" +
+                    "Glyma.01G037900\t5.653\t6.122\t5.989\t6.605\t5.635\t6.457\n" +
+                    "Glyma.01G038002\t0.465\t0.404\t0.345\t1.748\t1.389\t1.523\n" +
+                    "Glyma.01G038100\t4.749\t4.593\t4.546\t8.771\t8.068\t8.893\n" +
+                    "Glyma.01G038250\t7.043\t6.772\t6.809\t13.647\t9.645\t12.859\n" +
+                    "Glyma.01G038300\t5.052\t5.187\t4.072\t5.361\t4.561\t5.252\n" +
+                    "Glyma.01G038350\t0.393\t0.240\t0.000\t0.000\t0.000\t0.515\n" +
+                    "Glyma.01G038400\t1.291\t0.923\t1.129\t1.017\t1.145\t0.921\n" +
+                    "Glyma.01G038500\t2.804\t2.572\t2.531\t2.455\t2.872\t2.301\n" +
+                    "Glyma.01G038600\t39.040\t39.062\t39.971\t19.933\t22.810\t22.902\n" +
+                    "Glyma.01G038651\t0.052\t0.064\t0.185\t0.067\t0.000\t0.137\n" +
+                    "Glyma.01G038700\t6.253\t5.239\t6.355\t13.478\t9.106\t15.099\n" +
+                    "Glyma.01G038800\t9.381\t8.709\t8.755\t11.221\t12.782\t12.187\n" +
+                    "Glyma.01G038900\t1.756\t1.919\t1.534\t3.005\t2.582\t3.067\n" +
+                    "Glyma.01G039000\t0.968\t1.003\t0.695\t1.581\t1.063\t1.261\n" +
+                    "Glyma.01G039100\t5.894\t7.711\t7.595\t11.446\t13.321\t12.112\n" +
+                    "Glyma.01G039200\t4.280\t5.275\t4.813\t1.456\t1.303\t1.371\n" +
+                    "Glyma.01G039300\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G039400\t0.011\t0.039\t0.056\t0.081\t0.029\t0.125\n" +
+                    "Glyma.01G039500\t2.351\t2.201\t1.911\t1.921\t1.472\t2.121\n" +
+                    "Glyma.01G039600\t0.146\t0.371\t0.107\t0.046\t0.055\t0.032\n" +
+                    "Glyma.01G039700\t0.000\t0.000\t0.015\t0.011\t0.000\t0.000\n" +
+                    "Glyma.01G039800\t2.152\t1.818\t1.737\t1.552\t1.940\t1.449\n" +
+                    "Glyma.01G039900\t1.150\t1.289\t1.466\t0.241\t0.244\t0.337\n" +
+                    "Glyma.01G040000\t14.828\t14.432\t15.795\t24.689\t24.721\t23.304\n" +
+                    "Glyma.01G040100\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G040200\t108.870\t110.431\t112.102\t21.941\t25.005\t22.137\n" +
+                    "Glyma.01G040300\t3.729\t3.206\t3.344\t7.634\t5.972\t6.794\n" +
+                    "Glyma.01G040400\t1.297\t1.197\t1.072\t3.735\t4.071\t3.878\n" +
+                    "Glyma.01G040500\t1.700\t1.926\t2.040\t1.280\t1.569\t1.529\n" +
+                    "Glyma.01G040600\t0.418\t0.332\t0.276\t0.293\t0.414\t0.684\n" +
+                    "Glyma.01G040700\t7.951\t8.775\t10.451\t8.939\t7.952\t8.269\n" +
+                    "Glyma.01G040900\t0.090\t0.067\t0.066\t0.406\t0.500\t0.412\n" +
+                    "Glyma.01G041000\t0.255\t0.062\t0.135\t0.715\t1.790\t1.001\n" +
+                    "Glyma.01G041100\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G041200\t0.000\t0.000\t0.031\t0.046\t0.000\t0.000\n" +
+                    "Glyma.01G041300\t5.276\t4.750\t4.956\t3.621\t4.544\t3.757\n" +
+                    "Glyma.01G041400\t25.832\t25.733\t26.241\t41.262\t44.762\t41.903\n" +
+                    "Glyma.01G041450\t0.000\t0.037\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G041500\t1.922\t2.332\t2.015\t4.033\t3.738\t4.541\n" +
+                    "Glyma.01G041600\t0.671\t0.739\t0.688\t2.006\t1.725\t1.643\n" +
+                    "Glyma.01G041651\t7.158\t7.499\t6.940\t4.564\t7.617\t4.797\n" +
+                    "Glyma.01G041700\t9.781\t10.651\t10.728\t10.779\t9.963\t11.678\n" +
+                    "Glyma.01G042100\t0.123\t0.075\t0.098\t0.378\t0.401\t0.243\n" +
+                    "Glyma.01G042200\t0.000\t0.000\t0.000\t0.342\t1.087\t0.702\n" +
+                    "Glyma.01G042300\t12.238\t12.379\t12.112\t9.857\t10.359\t11.795\n" +
+                    "Glyma.01G042400\t6.274\t6.256\t6.402\t9.277\t8.602\t9.546\n" +
+                    "Glyma.01G042500\t0.000\t0.000\t0.057\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G042600\t0.000\t0.000\t0.043\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G042700\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G042800\t10.364\t9.352\t10.368\t15.961\t15.111\t16.068\n" +
+                    "Glyma.01G042900\t0.544\t0.811\t0.585\t0.863\t0.921\t0.765\n" +
+                    "Glyma.01G043000\t3.197\t2.871\t3.398\t2.878\t2.796\t3.295\n" +
+                    "Glyma.01G043100\t0.221\t0.172\t0.373\t0.514\t0.272\t0.396\n" +
+                    "Glyma.01G043300\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G043400\t0.031\t0.000\t0.000\t0.020\t0.028\t0.021\n" +
+                    "Glyma.01G043600\t0.084\t0.281\t0.055\t2.725\t1.265\t2.497\n" +
+                    "Glyma.01G043700\t0.043\t0.079\t0.133\t0.014\t0.078\t0.042\n" +
+                    "Glyma.01G043800\t2.275\t2.423\t2.154\t1.929\t1.454\t1.894\n" +
+                    "Glyma.01G043925\t0.295\t0.720\t0.520\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G043951\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G043976\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G044000\t45.530\t46.486\t46.190\t43.212\t43.670\t44.458\n" +
+                    "Glyma.01G044100\t3.809\t4.736\t5.024\t6.901\t6.668\t7.251\n" +
+                    "Glyma.01G044200\t6.124\t6.165\t6.234\t3.915\t4.071\t4.127\n" +
+                    "Glyma.01G044300\t0.247\t0.313\t0.314\t0.420\t0.247\t0.766\n" +
+                    "Glyma.01G044400\t0.340\t0.623\t0.300\t0.976\t0.613\t0.891\n" +
+                    "Glyma.01G044500\t7.509\t7.152\t8.148\t4.217\t5.619\t4.191\n" +
+                    "Glyma.01G044600\t5.386\t5.106\t5.148\t6.349\t5.574\t6.892\n" +
+                    "Glyma.01G044650\t0.656\t0.344\t0.248\t1.913\t1.014\t1.106\n" +
+                    "Glyma.01G044800\t0.000\t0.000\t0.000\t0.062\t0.131\t0.127\n" +
+                    "Glyma.01G044900\t3.107\t1.865\t2.089\t4.365\t4.698\t4.208\n" +
+                    "Glyma.01G045000\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G045100\t6.339\t6.341\t6.185\t9.911\t9.775\t9.800\n" +
+                    "Glyma.01G045200\t5.560\t5.580\t6.464\t20.428\t18.501\t17.955\n" +
+                    "Glyma.01G045300\t1.615\t1.118\t1.629\t4.607\t3.511\t4.602\n" +
+                    "Glyma.01G045400\t0.585\t0.516\t0.515\t0.083\t0.205\t0.298\n" +
+                    "Glyma.01G045500\t11.751\t12.235\t12.830\t6.470\t7.282\t7.366\n" +
+                    "Glyma.01G045700\t2.299\t1.865\t2.577\t3.623\t2.723\t3.270\n" +
+                    "Glyma.01G045750\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G045800\t2.910\t2.937\t2.881\t2.296\t1.823\t2.714\n" +
+                    "Glyma.01G045900\t0.221\t0.108\t0.078\t0.141\t0.139\t0.058\n" +
+                    "Glyma.01G046000\t3.892\t3.273\t3.853\t0.821\t0.917\t1.157\n" +
+                    "Glyma.01G046100\t0.000\t0.000\t0.000\t0.131\t0.093\t0.270\n" +
+                    "Glyma.01G046200\t4.170\t3.661\t3.790\t8.945\t7.301\t7.312\n" +
+                    "Glyma.01G046300\t0.090\t0.166\t0.066\t0.077\t0.136\t0.059\n" +
+                    "Glyma.01G046351\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G046400\t0.190\t0.077\t0.149\t0.297\t0.343\t0.222\n" +
+                    "Glyma.01G046500\t2.793\t2.831\t2.637\t4.106\t4.000\t3.621\n" +
+                    "Glyma.01G046600\t0.200\t0.183\t0.221\t0.077\t0.189\t0.170\n" +
+                    "Glyma.01G046700\t3.940\t3.994\t3.614\t2.512\t2.559\t2.948\n" +
+                    "Glyma.01G046800\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G046900\t0.860\t0.806\t0.693\t7.947\t6.025\t8.775\n" +
+                    "Glyma.01G047000\t31.324\t31.770\t32.062\t24.709\t22.431\t27.330\n" +
+                    "Glyma.01G047100\t5.497\t5.640\t5.954\t7.943\t7.489\t7.771\n" +
+                    "Glyma.01G047300\t1.691\t1.870\t1.443\t1.362\t1.091\t1.306\n" +
+                    "Glyma.01G047400\t4.054\t4.573\t4.258\t6.704\t5.035\t6.328\n" +
+                    "Glyma.01G047600\t0.291\t0.269\t0.249\t0.968\t0.692\t0.867\n" +
+                    "Glyma.01G047700\t6.384\t5.573\t6.294\t8.063\t8.501\t7.559\n" +
+                    "Glyma.01G047800\t0.121\t0.049\t0.196\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G047900\t1.450\t1.819\t1.054\t1.500\t1.025\t1.001\n" +
+                    "Glyma.01G048000\t1.487\t1.401\t1.338\t0.569\t0.642\t0.641\n" +
+                    "Glyma.01G048100\t0.298\t0.196\t0.606\t1.227\t1.497\t1.681\n" +
+                    "Glyma.01G048200\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G048300\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G048400\t0.106\t0.097\t0.140\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G048500\t1.338\t1.317\t1.120\t2.815\t2.321\t2.759\n" +
+                    "Glyma.01G048600\t0.156\t0.191\t0.315\t1.309\t0.664\t1.140\n" +
+                    "Glyma.01G048700\t6.419\t5.793\t5.869\t0.458\t0.453\t0.188\n" +
+                    "Glyma.01G048800\t0.209\t0.384\t0.390\t0.000\t0.031\t0.000\n" +
+                    "Glyma.01G049100\t5.815\t5.656\t5.259\t5.189\t4.091\t5.112\n" +
+                    "Glyma.01G049300\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G049400\t0.440\t0.362\t0.358\t0.280\t0.376\t0.461\n" +
+                    "Glyma.01G049500\t0.139\t0.000\t0.000\t0.089\t0.063\t0.000\n" +
+                    "Glyma.01G049600\t0.097\t0.030\t0.007\t0.010\t0.007\t0.000\n" +
+                    "Glyma.01G049700\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G049800\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G049900\t1.781\t1.617\t1.628\t2.438\t2.754\t2.291\n" +
+                    "Glyma.01G050100\t9.406\t10.833\t10.566\t4.308\t3.888\t3.472\n" +
+                    "Glyma.01G050350\t0.000\t0.000\t0.031\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G050400\t2.334\t2.627\t2.716\t3.077\t2.860\t3.092\n" +
+                    "Glyma.01G050500\t3.307\t2.990\t3.615\t4.326\t3.754\t3.797\n" +
+                    "Glyma.01G050700\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G050900\t29.897\t31.839\t32.201\t32.285\t43.584\t27.639\n" +
+                    "Glyma.01G051001\t0.000\t0.000\t0.035\t0.154\t0.000\t0.000\n" +
+                    "Glyma.01G051300\t0.082\t0.075\t0.090\t1.638\t1.635\t1.869\n" +
+                    "Glyma.01G051400\t5.760\t5.585\t5.033\t13.995\t12.525\t13.968\n" +
+                    "Glyma.01G051700\t0.074\t0.000\t0.082\t0.000\t0.017\t0.024\n" +
+                    "Glyma.01G051800\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G052000\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G052200\t3.672\t3.398\t3.899\t4.186\t4.337\t5.029\n" +
+                    "Glyma.01G052300\t0.595\t0.395\t0.454\t0.173\t0.295\t0.241\n" +
+                    "Glyma.01G052400\t2.744\t2.884\t3.013\t6.597\t6.790\t5.804\n" +
+                    "Glyma.01G052500\t0.764\t1.074\t0.948\t0.605\t0.615\t1.091\n" +
+                    "Glyma.01G052600\t3.204\t3.648\t2.979\t6.440\t6.631\t6.669\n" +
+                    "Glyma.01G052700\t4.159\t4.112\t4.168\t18.753\t16.912\t14.951\n" +
+                    "Glyma.01G052800\t3.095\t2.891\t3.263\t3.018\t2.935\t4.425\n" +
+                    "Glyma.01G052900\t0.045\t0.000\t0.013\t0.057\t0.107\t0.059\n" +
+                    "Glyma.01G053000\t0.000\t0.000\t0.000\t0.000\t0.053\t0.000\n" +
+                    "Glyma.01G053100\t0.122\t0.037\t0.059\t0.527\t0.559\t0.566\n" +
+                    "Glyma.01G053200\t2.303\t3.069\t2.953\t5.507\t4.152\t4.766\n" +
+                    "Glyma.01G053300\t3.048\t3.359\t3.269\t1.799\t1.582\t1.896\n" +
+                    "Glyma.01G053400\t0.885\t0.309\t0.668\t0.161\t0.114\t0.331\n" +
+                    "Glyma.01G053600\t0.028\t0.091\t0.000\t0.024\t0.008\t0.012\n" +
+                    "Glyma.01G053700\t0.526\t0.642\t0.689\t1.667\t1.664\t2.278\n" +
+                    "Glyma.01G053800\t4.357\t3.971\t4.119\t1.494\t1.625\t2.035\n" +
+                    "Glyma.01G053900\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G054000\t4.297\t4.328\t4.951\t5.913\t6.863\t4.889\n" +
+                    "Glyma.01G054100\t0.000\t0.019\t0.040\t0.000\t0.028\t0.040\n" +
+                    "Glyma.01G054200\t4.136\t5.080\t5.023\t6.710\t5.529\t6.713\n" +
+                    "Glyma.01G054300\t5.223\t5.586\t5.667\t7.466\t6.587\t7.821\n" +
+                    "Glyma.01G054400\t2.422\t3.169\t2.788\t0.504\t0.445\t1.295\n" +
+                    "Glyma.01G054500\t0.030\t0.024\t0.044\t0.165\t0.135\t0.183\n" +
+                    "Glyma.01G054601\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G054700\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G054800\t3.932\t4.611\t3.783\t5.521\t4.651\t5.073\n" +
+                    "Glyma.01G054900\t0.191\t0.199\t0.278\t0.830\t0.974\t0.551\n" +
+                    "Glyma.01G054950\t1.052\t1.386\t1.098\t3.000\t2.344\t4.024\n" +
+                    "Glyma.01G055000\t0.878\t0.948\t0.846\t1.979\t1.711\t1.926\n" +
+                    "Glyma.01G055200\t0.000\t0.000\t0.021\t0.000\t0.063\t0.000\n" +
+                    "Glyma.01G055300\t1.853\t1.785\t1.820\t1.810\t1.594\t1.748\n" +
+                    "Glyma.01G055400\t24.795\t26.027\t25.470\t24.744\t18.070\t25.124\n" +
+                    "Glyma.01G055500\t2.982\t2.073\t2.426\t4.124\t4.031\t3.245\n" +
+                    "Glyma.01G055700\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G055800\t0.650\t0.477\t0.535\t0.442\t0.703\t0.739\n" +
+                    "Glyma.01G055900\t3.569\t3.586\t3.975\t3.989\t3.943\t4.600\n" +
+                    "Glyma.01G056000\t0.969\t0.979\t0.883\t0.234\t0.135\t0.109\n" +
+                    "Glyma.01G056100\t0.800\t0.840\t0.574\t1.257\t1.073\t1.535\n" +
+                    "Glyma.01G056202\t0.000\t0.000\t0.000\t0.201\t0.213\t0.172\n" +
+                    "Glyma.01G056300\t9.251\t8.651\t9.864\t6.559\t6.265\t6.222\n" +
+                    "Glyma.01G056400\t2.048\t2.301\t2.816\t2.402\t3.101\t2.790\n" +
+                    "Glyma.01G056500\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G056800\t1.316\t1.652\t1.339\t4.419\t4.543\t4.370\n" +
+                    "Glyma.01G056900\t0.075\t0.092\t0.057\t0.164\t0.068\t0.239\n" +
+                    "Glyma.01G057100\t22.034\t24.116\t22.117\t5.558\t5.809\t5.405\n" +
+                    "Glyma.01G057200\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G057400\t7.531\t7.034\t7.809\t10.502\t9.981\t10.341\n" +
+                    "Glyma.01G057500\t1.570\t1.725\t1.523\t1.339\t1.122\t1.254\n" +
+                    "Glyma.01G057600\t0.250\t0.179\t0.205\t0.275\t0.716\t0.351\n" +
+                    "Glyma.01G057700\t0.035\t0.000\t0.000\t0.044\t0.000\t0.023\n" +
+                    "Glyma.01G057801\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G057900\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G058000\t5.120\t4.678\t5.339\t5.813\t4.652\t5.835\n" +
+                    "Glyma.01G058100\t2.008\t1.612\t1.366\t3.695\t2.896\t2.932\n" +
+                    "Glyma.01G058200\t4.339\t4.601\t4.047\t5.417\t4.086\t4.560\n" +
+                    "Glyma.01G058300\t30.255\t28.300\t29.504\t9.479\t10.774\t8.571\n" +
+                    "Glyma.01G058400\t1.053\t1.510\t1.332\t0.000\t0.041\t0.000\n" +
+                    "Glyma.01G058500\t23.827\t24.069\t24.577\t63.413\t55.277\t60.829\n" +
+                    "Glyma.01G058600\t10.890\t12.252\t7.680\t4.970\t8.730\t4.731\n" +
+                    "Glyma.01G058700\t0.484\t0.420\t0.525\t0.581\t0.469\t0.402\n" +
+                    "Glyma.01G058800\t0.000\t0.000\t0.000\t0.000\t0.075\t0.000\n" +
+                    "Glyma.01G058900\t0.295\t0.630\t0.617\t1.410\t0.997\t1.400\n" +
+                    "Glyma.01G059000\t0.397\t0.552\t0.454\t0.841\t0.627\t0.663\n" +
+                    "Glyma.01G059100\t1.219\t1.082\t1.304\t2.511\t2.019\t2.484\n" +
+                    "Glyma.01G059200\t2.006\t2.100\t1.642\t5.171\t3.862\t5.181\n" +
+                    "Glyma.01G059400\t0.078\t0.000\t0.035\t0.000\t0.035\t0.000\n" +
+                    "Glyma.01G059450\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G059900\t0.743\t0.620\t0.702\t1.469\t1.114\t1.440\n" +
+                    "Glyma.01G060001\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G060300\t3.303\t2.920\t2.764\t0.639\t0.764\t0.673\n" +
+                    "Glyma.01G060450\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G060600\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G060700\t3.716\t3.576\t3.241\t4.540\t3.955\t4.593\n" +
+                    "Glyma.01G060800\t0.514\t0.558\t0.402\t0.437\t0.617\t0.374\n" +
+                    "Glyma.01G060900\t18.724\t21.352\t19.277\t14.883\t17.081\t13.129\n" +
+                    "Glyma.01G061000\t11.305\t10.070\t10.690\t2.126\t2.223\t1.556\n" +
+                    "Glyma.01G061100\t1.054\t1.256\t1.212\t3.376\t5.537\t4.445\n" +
+                    "Glyma.01G061200\t0.115\t0.140\t0.000\t0.000\t0.207\t0.151\n" +
+                    "Glyma.01G061500\t3.187\t3.221\t2.958\t5.231\t5.433\t5.118\n" +
+                    "Glyma.01G061700\t1.804\t1.899\t1.764\t3.444\t3.353\t3.446\n" +
+                    "Glyma.01G061800\t0.492\t0.631\t0.419\t2.468\t2.535\t2.460\n" +
+                    "Glyma.01G061900\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G062000\t4.948\t3.383\t5.029\t10.265\t11.244\t9.584\n" +
+                    "Glyma.01G062100\t0.922\t1.287\t0.929\t2.603\t1.923\t2.502\n" +
+                    "Glyma.01G062200\t0.262\t0.223\t0.261\t1.423\t1.201\t1.582\n" +
+                    "Glyma.01G062251\t0.000\t0.277\t0.600\t0.289\t0.409\t0.594\n" +
+                    "Glyma.01G062300\t3.006\t3.356\t3.220\t3.545\t8.012\t4.912\n" +
+                    "Glyma.01G062400\t18.167\t16.255\t17.206\t0.279\t0.268\t0.328\n" +
+                    "Glyma.01G062500\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G062600\t0.533\t0.000\t0.000\t1.631\t1.921\t1.117\n" +
+                    "Glyma.01G062700\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G062900\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G063000\t17.686\t16.788\t16.824\t12.214\t13.214\t10.532\n" +
+                    "Glyma.01G063100\t8.604\t8.053\t9.029\t2.992\t2.719\t2.513\n" +
+                    "Glyma.01G063250\t0.000\t0.103\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G063500\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G063600\t0.984\t0.851\t0.763\t1.449\t1.219\t1.391\n" +
+                    "Glyma.01G063700\t3.887\t3.865\t3.922\t0.637\t0.680\t0.654\n" +
+                    "Glyma.01G063750\t0.000\t0.000\t0.195\t0.000\t0.199\t0.000\n" +
+                    "Glyma.01G063800\t1.373\t1.089\t1.035\t0.144\t0.089\t0.148\n" +
+                    "Glyma.01G064000\t0.000\t0.000\t0.064\t0.000\t0.099\t0.000\n" +
+                    "Glyma.01G064050\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G064100\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G064200\t0.497\t0.809\t0.547\t0.185\t0.336\t0.380\n" +
+                    "Glyma.01G064400\t2.709\t2.088\t2.388\t4.791\t5.133\t4.243\n" +
+                    "Glyma.01G064500\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G064600\t0.692\t0.608\t0.878\t1.282\t0.939\t1.390\n" +
+                    "Glyma.01G064800\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G064900\t1.988\t1.846\t1.824\t2.891\t2.421\t3.013\n" +
+                    "Glyma.01G065000\t0.000\t0.000\t0.000\t0.000\t0.000\t0.023\n" +
+                    "Glyma.01G065100\t6.967\t6.648\t7.547\t6.014\t5.720\t6.573\n" +
+                    "Glyma.01G065400\t4.716\t4.924\t4.379\t0.550\t0.898\t0.546\n" +
+                    "Glyma.01G065500\t0.131\t0.186\t0.134\t0.139\t0.098\t0.228\n" +
+                    "Glyma.01G065600\t0.070\t0.201\t0.103\t0.329\t0.275\t0.553\n" +
+                    "Glyma.01G065800\t0.037\t0.019\t0.019\t0.269\t0.152\t0.221\n" +
+                    "Glyma.01G066000\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G066100\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G066200\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G066300\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G066500\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G066600\t3.565\t3.991\t3.928\t4.651\t4.700\t4.822\n" +
+                    "Glyma.01G067000\t10.358\t9.631\t9.821\t7.735\t9.685\t8.455\n" +
+                    "Glyma.01G067100\t3.555\t3.587\t2.946\t2.723\t3.091\t2.557\n" +
+                    "Glyma.01G067200\t0.018\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G067300\t0.521\t0.454\t0.568\t1.898\t1.319\t1.722\n" +
+                    "Glyma.01G067400\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G067600\t2.695\t3.025\t2.639\t2.464\t2.367\t2.978\n" +
+                    "Glyma.01G067700\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G067800\t0.000\t0.053\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G067900\t1.923\t2.290\t2.151\t2.370\t1.646\t2.350\n" +
+                    "Glyma.01G068000\t19.065\t19.057\t17.875\t12.183\t11.092\t11.791\n" +
+                    "Glyma.01G068100\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G068200\t0.296\t0.427\t0.513\t0.175\t0.095\t0.194\n" +
+                    "Glyma.01G068600\t2.594\t2.785\t2.422\t5.530\t5.196\t5.681\n" +
+                    "Glyma.01G068800\t1.242\t1.317\t1.159\t3.625\t2.422\t4.013\n" +
+                    "Glyma.01G068900\t0.817\t1.330\t1.200\t3.471\t2.085\t3.031\n" +
+                    "Glyma.01G069000\t2.256\t2.357\t1.832\t2.120\t1.900\t1.633\n" +
+                    "Glyma.01G069150\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G069200\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G069300\t0.027\t0.000\t0.048\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G069400\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G069500\t4.219\t4.635\t4.348\t23.601\t21.592\t23.812\n" +
+                    "Glyma.01G069600\t14.081\t19.184\t10.980\t23.483\t22.617\t25.543\n" +
+                    "Glyma.01G069650\t0.000\t0.026\t0.000\t0.080\t0.019\t0.000\n" +
+                    "Glyma.01G069700\t0.013\t0.015\t0.022\t0.016\t0.000\t0.000\n" +
+                    "Glyma.01G069750\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G069850\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G070150\t1.589\t1.339\t1.381\t0.799\t1.412\t1.319\n" +
+                    "Glyma.01G070200\t0.000\t0.000\t0.019\t0.009\t0.000\t0.009\n" +
+                    "Glyma.01G070300\t0.665\t0.615\t0.506\t0.552\t0.627\t0.647\n" +
+                    "Glyma.01G070400\t0.169\t0.220\t0.278\t0.388\t0.599\t0.369\n" +
+                    "Glyma.01G070601\t0.000\t0.000\t0.068\t0.198\t0.210\t0.102\n" +
+                    "Glyma.01G070700\t3.114\t2.888\t3.138\t6.011\t5.600\t5.968\n" +
+                    "Glyma.01G071000\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G071100\t0.000\t0.000\t0.000\t0.000\t0.000\t0.124\n" +
+                    "Glyma.01G071301\t0.000\t0.300\t0.433\t0.940\t0.221\t1.288\n" +
+                    "Glyma.01G071300\t53.445\t52.459\t51.110\t44.583\t38.858\t47.021\n" +
+                    "Glyma.01G071400\t231.307\t246.315\t216.595\t126.180\t127.565\t150.444\n" +
+                    "Glyma.01G071600\t0.520\t1.271\t0.459\t0.000\t0.156\t0.227\n" +
+                    "Glyma.01G071700\t0.323\t0.581\t0.442\t0.790\t0.451\t0.578\n" +
+                    "Glyma.01G071800\t0.010\t0.000\t0.000\t0.013\t0.009\t0.026\n" +
+                    "Glyma.01G072000\t1.253\t1.152\t1.223\t1.323\t1.105\t1.765\n" +
+                    "Glyma.01G072300\t0.017\t0.041\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G072400\t0.021\t0.026\t0.025\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G072450\t0.043\t0.053\t0.008\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G072900\t2.040\t1.384\t1.344\t3.311\t3.825\t3.482\n" +
+                    "Glyma.01G072950\t2.428\t1.695\t2.293\t9.069\t5.159\t9.998\n" +
+                    "Glyma.01G073000\t4.494\t5.444\t4.255\t15.235\t12.784\t15.361\n" +
+                    "Glyma.01G074400\t1.442\t2.097\t1.695\t2.671\t2.599\t1.394\n" +
+                    "Glyma.01G074500\t0.380\t0.481\t0.335\t1.076\t1.166\t1.013\n" +
+                    "Glyma.01G074600\t0.545\t0.783\t0.720\t9.947\t8.964\t10.113\n" +
+                    "Glyma.01G074200\t0.062\t0.008\t0.024\t0.017\t0.000\t0.009\n" +
+                    "Glyma.01G074450\t0.131\t0.320\t0.231\t0.501\t0.768\t0.258\n" +
+                    "Glyma.01G074000\t3.196\t2.808\t2.876\t6.492\t5.305\t6.987\n" +
+                    "Glyma.01G073600\t0.000\t0.021\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G073500\t0.286\t0.479\t0.475\t0.948\t0.795\t0.920\n" +
+                    "Glyma.01G073400\t0.413\t0.330\t0.379\t0.850\t0.631\t0.696\n" +
+                    "Glyma.01G073200\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G074700\t2.958\t2.517\t2.551\t2.347\t2.641\t3.179\n" +
+                    "Glyma.01G074800\t7.417\t8.509\t9.347\t17.875\t15.708\t17.550\n" +
+                    "Glyma.01G075100\t3.623\t2.811\t2.460\t2.560\t3.266\t1.924\n" +
+                    "Glyma.01G075300\t2.163\t2.051\t1.793\t2.017\t2.502\t1.861\n" +
+                    "Glyma.01G075400\t0.751\t0.917\t0.795\t1.602\t1.325\t1.741\n" +
+                    "Glyma.01G075500\t0.000\t0.000\t0.000\t0.046\t0.065\t0.094\n" +
+                    "Glyma.01G075700\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G075800\t0.356\t0.203\t0.209\t0.544\t0.492\t0.528\n" +
+                    "Glyma.01G075900\t0.166\t0.223\t0.278\t0.063\t0.045\t0.065\n" +
+                    "Glyma.01G076000\t2.788\t2.315\t1.671\t0.427\t0.301\t0.146\n" +
+                    "Glyma.01G076100\t4.645\t5.053\t4.664\t3.144\t3.196\t3.424\n" +
+                    "Glyma.01G076200\t0.108\t0.132\t0.032\t0.114\t0.097\t0.071\n" +
+                    "Glyma.01G076700\t0.037\t0.134\t0.113\t0.047\t0.000\t0.000\n" +
+                    "Glyma.01G076900\t4.207\t3.858\t4.827\t2.856\t3.617\t3.002\n" +
+                    "Glyma.01G077000\t0.089\t0.054\t0.098\t0.568\t0.482\t0.467\n" +
+                    "Glyma.01G077100\t0.801\t1.184\t1.248\t0.024\t0.034\t0.098\n" +
+                    "Glyma.01G077200\t4.029\t4.220\t3.595\t8.397\t8.262\t8.311\n" +
+                    "Glyma.01G077300\t12.999\t13.776\t14.038\t20.185\t15.154\t19.574\n" +
+                    "Glyma.01G077400\t2.615\t2.642\t2.224\t3.082\t3.223\t3.204\n" +
+                    "Glyma.01G077600\t3.453\t3.946\t3.376\t3.441\t3.286\t3.852\n" +
+                    "Glyma.01G077700\t0.324\t0.257\t0.200\t0.910\t0.687\t0.595\n" +
+                    "Glyma.01G077900\t7.394\t8.144\t7.536\t11.239\t5.861\t10.941\n" +
+                    "Glyma.01G078000\t0.805\t0.440\t0.859\t0.972\t1.012\t1.082\n" +
+                    "Glyma.01G078150\t1.552\t0.758\t0.410\t6.927\t5.595\t4.473\n" +
+                    "Glyma.01G078200\t11.370\t13.767\t12.167\t9.054\t10.807\t8.293\n" +
+                    "Glyma.01G078300\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G078350\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G078400\t2.344\t1.896\t2.133\t3.782\t3.840\t4.264\n" +
+                    "Glyma.01G078600\t0.000\t0.000\t0.012\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G078650\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G078700\t0.054\t0.000\t0.048\t0.000\t0.049\t0.000\n" +
+                    "Glyma.01G078800\t16.726\t17.501\t18.752\t9.851\t10.106\t8.529\n" +
+                    "Glyma.01G079000\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G079100\t19.909\t19.792\t18.606\t14.805\t12.075\t16.345\n" +
+                    "Glyma.01G079200\t2.479\t2.720\t2.318\t3.578\t3.051\t3.989\n" +
+                    "Glyma.01G079250\t0.059\t0.000\t0.026\t0.019\t0.027\t0.019\n" +
+                    "Glyma.01G079300\t6.386\t6.039\t6.405\t14.473\t10.972\t13.814\n" +
+                    "Glyma.01G079500\t3.911\t3.578\t3.852\t3.392\t2.859\t3.103\n" +
+                    "Glyma.01G079550\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G079600\t0.488\t0.255\t1.289\t1.421\t2.511\t2.190\n" +
+                    "Glyma.01G079700\t0.389\t0.356\t0.600\t1.240\t2.103\t1.019\n" +
+                    "Glyma.01G079800\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G079900\t0.057\t0.069\t0.075\t0.018\t0.115\t0.019\n" +
+                    "Glyma.01G080200\t8.545\t9.029\t9.657\t13.203\t9.603\t11.566\n" +
+                    "Glyma.01G080300\t0.000\t0.000\t0.021\t0.092\t0.065\t0.032\n" +
+                    "Glyma.01G080400\t2.732\t2.378\t2.575\t3.605\t3.142\t3.250\n" +
+                    "Glyma.01G080450\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G080500\t5.910\t5.235\t5.624\t3.394\t5.009\t3.949\n" +
+                    "Glyma.01G080600\t30.651\t29.596\t31.098\t2.077\t1.750\t2.294\n" +
+                    "Glyma.01G080700\t5.259\t6.249\t6.558\t9.617\t8.910\t8.545\n" +
+                    "Glyma.01G080750\t0.000\t0.000\t0.400\t0.868\t0.409\t1.486\n" +
+                    "Glyma.01G080800\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G080900\t3.739\t3.108\t3.708\t1.854\t2.668\t2.041\n" +
+                    "Glyma.01G081000\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G081050\t6.124\t5.403\t4.199\t8.822\t7.973\t10.401\n" +
+                    "Glyma.01G081100\t2.785\t2.822\t3.292\t6.377\t4.778\t5.639\n" +
+                    "Glyma.01G081300\t45.461\t45.528\t43.483\t3.911\t3.964\t3.868\n" +
+                    "Glyma.01G081400\t0.000\t0.000\t0.000\t0.000\t0.000\t0.000\n" +
+                    "Glyma.01G081500\t11.951\t12.113\t12.735\t11.748\t10.115\t10.297\n" +
+                    "Glyma.01G081600\t59.042\t55.791\t57.602\t24.236\t26.985\t24.293\n" +
+                    "Glyma.01G081700\t0.149\t0.098\t0.162\t0.774\t0.826\t1.125\n" +
+                    "Glyma.01G081900\t1.574\t1.887\t1.812\t1.302\t1.342\t1.634\n" +
+                    "Glyma.01G082000\t0.362\t0.247\t0.310\t0.163\t0.106\t0.181\n" +
+                    "Glyma.01G082200\t12.809\t12.278\t13.175\t16.868\t15.128\t15.437\n" +
+                    "Glyma.01G082400\t9.601\t9.794\t9.733\t30.410\t27.318\t32.222\n" +
+                    "Glyma.01G082500\t0.639\t0.664\t0.874\t5.097\t5.043\t5.697\n" +
+                    "Glyma.01G082600\t1.543\t1.885\t1.451\t0.000\t0.093\t0.404\n" +
+                    "Glyma.01G082700\t3.427\t3.055\t3.348\t7.019\t9.079\t6.573\n" +
+                    "Glyma.01G082802\t8.073\t6.504\t9.311\t16.100\t14.939\t16.765\n" +
+                    "Glyma.01G082900\t1.595\t1.240\t1.534\t2.774\t3.006\t2.470\n" +
+                    "Glyma.01G083000\t27.898\t27.526\t28.213\t31.817\t32.525\t30.544\n" +
+                    "Glyma.01G083100\t0.040\t0.024\t0.088\t0.254\t0.144\t0.131";
+
+            var go= "Geneid\tGroup\n" +
+                    "A05-12-1\tA05-12\n" +
+                    "A05-12-2\tA05-12\n" +
+                    "A05-12-3\tA05-12\n" +
+                    "A05-16-2\tA05-16\n" +
+                    "A05-16-3\tA05-16\n" +
+                    "A05-16\tA05-16";
+
+            function formValidation() {
+                $('#VIO').formValidation({
+                    framework: 'bootstrap',
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        taskname: {
+                            validators: {
+                                notEmpty: {
+                                    message: '任务编号不能为空!'
+                                },
+                                remote:{
+                                    type: 'POST',
+                                    url: '@routes.DutyController.checktaskname()',
+                                    message: "任务编号重复，请重新输入",
+                                    delay: 1000
+                                }
+                            }
+                        },
+                        table1: {
+                            validators: {
+                                notEmpty: {
+                                    message: '必须上传矩阵表格文件!'
+                                }
+                            }
+                        },
+                        txdata1: {
+                            validators: {
+                                notEmpty: {
+                                    message: '必须输入矩阵表格文件!'
+                                }
+                            }
+                        },
+                        table2: {
+                            validators: {
+                                notEmpty: {
+                                    message: '必须上传分组文件!或者取消分组绘图'
+                                }
+                            }
+                        },
+                        txdata2: {
+                            validators: {
+                                notEmpty: {
+                                    message: '必须输入分组文件!或者取消分组绘图'
+                                }
+                            }
+                        },
+                        un: {
+                            validators: {
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+
+
+    </script>
+}

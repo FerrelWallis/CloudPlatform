@@ -1231,7 +1231,7 @@ div.handler {
 .mysoft-content-left .form-group-p .right-form-group select,
 .mysoft-content-left .form-group-p .form-group:nth-child(2) input:not([type="radio"]):not([type="checkbox"]),
 .mysoft-content-left .form-group-p .form-group:nth-child(2) select {
-    width: 87%;
+    width: 100%;
     height: 32px;
 }
 
@@ -1326,4 +1326,10 @@ label {
 
 .mysoft-content-left .nav-tabs {
     border: 0;
+}
+
+
+
+.mysoft-content-right .nav-tabs > li > a:focus{
+    box-shadow: unset!important;
 }

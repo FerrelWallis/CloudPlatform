@@ -1,0 +1,402 @@
+@()(implicit session: Session)
+@home.main("Update News"){
+
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("mycss/news.css")" media="screen" />
+
+
+    <div class="container" style="margin-bottom: 40px">
+
+        <div class="row justify-content-center">
+            <div class="met-log-body col-xl-9 pl-md-5" style="margin-left: 50px;margin-top: 50px">
+                <ul class="met-log-list list-unstyled pl-md-5 ml-md-5">
+                    <h2 class="my-2">2020</h2>
+                    <li class="position-relative pl-3 pl-md-4 py-3 py-md-4" style="padding-left: 5px!important;border-left: #9095975e 3.5px solid;display: none;">
+                        <h3 class="h6 position-absolute text-muted" style="font-weight: 500">2020.7.29</h3>
+                        <img src="/assets/images/dot-circle.png" style="left: -22px; position: relative !important; background-color: #e1e2f5;"/>
+                        <div>
+                            <dl class="mb-0">
+                                <dt><h4 class="h5">微课云 1.1.1 更新日志</h4></dt>
+                                <dd class="card mb-0 mt-3 bg-light">
+                                    <div class="met-editor font-size-14 text-muted oya met-scrollbar" style="padding-right: 10px">
+                                        <p>1、优化：结果文件内容预览,pdf,xls,txt；</p>
+                                        <p>1、新增：小提琴图；</p>
+                                        <p>1、新增：树图；</p>
+
+                                        <p>1、新增：雷达图；</p>
+                                        <p>1、新增：三维PCA图；</p>
+                                        <p>1、优化：TAX4FUN,PICRUST2,FAPROTAX，lefse；</p>
+
+                                        <p>1、新增：表格筛选；</p>
+                                        <p>1、新增：表格转置；</p>
+                                        <p>1、新增：多表格合并；</p>
+                                        <p>1、新增：登录图片验证；</p>
+                                        <p>1、新增：论坛；</p>
+                                        <p>1、新增：分享功能；</p>
+                                        <p>1、新增：签到功能；</p>
+                                        <p>1、新增：平台更新，正在运行中的任务进行重新运行；</p>
+                                    </div>
+                                </dd>
+                            </dl>
+                        </div>
+                    </li>
+                    <li class="position-relative pl-3 pl-md-4 py-3 py-md-4" style="padding-left: 5px!important;border-left: #9095975e 3.5px solid;">
+                        <h3 class="h6 position-absolute text-muted" style="font-weight: 500">2020.9.11</h3>
+                        <img src="/assets/images/dot-circle.png" style="left: -22px; position: relative !important; background-color: #e1e2f5;"/>
+                        <div>
+                            <dl class="mb-0">
+                                <dt><h4 class="h5">微课云 1.0.9 更新日志</h4></dt>
+                                <dd class="card mb-0 mt-3 bg-light">
+                                    <div class="met-editor font-size-14 text-muted oya met-scrollbar" style="padding-right: 10px">
+                                        <p>1、新增：EMBOSS相关的功能模块，abiview、revseq、getorf、Eprimer3；</p>
+                                        <p>2、新增：火山图；</p>
+                                        <p>3、新增：曼哈顿图；</p>
+                                        <p>4、优化：结果图重绘，字体大小参数改用滑动条设置；</p>
+                                        <p>5、优化：添加了组内相关性分析和柱状图功能模块的使用说明；</p>
+                                        <p>6、优化：部分使用说明和教学视频未更新的模块，贴上视频录制中敬请期待的提示；</p>
+                                    </div>
+                                </dd>
+                            </dl>
+                        </div>
+                    </li>
+                    <li class="position-relative pl-3 pl-md-4 py-3 py-md-4" style="padding-left: 5px!important;border-left: #9095975e 3.5px solid;">
+                        <h3 class="h6 position-absolute text-muted" style="font-weight: 500">2020.8.28</h3>
+                        <img src="/assets/images/dot-circle.png" style="left: -22px; position: relative !important; background-color: #e1e2f5;"/>
+                        <div>
+                            <dl class="mb-0">
+                                <dt><h4 class="h5">微课云 1.0.8 更新日志</h4></dt>
+                                <dd class="card mb-0 mt-3 bg-light">
+                                    <div class="met-editor font-size-14 text-muted oya met-scrollbar" style="padding-right: 10px">
+                                        <p>1、新增：新增PICRUST2功能预测；</p>
+                                        <p>2、新增：新增lefse分析；</p>
+                                        <p>3、优化：PCA重画新加参数，放大显示区域（x范围，y范围）；</p>
+                                        <p>4、优化：Tax4Fun，修复了Ko_table表头问题，结果添加箱线图、pca图；</p>
+                                        <p>5、优化：组内相关性分析增加示例文件2；</p>
+                                        <p>6、优化：公告发布富文本编辑器增加颜色和表情；</p>
+                                        <p>7、优化：前端检查文件格式，异步导致无法及时获取正确检查结果的问题；</p>
+                                    </div>
+                                </dd>
+                            </dl>
+                        </div>
+                    </li>
+                    <li class="position-relative pl-3 pl-md-4 py-3 py-md-4" style="padding-left: 5px!important;border-left: #9095975e 3.5px solid;">
+                        <h3 class="h6 position-absolute text-muted" style="font-weight: 500">2020.8.21</h3>
+                        <img src="/assets/images/dot-circle.png" style="left: -22px; position: relative !important; background-color: #e1e2f5;"/>
+                        <div>
+                            <dl class="mb-0">
+                                <dt><h4 class="h5">微课云 1.0.7 更新日志</h4></dt>
+                                <dd class="card mb-0 mt-3 bg-light">
+                                    <div class="met-editor font-size-14 text-muted oya met-scrollbar" style="padding-right: 10px">
+                                        <p>1、新增：新增功能FAPROTAX功能预测；</p>
+                                        <p>2、新增：软件搜索功能；</p>
+                                        <p>3、新增：公告列表浏览。最新公告自动弹出机制：1.公告尚在有效期；2.用户未未读过该公告；</p>
+                                        <p>4、新增：管理员面板：包括发布公告、浏览用户信息及ip，修改用户权限；</p>
+                                        <p>5、优化：将部分待开发的功能模块放上去了，点击后显示开发中提示；</p>
+                                        <p>6、修复：修复文本框内回车键换行失效问题；</p>
+                                    </div>
+                                </dd>
+                            </dl>
+                        </div>
+                    </li>
+                    <li class="position-relative pl-3 pl-md-4 py-3 py-md-4" style="padding-left: 5px!important;border-left: #9095975e 3.5px solid;">
+                        <h3 class="h6 position-absolute text-muted" style="font-weight: 500">2020.8.14</h3>
+                        <img src="/assets/images/dot-circle.png" style="left: -22px; position: relative !important; background-color: #e1e2f5;"/>
+                        <div>
+                            <dl class="mb-0">
+                                <dt><h4 class="h5">微课云 1.0.6 更新日志</h4></dt>
+                                <dd class="card mb-0 mt-3 bg-light">
+                                    <div class="met-editor font-size-14 text-muted oya met-scrollbar" style="padding-right: 10px">
+                                        <p>1、新增：Tax4Fun功能预测，柱状图；</p>
+                                        <p>2、新增：教学视频增加弹幕功能、播放调速、视频截屏等功能；</p>
+                                        <p>3、修复：浏览器缓存问题导致的，图片重绘后下载的pdf，png，tiff，结果压缩文件包没有同步更新的问题；</p>
+                                        <p>4、优化：添加维恩图、热图、权重网络图、kegg、go,五个功能的教学视频；</p>
+                                        <p>5、优化：功能重绘参数部分重新布局，将改图参数分为三类：数据布局参数、颜色参数、字体参数。并增加提交重绘时，自动定位不合法参数所在位置；</p>
+                                    </div>
+                                </dd>
+                            </dl>
+                        </div>
+                    </li>
+                    <li class="position-relative pl-3 pl-md-4 py-3 py-md-4" style="padding-left: 5px!important;border-left: #9095975e 3.5px solid;">
+                        <h3 class="h6 position-absolute text-muted" style="font-weight: 500">2020.8.5</h3>
+                        <img src="/assets/images/dot-circle.png" style="left: -22px; position: relative !important; background-color: #e1e2f5;"/>
+                        <div>
+                            <dl class="mb-0">
+                                <dt><h4 class="h5">微课云 1.0.5 更新日志</h4></dt>
+                                <dd class="card mb-0 mt-3 bg-light">
+                                    <div class="met-editor font-size-14 text-muted oya met-scrollbar" style="padding-right: 10px">
+                                        <p>1、修复：修复组内相关性分析，只上传一个矩阵文件时，网络图连线重复问题，；</p>
+                                        <p>2、更新：组内相关性分析网络图重绘，添加数据筛选板块，包括显示的小数点位数、p值检验阈值、c值检验阈值；</p>
+                                        <p>3、更新：权重网络图重绘，添加数据筛选板块，具体包括同组内相关性分析；</p>
+                                        <p>4、优化：更换组内相关性分析logo
+                                    </div>
+                                </dd>
+                            </dl>
+                        </div>
+                    </li>
+                    <li class="position-relative pl-3 pl-md-4 py-3 py-md-4" style="padding-left: 5px!important;border-left: #9095975e 3.5px solid;">
+                        <h3 class="h6 position-absolute text-muted" style="font-weight: 500">2020.8.4</h3>
+                        <img src="/assets/images/dot-circle.png" style="left: -22px; position: relative !important; background-color: #e1e2f5;"/>
+                        <div>
+                            <dl class="mb-0">
+                                <dt><h4 class="h5">微课云 1.0.4 更新日志</h4></dt>
+                                <dd class="card mb-0 mt-3 bg-light">
+                                    <div class="met-editor font-size-14 text-muted oya met-scrollbar" style="padding-right: 10px">
+                                        <p>1、新增：组内相关性分析功能；</p>
+                                        <p>2、新增：软件更新时间戳，实现软件更新后，在软件更新时间之前运行的任务只能下载结果文件，不能重新绘图；</p>
+                                        <p>3、更新：所有软件使用说明更新；</p>
+                                        <p>4、更新：箱线图，PCA，CCA的教学视频更新；</p>
+                                    </div>
+                                </dd>
+                            </dl>
+                        </div>
+                    </li>
+                    <li class="position-relative pl-3 pl-md-4 py-3 py-md-4" style="padding-left: 5px!important;border-left: #9095975e 3.5px solid;">
+                        <h3 class="h6 position-absolute text-muted" style="font-weight: 500">2020.7.29</h3>
+                        <img src="/assets/images/dot-circle.png" style="left: -22px; position: relative !important; background-color: #e1e2f5;"/>
+                        <div>
+                            <dl class="mb-0">
+                                <dt><h4 class="h5">微课云 1.0.3 更新日志</h4></dt>
+                                <dd class="card mb-0 mt-3 bg-light">
+                                    <div class="met-editor font-size-14 text-muted oya met-scrollbar" style="padding-right: 10px">
+                                        <p>1、新增：维恩图添加了文件格式的检查。upload lists type1：检查文件是否超过6列(作图最多6组)；upload lists type2：检查table文件每行数据数量是否一致，检查内部数据是否为有效数字，检查第一行样品名是否重复存在；检查group文件行数是否超过6行（作图最多6组），检查每行中的样品名在table文件中是否存在；</p>
+                                        <p>2、新增：维恩图使用说明、示例结果；</p>
+                                        <p>3、新增：热图重新绘图增加参数，可调整横坐标文字旋转角度；</p>
+                                        <p>4、新增：热图示例文件格式更新；</p>
+                                        <p>5、优化：所有颜色选择器，支持手动输入色值；并增加色值有效性的检查；</p>
+                                        <p>6、优化：我的任务中单个任务删除时，添加了是否确认删除的询问；</p>
+                                        <p>7、优化：所有功能的示例文件，点击后文件内容将直接在新窗口显示，需要下载鼠标右键选择另存为；</p>
+                                        <p>8、优化：注册账号时，点击密码和确认密码输入框跳出提示：安全起见，建议不要使用qq、微信、支付宝等常用密码；</p>
+                                        <p>9、优化：输入错误网页地址报错问题，将重定向到404页面，提示页面丢失或不存在；</p>
+                                        <p>10、修复：浏览器关闭，登陆状态失效问题；</p>
+                                        <p>11、修复：点击我的任务，导航栏上下抖动问题；</p>
+                                    </div>
+                                </dd>
+                            </dl>
+                        </div>
+                    </li>
+                    <li class="position-relative pl-3 pl-md-4 py-3 py-md-4" style="padding-left: 5px!important;border-left: #9095975e 3.5px solid;">
+                        <h3 class="h6 position-absolute text-muted" style="font-weight: 500">2020.7.21</h3>
+                        <img src="/assets/images/dot-circle.png" style="left: -22px; position: relative !important; background-color: #e1e2f5;"/>
+                        <div>
+                            <dl class="mb-0">
+                                <dt><h4 class="h5">微课云 1.0.2 更新日志</h4></dt>
+                                <dd class="card mb-0 mt-3 bg-light">
+                                    <div class="met-editor font-size-14 text-muted oya met-scrollbar" style="padding-right: 10px">
+                                        <p>1、新增：维恩图添加了第二个文件上传接口，支持通过本身带有统计数据的矩阵文件和分组文件进行维恩图的绘制；</p>
+                                        <p>2、新增：更新日志功能；</p>
+                                        <p>3、新增：2个短信验证功能，修改个人信息、改绑手机号；</p>
+                                        <p>4、变更：热图功能整体变更；</p>
+                                        <p>5、修复：运行时间戳的时差问题；</p>
+                                        <p>6、修复：热图结果图重绘xy轴字体设置相反问题；</p>
+                                        <p>7、优化：我的任务界面优化；</p>
+                                        <p>8、优化：个人中心界面布局优化；</p>
+                                        <p>9、优化：任务详情,使用参数部分设计优化；</p>
+                                        <p>10、优化：GO富集分析，盒型图（Boxplot），CCA/RDA，主成分分析（PCA）四个功能的使用说明更新；</p>
+                                    </div>
+                                </dd>
+                            </dl>
+                        </div>
+                    </li>
+                    <li class="position-relative pl-3 pl-md-4 py-3 py-md-4" style="padding-left: 5px!important;border-left: #9095975e 3.5px solid;">
+                        <h3 class="h6 position-absolute text-muted" style="font-weight: 500">2020.6.30</h3>
+                        <img src="/assets/images/dot-circle.png" style="left: -22px; position: relative !important; background-color: #e1e2f5;"/>
+                        <div>
+                            <dl class="mb-0">
+                                <dt><h4 class="h5">微课云 1.0.1 更新日志</h4></dt>
+                                <dd class="card mb-0 mt-3 bg-light">
+                                    <div class="met-editor font-size-14 text-muted oya met-scrollbar">
+                                        <p>1、新增：GO富集分析，KEGG富集分析，主成分分析（PCA），CCA/RDA，热图（Heatmap），盒型图（Boxplot），权重网络图，维恩图，共8个软件功能；</p>
+                                        <p>2、新增：3个短信验证功能，短信验证登录、短信验证注册、修改密码；</p>
+                                        <p>3、新增：个人中心；</p>
+                                        <p>4、新增：软件收藏功能；</p>
+                                        <p>5、新增：我的任务，关键词搜索，任务批量删除等功能；</p>
+                                    </div>
+                                </dd>
+                            </dl>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+            function formValidation() {
+                $("#mailSigninForm").formValidation({
+                    framework: 'bootstrap',
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        phone: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入账号！'
+                                }
+                            }
+                        },
+                        code: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入验证码！'
+                                }
+                            }
+                        }
+                    }
+                });
+                $("#signinForm").formValidation({
+                    framework: 'bootstrap',
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        user: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入账号！'
+                                }
+                            }
+                        },
+                        password: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入密码！'
+                                }
+                            }
+                        },
+                        validnumber: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入验证码！'
+                                },
+                                callback: {
+                                    message: '验证码错误！',
+                                    callback: function () {
+                                        return $('#validnumber').val() === code;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+                $('#signupForm').formValidation({
+                    framework: 'bootstrap',
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        phone: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入手机号！'
+                                },
+                                phone:{
+                                    message: '请输入正确手机号',
+                                    country: 'CN'
+                                }
+                            }
+                        },
+                        name: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请填写姓名！'
+                                }
+                            }
+                        },
+                        email: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请填写邮箱地址！'
+                                },
+                                emailAddress:{
+                                    message:'请输入正确邮箱地址！'
+                                }
+                            }
+                        },
+                        company: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请填写单位！'
+                                }
+                            }
+                        },
+                        password: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入密码！'
+                                },
+                                stringLength: {
+                                    min: 6,
+                                    message: '请输入至少六位密码！'
+                                }
+                            }
+                        },
+                        password1: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入确认密码！'
+                                },
+                                identical: {
+                                    field: 'password',
+                                    message: '两次密码不一致!'
+                                }
+                            }
+                        },
+                        validnumber: {
+                            validators: {
+                                notEmpty: {
+                                    message: "请输入验证码！"
+                                }
+                            }
+                        }
+                    }
+                });
+                $('#passwordForm').formValidation({
+                    framework: 'bootstrap',
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        password1: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入新密码！'
+                                },
+                                stringLength: {
+                                    min: 6,
+                                    message: '请输入至少六位密码！'
+                                }
+                            }
+                        },
+                        password2: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入确认密码！'
+                                },
+                                identical: {
+                                    field: 'password1',
+                                    message: '两次密码不一致!'
+                                }
+                            }
+                        },
+                        validnumber: {
+                            validators: {
+                                notEmpty: {
+                                    message: "请输入验证码！"
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+    </script>
+
+    @home.footer()
+}

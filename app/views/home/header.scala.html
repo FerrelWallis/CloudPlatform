@@ -29,11 +29,21 @@
             border-top-left-radius: 11.5px;
             border-top-right-radius: 11.5px;
         }
+        .logo{
+            backface-visibility:hidden;
+            -webkit-backface-visibility:hidden;	/* Chrome 和 Safari */
+            -moz-backface-visibility:hidden; 	/* Firefox */
+            -ms-backface-visibility:hidden; 	/* Internet Explorer */
+        }
+    #latestNotice.reveal-modal{
+        width: 800px;
+        left: 45%;
+    }
 </style>
 <div id="mws-header" class="clearfix fix" style="height: 100px">
     <div id="mws-logo-container">
         <div id="mws-logo-wrap">
-            <img src="/assets/images/logo4.png" style="width: 240px;  height: 70px;  margin-top: 15px;  margin-left: 0px;">
+            <img class="logo" src="/assets/images/logo6.png" style="margin-top: 15px;  margin-left: 0px;">
         </div>
     </div>
     <div style="float: right;height: 100px;">
@@ -419,12 +429,30 @@
                     </div>
                 </div>
                 <div class="submit-btn-area" style="margin-top: 35px">
-                    <button id="form_submit" onclick="changeDe()">确认修改 <i class="ti-arrow-right"></i></button>
+                    <button id="form_submit" type="submit" onclick="changeDe()">确认修改 <i class="ti-arrow-right"></i></button>
                 </div>
             </div>
         </form>
     </div>
     <a class="close-reveal-modal">&#215;</a>
+</div>
+
+<div id="latestNotice" class="reveal-modal" style="width: 600px; left: 50%;top:12%;">
+    <div class="cont" style="width: 100%">
+        <div class="login-form-head">
+            <h4 id="noteHead" style="font-size: 2.5rem!important;font-family: 'Poppins', sans-serif">标题</h4>
+            <span style="font-size: 15px;margin-top: 10px;">发布时间：</span><span id="notePubtime">sss</span>
+        </div>
+        <div class="login-form-body" style="padding-bottom: 26px;overflow-y: auto;max-height: 450px">
+            <div id="noteContent" class="noteContent">
+
+            </div>
+        </div>
+        <div class="submit-btn-area" style="margin-top: 20px;padding: 0px 50px 0px 50px;">
+            <button id="form_submit" onclick="closeReveal()">确认 <i class="ti-arrow-right"></i></button>
+        </div>
+    </div>
+    <a class="close-reveal-modal" style="display: none">&#215;</a>
 </div>
 
 <script>
@@ -435,6 +463,10 @@
         $('.form-gp input').on('focusout', function() {
             $(this).parent('.logright').parent('.form-gp').removeClass('focused');
         });
+
+        function closeReveal() {
+            $(".close-reveal-modal").click();
+        }
 
         function pwdfocus(para) {
             $("#"+para).show();
@@ -676,7 +708,7 @@
             var fv = form.data("formValidation");
             fv.validate();
             if (fv.isValid()) {
-                // console.log(222);
+                console.log(222);
                 var element = "<div id='content'><span id='info'>修改中，请耐心等待...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
                 var index = layer.alert(element, {
                     skin: 'layui-layer-lan',
@@ -692,6 +724,7 @@
                     success: function (data) {
                         console.log(data.valid);
                         if (data.valid === "false") {
+                            console.log(333);
                             layer.close(index);
                             swal({
                                 title: "错误",

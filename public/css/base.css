@@ -23,7 +23,8 @@ html, body {height:100%;}
 body {
 	position: relative;
 	/*background:#fcfdf9 url(../images/pattern.gif);*/
-	background: #e1e2f5!important;
+	background: #e1e6f5!important;
+	/*background: #e1e2f5!important;*/
 	font: 12px/20px 'MuseoSans500Regular', Arial, sans-serif;
 	/*color: #888;*/
 	color: #474848;
@@ -219,10 +220,10 @@ ol li {
 	}
 	li a {
 		color:#38667f;
-		}
+	}
 	li a:hover {
-		color:#bdd235;
-		}
+		color: #3564d2;
+	}
 
 .styled2 li {
 	background:url(../images/li-marker-2.png) 0 4px no-repeat;
@@ -1847,7 +1848,7 @@ input[type="checkbox"] {
 /* Modal Body */
 .reveal-modal .cont {
 	padding: 25px 0;
-	width:450px;
+	width:100%;
 	margin:0 auto;
 	}
 

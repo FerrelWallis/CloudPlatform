@@ -18,6 +18,22 @@
                 width: 100%;
                 margin-bottom: 8px!important;
             }
+            .picleft{
+                margin-top: 5px;
+                width: 120px;
+                text-align: right;
+            }
+            .picright{
+                width: 200px;
+            }
+            .fontleft{
+                margin-top: 5px;
+                width: 130px;
+                text-align: right;
+            }
+            .fontright{
+                width: 190px;
+            }
     </style>
 
     <div class="container" style="width: 98.5%;margin: unset;max-width: unset;padding: 5px">
@@ -279,9 +295,9 @@
                                         下载结果图
                                     </button>
                                     <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 35px, 0px); top: 0px; left: 0px; will-change: transform;width: 150px">
-                                        <a class="dropdown-item" id="downPic">下载 pdf</a>
-                                        <a class="dropdown-item" id="downPng">下载 png</a>
-                                        <a class="dropdown-item" id="downTiff">下载 tiff</a>
+                                        <a class="dropdown-item" id="downPic" onclick="downloadpics('heatmap','pdf')">下载 pdf</a>
+                                        <a class="dropdown-item" id="downPng" onclick="downloadpics('heatmap','png')">下载 png</a>
+                                        <a class="dropdown-item" id="downTiff" onclick="downloadpics('heatmap','tiff')">下载 tiff</a>
                                     </div>
                                 </div>
                             </div>
@@ -289,273 +305,291 @@
                                 <img id="redraw_pic" src="" style="width: 100%;height: auto" >
                             </div>
                             <div class="redraw_panel redraw-right" style="width: 40%;float: left;margin-bottom: 30px;">
-                                <div class="form-group-p">
-                                    <div class="form-group">
-                                        <label>热图显示部分：</label>
-                                    </div>
-                                    <div class="form-group right">
-                                        <select id="smt" name="smt" style="width: 100px;">
-                                            <option value="full">全部</option>
-                                            <option value="left">左半边</option>
-                                            <option value="right">右半边</option>
-                                            <option value="top">上半边</option>
-                                            <option value="bottom">下半边</option>
-                                            <option value="topTriangle">右上三角</option>
-                                            <option value="bottomTriangle ">左下三角</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group-p">
-                                    <div class="form-group">
-                                        <label>是否在格子上p值生成的星星矩阵：</label>
-                                    </div>
-                                    <div class="form-group right" style="width: 50%;">
-                                        <select id="lfi" name="lfi">
-                                            <option value="TRUE">yes</option>
-                                            <option value="FALSE">no</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group-p">
-                                    <div class="form-group">
-                                        <label>是否对行聚类：</label>
-                                    </div>
-                                    <div class="form-group right">
-                                        <select id="cluster_rows" name="cluster_rows" onchange="showr()" style="width: 200px;">
-                                            <option value="FALSE">不聚类</option>
-                                            <option value="TRUE">自动聚类</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group-p" id="showautorow" style="display: none">
-                                    <div class="form-group">
-                                        <label>自动行聚类方法：</label>
-                                    </div>
-                                    <div class="form-group">
-                                        <select id="crm" name="crm" style="width: 100px;">
-                                            <option value="complete">complete</option>
-                                            <option value="single">single</option>
-                                            <option value="ward.D">ward</option>
-                                            <option value="average">average</option>
-                                            <option value="mcquitty">mcquitty</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group-p" id="showrow" style="display: none">
-                                    <div class="form-group" style="margin-top: 5px;">
-                                        <label for="">行聚类分割数(1-</label><label id="rnum"></label><label>)：</label>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" id="rp" name="rp" class="form-control" placeholder="数字" value="1" style="width: 50px;float: left;margin-right: 5px;margin-top: 5px">
-                                    </div>
-                                </div>
-                                <div class="form-group-p">
-                                    <div class="form-group">
-                                        <label>是否对列聚类：</label>
-                                    </div>
-                                    <div class="form-group right">
-                                        <select id="cluster_cols" name="cluster_cols" onchange="showc()" style="width: 200px;">
-                                            <option value="FALSE">不聚类</option>
-                                            <option value="TRUE">自动聚类</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group-p" id="showautocol" style="display: none">
-                                    <div class="form-group">
-                                        <label>自动列聚类方法：</label>
-                                    </div>
-                                    <div class="form-group">
-                                        <select id="ccm" name="ccm" style="width: 100px;">
-                                            <option value="complete">complete</option>
-                                            <option value="single">single</option>
-                                            <option value="ward.D">ward</option>
-                                            <option value="average">average</option>
-                                            <option value="mcquitty">mcquitty</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group-p" id="showcol" style="display: none">
-                                    <div class="form-group" style="margin-top: 5px;">
-                                        <label for="">列聚类分割数(1-</label><label id="cnum"></label><label>)：</label>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" id="cp" name="cp" class="form-control" placeholder="数字" value="1" style="width: 50px;float: left;margin-right: 5px;margin-top: 5px">
-                                    </div>
-                                </div>
-                                <div class="form-group-p">
-                                    <div class="form-group">
-                                        <label>归一化：</label>
-                                    </div>
-                                    <div class="form-group right">
-                                        <select id="sc" name="sc">
-                                            <option value="col">column</option>
-                                            <option value="row">row</option>
-                                            <option value="none">none</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group-p">
-                                    <div class="form-group">
-                                        <label>是否取lg：</label>
-                                    </div>
-                                    <div class="form-group right">
-                                        <select id="lg" name="lg">
-                                            <option value="none">none</option>
-                                            <option value="lg2">lg2</option>
-                                            <option value="lg10">lg10</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group-p">
-                                    <div class="form-group">
-                                        <label>颜色：<span style="font-size:small;">&nbsp;(数值从小到大)</span></label>
-                                    </div>
-                                    <div class="form-group" style="width: 150px;">
-                                        <select name="color" id="color" onchange="show()" style="width: 100%;">
-                                            <option value="#E41A1C:#FFFF00:#1E90FF">蓝-黄-红</option>
-                                            <option value="#E41A1C:#FFFFFF:#1E90FF">蓝-白-红</option>
-                                            <option value="0">手动输入</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div id="inputcolor" class="one-line" style="display: none">
-                                    <div style="border: 1px solid lightgrey;border-radius: 5px;padding: 10px;margin-left: 30px">
-                                        <div class="form-group-p" style="padding-left: 0">
-                                            <div style="width: 100%;margin-left: 10px">
-                                                <label>自定义颜色（2-6个）：</label>
+                                <ul class="nav nav-tabs" style="margin-left: 20px">
+                                    <li class="active" id="ins_tab1" >
+                                        <a href="###" data-target="#picpara" data-toggle="tab">数据布局参数</a>
+                                    </li>
+                                    <li class="" id="col_tab1" >
+                                        <a href="###" data-target="#colopara" data-toggle="tab">颜色参数</a>
+                                    </li>
+                                    <li class="" id="out_tab1">
+                                        <a href="###" data-target="#fontpara" data-toggle="tab">字体参数</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content" style="box-sizing: border-box!important;padding-top: 30px">
+                                    <div class="tab-pane fade active in" id="picpara">
+                                        <div class="form-group-p">
+                                            <div class="form-group picleft">
+                                                <label>热图显示部分：</label>
+                                            </div>
+                                            <div class="form-group right picright">
+                                                <select id="smt" name="smt" style="width: 100%;">
+                                                    <option value="full">全部</option>
+                                                    <option value="left">左半边</option>
+                                                    <option value="right">右半边</option>
+                                                    <option value="top">上半边</option>
+                                                    <option value="bottom">下半边</option>
+                                                    <option value="topTriangle">右上三角</option>
+                                                    <option value="bottomTriangle ">左下三角</option>
+                                                </select>
                                             </div>
                                         </div>
-                                        <br><br>
-                                        <div class="form-group-p" >
-                                            <div class="form-group" style="width: 85%">
-                                                <ul id="mycolor">
+                                        <div class="form-group-p">
+                                            <div class="form-group picleft">
+                                                <label>是否使用星星矩阵：</label>
+                                            </div>
+                                            <div class="form-group right picright">
+                                                <select id="lfi" name="lfi" style="width: 100%;">
+                                                    <option value="TRUE">yes</option>
+                                                    <option value="FALSE">no</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group-p">
+                                            <div class="form-group picleft">
+                                                <label>是否对行聚类：</label>
+                                            </div>
+                                            <div class="form-group right picright">
+                                                <select id="cluster_rows" name="cluster_rows" onchange="showr()" style="width: 100%;">
+                                                    <option value="FALSE">不聚类</option>
+                                                    <option value="TRUE">自动聚类</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group-p" id="showautorow" style="display: none">
+                                            <div class="form-group picleft">
+                                                <label>行聚类方法：</label>
+                                            </div>
+                                            <div class="form-group picright">
+                                                <select id="crm" name="crm" style="width: 100px;">
+                                                    <option value="complete">complete</option>
+                                                    <option value="single">single</option>
+                                                    <option value="ward.D">ward</option>
+                                                    <option value="average">average</option>
+                                                    <option value="mcquitty">mcquitty</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group-p" id="showrow" style="display: none">
+                                            <div class="form-group picleft" style="margin-top: 5px;">
+                                                <label for="">聚类分割数(1-</label><label id="rnum"></label><label>)：</label>
+                                            </div>
+                                            <div class="form-group picright">
+                                                <input type="text" id="rp" name="rp" class="form-control" placeholder="数字" value="1" style="width: 50px;float: left;margin-right: 5px;margin-top: 5px;margin-left: 10px;">
+                                            </div>
+                                        </div>
+                                        <div class="form-group-p">
+                                            <div class="form-group picleft">
+                                                <label>是否对列聚类：</label>
+                                            </div>
+                                            <div class="form-group right picright">
+                                                <select id="cluster_cols" name="cluster_cols" onchange="showc()" style="width: 100%;">
+                                                    <option value="FALSE">不聚类</option>
+                                                    <option value="TRUE">自动聚类</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group-p" id="showautocol" style="display: none">
+                                            <div class="form-group picleft">
+                                                <label>列聚类方法：</label>
+                                            </div>
+                                            <div class="form-group picright">
+                                                <select id="ccm" name="ccm" style="width: 100px;">
+                                                    <option value="complete">complete</option>
+                                                    <option value="single">single</option>
+                                                    <option value="ward.D">ward</option>
+                                                    <option value="average">average</option>
+                                                    <option value="mcquitty">mcquitty</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group-p" id="showcol" style="display: none">
+                                            <div class="form-group picleft" style="margin-top: 5px;">
+                                                <label for="">聚类分割数(1-</label><label id="cnum"></label><label>)：</label>
+                                            </div>
+                                            <div class="form-group picright">
+                                                <input type="text" id="cp" name="cp" class="form-control" placeholder="数字" value="1" style="width: 50px;float: left;margin-right: 5px;margin-top: 5px;margin-left: 10px;">
+                                            </div>
+                                        </div>
+                                        <div class="form-group-p">
+                                            <div class="form-group picleft">
+                                                <label>归一化：</label>
+                                            </div>
+                                            <div class="form-group right picright">
+                                                <select id="sc" name="sc" style="width: 100%">
+                                                    <option value="col">column</option>
+                                                    <option value="row">row</option>
+                                                    <option value="none">none</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group-p">
+                                            <div class="form-group picleft">
+                                                <label>是否取lg：</label>
+                                            </div>
+                                            <div class="form-group right picright">
+                                                <select id="lg" name="lg" style="width: 100%">
+                                                    <option value="none">none</option>
+                                                    <option value="lg2">lg2</option>
+                                                    <option value="lg10">lg10</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group-p">
+                                            <div class="form-group picleft">
+                                                <label>画格子边界：</label>
+                                            </div>
+                                            <div class="form-group right picright">
+                                                <select name="hasborder" style="width: 100%;" id="hasborder" onchange="bordercolor()">
+                                                    <option value="none">no</option>
+                                                    <option value="white">yes</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="colopara">
+                                        <div class="form-group-p">
+                                            <div class="form-group">
+                                                <label>颜色：<span style="font-size:small;">&nbsp;(数值从小到大)</span></label>
+                                            </div>
+                                            <div class="form-group" style="width: 150px;">
+                                                <select name="color" id="color" onchange="show()" style="width: 100%;">
+                                                    <option value="#E41A1C:#FFFF00:#1E90FF">蓝-黄-红</option>
+                                                    <option value="#E41A1C:#FFFFFF:#1E90FF">蓝-白-红</option>
+                                                    <option value="0">手动输入</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div id="inputcolor" class="one-line" style="display: none">
+                                            <div style="border: 1px solid lightgrey;border-radius: 5px;padding: 10px;margin-left: 30px">
+                                                <div class="form-group-p" style="padding-left: 0">
+                                                    <div style="width: 100%;margin-left: 10px">
+                                                        <label>自定义颜色（2-6个）：</label>
+                                                    </div>
+                                                </div>
+                                                <br><br>
+                                                <div class="form-group-p" >
+                                                    <div class="form-group" style="width: 85%">
+                                                        <ul id="mycolor">
 
-                                                </ul>
-                                                <input type="text" id="designcolor" name="designcolor" class="form-control" value="" style="display: none">
+                                                        </ul>
+                                                        <input type="text" id="designcolor" name="designcolor" class="form-control" value="" style="display: none">
+                                                    </div>
+                                                </div>
+                                                <br><br>
+                                                <div class="form-group-p" style="padding-left: 0">
+                                                    <input type="button" value="增加颜色" class="btn btn-primary btn-dark" onclick="addcolor()" style="width: 100px;">
+                                                    <input type="button" value="删除颜色" class="btn btn-primary btn-dark" onclick="delcolor()" style="width: 100px;">
+                                                </div>
+                                            </div>
+                                            <br>
+                                        </div>
+                                        <div class="form-group-p">
+                                            <div class="form-group">
+                                                <label for="">颜色渐变数量：</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="text" id="cc" name="cc" class="form-control" placeholder="数字" value="30" style="width: 50px;float: left;margin-right: 5px;">
                                             </div>
                                         </div>
-                                        <br><br>
-                                        <div class="form-group-p" style="padding-left: 0">
-                                            <input type="button" value="增加颜色" class="btn btn-primary btn-dark" onclick="addcolor()" style="width: 100px;">
-                                            <input type="button" value="删除颜色" class="btn btn-primary btn-dark" onclick="delcolor()" style="width: 100px;">
+                                        <div class="form-group-p borcolopart" style="display:none;" id="borcolor">
+                                            <div class="form-group">
+                                                <label>边界颜色：</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <div style="float: left; width: 100%;">
+                                                    <input id="cbc"  name="cbc" value="" class="colorPicker evo-cp0">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group-p" id="nacolor">
+                                            <div class="form-group">
+                                                <label>缺失值数据颜色：</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <div style="float: left; width: 100%;">
+                                                    <input id="nc"  name="nc" value="" class="colorPicker evo-cp0">
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <br>
-                                </div>
-                                <div class="form-group-p">
-                                    <div class="form-group">
-                                        <label for="">颜色渐变数量：</label>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" id="cc" name="cc" class="form-control" placeholder="数字" value="30" style="width: 50px;float: left;margin-right: 5px;">
-                                    </div>
-                                </div>
-                                <div class="form-group-p" id="nacolor">
-                                    <div class="form-group">
-                                        <label>缺失值数据颜色：</label>
-                                    </div>
-                                    <div class="form-group">
-                                        <div style="float: left; width: 100%;">
-                                            <input id="nc"  name="nc" value="" class="colorPicker evo-cp0">
+                                    <div class="tab-pane fade" id="fontpara">
+                                        <div class="form-group-p">
+                                            <div class="form-group fontleft">
+                                                <label>是否显示行名：</label>
+                                            </div>
+                                            <div class="form-group right fontright">
+                                                <select id="hasrname" name="hasrname" style="width: 100%;">
+                                                    <option value="TRUE">yes</option>
+                                                    <option value="FALSE">no</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group-p">
+                                            <div class="form-group fontleft">
+                                                <label>是否显示列名：</label>
+                                            </div>
+                                            <div class="form-group right fontright">
+                                                <select id="hascname" name="hascname" style="width: 100%;">
+                                                    <option value="TRUE">yes</option>
+                                                    <option value="FALSE">no</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group-p">
+                                            <div class="form-group fontleft">
+                                                <label>格子上显示数字：</label>
+                                            </div>
+                                            <div class="form-group right fontright">
+                                                <select id="hasnum" name="hasnum" style="width: 100%;">
+                                                    <option value="FALSE">no</option>
+                                                    <option value="TRUE">yes</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group-p">
+                                            <div class="form-group fontleft">
+                                                <label>x轴字体旋转角度：</label>
+                                            </div>
+                                            <div class="form-group right fontright">
+                                                <select id="xfa" name="xfa" style="width: 100%;">
+                                                    <option value="0">0</option>
+                                                    <option value="315">45</option>
+                                                    <option value="90">90</option>
+                                                    <option value="270">270</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group-p">
+                                            <div class="form-group fontleft" style="margin-top: 5px;">
+                                                <label for="">XY 轴字体大小：</label>
+                                            </div>
+                                            <div class="form-group fontright">
+                                                <input type="text" id="xfs" name="xfs" class="form-control" placeholder="数字" value="10" style="width: 50px;float: left;margin-right: 5px;margin-top: 5px;margin-left: 10px">
+                                                <label style="float: left;margin-top: 12px;">：</label>
+                                                <input type="text" id="yfs" name="yfs" class="form-control" placeholder="数字" value="10" style="width: 50px;  margin-left: 5px;float: left;margin-top: 5px;margin-right: 20px">
+                                            </div>
+                                        </div>
+                                        <div class="form-group-p">
+                                            <div class="form-group fontleft" style="margin-top: 5px;">
+                                                <label for="">行 X 列聚类树高度：</label>
+                                            </div>
+                                            <div class="form-group fontright">
+                                                <input type="text" id="rtree" name="rtree" class="form-control" placeholder="数字" value="50" style="width: 50px;float: left;margin-right: 5px;margin-top: 5px;margin-left: 10px">
+                                                <label style="float: left;margin-top: 12px;">X</label>
+                                                <input type="text" id="ctree" name="ctree" class="form-control" placeholder="数字" value="50" onblur="ylim();" style="width: 50px;  margin-left: 5px;float: left;margin-top: 5px;margin-right: 20px">
+                                            </div>
+                                        </div>
+                                        <div class="form-group-p">
+                                            <div class="form-group fontleft" style="margin-top: 5px;">
+                                                <label for="">格子内字体大小：</label>
+                                            </div>
+                                            <div class="form-group fontright">
+                                                <input type="text" id="fn" name="fn" class="form-control" placeholder="数字" value="8" style="width: 50px;float: left;margin-right: 5px;margin-top: 5px;margin-left: 10px">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group-p">
-                                    <div class="form-group">
-                                        <label>是否画格子边界：</label>
-                                    </div>
-                                    <div class="form-group right">
-                                        <select name="hasborder" style="width: 45%;" id="hasborder" onchange="bordercolor()">
-                                            <option value="none">no</option>
-                                            <option value="white">yes</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group-p" style="display:none;" id="borcolor">
-                                    <div class="form-group">
-                                        <label>边界颜色：</label>
-                                    </div>
-                                    <div class="form-group">
-                                        <div style="float: left; width: 100%;">
-                                            <input id="cbc"  name="cbc" value="" class="colorPicker evo-cp0">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group-p">
-                                    <div class="form-group">
-                                        <label>是否显示行名：</label>
-                                    </div>
-                                    <div class="form-group right">
-                                        <select id="hasrname" name="hasrname" style="width: 45%;">
-                                            <option value="TRUE">yes</option>
-                                            <option value="FALSE">no</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group-p">
-                                    <div class="form-group">
-                                        <label>是否显示列名：</label>
-                                    </div>
-                                    <div class="form-group right">
-                                        <select id="hascname" name="hascname" style="width: 45%;">
-                                            <option value="TRUE">yes</option>
-                                            <option value="FALSE">no</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group-p">
-                                    <div class="form-group">
-                                        <label>格子上显示数字：</label>
-                                    </div>
-                                    <div class="form-group right">
-                                        <select id="hasnum" name="hasnum" style="width: 45%;">
-                                            <option value="FALSE">no</option>
-                                            <option value="TRUE">yes</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group-p">
-                                    <div class="form-group" style="margin-top: 5px;">
-                                        <label for="">行 X 列聚类树高度：</label>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" id="rtree" name="rtree" class="form-control" placeholder="数字" value="50" style="width: 50px;float: left;margin-right: 5px;margin-top: 5px">
-                                        <label style="float: left;margin-top: 12px;">X</label>
-                                        <input type="text" id="ctree" name="ctree" class="form-control" placeholder="数字" value="50" onblur="ylim();" style="width: 50px;  margin-left: 5px;float: left;margin-top: 5px;margin-right: 20px">
-                                    </div>
-                                </div>
-                                <div class="form-group-p">
-                                    <div class="form-group">
-                                        <label>x轴字体旋转角度：</label>
-                                    </div>
-                                    <div class="form-group right">
-                                        <select id="xfa" name="xfa" style="width: 45%;">
-                                            <option value="90">90</option>
-                                            <option value="0">0</option>
-                                            <option value="315">45</option>
-                                            <option value="270">270</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group-p">
-                                    <div class="form-group" style="margin-top: 5px;">
-                                        <label for="">格子内字体大小：</label>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" id="fn" name="fn" class="form-control" placeholder="数字" value="8" style="width: 50px;float: left;margin-right: 5px;margin-top: 5px">
-                                    </div>
-                                </div>
-                                <div class="form-group-p">
-                                    <div class="form-group" style="margin-top: 5px;">
-                                        <label for="">XY 轴字体大小：</label>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" id="xfs" name="xfs" class="form-control" placeholder="数字" value="10" style="width: 50px;float: left;margin-right: 5px;margin-top: 5px">
-                                        <label style="float: left;margin-top: 12px;">：</label>
-                                        <input type="text" id="yfs" name="yfs" class="form-control" placeholder="数字" value="10" style="width: 50px;  margin-left: 5px;float: left;margin-top: 5px;margin-right: 20px">
-                                    </div>
-                                </div>
-                                <br>
                                 <br>
                                 <input type="button" value="绘&nbsp;&nbsp;制" name="submit" class="btn btn-primary btn-dark" onclick="DrawHeat()" style="margin-left: 30px">
                             </div>
@@ -579,7 +613,7 @@
 
     <script>
 
-            const updatetime="2020-08-04";
+            const updatetime="2020-08-06";
 
             function checkupdate(){
                 $(".update").text(updatetime);
@@ -589,6 +623,19 @@
                 } else {
                     $(".redraw_panel").show();
                     $(".update_panel").hide();
+                }
+            }
+
+            function downloadpics(picname,suffix){
+                if("@row.status"!=="已完成"){
+                    swal({
+                        title: "无法下载",
+                        text: "任务未完成，无法下载！",
+                        type: "warning",
+                        confirmButtonText: "确认"
+                    });
+                }else{
+                    window.location.href = "/CloudPlatform/SoftTool/download?taskname=@row.taskname&picname="+picname+"&suffix="+suffix+"&num="+Math.random();
                 }
             }
 
@@ -616,6 +663,7 @@
                         invalid: 'glyphicon glyphicon-remove',
                         validating: 'glyphicon glyphicon-refresh'
                     },
+                    excluded: [':disabled'], //默认excluded: [':disabled', ':hidden', ':not(:visible)'] 现在需要hidden的元素也检查
                     fields: {
                         rtree: {
                             validators: {
@@ -931,11 +979,7 @@
                         $(".evo-cp-wrap").css("width", "120px");
                         $(".evo-cp-wrap").css("float", "left");
 
-
                         $("#redraw_pic").attr("src","/CloudPlatform/pic?path="+data.pics[0]+"&num="+Math.random());
-                        $("#downPic").attr("href","/CloudPlatform/SoftTool/download?path="+data.downpics);
-                        $("#downPng").attr("href","/CloudPlatform/SoftTool/download?path="+data.downpng);
-                        $("#downTiff").attr("href","/CloudPlatform/SoftTool/download?path="+data.downtiffs);
                         $("#rnum").text(data.rnum);
                         $("#cnum").text(data.cnum);
                         allcol=data.allcol;
@@ -991,8 +1035,6 @@
                 console.log(JSON.stringify(cy.json()));
             }
 
-
-
             function saveNet() {
                 var form = $("#IGCNet");
                 var fv = form.data("formValidation");
@@ -1019,11 +1061,6 @@
                     });
                 }
             }
-
-
-
-
-
 
             function splitcolor(param) {
                 var colo="";
@@ -1096,7 +1133,7 @@
                 }else{
                     $("#li_color"+(colornum-1)).remove();
                     colornum=colornum-1;
-                    $("#IGCHeat").formValidation('removeField','color'+(colornum-1));
+                    $("#IGCHeat").formValidation('removeField','color'+(colornum));
                 }
                 console.log(colornum);
             }
@@ -1142,6 +1179,14 @@
                             }
                         });
                     }
+                }else {
+                    switchToInvalid();
+                    swal({
+                        title: "参数设置错误",
+                        text: "有参数不合法，请核实！",
+                        type: "error",
+                        confirmButtonText: "确认"
+                    });
                 }
             }
 
@@ -1168,9 +1213,11 @@
             }
 
             function bordercolor() {
+                console.log(111);
                 var colorparam = $("#hasborder").val();
-                if (colorparam == "white") $("#borcolor").show();
-                else $("#borcolor").hide();
+                console.log(colorparam);
+                if (colorparam == "white") $(".borcolopart").show();
+                else $(".borcolopart").hide();
             }
 
             function showr() {
@@ -1197,6 +1244,23 @@
                 }
             }
 
+            //找第一个invalid元素，并跳转
+            function switchToInvalid() {
+                $("#IGCHeat .help-block[data-fv-result='INVALID']").each(function () {
+                    if($(this).parent().parent().attr('id')){
+                        if($(this).parent().parent().attr('id').toString().indexOf("color")>=0){
+                            $("a[data-target='#colopara']").click();
+                        }else{
+                            var parent=$(this).parent().parent().parent().attr('id');
+                            $("a[data-target='#"+parent+"']").click();
+                        }
+                    } else{
+                        var parent=$(this).parent().parent().parent().attr('id');
+                        $("a[data-target='#"+parent+"']").click();
+                    }
+                    return false;
+                });
+            }
 
     </script>
 

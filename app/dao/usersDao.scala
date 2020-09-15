@@ -16,6 +16,10 @@ class usersDao @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
     db.run(Users.filter(_.id === Integer.parseInt(id)).result.head)
   }
 
+  def getAllUser : Future[Seq[UsersRow]] = {
+    db.run(Users.result)
+  }
+
   def addUser(row:UsersRow) : Future[Int] = {
     db.run(Users returning Users.map(_.id)+=row)
   }
@@ -47,6 +51,14 @@ class usersDao @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
 
   def updateIp(id:String,ip:String) : Future[Unit] = {
     db.run(Users.filter(_.id === Integer.parseInt(id)).map(_.ip).update(ip)).map(_=>())
+  }
+
+  def updateAuthority(id:String,authority:String) : Future[Unit] = {
+    db.run(Users.filter(_.id === Integer.parseInt(id)).map(_.authority).update(authority)).map(_=>())
+  }
+
+  def updateReadnote(id:String,noteId:String) : Future[Unit] = {
+    db.run(Users.filter(_.id === Integer.parseInt(id)).map(_.readnote).update(noteId)).map(_=>())
   }
 
   def updatePhone(id:String,newphone:String) : Future[Unit] = {

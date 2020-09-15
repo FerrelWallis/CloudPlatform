@@ -17,41 +17,6 @@
     <script>
 
             $(document).ready(function () {
-                @*if("@row.status"=="已完成"){*@
-                @*    $("#Boxplot").show();*@
-                @*    *@@*$.ajax({*@
-                @*    *@@*    url:"/CloudPlatform/SoftTool/getBoxData?taskname=@row.taskname",*@
-                @*    *@@*    type:"post",*@
-                @*    *@@*    success:function (data) {*@
-                @*    *@@*        $("#redraw_pic").attr("src","/CloudPlatform/pic?path="+data.pics[0]+"&num="+Math.random());*@
-                @*    *@@*        $("#downPic").attr("href","/CloudPlatform/SoftTool/download?path="+data.downpics);*@
-                @*    *@@*        $("#downPng").attr("href","/CloudPlatform/SoftTool/download?path="+data.downpng);*@
-                @*    *@@*        $("#downTiff").attr("href","/CloudPlatform/SoftTool/download?path="+data.downtiffs);*@
-                @*    *@@*        colornum=data.group.length;*@
-                @*    *@
-                @*    *@@*        $.each(data.elements,function (i,v) {*@
-                @*    *@@*            $("#"+i).val(v);*@
-                @*    *@@*        });*@
-                @*    *@@*        colornum=data.group.length;*@
-                @*    *@@*        var colo="";*@
-                @*    *@@*        $.each(data.group,function (i,v) {*@
-                @*    *@@*            colo +="<li class='form-group' style='width: 100%'><div style='float: left;width: 30%;margin-top: 5px;'><label>"+v+"</label></div><div style='float: left;width: 70%;'><input id='color"+i+"'  name='color"+i+"' class='colorPicker evo-cp0'></div></li>";*@
-                @*    *@@*        });*@
-                @*    *@@*        $("#mycolor").html(colo);*@
-                @*    *@@*        $.each(data.group,function (i,v) {*@
-                @*    *@@*            $("#Boxplot").formValidation('addField','color'+i, colorValidators);*@
-                @*    *@@*            $("#color"+i).colorpicker({color: data.color[i], defaultPalette: 'web',showOn:"button"})*@
-                @*    *@@*                    .on("change.color", function(event, color){ //选择颜色事件*@
-                @*    *@@*                        //formValidation重新验证颜色*@
-                @*    *@@*                        $("#Boxplot").formValidation("revalidateField", "color"+i);*@
-                @*    *@@*                    });*@
-                @*    *@@*        });*@
-                @*    *@@*        $(".evo-cp-wrap").css("float", "left");*@
-                @*    *@@*        $(".evo-cp-wrap").css("width", "200px");*@
-                @*    *@@*        checkupdate();*@
-                @*    *@@*    }*@
-                @*    *@@*});*@
-                @*}*@
             });
 
     </script>

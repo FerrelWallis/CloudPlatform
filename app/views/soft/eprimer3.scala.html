@@ -1,0 +1,1299 @@
+@(abbre:String)(implicit session: Session)
+@home.main("Emboss Eprimer3"){
+
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("css/test/mysoft.css")" media="screen" />
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("palette/evol-colorpicker.min.css")" media="screen" />
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("bootstrap-fileinput-master/css/fileinput.css")" media="screen" />
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("mycss/soft.css")" media="screen" />
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("DPlayer-1.26.0/mycss/myvideo.css")" media="screen" />
+
+    <script type="text/javascript" src="@routes.Assets.versioned("DPlayer-1.26.0/dist/DPlayer.min.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.versioned("md5/md5.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.versioned("js/jquery-ui.js")"></script>
+        <!--button弹出操作-->
+    <script src="@routes.Assets.versioned("layer-v3.0/layer/layer.js")" type="text/javascript"></script>
+    <script type="text/javascript" src="@routes.Assets.versioned("js/myzui.min.js")"></script>
+
+    <style>
+            .panel > .panel-heading {
+                color: #979696;
+                background-color: white;
+                margin-top: -17px;
+                padding: 8px 10px;
+                margin-left: 30px;
+                border: unset;
+            }
+    </style>
+
+    <div class="col-md-12 mysoft-content" style="width: 98%;">
+        <div class="mysoft-content-left whitebox" style="width: 771px;overflow-y: auto">
+            <form id="PMR" method="GET" novalidate="novalidate" enctype="multipart/form-data" class="well form-inline" style="box-sizing: border-box!important;">
+                <div class="softpic mws-ic @abbre"> </div>
+                <h3 class="tools-title">Emboss Eprimer3</h3>
+                <div class="form-group">
+                    <h2>
+                    </h2>
+                </div><br><br>
+                <div class="form-group-p">
+                    <div class="form-group">
+                        <label for="mytaskname">任务编号：</label>
+                    </div>
+                    <div class="form-group">
+                        <input id="mytaskname" type="text" class="form-control" name="taskname" placeholder="" value="">
+                    </div>
+                </div>
+                <br><br><br>
+                <div class="panel panel-default">
+                    <div class="panel-heading" data-toggle="collapse" href="#collapse1" style="width: 94px;">
+                        <h4 class="panel-title">
+                            <a id="pos1">
+                                <span style="font-size:15px;">Input Section</span>
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse1" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <div class="form-group-p" style="width: 415px">
+                                <div class="form-group">
+                                    <label for="exampleInputName2">上传序列文件：</label>
+                                </div>
+                                <div class="form-group" style="width: 300px">
+                                    <input type="file" class="form-control file" id="table1" name="table1">
+                                </div>
+                            </div>
+                            <div class="form-group-extra">
+                                <em><a href="/assets/files/eprimer3.txt" target='_blank'>示例文件</a></em><span class="must" style="margin-left: 10px">*</span>&nbsp;&nbsp;
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label>Pick PCR primer(s)？</label>
+                                </div>
+                                <div class="form-group">
+                                    <select name="primer">
+                                        <option value="Y" selected>yes</option>
+                                        <option value="N">no</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label>Select task：</label>
+                                </div>
+                                <div class="form-group">
+                                    <select name="task">
+                                        <option value="1:Pick PCR primers" selected="selected">Pick PCR primers</option>
+                                        <option value="2:Pick forward primer only">Pick forward primer only</option>
+                                        <option value="3:Pick reverse primer only">Pick reverse primer only</option>
+                                        <option value="4:No primers needed">No primers needed</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label>Pick hybridization probe？</label>
+                                </div>
+                                <div class="form-group">
+                                    <select name="hybridprobe">
+                                        <option value="Y">yes</option>
+                                        <option value="N" selected>no</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p" style="width: 465px">
+                                <div class="form-group">
+                                    <label>Primer3 internal oligo mishybridizing library file ：</label><label style="color: red;font-size: 12px">（Optional）</label>
+                                </div>
+                            </div>
+                            <div class="form-group-p" style="width: 465px">
+                                <div class="form-group" style="width: 380px">
+                                    <input type="file" class="form-control file" id="table2" name="table2">
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p" style="width: 465px">
+                                <div class="form-group">
+                                    <label>Primer3 mispriming library file：</label><label style="color: red;font-size: 12px">（Optional）</label>
+                                </div>
+                            </div>
+                            <div class="form-group-p" style="width: 465px">
+                                <div class="form-group" style="width: 380px">
+                                    <input type="file" class="form-control file" id="table3" name="table3">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading" data-toggle="collapse" href="#collapse2" style="width: 180px;">
+                        <h4 class="panel-title">
+                            <a id="pos1">
+                                <span style="font-size:15px;">Program options</span><label style="color: red;font-size: 12px">（Optional)</label>
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse2" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label for="format">Number of results to return：</label>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" name="numreturn" id="numreturn" value="5" placeholder="数字" class="form-control input-sm">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading" data-toggle="collapse" href="#collapse3" style="width: 192px;">
+                        <h4 class="panel-title">
+                            <a id="pos1">
+                                <span style="font-size:15px;">Sequence options</span><label style="color: red;font-size: 12px">（Optional)</label>
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse3" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label for="format">Included region(s)：</label>
+                                </div>
+                                <div class="form-group" >
+                                    <input type="text" name="includedregion" id="includedregion" placeholder="" class="form-control input-sm" >
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label for="format">Target region(s)：</label>
+                                </div>
+                                <div class="form-group" >
+                                    <input type="text" name="targetregion" id="targetregion" placeholder="" class="form-control input-sm" >
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label for="format">Excluded region(s)：</label>
+                                </div>
+                                <div class="form-group" >
+                                    <input type="text" name="excludedregion" id="excludedregion" placeholder="" class="form-control input-sm" >
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label for="format">Forward input primer sequence to check：</label>
+                                </div>
+                                <div class="form-group" >
+                                    <input type="text" name="forwardinput" id="forwardinput" placeholder="" class="form-control input-sm" >
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label for="format">Reverse input primer sequence to check：</label>
+                                </div>
+                                <div class="form-group" >
+                                    <input type="text" name="reverseinput" id="reverseinput" placeholder="" class="form-control input-sm" >
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label for="format">Possible left primer of pair location：</label>
+                                </div>
+                                <div class="form-group" >
+                                    <input type="text" name="okleftregion" id="okleftregion" placeholder="" class="form-control input-sm" >
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label for="format">Possible right primer of pair location：</label>
+                                </div>
+                                <div class="form-group" >
+                                    <input type="text" name="okrightregion" id="okrightregion" placeholder="" class="form-control input-sm" >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading" data-toggle="collapse" href="#collapse4" style="width: 167px;">
+                        <h4 class="panel-title">
+                            <a id="pos1">
+                                <span style="font-size:15px;">Primer options</span><label style="color: red;font-size: 12px">（Optional)</label>
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse4" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label for="format">GC clamp：</label>
+                                </div>
+                                <div class="form-group" >
+                                    <input type="text" name="gcclamp" id="gcclamp" value="0" placeholder="数字" class="form-control input-sm" >
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label for="format">Primer optimum size：</label>
+                                </div>
+                                <div class="form-group" >
+                                    <input type="text" name="optsize" id="optsize" value="20" placeholder="数字" class="form-control input-sm" >
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label for="format">Primer minimum size：</label>
+                                </div>
+                                <div class="form-group" >
+                                    <input type="text" name="minsize" id="minsize" value="18" placeholder="数字" class="form-control input-sm" >
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label for="format">Primer maximum size：</label>
+                                </div>
+                                <div class="form-group" >
+                                    <input type="text" name="maxsize" id="maxsize" value="27" placeholder="数字" class="form-control input-sm" >
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label for="format">Primer optimum Tm：</label>
+                                </div>
+                                <div class="form-group" >
+                                    <input type="text" name="opttm" id="opttm" value="60.0" placeholder="数字" class="form-control input-sm" >
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label for="format">Primer minimum Tm：</label>
+                                </div>
+                                <div class="form-group" >
+                                    <input type="text" name="mintm" id="mintm" value="57.0" placeholder="数字" class="form-control input-sm" >
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label for="format">Primer maximum Tm：</label>
+                                </div>
+                                <div class="form-group" >
+                                    <input type="text" name="maxtm" id="maxtm" value="63.0" placeholder="数字" class="form-control input-sm" >
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label for="format">Maximum difference in Tm of primers：</label>
+                                </div>
+                                <div class="form-group" >
+                                    <input type="text" name="maxdifftm" id="maxdifftm" value="100.0" placeholder="数字" class="form-control input-sm" >
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label for="format">Primer optimum GC percent：</label>
+                                </div>
+                                <div class="form-group" >
+                                    <input type="text" name="ogcpercent" id="ogcpercent" value="50.0" placeholder="数字" class="form-control input-sm" >
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label for="format">Primer minimum GC percent：</label>
+                                </div>
+                                <div class="form-group" >
+                                    <input type="text" name="mingc" id="mingc" value="20.0" placeholder="数字" class="form-control input-sm" >
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label for="format">Primer maximum GC percent：</label>
+                                </div>
+                                <div class="form-group" >
+                                    <input type="text" name="maxgc" id="maxgc" value="80.0" placeholder="数字" class="form-control input-sm" >
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label for="format">Salt concentration (mM)：</label>
+                                </div>
+                                <div class="form-group" >
+                                    <input type="text" name="saltconc" id="saltconc" value="50.0" placeholder="数字" class="form-control input-sm" >
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label for="format">DNA concentration (nM)：</label>
+                                </div>
+                                <div class="form-group" >
+                                    <input type="text" name="dnaconc" id="dnaconc" value="50.0" placeholder="数字" class="form-control input-sm" >
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label for="format">Maximum polynucleotide repeat：</label>
+                                </div>
+                                <div class="form-group" >
+                                    <input type="text" name="maxpolyx" id="maxpolyx" value="5" placeholder="数字" class="form-control input-sm" >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading" data-toggle="collapse" href="#collapse5" style="width: 176px;">
+                        <h4 class="panel-title">
+                            <a id="pos1">
+                                <span style="font-size:15px;">Product options</span><label style="color: red;font-size: 12px">（Optional)</label>
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse5" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label for="format">Product optimum size：</label>
+                                </div>
+                                <div class="form-group" >
+                                    <input type="text" name="psizeopt" id="psizeopt" value="200" placeholder="数字" class="form-control input-sm" >
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label for="format">Product size range：</label>
+                                </div>
+                                <div class="form-group" >
+                                    <input type="text" name="prange" id="prange" value="100-300" placeholder="数字-数字" class="form-control input-sm" >
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label for="format">Product optimum Tm：</label>
+                                </div>
+                                <div class="form-group" >
+                                    <input type="text" name="ptmopt" id="ptmopt" value="0.0" placeholder="数字" class="form-control input-sm" >
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label for="format">Product minimum Tm：</label>
+                                </div>
+                                <div class="form-group" >
+                                    <input type="text" name="ptmmin" id="ptmmin" value="-1000000.0" placeholder="数字" class="form-control input-sm" >
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label for="format">Product maximum Tm：</label>
+                                </div>
+                                <div class="form-group" >
+                                    <input type="text" name="ptmmax" id="ptmmax" value="1000000.0" placeholder="数字" class="form-control input-sm" >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading" data-toggle="collapse" href="#collapse6" style="width: 196px;">
+                        <h4 class="panel-title">
+                            <a id="pos1">
+                                <span style="font-size:15px;">Internal oligo input</span><label style="color: red;font-size: 12px">（Optional)</label>
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse6" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label for="format">Internal oligo excluded region：</label>
+                                </div>
+                                <div class="form-group" >
+                                    <input type="text" name="oexcludedregion" id="oexcludedregion" placeholder="" class="form-control input-sm" >
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label for="format">Internal oligo input sequence (if any)：</label>
+                                </div>
+                                <div class="form-group" >
+                                    <input type="text" name="oligoinput" id="oligoinput" placeholder="" class="form-control input-sm" >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading" data-toggle="collapse" href="#collapse7" style="width: 213px;">
+                        <h4 class="panel-title">
+                            <a id="pos1">
+                                <span style="font-size:15px;">Internal oligo options</span><label style="color: red;font-size: 12px">（Optional)</label>
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse7" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label for="format">Internal oligo optimum size：</label>
+                                </div>
+                                <div class="form-group" >
+                                    <input type="text" name="osizeopt" id="osizeopt" value="20" placeholder="数字" class="form-control input-sm" >
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label for="format">Internal oligo minimum size：</label>
+                                </div>
+                                <div class="form-group" >
+                                    <input type="text" name="ominsize" id="ominsize" value="18" placeholder="数字" class="form-control input-sm" >
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label for="format">Internal oligo maximum size：</label>
+                                </div>
+                                <div class="form-group" >
+                                    <input type="text" name="omaxsize" id="omaxsize" value="27" placeholder="数字" class="form-control input-sm" >
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label for="format">Internal oligo optimum Tm：</label>
+                                </div>
+                                <div class="form-group" >
+                                    <input type="text" name="otmopt" id="otmopt" value="60.0" placeholder="数字" class="form-control input-sm" >
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label for="format">Internal oligo minimum Tm：</label>
+                                </div>
+                                <div class="form-group" >
+                                    <input type="text" name="otmmin" id="otmmin" value="57.0" placeholder="数字" class="form-control input-sm" >
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label for="format">Internal oligo maximum Tm：</label>
+                                </div>
+                                <div class="form-group" >
+                                    <input type="text" name="otmmax" id="otmmax" value="63.0" placeholder="数字" class="form-control input-sm" >
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label for="format">Internal oligo optimum GC percent：</label>
+                                </div>
+                                <div class="form-group" >
+                                    <input type="text" name="ogcopt" id="ogcopt" value="50.0" placeholder="数字" class="form-control input-sm" >
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label for="format">Internal oligo minimum GC：</label>
+                                </div>
+                                <div class="form-group" >
+                                    <input type="text" name="ogcmin" id="ogcmin" value="20.0" placeholder="数字" class="form-control input-sm" >
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label for="format">Internal oligo maximum GC：</label>
+                                </div>
+                                <div class="form-group" >
+                                    <input type="text" name="ogcmax" id="ogcmax" value="80.0" placeholder="数字" class="form-control input-sm" >
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label for="format">Internal oligo salt concentration (mM)：</label>
+                                </div>
+                                <div class="form-group" >
+                                    <input type="text" name="osaltconc" id="osaltconc" value="50.0" placeholder="数字" class="form-control input-sm" >
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label for="format">Internal oligo DNA concentration (nM)：</label>
+                                </div>
+                                <div class="form-group" >
+                                    <input type="text" name="odnaconc" id="odnaconc" value="50.0" placeholder="数字" class="form-control input-sm" >
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p" style="width: 450px;">
+                                <div class="form-group">
+                                    <label for="format">Internal oligo maximum self complementarity：</label>
+                                </div>
+                                <div class="form-group" >
+                                    <input type="text" name="oanyself" id="oanyself" value="12.0" placeholder="数字" class="form-control input-sm" style="width: 73px;">
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p" style="width: 450px">
+                                <div class="form-group">
+                                    <label for="format">Internal oligo maximum 3' self complementarity：</label>
+                                </div>
+                                <div class="form-group" >
+                                    <input type="text" name="oendself" id="oendself" value="12.0" placeholder="数字" class="form-control input-sm" style="width: 58px;">
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p" style="width: 450px">
+                                <div class="form-group">
+                                    <label for="format">Internal oligo maximum polynucleotide repeat：</label>
+                                </div>
+                                <div class="form-group" >
+                                    <input type="text" name="opolyxmax" id="opolyxmax" value="5" placeholder="数字" class="form-control input-sm" style="width: 65px;">
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label for="format">Internal oligo maximum mishybridization：</label>
+                                </div>
+                                <div class="form-group" >
+                                    <input type="text" name="omishybmax" id="omishybmax" value="12.0" placeholder="数字" class="form-control input-sm" >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading" data-toggle="collapse" href="#collapse8" style="width: 189px;">
+                        <h4 class="panel-title">
+                            <a id="pos1">
+                                <span style="font-size:15px;">Advanced section</span><label style="color: red;font-size: 12px">（Optional)</label>
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse8" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label>Explain flag？</label>
+                                </div>
+                                <div class="form-group">
+                                    <select name="explainflag">
+                                        <option value="Y">yes</option>
+                                        <option value="N" selected>no</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label>Create results files for each sequence？</label>
+                                </div>
+                                <div class="form-group">
+                                    <select name="fileflag">
+                                        <option value="Y">yes</option>
+                                        <option value="N" selected>no</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label>Pick anyway？</label>
+                                </div>
+                                <div class="form-group">
+                                    <select name="pickanyway">
+                                        <option value="Y">yes</option>
+                                        <option value="N" selected>no</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label>Primer maximum mispriming：</label>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" name="maxmispriming" id="maxmispriming" value="12.0" placeholder="数字" class="form-control input-sm" >
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label>Primer pair maximum mispriming：</label>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" name="pairmaxmispriming" id="pairmaxmispriming" value="24.0" placeholder="数字" class="form-control input-sm" >
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label>Maximum Ns accepted in a primer：</label>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" name="numnsaccepted" id="numnsaccepted" value="0" placeholder="数字" class="form-control input-sm" >
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label>Maximum self complementarity：</label>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" name="selfany" id="selfany" value="8.0" placeholder="数字" class="form-control input-sm" >
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label>Maximum 3' self complementarity：</label>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" name="selfend" id="selfend" value="3.0" placeholder="数字" class="form-control input-sm" >
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label>Select Task：</label>
+                                </div>
+                                <div class="form-group">
+                                    <select name="scorrection">
+                                        <option value="0:Schildkraut & Lifson">Schildkraut & Lifson</option>
+                                        <option value="1:SantaLucia" selected="selected">SantaLucia</option>
+                                        <option value="2:Owczarzy et al">Owczarzy et al</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label>Select formula：</label>
+                                </div>
+                                <div class="form-group">
+                                    <select name="tmformula">
+                                        <option value="0:Breslauer et al">Breslauer et al</option>
+                                        <option value="1:SantaLucia" selected="selected">SantaLucia</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label>Maximum 3' end stability：</label>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" name="maxendstability" id="maxendstability" value="9.0" placeholder="数字" class="form-control input-sm" >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <input type="hidden" value="upload" name="act">
+                <input type="hidden" value="heatmap" name="action">
+                <input type="button" value="提&nbsp;&nbsp;交" name="submit" class="btn btn-primary" onclick="runEprimer()" style="margin-bottom: 20px">
+            </form>
+
+        </div>
+
+        <div class="handler"></div>
+
+        <div class="mysoft-content-right" style="width: 279px;box-sizing: border-box!important;">
+            <ul class="nav nav-tabs">
+                <li class="active" id="ins_tab1">
+                    <a href="###" data-target="#instruction" data-toggle="tab">使用说明</a>
+                </li>
+                <li class="" id="out_tab1">
+                    <a href="###" data-target="#example" data-toggle="tab">教学视频</a>
+                </li>
+                <li class="" id="his_tab1">
+                    <a href="#" data-target="#history" data-toggle="tab">历史任务</a>
+                </li>
+            </ul>
+            <div class="tab-content" style="box-sizing: border-box!important;">
+                <div class="tab-pane fade active in" id="instruction">
+                    <p style="color: red">Primer3 internal oligo mishybridizing library file格式要求：</p>
+                    Similar to MISPRIMING-LIBRARY, except that the event we seek to avoid is hybridization of the internal oligo to sequences in this library rather than priming from them. The file must be in (a slightly restricted) FASTA format (W. B. Pearson and D.J. Lipman, PNAS 85:8 pp 2444-2448 [1988]); we briefly discuss the organization of this file below. If this parameter is specified then EPrimer3 locally aligns each candidate oligo against each library sequence and rejects those primers for which the local alignment score times a specified weight (see below) exceeds INTERNAL-OLIGO-MAX-MISHYB. (The maximum value of the weight is arbitrarily set to 12.0.) Each sequence entry in the FASTA-format file must begin with an 'id line' that starts with '>'. The contents of the id line is 'slightly restricted' in that EPrimer3 parses everything after any optional asterisk ('*') as a floating point number to use as the weight mentioned above. If the id line contains no asterisk then the weight defaults to 1.0. The alignment scoring system used is the same as for calculating complementarity among oligos (e.g. SELF-ANY). The remainder of an entry contains the sequence as lines following the id line up until a line starting with '>' or the end of the file. Whitespace and newlines are ignored. Characters 'A', 'T', 'G', 'C', 'a', 't', 'g', 'c' are retained and any other character is converted to 'N' (with the consequence that any IUB / IUPAC codes for ambiguous bases are converted to 'N'). There are no restrictions on line length. An empty value for this parameter indicates that no library should be used.
+                    <br><br>
+                    <p style="color: red">Primer3 mispriming library file格式要求：</p>
+                    The name of a file containing a nucleotide sequence library of sequences to avoid amplifying (for example repetitive sequences, or possibly the sequences of genes in a gene family that should not be amplified.) The file must be in (a slightly restricted) FASTA format (W. B. Pearson and D.J. Lipman, PNAS 85:8 pp 2444-2448 [1988]); we briefly discuss the organization of this file below. If this parameter is specified then EPrimer3 locally aligns each candidate primer against each library sequence and rejects those primers for which the local alignment score times a specified weight (see below) exceeds MAX-MISPRIMING. (The maximum value of the weight is arbitrarily set to 100.0.) Each sequence entry in the FASTA-format file must begin with an 'id line' that starts with '>'. The contents of the id line is 'slightly restricted' in that EPrimer3 parses everything after any optional asterisk ('*') as a floating point number to use as the weight mentioned above. If the id line contains no asterisk then the weight defaults to 1.0. The alignment scoring system used is the same as for calculating complementarity among oligos (e.g. SELF-ANY). The remainder of an entry contains the sequence as lines following the id line up until a line starting with '>' or the end of the file. Whitespace and newlines are ignored. Characters 'A', 'T', 'G', 'C', 'a', 't', 'g', 'c' are retained and any other character is converted to 'N' (with the consequence that any IUB / IUPAC codes for ambiguous bases are converted to 'N'). There are no restrictions on line length. An empty value for this parameter indicates that no repeat library should be used.
+                </div>
+                <div class="tab-pane fade" id="example">
+                    <h5 style="margin-bottom: 2px">视频录制中...敬请期待！</h5>
+                    <div id="dplayer"></div>
+                </div>
+                <div id="history" class="form1_ins tab-pane fade">
+                    <a id="btn-refresh" class="btn_refresh mws-i-24 i-refresh-3" onclick="refresh('@abbre')">刷新状态</a>
+                    <ul id="hisul" style="margin-top: 15px">
+                        <li id="hislist" class="hislist">
+                            <div class="his_time"><span>任务编号</span></div>
+                            <div class="his_time"><span style="margin-left: -20px;">结束时间</span></div>
+                            <div class="his_name"><span style="margin-left: -23px;">状态</span></div>
+                            <hr>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="@routes.Assets.versioned("js/toolsAdjust.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.versioned("palette/evol-colorpicker.min.js")"></script>
+    <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/fileinput.min.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/locales/zh.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("myjs/soft.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+
+            $(document).ready(function () {
+                formValidation();
+                loadHistory("@abbre");
+                getTaskName("PMR","PMR");
+                // loadVideo("//13125180.s21v.faiusr.com/58/ABUIABA6GAAgts3S_QUo_uGeyAc.mp4","/assets/images/softpic/video/heatmap_video.png")
+            });
+
+
+            function runEprimer(formId) {
+                var form = $("#PMR");
+                var fv = form.data("formValidation");
+                fv.validate();
+                if (fv.isValid()) {
+                    if(checktaskname()) {
+                        var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
+                        var index = layer.alert(element, {
+                            skin: 'layui-layer-lan',
+                            closeBtn: 0,
+                            title: "提醒",
+                            btn: []
+                        });
+                        setTimeout(function () {
+                            layer.close(index);
+                            var form1 = new FormData($("#PMR")[0]);
+                            $.ajax({
+                                url: "/CloudPlatform/SoftTool/runEprimer",
+                                type: "post",
+                                processData: false,
+                                contentType: false,
+                                data: form1,
+                                success: function (data) {
+                                    removeul();
+                                    loadHistory("@abbre");
+                                    $("#his_tab1").addClass("active");
+                                    $("#out_tab1").removeClass("active");
+                                    $("#ins_tab1").removeClass("active");
+                                    $("#history").addClass("active").addClass("in");
+                                    $("#example").removeClass("active");
+                                    $("#instruction").removeClass("active");
+                                    getTaskName("PMR","PMR");
+                                }
+                            });
+                        }, 2000);
+                    }
+                }else{
+                    switchToInvalid();
+                    swal({
+                        title: "参数设置错误",
+                        text: "有参数不合法，请核实！",
+                        type: "error",
+                        confirmButtonText: "确认"
+                    });
+                }
+            }
+
+            function formValidation() {
+                $('#PMR').formValidation({
+                    framework: 'bootstrap',
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    excluded: [':disabled'],
+                    fields: {
+                        taskname: {
+                            validators: {
+                                notEmpty: {
+                                    message: '任务编号不能为空!'
+                                },
+                                remote:{
+                                    type: 'POST',
+                                    url: '@routes.DutyController.checktaskname()',
+                                    message: "任务编号重复，请重新输入"
+                                }
+                            }
+                        },
+                        table1: {
+                            validators: {
+                                notEmpty: {
+                                    message: '必须上传矩阵表格文件!'
+                                },
+                                file: {
+                                    // extension: 'jpeg,jpg,png',
+                                    // type: 'image/jpeg,image/png',
+                                    maxSize: 5*1024*1024,
+                                    message: '文件不得大于5M！'
+                                }
+                            }
+                        },
+                        numreturn: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        gcclamp: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        optsize: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        minsize: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        maxsize: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        opttm: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        mintm: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        maxtm: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        maxdifftm: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        ogcpercent: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        mingc: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        maxgc: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        saltconc: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        dnaconc: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        maxpolyx: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        psizeopt: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        ptmopt: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        ptmmin: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        ptmmax: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        osizeopt: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        ominsize: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        omaxsize: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        otmopt: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        otmmin: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        otmmax: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        ogcopt: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        ogcmin: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        ogcmax: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        osaltconc: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        odnaconc: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        oanyself: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        oendself: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        opolyxmax: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        omishybmax: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        firstbaseindex: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        maxmispriming: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        pairmaxmispriming: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        numnsaccepted: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        selfany: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        selfend: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        maxendstability: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+
+            function switchToInvalid() {
+                $(".help-block[data-fv-result='INVALID']").each(function () {
+                    if($(this).parent().parent().parent().parent().hasClass("collapse")){
+                        var parent=$(this).parent().parent().parent().parent().attr("id");
+                        $("div[href='#"+parent+"']").click();
+                    }
+                    return false;
+                });
+            }
+
+
+    </script>
+
+}

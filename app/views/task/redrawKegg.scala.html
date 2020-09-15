@@ -45,9 +45,9 @@
                                         下载结果图
                                     </button>
                                     <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 35px, 0px); top: 0px; left: 0px; will-change: transform;width: 150px">
-                                        <a class="dropdown-item" id="downPic1">下载 pdf</a>
-                                        <a class="dropdown-item" id="downPng1">下载 png</a>
-                                        <a class="dropdown-item" id="downTiff1">下载 tiff</a>
+                                        <a class="dropdown-item" id="downPic1" onclick="downloadpics('ko_dodge','pdf')">下载 pdf</a>
+                                        <a class="dropdown-item" id="downPng1" onclick="downloadpics('ko_dodge','png')">下载 png</a>
+                                        <a class="dropdown-item" id="downTiff1" onclick="downloadpics('ko_dodge','tiff')">下载 tiff</a>
                                     </div>
                                 </div>
                             </div>
@@ -68,7 +68,7 @@
                                 </div>
                                 <div class="form-group-p">
                                     <div class="form-group" style="margin-top: 5px;">
-                                        <label for="">显示前</label><input type="text" id="n" name="n" class="form-control" placeholder="数字" value="15" style="width: 50px;margin-right: 10px;margin-left: 10px"><label for="">行数据&nbsp;</label>
+                                        <label for="">随机显示</label><input type="text" id="n" name="n" class="form-control" placeholder="数字" value="15" style="width: 50px;margin-right: 10px;margin-left: 10px"><label for="">行数据&nbsp;</label>
                                     </div>
                                 </div>
                                 <div class="form-group-p">
@@ -78,6 +78,9 @@
                                     <div class="form-group" style="width: 70px;margin-right: 40px">
                                         <input type="text" id="br" name="br" class="form-control" placeholder="数字" value="0.9" style="width: 50px;float: left;">
                                     </div>
+
+                                </div>
+                                <div class="form-group-p">
                                     <div class="form-group">
                                         <label for="">Y轴名称最大长度&nbsp;：</label>
                                     </div>
@@ -85,7 +88,7 @@
                                         <input type="text" id="sm" name="sm" class="form-control" placeholder="数字" value="10" style="width:50px;">
                                     </div>
                                 </div>
-                                <div class="one-line" >
+                                <div class="one-line" style="display: none">
                                     <div style="border: 1px solid lightgrey;border-radius: 5px;padding: 10px;margin-left: 30px">
                                         <div class="form-group-p" style="width: 100%;padding-left: 0">
                                             <div class="form-group" >
@@ -106,7 +109,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <br>
                                 <div class="form-group-p">
                                     <div class="form-group">
                                         <label for="">图片长宽：</label>
@@ -138,6 +140,8 @@
                                     <div class="form-group" style="width: 70px;margin-right: 40px">
                                         <input type="text" id="xts" name="xts" class="form-control" placeholder="数字" value="18" style="width: 100%;float: left;">
                                     </div>
+                                </div>
+                                <div class="form-group-p">
                                     <div class="form-group">
                                         <label for="">y轴字体大小：</label>
                                     </div>
@@ -172,9 +176,9 @@
                                         下载结果图
                                     </button>
                                     <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 35px, 0px); top: 0px; left: 0px; will-change: transform;width: 150px">
-                                        <a class="dropdown-item" id="downPic2">下载 pdf</a>
-                                        <a class="dropdown-item" id="downPng2">下载 png</a>
-                                        <a class="dropdown-item" id="downTiff2">下载 tiff</a>
+                                        <a class="dropdown-item" id="downPic2" onclick="downloadpics('ko.Ko.enrich','pdf')">下载 pdf</a>
+                                        <a class="dropdown-item" id="downPng2" onclick="downloadpics('ko.Ko.enrich','png')">下载 png</a>
+                                        <a class="dropdown-item" id="downTiff2" onclick="downloadpics('ko.Ko.enrich','tiff')">下载 tiff</a>
                                     </div>
                                 </div>
                             </div>
@@ -205,6 +209,19 @@
                 } else {
                     $(".redraw_panel").show();
                     $(".update_panel").hide();
+                }
+            }
+
+            function downloadpics(picname,suffix){
+                if("@row.status"!=="已完成"){
+                    swal({
+                        title: "无法下载",
+                        text: "任务未完成，无法下载！",
+                        type: "warning",
+                        confirmButtonText: "确认"
+                    });
+                }else{
+                    window.location.href = "/CloudPlatform/SoftTool/download?taskname=@row.taskname&picname="+picname+"&suffix="+suffix+"&num="+Math.random();
                 }
             }
 
@@ -314,18 +331,18 @@
                                 var num=i+1;
                                 $("#redraw_pic"+num).attr("src","/CloudPlatform/pic?path="+v+"&num="+Math.random());
                             });
-                            $.each(data.downpics,function (i,v) {
-                                var num=i+1;
-                                $("#downPic"+num).attr("href","/CloudPlatform/SoftTool/download?path="+v);
-                            });
-                            $.each(data.downpng,function (i,v) {
-                                var num=i+1;
-                                $("#downPng"+num).attr("href","/CloudPlatform/SoftTool/download?path="+v);
-                            });
-                            $.each(data.downtiffs,function (i,v) {
-                                var num=i+1;
-                                $("#downTiff"+num).attr("href","/CloudPlatform/SoftTool/download?path="+v);
-                            });
+                            // $.each(data.downpics,function (i,v) {
+                            //     var num=i+1;
+                            //     $("#downPic"+num).attr("href","/CloudPlatform/SoftTool/download?path="+v);
+                            // });
+                            // $.each(data.downpng,function (i,v) {
+                            //     var num=i+1;
+                            //     $("#downPng"+num).attr("href","/CloudPlatform/SoftTool/download?path="+v);
+                            // });
+                            // $.each(data.downtiffs,function (i,v) {
+                            //     var num=i+1;
+                            //     $("#downTiff"+num).attr("href","/CloudPlatform/SoftTool/download?path="+v);
+                            // });
                             $.each(data.elements,function (i,v) {
                                 $("#"+i).val(v);
                             });

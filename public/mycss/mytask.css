@@ -122,3 +122,59 @@ div.dataTables_wrapper .dataTables_paginate span.paginate_button{
 div.mws-panel-toolbar {
     background-color: #fff;
 }
+
+.fixed-table-container{
+    margin-bottom: 30px;
+}
+.search{
+    width: 300px;
+}
+input[type="text"], textarea {
+    background: #fff;
+    background: rgba(255, 255, 255, .4);
+    border-top: 1px solid #c9c9c8;
+    border-left: 1px solid #dfe0de;
+    border-right: 1px solid #dfe0de;
+    border-bottom: 1px solid #c9c9c8;
+    padding: 7px 9px;
+    border-radius: 6px;
+    color: #888;
+    box-shadow: unset;
+}
+.pagination-info{
+    margin-left: 10px;
+}
+.control-icon{
+    padding-left: 32px;
+    background-position: 12px center;
+}
+h2 {
+    font-family: "Helvetica Neue", Helvetica, 'Microsoft Yahei', 'Hiragino Sans GB', 'WenQuanYi Micro Hei', Tahoma, Arial, sans-serif;
+    font-weight: 700;
+    line-height: 1.1;
+    color: inherit;
+    font-size: 20px;
+    margin: 0px;
+    padding: 0px;
+}
+.text-muted {
+    color: gray;
+}
+.lead {
+    font-size: 15.5px;
+    margin-bottom: 20px;
+    line-height: 1.4;
+}
+p {
+    margin: 0;
+    padding: 0;
+    font-family: "PTSansRegular", Arial, Helvetica, sans-serif;
+}
+.pull-right{
+    margin-right: 10px;
+}
+* {
+    -webkit-box-sizing:unset;
+    -moz-box-sizing:unset;
+    box-sizing:unset;
+}

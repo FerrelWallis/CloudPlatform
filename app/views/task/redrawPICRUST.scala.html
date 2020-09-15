@@ -1,0 +1,188 @@
+@import models.Tables.DutysRow
+@(row:DutysRow)(implicit session: Session)
+@home.main("Task Preview"){
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("font-awesome-4.7.0/css/font-awesome.min.css")" media="screen" />
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("bootstrap-fileinput-master/css/fileinput.css")" media="screen" />
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("palette/evol-colorpicker.min.css")" media="screen" />
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("mycss/redraw.css")" media="screen" />
+
+    <script type="text/javascript" src="@routes.Assets.versioned("js/jquery-ui.js")"></script>
+    <script src="@routes.Assets.versioned("layer-v3.0/layer/layer.js")" type="text/javascript"></script>
+    <script type="text/javascript" src="@routes.Assets.versioned("palette/evol-colorpicker.min.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.versioned("bootstrap/js/bootstrap.js")"></script>
+    <style>
+            /*p内部内容不换行*/
+            p{
+                white-space: nowrap;
+            }
+    </style>
+
+    <div class="container" style="width: 98.5%;margin: unset;max-width: unset;padding: 5px">
+        <div class="mws-panel grid_8" style="background: white!important;">
+            <div class="mws-panel-body" style="border: unset">
+                <div class="mws-panel-content grid_3">
+                    <h1>任务详情</h1>
+                    <br>
+                    <ul>
+                        <li>
+                            <span class="title">任务编号:</span>
+                            <span class="content align">@row.taskname</span>
+                        </li>
+                        <li>
+                            <span class="title">使用软件:</span>
+                            <span class="content align">@row.sname</span>
+                        </li>
+                        <li class="inputfile">
+                            <div style="width: 25%;float: left">
+                                <span class="title" >输入文件名:</span>
+                            </div>
+                            <div style="width: 75%;float: left">
+                                <div id="input" style="padding: 10px 0 0 30px;">
+                                </div>
+                            </div>
+                        </li>
+                        <li class="inputpara">
+                            <div style="width: 20%;float: left">
+                                <span class="title" >使用参数:</span>
+                            </div>
+                            <div class="reference">
+                                <div id="para" style="padding-left: 50px;padding-top: 10px;max-width: 500px">
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="title">提交时间:</span>
+                            <span class="content align">@row.subtime</span>
+                        </li>
+                        <li>
+                            <span class="title">结束时间:</span>
+                            <span class="content align">@row.finitime</span>
+                        </li>
+                        <li>
+                            <span class="title">任务状态:</span>
+                            <span id="status" class="content" style="margin-left: 50px">@row.status</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="mws-panel-content" style="width: 50%">
+                    <h2><span class="content"><a href="/CloudPlatform/myTask" class="button mws-i-24 i-bended-arrow-left" style="font-weight: 200;padding-right: 44px;background-position: 134px center;background-repeat: no-repeat;">返回任务列表</a></span></h2>
+                    <br>
+                    <div class="mws-panel" style="width: 100%">
+                        <h3 style="margin-top: 11px;margin-bottom: 10px;">结果列表:</h3>
+                        <div class="mws-panel-body">
+                            <table class="mws-table">
+                                <thead>
+                                    <tr>
+                                        <th>文件</th>
+                                        <th>说明</th>
+                                        <th>下载</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="filesUrl">
+                                </tbody>
+                            </table>
+                        </div>
+                        <br><br>
+                        <span class="title">下载结果文件包:</span>
+                        <span class="content align"><a class="button" id="download" onclick="downloadZip()">下载</a></span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        var genes="";
+
+            if("@row.input"=="/"){
+                $(".inputfile").hide();
+            }else{
+                var input="@row.input";
+                var inp="";
+                $.each(input.split("/"),function (i,v) {
+                    inp += "<p class='content'>"+v+"</p>";
+                });
+                $("#input").html(inp);
+            }
+
+            if("@row.param"=="/"){
+                $(".inputpara").hide();
+            }else{
+                var param="@row.param";
+                var par="";
+                $.each(param.split("/"),function (i,v) {
+                    if(i==0) genes=v.split(":")[1].split(",");
+                    par += "<p class='content'>"+v+"</p>";
+                });
+                $("#para").html(par);
+            }
+
+            if("@row.status"==="已完成"){
+                $("#status").addClass('success');
+                $.ajax({
+                    url:"/CloudPlatform/SoftTool/getDownloadFiles?taskname=@row.taskname&soft=@row.sabbrename",
+                    type:"post",
+                    success:function (data) {
+                        var html = "";
+                        var ii=0;
+                        $.each(data.files,function (i,v) {
+                            if(i<3) {
+                                var colo="";
+                                if((ii+1)%2==0) colo="even";
+                                else colo="odd";
+                                ii++;
+                                html += "<tr class='"+ colo +"'><td>" + data.name[i] + "</td><td>" + data.ins[i] + "</td><td><a onclick='downloadFile(\""+data.name[i]+"\")' class='fa fa-download'></a></td></tr>";
+                            }else {
+                                for(let g in genes){
+                                    console.log(genes[g]);
+                                    if(v.indexOf(genes[g])>=0) {
+                                        var colo="";
+                                        if((ii+1)%2==0) colo="even";
+                                        else colo="odd";
+                                        ii++;
+                                        html += "<tr class='"+ colo +"'><td>" + data.name[i] + "</td><td>" + data.ins[i] + "</td><td><a onclick='downloadFile(\""+data.name[i]+"\")' class='fa fa-download'></a></td></tr>";
+                                    }
+                                }
+                            }
+                        });
+                        $("#filesUrl").html(html);
+                    }
+                });
+            } else if("@row.status"==="运行失败"){
+                $("#status").addClass('failed');
+                $("#filesUrl").html("<span>运行失败，无结果！</span>");
+            } else {
+                $("#status").addClass('running');
+                $("#filesUrl").html("<span>运行中，暂无结果！</span>");
+            }
+
+            function downloadFile(filename){
+                if("@row.status"!=="已完成"){
+                    swal({
+                        title: "无法下载",
+                        text: "任务未完成，无法下载！",
+                        type: "warning",
+                        confirmButtonText: "确认"
+                    });
+                }else{
+                    window.location.href = "/CloudPlatform/SoftTool/downloadFile?taskname=@row.taskname&filename=" + filename + "&num="+ Math.random();
+                }
+            }
+
+            function downloadZip(){
+                if("@row.status"!=="已完成"){
+                    swal({
+                        title: "无法下载",
+                        text: "任务未完成，无法下载！",
+                        type: "warning",
+                        confirmButtonText: "确认"
+                    });
+                }else{
+                    window.location.href = "/CloudPlatform/SoftTool/downloadZip?taskname=@row.taskname&num="+Math.random();
+                }
+            }
+    </script>
+
+}

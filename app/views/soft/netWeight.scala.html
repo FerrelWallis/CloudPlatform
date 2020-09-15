@@ -4,7 +4,10 @@
     <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("css/test/mysoft.css")" media="screen" />
     <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("bootstrap-fileinput-master/css/fileinput.css")" media="screen" />
     <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("mycss/soft.css")" media="screen" />
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("DPlayer-1.26.0/mycss/myvideo.css")" media="screen" />
 
+    <script type="text/javascript" src="@routes.Assets.versioned("DPlayer-1.26.0/dist/DPlayer.min.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.versioned("md5/md5.js")"></script>
     <!--button弹出操作-->
     <script src="@routes.Assets.versioned("layer-v3.0/layer/layer.js")" type="text/javascript"></script>
     <script type="text/javascript" src="@routes.Assets.versioned("js/myzui.min.js")"></script>
@@ -171,8 +174,7 @@
                     <br>
                 </div>
                 <div class="tab-pane fade" id="example">
-                    <h5>输出结果：</h5>
-                    <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/net_example.png" alt="生物云平台">
+                    <div id="dplayer"></div>
                 </div>
                 <div id="history" class="form1_ins tab-pane fade">
                     <a id="btn-refresh" class="btn_refresh mws-i-24 i-refresh-3" onclick="refresh('@abbre')">刷新状态</a>
@@ -200,13 +202,7 @@
                 formValidation();
                 loadHistory("@abbre");
                 getTaskName("Net","NET");
-            });
-
-            //bootstrap fileinput 选择文件后处理事件
-            $("#table1").on("filebatchselected", function(event, files) {
-                // $("#div2").find(".fileinput-remove").click();
-                // $("#PCA1").formValidation("revalidateField", "table2");
-                if($("#table2").val()!="") checkEvi();
+                loadVideo("//13125180.s21v.faiusr.com/58/ABUIABA6GAAgls3S_QUo6tng5gc.mp4","/assets/images/softpic/video/netweight_video.png")
             });
 
         function netweight() {
@@ -214,188 +210,182 @@
             var fv = form.data("formValidation");
             fv.validate();
             if (fv.isValid()) {
-                checkTable();
-                checkEvi();
-                if(flagtable&&flagevi&&checktaskname()) {
-                    var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
-                    var index = layer.alert(element, {
-                        skin: 'layui-layer-lan',
-                        closeBtn: 0,
-                        title: "提醒",
-                        btn: []
-                    });
-                    setTimeout(function () {
-                        layer.close(index);
-                        var form1 = new FormData($("#Net")[0]);
-                        $.ajax({
-                            url: "/CloudPlatform/SoftTool/runNet",
-                            type: "post",
-                            processData: false,
-                            contentType: false,
-                            data: form1,
-                            success: function (data) {
-                                removeul();
-                                loadHistory('@abbre');
-                                $("#his_tab1").addClass("active");
-                                $("#out_tab1").removeClass("active");
-                                $("#ins_tab1").removeClass("active");
-                                $("#history").addClass("active").addClass("in");
-                                $("#example").removeClass("active");
-                                $("#instruction").removeClass("active");
-                                getTaskName("Net","NET");
-                            }
+                flagtable=true;
+                var check=[];
+                check.push(checkTable());
+                check.push(checkEvi());
+                Promise.all(check).then((r)=>{
+                    console.log(r);
+                    console.log(flagtable);
+                    if(flagtable&&checktaskname()) {
+                        var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
+                        var index = layer.alert(element, {
+                            skin: 'layui-layer-lan',
+                            closeBtn: 0,
+                            title: "提醒",
+                            btn: []
                         });
-                    }, 2000);
-                }
+                        setTimeout(function () {
+                            layer.close(index);
+                            var form1 = new FormData($("#Net")[0]);
+                            $.ajax({
+                                url: "/CloudPlatform/SoftTool/runNet",
+                                type: "post",
+                                processData: false,
+                                contentType: false,
+                                data: form1,
+                                success: function (data) {
+                                    removeul();
+                                    loadHistory('@abbre');
+                                    $("#his_tab1").addClass("active");
+                                    $("#out_tab1").removeClass("active");
+                                    $("#ins_tab1").removeClass("active");
+                                    $("#history").addClass("active").addClass("in");
+                                    $("#example").removeClass("active");
+                                    $("#instruction").removeClass("active");
+                                    getTaskName("Net","NET");
+                                }
+                            });
+                        }, 2000);
+                    }
+                });
             }
         }
 
             var sample;
             var flagtable=true;
-            var flagevi=true;
 
             function checkTable() {
-                var reader=new FileReader();
-                reader.readAsText(document.getElementById('table1').files[0],"UTF-8");
-                reader.onload=function () {
-                    let text=reader.result;
-                    let line=text.trim().split('\n');
-                    sample=line[0].trim().split('\t');
-                    var length=sample.length;
-                    for(let i in line){
-                        var r=parseInt(i)+1;
-                        let row=line[i].trim().split('\t');
-                        var name=[];
-                        if(row.length!=length){
-                            flagtable=false;
-                            swal({
-                                title: "OTU丰度表错误",
-                                text: "OTU丰度表第"+r+"行数据数量不一致",
-                                type: "warning",
-                                confirmButtonText: "确认"
-                            });
-                            return false;
-                        }
-                        for(let j in row){
-                            var c=parseInt(j)+1;
-                            if(i!=0){
-                                if(j!=0 && !checkRate(row[j].trim())){
-                                    flagtable=false;
-                                    swal({
-                                        title: "OTU丰度表错误",
-                                        text: "OTU丰度表第"+r+"行,第"+c+"列数据不是数字",
-                                        type: "warning",
-                                        confirmButtonText: "确认"
-                                    });
-                                    return false;
+                return new Promise((resolve, reject) => {
+                    var reader=new FileReader();
+                    reader.readAsText(document.getElementById('table1').files[0],"UTF-8");
+                    reader.onload=function () {
+                        let text=reader.result;
+                        let line=text.trim().split('\n');
+                        sample=line[0].trim().split('\t');
+                        var length=sample.length;
+                        for(let i in line){
+                            var r=parseInt(i)+1;
+                            let row=line[i].trim().split('\t');
+                            var name=[];
+                            if(row.length!=length){
+                                flagtable=flagtable&&false;
+                                swal({
+                                    title: "OTU丰度表错误",
+                                    text: "OTU丰度表第"+r+"行数据数量不一致",
+                                    type: "warning",
+                                    confirmButtonText: "确认"
+                                });
+                                resolve(false);
+                            }
+                            for(let j in row){
+                                var c=parseInt(j)+1;
+                                if(i!=0){
+                                    if(j!=0 && !checkRate(row[j].trim())){
+                                        flagtable=flagtable&&false;
+                                        swal({
+                                            title: "OTU丰度表错误",
+                                            text: "OTU丰度表第"+r+"行,第"+c+"列数据不是数字",
+                                            type: "warning",
+                                            confirmButtonText: "确认"
+                                        });
+                                        resolve(false);
+                                    }
+                                }else {
+                                    if(name.indexOf(row[j])>=0){
+                                        flagtable=flagtable&&false;
+                                        swal({
+                                            title: "OTU丰度表错误",
+                                            text: "OTU丰度表第1行,第"+c+"列样品名重复存在，请核实！",
+                                            type: "warning",
+                                            confirmButtonText: "确认"
+                                        });
+                                        resolve(false);
+                                    }else name.push(row[j]);
                                 }
-                            }else {
-                                if(name.indexOf(row[j])>=0){
-                                    flagtable=false;
-                                    swal({
-                                        title: "OTU丰度表错误",
-                                        text: "OTU丰度表第1行,第"+c+"列样品名重复存在，请核实！",
-                                        type: "warning",
-                                        confirmButtonText: "确认"
-                                    });
-                                    return false;
-                                }else name.push(row[j]);
                             }
                         }
-
-
-                    }
-                    flagtable=true;
-                    return true;
-                };
+                        flagtable=flagtable&&true;
+                        resolve(true);
+                    };
+                });
             }
 
             function checkEvi() {
-                if($("#table1").val()==""){
-                    flagevi=false;
-                    $("#Net").formValidation("revalidateField", "table1");
-                    $("#mydiv0").find(".fileinput-remove").click();
-                    swal({
-                        title: "请先上传基因文件",
-                        text: "请先上传基因文件！",
-                        type: "warning",
-                        confirmButtonText: "确认"
-                    });
-                    return;
-                }
-                var reader=new FileReader();
-                reader.readAsText(document.getElementById('table2').files[0],"UTF-8");
-                reader.onload=function () {
-                    let text=reader.result;
-                    let line=text.trim().split('\n');
-                    var length=line[0].trim().split('\t').length;
-                    console.log(sample);
-                    if(sample.length!=length){
-                        var on=parseInt(sample.length)-1;
-                        var en=parseInt(length)-1;
-                        flagevi=false;
-                        swal({
-                            title: "环境因子列表错误",
-                            text: "环境因子列表样本数量与基因表表不一致，OUT分度表样本数量"+on+"，环境列表样本数量"+en,
-                            type: "warning",
-                            confirmButtonText: "确认"
-                        });
-                        return false;
-                    }
-                    var name=[];
-                    for(let i in line){
-                        var r=parseInt(i)+1;
-                        let row=line[i].trim().split('\t');
-                        if(row.length!=length){
-                            flagevi=false;
+                return new Promise((resolve, reject) => {
+                    var reader=new FileReader();
+                    reader.readAsText(document.getElementById('table2').files[0],"UTF-8");
+                    reader.onload=function () {
+                        let text=reader.result;
+                        let line=text.trim().split('\n');
+                        var length=line[0].trim().split('\t').length;
+                        if(sample.length!=length){
+                            var on=parseInt(sample.length)-1;
+                            var en=parseInt(length)-1;
+                            flagtable=flagtable&&false;
                             swal({
                                 title: "环境因子列表错误",
-                                text: "环境因子列表第"+r+"行数据数量不一致！",
+                                text: "环境因子列表样本数量与基因表不一致，OUT分度表样本数量"+on+"，环境列表样本数量"+en,
                                 type: "warning",
                                 confirmButtonText: "确认"
                             });
-                            return false;
+                            resolve(false);
                         }
-                        for(let j in row){
-                            var c=parseInt(j)+1;
-                            if(i!=0) {
-                                if (j != 0 && !checkRate(row[j].trim())) {
-                                    flagevi = false;
-                                    swal({
-                                        title: "环境因子列表错误",
-                                        text: "环境因子列表第" + r + "行,第" + c + "列数据不是数字",
-                                        type: "warning",
-                                        confirmButtonText: "确认"
-                                    });
-                                    return false;
-                                }
-                            }else {
-                                if(name.indexOf(row[j])>=0){
-                                    flagevi=false;
-                                    swal({
-                                        title: "环境因子列表错误",
-                                        text: "环境因子列表第"+c+"列样品名重复存在",
-                                        type: "warning",
-                                        confirmButtonText: "确认"
-                                    });
-                                    return false;
-                                }else name.push(row[j]);
-                                if(sample.indexOf(row[j])<0){
-                                    flagevi=false;
-                                    swal({
-                                        title: "环境因子列表错误",
-                                        text: "环境因子列表第"+c+"列样品名不存在,请核对基因文件！",
-                                        type: "warning",
-                                        confirmButtonText: "确认"
-                                    });
-                                    return false;
+                        var name=[];
+                        for(let i in line){
+                            var r=parseInt(i)+1;
+                            let row=line[i].trim().split('\t');
+                            if(row.length!=length){
+                                flagtable=flagtable&&false;
+                                swal({
+                                    title: "环境因子列表错误",
+                                    text: "环境因子列表第"+r+"行数据数量不一致！",
+                                    type: "warning",
+                                    confirmButtonText: "确认"
+                                });
+                                resolve(false);
+                            }
+                            for(let j in row){
+                                var c=parseInt(j)+1;
+                                if(i!=0) {
+                                    if (j != 0 && !checkRate(row[j].trim())) {
+                                        flagtable=flagtable&&false;
+                                        swal({
+                                            title: "环境因子列表错误",
+                                            text: "环境因子列表第" + r + "行,第" + c + "列数据不是数字",
+                                            type: "warning",
+                                            confirmButtonText: "确认"
+                                        });
+                                        resolve(false);
+                                    }
+                                }else {
+                                    if(name.indexOf(row[j])>=0){
+                                        flagtable=flagtable&&false;
+                                        swal({
+                                            title: "环境因子列表错误",
+                                            text: "环境因子列表第"+c+"列样品名重复存在",
+                                            type: "warning",
+                                            confirmButtonText: "确认"
+                                        });
+                                        resolve(false);
+                                    }else name.push(row[j]);
+                                    if(sample.indexOf(row[j])<0){
+                                        flagtable=flagtable&&false;
+                                        swal({
+                                            title: "环境因子列表错误",
+                                            text: "环境因子列表第"+c+"列样品名不存在,请核对基因文件！",
+                                            type: "warning",
+                                            confirmButtonText: "确认"
+                                        });
+                                        resolve(false);
+                                    }
                                 }
                             }
                         }
-                    }
-                    flagevi=true;
-                    return true;
-                };
+                        flagtable=flagtable&&true;
+                        resolve(true);
+                    };
+                });
             }
 
             function checkRate(input) {

@@ -1,5 +1,5 @@
 @(abbre:String)(implicit session: Session)
-@home.main("Boxplot"){
+@home.main("Tax4Fun"){
 
     <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("css/test/mysoft.css")" media="screen" />
     <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("bootstrap-fileinput-master/css/fileinput.css")" media="screen" />
@@ -47,20 +47,18 @@
                 <br><br>
                 <div id="myform">
                     <div id="div1" class="one-line">
-                        <div class="form-group-p">
+                        <div class="form-group-p" style="width: 100%">
                             <div class="form-group">
                                 <label for="filepath1">上传OTU丰度表：</label>
                             </div>
-                            <div class="form-group">
-                                <input type="file" class="form-control file" id="table1" name="table1" onchange="checkTable()">
+                            <div class="form-group" style="width: 60%">
+                                <input type="file" class="form-control file" id="table1" name="table1">
                             </div>
                         </div>
                         <div class="form-group-extra">
                             <em>
-                                <a href='/assets/files/tax4_otu.biom' target='_blank' style="margin-left: 20px;">示例文件</a>
-                                @*                                <a href='/CloudPlatform/SoftTool/downloadExamples?name=Boxplot.txt' target='_blank' style="margin-left: 20px;">示例文件</a>*@
+                                <a href='/assets/files/otu_taxa_table.biom' target='_blank' style="margin-left: 20px;">biom示例文件</a>
                             </em>
-                            <span class="must" style="margin-left: 10px">*</span>
                         </div>
                         <br>
                         <br>
@@ -68,7 +66,7 @@
                 </div>
                 <br>
                 <br>
-                <input type="button" value="提&nbsp;&nbsp;交" name="submit" class="btn btn-primary" onclick="boxplot()">
+                <input type="button" value="提&nbsp;&nbsp;交" name="submit" class="btn btn-primary" onclick="taxfun()">
             </form>
         </div>
         <div class="handler"></div>
@@ -86,69 +84,10 @@
             </ul>
             <div class="tab-content" style="box-sizing: border-box!important;">
                 <div class="tab-pane fade active in" id="instruction">
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>1.背景介绍</strong></span><br>
-                        箱线图是利用数据中的五个统计量：最小值、第一四分位数、中位数、第三四分位数与最大值来描述数据的一种方法，它也可以粗略地看出数据是否具有有对称性，分布的分散程度等信息，可以用于对几个样本的比较。
-                        <br>
-                    </p>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>2.操作方法</strong></span>
-                    </p>
-                    <img src="/assets/images/softpic/instruction/box1.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;padding-left: 44%">
-                        操作界面
-                    </p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>2.1.输入文件</strong></span><br>
-                        输入文件必须是以tab键分割的txt文件，示例文件如下：
-                        <br>
-                    </p>
-                    <img src="/assets/images/softpic/instruction/box2.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>2.2.设置参数</strong></span><br>
-                        上传文件后，选择绘图参数，可选参数包括是否绘制数据点和设定y轴的范围，设定好参数后，点击“提交”即可
-                        <br>
-                    </p>
-                    <img src="/assets/images/softpic/instruction/box3.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>2.3.查看任务</strong></span><br>
-                        提交任务后，点击界面右侧的“boxplot历史任务”模块，可以看到任务编号、提交时间、结束时间和状态。通过点击界面“我的任务”也可以查看任务编号、软件名称和状态等信息，点击任务编号，即可查看分析结果。
-                        <br>
-                    </p>
-                    <img src="/assets/images/softpic/instruction/box4.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        在任务详情界面，展示的是任务参数、结果文件列表和在线调整图片3个区域，提供结果文件下载和图片调整功能。
-                        <br>
-                    </p>
-                    <img src="/assets/images/softpic/instruction/box5.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>3.示例图片</strong></span><br>
-                        生成的图片根据设置的参数不同会出现差异，示例图片如下，参数选择绘制数据点，y轴范围为1-100。
-                        <br>
-                    </p>
-                    <img src="/assets/images/softpic/instruction/box6.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>4.结果文件</strong></span><br>
-                        结果文件仅包含生成的箱线图pdf格式文件，但是该图可以通过以下参数进行在线调整。
-                        <br>
-                    </p>
-                    <img src="/assets/images/softpic/instruction/box7.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
-                    <br>
+                    <h5 style="margin-bottom: 2px">更详细使用说明编写中...敬请期待！</h5>
                 </div>
                 <div class="tab-pane fade" id="example">
+                    <h5 style="margin-bottom: 2px">视频录制中...敬请期待！</h5>
 @*                    <video id="my-player" class="video-js vjs-default-skin" controls preload="none" width="100%" height="400px"*@
 @*                    data-setup="{}">*@
 @*                        <source src="//13125180.s21v.faiusr.com/58/ABUIABA6GAAgjp_K_QUorqPq9gU.mp4" type='video/mp4' />*@
@@ -178,32 +117,7 @@
     <script src="@routes.Assets.versioned("myjs/soft.js")" type="text/javascript"></script>
     <script type="text/javascript">
 
-            videojs('my-player', {
-                autoplay: false, //自动播放：true/false
-                controls: true, //是否显示底部控制栏：true/false
-                loop: false, //是否循环播放:true/false
-                muted: false, //设置默认播放音频：true/false
-                poster:"/assets/images/softpic/video/box_video.png", //视频开始播放前显示的图像的URL。这通常是一个帧的视频或自定义标题屏幕。一旦用户点击“播放”图像就会消失
-                techOrder: ['html5', 'flash'], //使用播放器的顺序,下面的示例说明优先使用html5播放器，如果不支持将使用flash
-                notSupportedMessage: false, //是否允许重写默认的消息显示出来时，video.js无法播放媒体源
-                aspectRatio:"1:1", //将播放器置于流体模式下，计算播放器动态大小时使用该值。//该值应该是比用冒号隔开的两个数字（如“16:9”或“4:3”）。
-                fluid: false,	//是否自适应布局,播放器将会有流体体积。换句话说，它将缩放以适应容器。// 如果<video>标签有“vjs-fluid”样式时，这个选项会自动设置为true。
-                preload: "metadata", //建议浏览器是否在加载<video>元素时开始下载视频数据。(预加载)// metadata:只加载视频的元数据，其中包括视频的持续时间和尺寸等信息。有时，元数据会通过下载几帧视频来加载。
-                controlBar:{
-                    captionsButton: false,
-                    chaptersButton: false,
-                    playbackRateMenuButton: true,
-                    LiveDisplay: true,
-                    subtitlesButton: false,
-                    remainingTimeDisplay: true,
-                    progressControl: true,
-                    volumeMenuButton: {
-                        inline: false,
-                        vertical: true
-                    },//竖着的音量条
-                    fullscreenToggle: true
-                }
-            });
+
 
             $(function () {
                 formValidation();
@@ -228,7 +142,7 @@
                             layer.close(index);
                             var form1 = new FormData($("#Tax4Fun")[0]);
                             $.ajax({
-                                url: "/CloudPlatform/SoftTool/runBoxplot",
+                                url: "/CloudPlatform/SoftTool/runTax4Fun",
                                 type: "post",
                                 processData: false,
                                 contentType: false,
@@ -275,7 +189,7 @@
                         table1: {
                             validators: {
                                 notEmpty: {
-                                    message: '必须上传矩阵表格文件!'
+                                    message: '必须上传otu文件!'
                                 },
                                 file: {
                                     // extension: 'jpeg,jpg,png',

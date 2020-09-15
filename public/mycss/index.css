@@ -134,11 +134,12 @@
 }
 .ui-tabs .ui-tabs-nav li.ui-tabs-selected a {
     color: white !important;
+    font-weight: bold;
 }
 .ui-tabs .ui-tabs-nav li.ui-tabs-selected {
     margin-bottom: 0;
     padding-bottom: 1px;
-    background-color: #eb593c;
+    background-color: #ff9c00;
      border: unset;
 }
 .ui-corner-all, .ui-corner-top, .ui-corner-right, .ui-corner-tr {

@@ -1,0 +1,548 @@
+@import models.Tables.DutysRow
+@(row:DutysRow)(implicit session: Session)
+@home.main("Task Preview"){
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("bootstrap-slider-master/css/bootstrap-slider.css")" media="screen" />
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("font-awesome-4.7.0/css/font-awesome.min.css")" media="screen" />
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("bootstrap-fileinput-master/css/fileinput.css")" media="screen" />
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("palette/evol-colorpicker.min.css")" media="screen" />
+
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("mycss/redraw.css")" media="screen" />
+
+    <script type="text/javascript" src="@routes.Assets.versioned("js/jquery-ui.js")"></script>
+    <script src="@routes.Assets.versioned("layer-v3.0/layer/layer.js")" type="text/javascript"></script>
+    <script type="text/javascript" src="@routes.Assets.versioned("palette/evol-colorpicker.min.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.versioned("bootstrap-slider-master/bootstrap-slider.js")"></script>
+
+
+    <style>
+        .fontleft{
+            margin-top: 5px;
+            width: 100px;
+            text-align: right;
+        }
+        .fontright{
+            width: 230px;
+        }
+
+    </style>
+
+    <div class="container" style="width: 98.5%;margin: unset;max-width: unset;padding: 5px">
+        @task.preview(row)
+        <div class="mws-panel grid_8" style="background: white!important;">
+            <div class="mws-panel-body" style="border: unset">
+                <div class="mws-panel-content" style="width: 96%;padding-top: 0;padding-right: 0">
+                    <hr>
+                    <div class="redraw-head">
+                        <h3 style="display: inline-block">重新绘图：</h3>
+                        <div class="dropdown" style="display: inline-block">
+                            <button class="btn btn-dark dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false" style="padding: 7px 30px;text-shadow: unset;border-radius: 7px;">
+                                下载结果图
+                            </button>
+                            <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 35px, 0px); top: 0px; left: 0px; will-change: transform;width: 150px">
+                                <a class="dropdown-item" id="downPic" onclick="downloadpics('bar_group','pdf')">下载 pdf</a>
+                                <a class="dropdown-item" id="downPng" onclick="downloadpics('bar_group','png')">下载 png</a>
+                                <a class="dropdown-item" id="downTiff" onclick="downloadpics('bar_group','tiff')">下载 tiff</a>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <form id="BAR" style="display: none" method="GET" enctype="multipart/form-data">
+                        <div style="width: 60%;float: left">
+                            <img id="redraw_pic" src="" style="width: 100%;height: auto" >
+                        </div>
+                        <div class="redraw_panel redraw-right" style="width: 40%;float: left;margin-bottom: 30px;">
+                            <ul class="nav nav-tabs" style="margin-left: 20px">
+                                <li class="active" id="ins_tab1" >
+                                    <a href="###" data-target="#picpara" data-toggle="tab">数据布局参数</a>
+                                </li>
+                                <li class="" id="col_tab1" >
+                                    <a href="###" data-target="#colopara" data-toggle="tab">颜色参数</a>
+                                </li>
+                                <li class="" id="out_tab1">
+                                    <a href="###" data-target="#fontpara" data-toggle="tab">字体参数</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content" style="box-sizing: border-box!important;padding-top: 30px">
+                                <div class="tab-pane fade active in" id="picpara">
+                                    <div class="form-group-p">
+                                        <div class="form-group">
+                                            <label>是否使用百分比作图：</label>
+                                        </div>
+                                        <div class="form-group right" style="width: 100px;">
+                                            <select id="pe" name="pe" onchange="checkytext()" style="width: 100px;">
+                                                <option value="TRUE">yes</option>
+                                                <option value="FALSE">no</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group-p">
+                                        <div class="form-group">
+                                            <label>说明信息位置：</label>
+                                        </div>
+                                        <div class="form-group right">
+                                            <select id="lp" name="lp" style="width: 45%;">
+                                                <option value="left">left</option>
+                                                <option value="right">right</option>
+                                                <option value="top">top</option>
+                                                <option value="bottom">bottom</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group-p">
+                                        <div class="form-group">
+                                            <label>图片清晰度：</label>
+                                        </div>
+                                        <div class="form-group right">
+                                            <select id="dpi" name="dpi" style="width: 45%;">
+                                                <option value="72">72</option>
+                                                <option value="96">96</option>
+                                                <option value="300">300</option>
+                                                <option value="600">600</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group-p">
+                                        <div class="form-group" style="margin-top: 5px;">
+                                            <label for="">图片宽高：</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" id="width" name="width" class="form-control" placeholder="数字" value="20" style="width: 50px;float: left;margin-right: 5px;margin-top: 5px">
+                                            <label style="float: left;margin-top: 12px;">X</label>
+                                            <input type="text" id="height" name="height" class="form-control" placeholder="数字" value="20" style="width: 50px;  margin-left: 5px;float: left;margin-top: 5px;margin-right: 20px">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="colopara">
+                                    <div id="inputcolor" class="one-line">
+                                        <div style="border: 1px solid lightgrey;border-radius: 5px;padding: 10px;margin-left: 30px">
+                                            <div class="form-group-p" style="padding-left: 0">
+                                                <div style="width: 100%;margin-left: 10px">
+                                                    <span style="color: gray;">根据基因数量,颜色自动渐变分配。输入色值越多，色差越大，基因颜色区分度越大</span>
+                                                    <br>
+                                                    <label>自定义颜色（从高到低）：</label>
+                                                </div>
+                                            </div>
+                                            <br><br>
+                                            <div class="form-group-p" >
+                                                <div class="form-group" style="width: 85%">
+                                                    <ul id="mycolor">
+                                                    </ul>
+                                                    <input type="text" id="designcolor" name="designcolor" class="form-control" value="" style="display: none">
+                                                </div>
+                                            </div>
+                                            <div class="form-group-p" style="padding-left: 0">
+                                                <input type="button" value="增加颜色" class="btn btn-primary btn-dark" onclick="addcolor()" style="width: 100px;">
+                                                <input type="button" value="删除颜色" class="btn btn-primary btn-dark" onclick="delcolor()" style="width: 100px;">
+                                            </div>
+                                        </div>
+                                        <br>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="fontpara">
+                                    <div class="form-group-p">
+                                        <div class="form-group fontleft" style="margin-top: 5px;">
+                                            <label for="">X轴字体大小：</label>
+                                        </div>
+                                        <div class="form-group fontright" style="line-height: 39px;">
+                                            <input id="xts" name="xts" data-slider-id='sxts' type="text" data-slider-min="0" data-slider-max="50" data-slider-step="1" data-slider-value="18"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group-p">
+                                        <div class="form-group fontleft" style="margin-top: 5px;">
+                                            <label for="">X轴标题大小：</label>
+                                        </div>
+                                        <div class="form-group fontright" style="line-height: 39px;">
+                                            <input id="xls" name="xls" data-slider-id='sxls' type="text" data-slider-min="0" data-slider-max="50" data-slider-step="1" data-slider-value="18"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group-p">
+                                        <div class="form-group fontleft" style="margin-top: 5px;">
+                                            <label for="">Y轴字体大小：</label>
+                                        </div>
+                                        <div class="form-group fontright" style="line-height: 39px;">
+                                            <input id="yts" name="yts" data-slider-id='syts' type="text" data-slider-min="0" data-slider-max="50" data-slider-step="1" data-slider-value="16"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group-p">
+                                        <div class="form-group fontleft" style="margin-top: 5px;">
+                                            <label for="">Y轴标题大小：</label>
+                                        </div>
+                                        <div class="form-group fontright" style="line-height: 39px;">
+                                            <input id="yls" name="yls" data-slider-id='syls' type="text" data-slider-min="0" data-slider-max="50" data-slider-step="1" data-slider-value="16"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group-p">
+                                        <div class="form-group fontleft" style="margin-top: 5px;">
+                                            <label for="">说明字体大小：</label>
+                                        </div>
+                                        <div class="form-group fontright" style="line-height: 39px;">
+                                            <input id="lts" name="lts" data-slider-id='slts' type="text" data-slider-min="0" data-slider-max="50" data-slider-step="1" data-slider-value="15"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group-p">
+                                        <div class="form-group fontleft" style="margin-top: 5px;">
+                                            <label for="">说明标题大小：</label>
+                                        </div>
+                                        <div class="form-group fontright" style="line-height: 39px;">
+                                            <input id="lms" name="lms" data-slider-id='slms' type="text" data-slider-min="0" data-slider-max="50" data-slider-step="1" data-slider-value="15"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group-p">
+                                        <div class="form-group fontleft" style="margin-top: 5px;">
+                                            <label for="">颜色方块大小：</label>
+                                        </div>
+                                        <div class="form-group fontright" style="line-height: 39px;">
+                                            <input id="ls" name="ls" data-slider-id='sls' type="text" data-slider-min="0" data-slider-max="50" data-slider-step="1" data-slider-value="15"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group-p">
+                                        <div class="form-group fontleft" style="margin-top: 5px;">
+                                            <label for="">主标题大小：</label>
+                                        </div>
+                                        <div class="form-group fontright" style="line-height: 39px;">
+                                            <input id="ms" name="ms" data-slider-id='sms' type="text" data-slider-min="0" data-slider-max="50" data-slider-step="1" data-slider-value="15"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group-p">
+                                        <div class="form-group fontleft" style="margin-top: 5px;">
+                                            <label for="">X轴标题：</label>
+                                        </div>
+                                        <div class="form-group fontright">
+                                            <input type="text" id="xtext" name="xtext" class="form-control" placeholder="标题不可含有汉字" value="" style="width: 100%;float: left;margin-right: 5px;margin-top: 5px">
+                                        </div>
+                                    </div>
+                                    <div class="form-group-p" id="ytextpart">
+                                        <div class="form-group fontleft" style="margin-top: 5px;">
+                                            <label for="">Y轴标题：</label>
+                                        </div>
+                                        <div class="form-group fontright">
+                                            <input type="text" id="ytext" name="ytext" class="form-control" placeholder="标题不可含有汉字" value="" style="width: 100%; float: left;margin-top: 5px;margin-right: 20px">
+                                        </div>
+                                    </div>
+                                    <div class="form-group-p">
+                                        <div class="form-group fontleft" style="margin-top: 5px;">
+                                            <label for="">说明标题：</label>
+                                        </div>
+                                        <div class="form-group fontright">
+                                            <input type="text" id="lmtext" name="lmtext" class="form-control" placeholder="标题不可含有汉字" value="" style="width: 100%; float: left;margin-top: 5px;margin-right: 20px">
+                                        </div>
+                                    </div>
+                                    <div class="form-group-p">
+                                        <div class="form-group fontleft" style="margin-top: 5px;">
+                                            <label for="">主标题：</label>
+                                        </div>
+                                        <div class="form-group fontright">
+                                            <input type="text" id="mstext" name="mstext" class="form-control" placeholder="标题不可含有汉字" value="" style="width: 100%; float: left;margin-top: 5px;margin-right: 20px">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <input type="button" value="绘&nbsp;&nbsp;制" name="submit" class="btn btn-primary btn-dark" onclick="DrawBar()" style="margin-left: 30px">
+                        </div>
+                        <div class="update_panel redraw-right" style="width: 40%;float: left;margin-bottom: 30px;">
+                            <div style="padding: 20px">
+                                <h3 style="color: red">通知：</h3>
+                                <span style="color: red">软件版本已在<label class="update"></label>更新！<label class="update"></label> 前运行的 @row.sname 任务仅可下载结果文件，不支持重新绘图。</span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+            const updatetime="2020-07-29";
+
+            function checkupdate(){
+                $(".update").text(updatetime);
+                if("@row.subtime".split(" ")[0]<=updatetime) {
+                    $(".update_panel").show();
+                    $(".redraw_panel").hide();
+                } else {
+                    $(".redraw_panel").show();
+                    $(".update_panel").hide();
+                }
+            }
+
+            function downloadpics(picname,suffix){
+                if("@row.status"!=="已完成"){
+                    swal({
+                        title: "无法下载",
+                        text: "任务未完成，无法下载！",
+                        type: "warning",
+                        confirmButtonText: "确认"
+                    });
+                }else{
+                    window.location.href = "/CloudPlatform/SoftTool/download?taskname=@row.taskname&picname="+picname+"&suffix="+suffix+"&num="+Math.random();
+                }
+            }
+
+            const colorValidators = {
+                validators: {
+                    notEmpty:{
+                        message: '不能为空!'
+                    },
+                    regexp: {
+                        regexp: /^#([0-9a-fA-F]{6})$/,
+                        message: "色值不合法！色值必须以#开头，色值需为6位"
+                    }
+                }
+            };
+
+            var colornum=0;
+            var genenum=0;
+
+            function formValidation() {
+                $('#BAR').formValidation({
+                    framework: 'bootstrap',
+                    excluded: [':disabled'], //默认excluded: [':disabled', ':hidden', ':not(:visible)'] 现在需要hidden的元素也检查
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        width: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                },
+                                greaterThan: {
+                                    value: 1,
+                                    message: "必须大于1！"
+                                }
+                            }
+                        },
+                        height: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                },
+                                greaterThan: {
+                                    value: 1,
+                                    message: "必须大于1！"
+                                }
+                            }
+                        },
+                        xtext:{
+                            validators:{
+                                callback:{
+                                    message: '标题不能有汉字!',
+                                    callback: function (value, validator, $field) {
+                                        return chechtitle("xtext");
+                                    }
+                                }
+                            }
+                        },
+                        ytext:{
+                            validators:{
+                                callback:{
+                                    message: '标题不能有汉字!',
+                                    callback: function (value, validator, $field) {
+                                        return chechtitle("ytext");
+                                    }
+                                }
+                            }
+                        },
+                        lmtext:{
+                            validators:{
+                                callback:{
+                                    message: '标题不能有汉字!',
+                                    callback: function (value, validator, $field) {
+                                        return chechtitle("lmtext");
+                                    }
+                                }
+                            }
+                        },
+                        mstext:{
+                            validators:{
+                                callback:{
+                                    message: '标题不能有汉字!',
+                                    callback: function (value, validator, $field) {
+                                        return chechtitle("mstext");
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            function chechtitle(param){
+                var val = $("#"+param).val();
+                var rule = /[\u4e00-\u9fa5]+/;
+                return !(rule.test(val));
+            }
+
+            $(document).ready(function () {
+                if("@row.status"=="已完成"){
+                    $("#BAR").show();
+                    $.ajax({
+                        url:"/CloudPlatform/SoftTool/getBarGroupData?taskname=@row.taskname",
+                        type:"post",
+                        success:function (data) {
+                            genenum=data.genenum;
+                            $("#redraw_pic").attr("src","/CloudPlatform/pic?path="+data.pics[0]+"&num="+Math.random());
+                            $.each(data.elements,function (i,v) {
+                                if(i=="color") {
+                                    $("#"+i).val("0");
+                                    splitcolor(v);
+                                } else {
+                                    if($("#"+i).attr("data-slider-id")==null) $("#"+i).val(v);
+                                    else {
+                                        $("#"+i).bootstrapSlider({tooltip:'always'});
+                                        $("#" + i).bootstrapSlider('setValue', v);
+                                    }
+                                    // $("#" + i).val(v);
+                                }
+                            });
+                            checkupdate();
+                            checkytext();
+                        }
+                    });
+                }
+            });
+
+            function checkytext() {
+                var param = $("#pe").val();
+                if (param == "TRUE") $("#ytextpart").hide();
+                else $("#ytextpart").show();
+            }
+
+            function splitcolor(param) {
+                var colo="";
+                var colors=param.toString().split(":");
+                colornum=colors.length;
+                $.each(colors,function (i,v) {
+                    colo +="<li id='li_color"+i+"' class='form-group' style='width: 100%'><div style=' width: 100%;float: left;'><input id='color"+i+"'  name='color"+i+"' class='colorPicker evo-cp0'></div></li>";
+                });
+                $("#mycolor").html(colo);
+                $.each(colors,function (i,v) {
+                    $("#BAR").formValidation('addField','color'+i, colorValidators);
+                    $("#color"+i).colorpicker({color: v, defaultPalette: 'web', showOn: "button"})
+                            .on("change.color",function (event,color){
+                                $("#BAR").formValidation("revalidateField",'color'+i);
+                            });
+                });
+                $("#inputcolor .evo-cp-wrap").css("float", "left");
+                $("#inputcolor .evo-cp-wrap").css("width", "200px");
+            }
+
+            function addcolor() {
+                if(colornum==genenum){
+                    swal({
+                        title: "添加颜色失败",
+                        text: "添加失败，颜色数量不得超过总基因数，基因数为"+genenum+"个！",
+                        type: "warning",
+                        confirmButtonText: "确认"
+                    });
+                }else{
+                    var coloid='color'+colornum;
+                    var colo = "<li id='li_color"+colornum+"' class='form-group' style='width: 100%'><div style=' width: 100%;float: left;'><input id='"+coloid+"'  name='"+coloid+"' class='colorPicker evo-cp0'></div></li>";
+                    $("#mycolor").append(colo);
+                    $("#BAR").formValidation('addField',coloid, colorValidators);
+                    $("#"+coloid).colorpicker({color: '#E41A1C', defaultPalette: 'web', showOn:"button"});
+                    $("#"+coloid).on("change.color",function (event,color){
+                        $("#BAR").formValidation("revalidateField",coloid);
+                    });
+                    $("#inputcolor .evo-cp-wrap").css("float", "left");
+                    $("#inputcolor .evo-cp-wrap").css("width", "200px");
+                    colornum=colornum+1;
+                }
+            }
+
+            function delcolor() {
+                if(colornum==2){
+                    swal({
+                        title: "删除颜色失败",
+                        text: "删除失败，颜色最小数量为2个！",
+                        type: "warning",
+                        confirmButtonText: "确认"
+                    });
+                }else{
+                    $("#li_color"+(colornum-1)).remove();
+                    colornum=colornum-1;
+                    $("#BAR").formValidation('removeField','color'+colornum);
+                }
+            }
+
+            function DrawBar() {
+                var form = $("#BAR");
+                var fv = form.data("formValidation");
+                fv.validate();
+                if (fv.isValid()) {
+                    var element = "<div id='content'><span id='info'>绘图中，请耐心等待...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
+                    var index = layer.alert(element, {
+                        skin: 'layui-layer-lan',
+                        closeBtn: 0,
+                        title: "提醒",
+                        btn: []
+                    });
+                    var colors=[];
+                    for(var i=0;i<colornum;i++)
+                        colors.push($("#color"+i).val());
+                    $("#designcolor").val(colors.join(":"));
+                    var form1 = new FormData($("#BAR")[0]);
+                    $.ajax({
+                        url: "/CloudPlatform/SoftTool/redrawBar?taskname=@row.taskname",
+                        type: "post",
+                        processData: false,
+                        contentType: false,
+                        data: form1,
+                        success: function (data) {
+                            layer.close(index);
+                            if(data.valid=="false"){
+                                swal({
+                                    title: "错误",
+                                    text: data.message,
+                                    type: "error",
+                                    confirmButtonText: "确认"
+                                });
+                            }else{
+                                $("#redraw_pic").attr("src","/CloudPlatform/pic?path="+data.pics+"&num="+Math.random());
+                            }
+                        }
+                    });
+                }else {
+                    switchToInvalid();
+                    swal({
+                        title: "参数设置错误",
+                        text: "有参数不合法，请核实！",
+                        type: "error",
+                        confirmButtonText: "确认"
+                    });
+                }
+            }
+
+
+
+            //找第一个invalid元素，并跳转
+            function switchToInvalid() {
+                $(".help-block[data-fv-result='INVALID']").each(function () {
+                    if($(this).parent().parent().attr('id')){
+                        if($(this).parent().parent().attr('id').toString().indexOf("color")>=0){
+                            $("a[data-target='#colopara']").click();
+                        }else{
+                            var parent=$(this).parent().parent().parent().attr('id');
+                            $("a[data-target='#"+parent+"']").click();
+                        }
+                    } else{
+                        var parent=$(this).parent().parent().parent().attr('id');
+                        $("a[data-target='#"+parent+"']").click();
+                    }
+                    return false;
+                });
+            }
+
+    </script>
+
+}

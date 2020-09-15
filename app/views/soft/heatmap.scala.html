@@ -5,7 +5,10 @@
     <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("palette/evol-colorpicker.min.css")" media="screen" />
     <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("bootstrap-fileinput-master/css/fileinput.css")" media="screen" />
     <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("mycss/soft.css")" media="screen" />
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("DPlayer-1.26.0/mycss/myvideo.css")" media="screen" />
 
+    <script type="text/javascript" src="@routes.Assets.versioned("DPlayer-1.26.0/dist/DPlayer.min.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.versioned("md5/md5.js")"></script>
     <script type="text/javascript" src="@routes.Assets.versioned("js/jquery-ui.js")"></script>
     <!--button弹出操作-->
     <script src="@routes.Assets.versioned("layer-v3.0/layer/layer.js")" type="text/javascript"></script>
@@ -415,8 +418,7 @@
                     <br>
                 </div>
                 <div class="tab-pane fade" id="example">
-                    <h5>输出结果：heatmap热图</h5>
-                    <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/heatmap_example.png" alt="生物云平台">
+                    <div id="dplayer"></div>
                 </div>
                 <div id="history" class="form1_ins tab-pane fade">
                     <a id="btn-refresh" class="btn_refresh mws-i-24 i-refresh-3" onclick="refresh('@abbre')">刷新状态</a>
@@ -444,278 +446,299 @@
                 formValidation();
                 loadHistory("@abbre");
                 getTaskName("heatmap","Heat");
+                loadVideo("//13125180.s21v.faiusr.com/58/ABUIABA6GAAgts3S_QUo_uGeyAc.mp4","/assets/images/softpic/video/heatmap_video.png")
             });
 
             var flagtable=true;
-            var flaggroupRow=true;
-            var flaggroupCol=true;
-            var flagTag=true;
             var row=0;
             var col=0;
             var colsample;
             var rowsample;
 
             function checkTable() {
-                var reader=new FileReader();
-                reader.readAsText(document.getElementById('table1').files[0],"UTF-8");
-                reader.onload=function () {
-                    let text=reader.result;
-                    let line=text.trim().split('\n');
-                    row=line.length-1;
-                    colsample=line[0].trim().split('\t');
-                    col=colsample.length-1;
-                    var length=colsample.length;
-                    rowsample=[];
-                    for(let i in line){
-                        var r=parseInt(i)+1;
-                        let row=line[i].trim().split('\t');
-                        if(rowsample.indexOf(row[0])>=0){
-                            flagtable=false;
-                            swal({
-                                title: "矩阵文件错误",
-                                text: "矩阵文件第"+r+"行基因名重复存在，请核实！",
-                                type: "warning",
-                                confirmButtonText: "确认"
-                            });
-                            return false;
-                        }else rowsample.push(row[0]);
-                        var name=[];
-                        if(row.length!=length){
-                            flagtable=false;
-                            swal({
-                                title: "矩阵文件格式错误",
-                                text: "矩阵文件第"+r+"行数据数量不一致",
-                                type: "warning",
-                                confirmButtonText: "确认"
-                            });
-                            return false;
-                        }
-                        for(let j in row){
-                            var c=parseInt(j)+1;
-                            if(i!=0){
-                                if(j!=0 && !checkRate(row[j].trim())){
-                                    flagtable=false;
-                                    swal({
-                                        title: "矩阵文件格式错误",
-                                        text: "矩阵文件第"+r+"行,第"+c+"列数据不是数字",
-                                        type: "warning",
-                                        confirmButtonText: "确认"
-                                    });
-                                    return false;
+                return new Promise((resolve, reject) => {
+                    var reader=new FileReader();
+                    reader.readAsText(document.getElementById('table1').files[0],"UTF-8");
+                    reader.onload=function () {
+                        let text=reader.result;
+                        let line=text.trim().split('\n');
+                        row=line.length-1;
+                        colsample=line[0].trim().split('\t');
+                        col=colsample.length-1;
+                        var length=colsample.length;
+                        rowsample=[];
+                        for(let i in line){
+                            var r=parseInt(i)+1;
+                            let row=line[i].trim().split('\t');
+                            if(rowsample.indexOf(row[0])>=0){
+                                flagtable=flagtable&&false;
+                                swal({
+                                    title: "矩阵文件错误",
+                                    text: "矩阵文件第"+r+"行基因名重复存在，请核实！",
+                                    type: "warning",
+                                    confirmButtonText: "确认"
+                                });
+                                resolve(false);
+                            }else rowsample.push(row[0]);
+                            var name=[];
+                            if(row.length!=length){
+                                flagtable=flagtable&&false;
+                                swal({
+                                    title: "矩阵文件格式错误",
+                                    text: "矩阵文件第"+r+"行数据数量不一致",
+                                    type: "warning",
+                                    confirmButtonText: "确认"
+                                });
+                                resolve(false);
+                            }
+                            for(let j in row){
+                                var c=parseInt(j)+1;
+                                if(i!=0){
+                                    if(j!=0 && !checkRate(row[j].trim())){
+                                        flagtable=flagtable&&false;
+                                        swal({
+                                            title: "矩阵文件格式错误",
+                                            text: "矩阵文件第"+r+"行,第"+c+"列数据不是数字",
+                                            type: "warning",
+                                            confirmButtonText: "确认"
+                                        });
+                                        resolve(false);
+                                    }
+                                }else {
+                                    if(name.indexOf(row[j])>=0){
+                                        flagtable=flagtable&&false;
+                                        swal({
+                                            title: "矩阵文件错误",
+                                            text: "矩阵文件第1行,第"+c+"列样品名重复存在，请核实！",
+                                            type: "warning",
+                                            confirmButtonText: "确认"
+                                        });
+                                        resolve(false);
+                                    }else name.push(row[j]);
                                 }
-                            }else {
-                                if(name.indexOf(row[j])>=0){
-                                    flagtable=false;
-                                    swal({
-                                        title: "矩阵文件错误",
-                                        text: "矩阵文件第1行,第"+c+"列样品名重复存在，请核实！",
-                                        type: "warning",
-                                        confirmButtonText: "确认"
-                                    });
-                                    return false;
-                                }else name.push(row[j]);
                             }
                         }
-                    }
-                    flagtable=true;
-                    return true;
-                };
+                        flagtable=flagtable&&true;
+                        resolve(true);
+                    };
+                });
             }
 
             function checkGroupRow() {
-                if($("#isgroupr").prop("checked")){
-                    if($("#table1").val()==""){
-                        flaggroupRow=false;
-                        $("#heatmap").formValidation("revalidateField", "table1");
-                        $("#groupr").find(".fileinput-remove").click();
-                        // var file = document.getElementById('table4');
-                        // file.value = '';
-                        // $(".file-caption-name").attr("title","");
-                        swal({
-                            title: "请先上传矩阵文件",
-                            text: "请先上传矩阵文件！",
-                            type: "warning",
-                            confirmButtonText: "确认"
-                        });
-                        return;
-                    }
-                    if($("#table4").val()!=""){
-                        var reader=new FileReader();
-                        reader.readAsText(document.getElementById('table4').files[0],"UTF-8");
-                        reader.onload=function () {
-                            let text=reader.result;
-                            let line=text.trim().split('\n');
-                            var name=[];
-                            for(let i in line) {
-                                if(i!=0){
-                                    let row=line[i].trim().split('\t');
-                                    var r=parseInt(i)+1;
-                                    if(rowsample.indexOf(row[0])<0){
-                                        flaggroupRow=false;
-                                        swal({
-                                            title: "行分组文件格式错误",
-                                            text: "行分组文件第"+r+"行样品名不存在，请核对矩阵文件！",
-                                            type: "warning",
-                                            confirmButtonText: "确认"
-                                        });
-                                        return;
+                return new Promise((resolve, reject) => {
+                    if($("#isgroupr").prop("checked")){
+                        if($("#table1").val()==""){
+                            flagtable=flagtable&&false;
+                            $("#heatmap").formValidation("revalidateField", "table1");
+                            $("#groupr").find(".fileinput-remove").click();
+                            // var file = document.getElementById('table4');
+                            // file.value = '';
+                            // $(".file-caption-name").attr("title","");
+                            swal({
+                                title: "请先上传矩阵文件",
+                                text: "请先上传矩阵文件！",
+                                type: "warning",
+                                confirmButtonText: "确认"
+                            });
+                            resolve(false);
+                        }
+                        if($("#table4").val()!=""){
+                            var reader=new FileReader();
+                            reader.readAsText(document.getElementById('table4').files[0],"UTF-8");
+                            reader.onload=function () {
+                                let text=reader.result;
+                                let line=text.trim().split('\n');
+                                var name=[];
+                                for(let i in line) {
+                                    if(i!=0){
+                                        let row=line[i].trim().split('\t');
+                                        var r=parseInt(i)+1;
+                                        if(rowsample.indexOf(row[0])<0){
+                                            flagtable=flagtable&&false;
+                                            swal({
+                                                title: "行分组文件格式错误",
+                                                text: "行分组文件第"+r+"行样品名不存在，请核对矩阵文件！",
+                                                type: "warning",
+                                                confirmButtonText: "确认"
+                                            });
+                                            resolve(false);
+                                        }
+                                        if(name.indexOf(row[0])>=0){
+                                            flagtable=flagtable&&false;
+                                            swal({
+                                                title: "行分组文件错误",
+                                                text: "行分组文件第"+r+"行样品名重复存在，请核实！",
+                                                type: "warning",
+                                                confirmButtonText: "确认"
+                                            });
+                                            resolve(false);
+                                        }else name.push(row[0]);
                                     }
-                                    if(name.indexOf(row[0])>=0){
-                                        flaggroupRow=false;
-                                        swal({
-                                            title: "行分组文件错误",
-                                            text: "行分组文件第"+r+"行样品名重复存在，请核实！",
-                                            type: "warning",
-                                            confirmButtonText: "确认"
-                                        });
-                                        return;
-                                    }else name.push(row[0]);
                                 }
-                            }
-                            flaggroupRow=true;
-                        };
-                    }else flaggroupRow=true;
-                }else flaggroupRow=true;
+                                flagtable=flagtable&&true;
+                                resolve(true);
+                            };
+                        }else {
+                            flagtable=flagtable&&false;
+                            resolve(false);
+                        }
+                    }else {
+                        flagtable=flagtable&&true;
+                        resolve(true);
+                    }
+                });
             }
 
             function checkGroupCol() {
-                if($("#isgroupc").prop("checked")) {
-                    if($("#table1").val()==""){
-                        flaggroupCol=false;
-                        $("#heatmap").formValidation("revalidateField", "table1");
-                        $("#groupc").find(".fileinput-remove").click();
-                        // var file = document.getElementById('table5');
-                        // file.value = '';
-                        // $(".file-caption-name").attr("title","");
-                        swal({
-                            title: "请先上传矩阵文件",
-                            text: "请先上传矩阵文件！",
-                            type: "warning",
-                            confirmButtonText: "确认"
-                        });
-                        return;
-                    }
-                    if($("#table5").val()!=""){
-                        var reader=new FileReader();
-                        reader.readAsText(document.getElementById('table5').files[0],"UTF-8");
-                        reader.onload=function () {
-                            let text=reader.result;
-                            let line=text.trim().split('\n');
-                            var name=[];
-                            for(let i in line) {
-                                if(i!=0){
-                                    let row=line[i].trim().split('\t');
-                                    var r=parseInt(i)+1;
-                                    if(colsample.indexOf(row[0])<0){
-                                        flaggroupCol=false;
-                                        swal({
-                                            title: "列分组文件格式错误",
-                                            text: "列分组文件第"+r+"行样品名不存在，请核对矩阵文件！",
-                                            type: "warning",
-                                            confirmButtonText: "确认"
-                                        });
-                                        return;
+                return new Promise((resolve, reject) => {
+                    if($("#isgroupc").prop("checked")) {
+                        if($("#table1").val()==""){
+                            flagtable=flagtable&&false;
+                            $("#heatmap").formValidation("revalidateField", "table1");
+                            $("#groupc").find(".fileinput-remove").click();
+                            swal({
+                                title: "请先上传矩阵文件",
+                                text: "请先上传矩阵文件！",
+                                type: "warning",
+                                confirmButtonText: "确认"
+                            });
+                            resolve(false);
+                        }
+                        if($("#table5").val()!=""){
+                            var reader=new FileReader();
+                            reader.readAsText(document.getElementById('table5').files[0],"UTF-8");
+                            reader.onload=function () {
+                                let text=reader.result;
+                                let line=text.trim().split('\n');
+                                var name=[];
+                                for(let i in line) {
+                                    if(i!=0){
+                                        let row=line[i].trim().split('\t');
+                                        var r=parseInt(i)+1;
+                                        if(colsample.indexOf(row[0])<0){
+                                            flagtable=flagtable&&false;
+                                            swal({
+                                                title: "列分组文件格式错误",
+                                                text: "列分组文件第"+r+"行样品名不存在，请核对矩阵文件！",
+                                                type: "warning",
+                                                confirmButtonText: "确认"
+                                            });
+                                            resolve(false);
+                                        }
+                                        if(name.indexOf(row[0])>=0){
+                                            flagtable=flagtable&&false;
+                                            swal({
+                                                title: "列分组文件错误",
+                                                text: "列分组文件第"+r+"行样品名重复存在，请核实！",
+                                                type: "warning",
+                                                confirmButtonText: "确认"
+                                            });
+                                            resolve(false);
+                                        }else name.push(row[0]);
                                     }
-                                    if(name.indexOf(row[0])>=0){
-                                        flaggroupCol=false;
-                                        swal({
-                                            title: "列分组文件错误",
-                                            text: "列分组文件第"+r+"行样品名重复存在，请核实！",
-                                            type: "warning",
-                                            confirmButtonText: "确认"
-                                        });
-                                        return;
-                                    }else name.push(row[0]);
                                 }
-                            }
-                            flaggroupCol=true;
-                        };
-                    }else flaggroupCol=true;
-                }else flaggroupCol=true;
+                                flagtable=flagtable&&true;
+                                resolve(true);
+                            };
+                        }else {
+                            flagtable=flagtable&&false;
+                            resolve(false);
+                        }
+                    }else {
+                        flagtable=flagtable&&true;
+                        resolve(true);
+                    }
+                });
             }
 
             function checkTag() {
-                if($("#istag").prop("checked")) {
-                    if($("#table1").val()==""){
-                        flagTag=false;
-                        $("#heatmap").formValidation("revalidateField", "table1");
-                        $("#showtag").find(".fileinput-remove").click();
-                        // var file = document.getElementById('table6');
-                        // file.value = '';
-                        // $(".file-caption-name").attr("title","");
-                        swal({
-                            title: "请先上传矩阵文件",
-                            text: "请先上传矩阵文件！",
-                            type: "warning",
-                            confirmButtonText: "确认"
-                        });
-                        return;
-                    }
-                    if($("#table6").val()!=""){
-                        var reader=new FileReader();
-                        reader.readAsText(document.getElementById('table6').files[0],"UTF-8");
-                        reader.onload=function () {
-                            let text=reader.result;
-                            let line=text.trim().split('\n');
-                            var rowname=[];
-                            for(let i in line) {
-                                let row=line[i].trim().split('\t');
-                                var r=parseInt(i)+1;
-                                if(i!=0){
-                                    if(rowsample.indexOf(row[0])<0){
-                                        flagTag=false;
-                                        swal({
-                                            title: "标签文件格式错误",
-                                            text: "标签文件第"+r+"行基因名不存在，请核对矩阵文件！",
-                                            type: "warning",
-                                            confirmButtonText: "确认"
-                                        });
-                                        return;
-                                    }
-                                    if(rowname.indexOf(row[0])>=0){
-                                        flagTag=false;
-                                        swal({
-                                            title: "标签文件错误",
-                                            text: "标签文件第"+r+"行基因名重复存在，请核实！",
-                                            type: "warning",
-                                            confirmButtonText: "确认"
-                                        });
-                                        return;
-                                    }else rowname.push(row[0]);
+                return new Promise((resolve, reject) => {
+                    if($("#istag").prop("checked")) {
+                        if($("#table1").val()==""){
+                            flagtable=flagtable&&false;
+                            $("#heatmap").formValidation("revalidateField", "table1");
+                            $("#showtag").find(".fileinput-remove").click();
+                            swal({
+                                title: "请先上传矩阵文件",
+                                text: "请先上传矩阵文件！",
+                                type: "warning",
+                                confirmButtonText: "确认"
+                            });
+                            resolve(false);
+                        }
+                        if($("#table6").val()!=""){
+                            var reader=new FileReader();
+                            reader.readAsText(document.getElementById('table6').files[0],"UTF-8");
+                            reader.onload=function () {
+                                let text=reader.result;
+                                let line=text.trim().split('\n');
+                                var rowname=[];
+                                for(let i in line) {
+                                    let row=line[i].trim().split('\t');
+                                    var r=parseInt(i)+1;
+                                    if(i!=0){
+                                        if(rowsample.indexOf(row[0])<0){
+                                            flagtable=flagtable&&false;
+                                            swal({
+                                                title: "标签文件格式错误",
+                                                text: "标签文件第"+r+"行基因名不存在，请核对矩阵文件！",
+                                                type: "warning",
+                                                confirmButtonText: "确认"
+                                            });
+                                            resolve(false);
+                                        }
+                                        if(rowname.indexOf(row[0])>=0){
+                                            flagtable=flagtable&&false;
+                                            swal({
+                                                title: "标签文件错误",
+                                                text: "标签文件第"+r+"行基因名重复存在，请核实！",
+                                                type: "warning",
+                                                confirmButtonText: "确认"
+                                            });
+                                            resolve(false);
+                                        }else rowname.push(row[0]);
 
-                                }else{
-                                    var colname=[];
-                                    for(let j in row){
-                                        var c=parseInt(j)+1;
-                                        if(j!=0){
-                                            if(colsample.indexOf(row[j])<0){
-                                                flagTag=false;
-                                                swal({
-                                                    title: "标签文件格式错误",
-                                                    text: "标签文件第"+c+"列样品名不存在，请核对矩阵文件！",
-                                                    type: "warning",
-                                                    confirmButtonText: "确认"
-                                                });
-                                                return;
+                                    }else{
+                                        var colname=[];
+                                        for(let j in row){
+                                            var c=parseInt(j)+1;
+                                            if(j!=0){
+                                                if(colsample.indexOf(row[j])<0){
+                                                    flagtable=flagtable&&false;
+                                                    swal({
+                                                        title: "标签文件格式错误",
+                                                        text: "标签文件第"+c+"列样品名不存在，请核对矩阵文件！",
+                                                        type: "warning",
+                                                        confirmButtonText: "确认"
+                                                    });
+                                                    resolve(false);
+                                                }
+                                                if(colname.indexOf(row[j])>=0){
+                                                    flagtable=flagtable&&false;
+                                                    swal({
+                                                        title: "标签文件错误",
+                                                        text: "标签文件第"+c+"列样品名重复存在，请核实！",
+                                                        type: "warning",
+                                                        confirmButtonText: "确认"
+                                                    });
+                                                    resolve(false);
+                                                }else colname.push(row[j]);
                                             }
-                                            if(colname.indexOf(row[j])>=0){
-                                                flagTag=false;
-                                                swal({
-                                                    title: "标签文件错误",
-                                                    text: "标签文件第"+c+"列样品名重复存在，请核实！",
-                                                    type: "warning",
-                                                    confirmButtonText: "确认"
-                                                });
-                                                return;
-                                            }else colname.push(row[j]);
                                         }
                                     }
                                 }
-                            }
-                            flagTag=true;
-                        };
-                    }else flagTag=true;
-                }else flagTag=true;
+                                flagtable=flagtable&&true;
+                                resolve(true);
+                            };
+                        }else {
+                            flagtable=flagtable&&false;
+                            resolve(false);
+                        }
+                    }else {
+                        flagtable=flagtable&&true;
+                        resolve(true);
+                    }
+                });
             }
 
 
@@ -810,41 +833,45 @@
                 var fv = form.data("formValidation");
                 fv.validate();
                 if (fv.isValid()) {
-                    checkTable();
-                    checkGroupRow();
-                    checkGroupCol();
-                    checkTag();
-                    if(flagtable&&flaggroupCol&&flaggroupRow&&flagTag&&checkcol()&&checkrow()&&checkgroupr()&&checkgroupc()&&checktaskname()) {
-                        var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
-                        var index = layer.alert(element, {
-                            skin: 'layui-layer-lan',
-                            closeBtn: 0,
-                            title: "提醒",
-                            btn: []
-                        });
-                        setTimeout(function () {
-                            layer.close(index);
-                            var form1 = new FormData($("#heatmap")[0]);
-                            $.ajax({
-                                url: "/CloudPlatform/SoftTool/runHeatmap?isgroupr="+$("#isgroupr").prop("checked")+"&isgroupc="+$("#isgroupc").prop("checked")+"&istag="+$("#istag").prop("checked"),
-                                type: "post",
-                                processData: false,
-                                contentType: false,
-                                data: form1,
-                                success: function (data) {
-                                    removeul();
-                                    loadHistory("@abbre");
-                                    $("#his_tab1").addClass("active");
-                                    $("#out_tab1").removeClass("active");
-                                    $("#ins_tab1").removeClass("active");
-                                    $("#history").addClass("active").addClass("in");
-                                    $("#example").removeClass("active");
-                                    $("#instruction").removeClass("active");
-                                    getTaskName("heatmap","Heat");
-                                }
+                    flagtable=true;
+                    var check=[];
+                    check.push(checkTable());
+                    check.push(checkGroupRow());
+                    check.push(checkGroupCol());
+                    check.push(checkTag());
+                    Promise.all(check).then((r)=>{
+                        if(flagtable&&checkcol()&&checkrow()&&checkgroupr()&&checkgroupc()&&checktaskname()) {
+                            var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
+                            var index = layer.alert(element, {
+                                skin: 'layui-layer-lan',
+                                closeBtn: 0,
+                                title: "提醒",
+                                btn: []
                             });
-                        }, 2000);
-                    }
+                            setTimeout(function () {
+                                layer.close(index);
+                                var form1 = new FormData($("#heatmap")[0]);
+                                $.ajax({
+                                    url: "/CloudPlatform/SoftTool/runHeatmap?isgroupr="+$("#isgroupr").prop("checked")+"&isgroupc="+$("#isgroupc").prop("checked")+"&istag="+$("#istag").prop("checked"),
+                                    type: "post",
+                                    processData: false,
+                                    contentType: false,
+                                    data: form1,
+                                    success: function (data) {
+                                        removeul();
+                                        loadHistory("@abbre");
+                                        $("#his_tab1").addClass("active");
+                                        $("#out_tab1").removeClass("active");
+                                        $("#ins_tab1").removeClass("active");
+                                        $("#history").addClass("active").addClass("in");
+                                        $("#example").removeClass("active");
+                                        $("#instruction").removeClass("active");
+                                        getTaskName("heatmap","Heat");
+                                    }
+                                });
+                            }, 2000);
+                        }
+                    });
                 }
             }
 

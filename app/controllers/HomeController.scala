@@ -1,5 +1,8 @@
 package controllers
 
+import java.io.File
+import java.nio.file.Files
+
 import javax.inject._
 import play.api.mvc._
 
@@ -31,19 +34,27 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
   }
 
   def personal=Action{implicit request=>
-    Ok(views.html.customer.personal())
+    Ok(views.html.panels.personal())
   }
 
   def mytask=Action{implicit request=>
-    Ok(views.html.task.myTask())
+    Ok(views.html.panels.myTask())
   }
 
   def allsoft(types:String)=Action{implicit request=>
-    Ok(views.html.category.allsofts(types))
+    Ok(views.html.panels.allsofts(types))
   }
 
   def updatenews=Action{implicit request=>
-    Ok(views.html.news.news())
+    Ok(views.html.panels.news())
+  }
+
+  def manager=Action{implicit request=>
+    Ok(views.html.panels.manager())
+  }
+
+  def notelist=Action{implicit request=>
+    Ok(views.html.panels.noteList())
   }
 
 
@@ -55,12 +66,17 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
 
   //test below
 
+  //taskname
+  def viewer= Action {implicit request=>
+   Ok(views.html.service.pdfviewer())
+  }
+
   def test= Action {implicit request=>
     Ok(views.html.test.soft())
   }
 
   def testlog= Action {implicit request=>
-    Ok(views.html.news.news())
+    Ok(views.html.panels.news())
   }
 
   def testSlider=Action{implicit request=>
@@ -78,6 +94,18 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
   def testtable=Action{implicit request=>
     Ok(views.html.test.testTable())
 
+  }
+
+  def SendPdf(file: File,headers:Headers): Result = {
+    val lastModifiedStr = file.lastModified().toString
+    val MimeType = "pdf"
+    val byteArray = Files.readAllBytes(file.toPath)
+    val ifModifiedSinceStr = headers.get(IF_MODIFIED_SINCE)
+    if (ifModifiedSinceStr.isDefined && ifModifiedSinceStr.get == lastModifiedStr) {
+      NotModified
+    } else {
+      Ok(byteArray).as(MimeType).withHeaders(LAST_MODIFIED -> file.lastModified().toString)
+    }
   }
 
 

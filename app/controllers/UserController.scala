@@ -10,7 +10,7 @@ import play.api.data.Form
 import play.api.data.Forms._
 import play.api.libs.json.Json
 import play.api.mvc.{AbstractController, ControllerComponents, Session}
-import utils.{ExecCommand, Utils}
+import utils.{ExecCommand, TableUtils, Utils}
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, ExecutionContext}
@@ -136,7 +136,8 @@ class UserController  @Inject()(cc: ControllerComponents,onstart:onStart,usersda
     val session = new Session
     val direct=if(path.indexOf("allsoft")>=0 || path=="/CloudPlatform") "/CloudPlatform/home" else path
     usersdao.getById(id).map{x=>
-      Redirect(direct).withNewSession.withSession(session + ("userId" -> x.id.toString) + ("userPhone"->x.phone) + ("userName"->x.name) + ("userEmail"->x.email) + ("userCompany"->x.company))
+      println(x.readnote)
+      Redirect(direct).withNewSession.withSession(session + ("userId" -> x.id.toString) + ("userPhone"->x.phone) + ("userName"->x.name) + ("userEmail"->x.email) + ("userCompany"->x.company)+("uAuthority"->x.authority)+("noteId"->x.readnote))
     }
   }
 
@@ -158,7 +159,7 @@ class UserController  @Inject()(cc: ControllerComponents,onstart:onStart,usersda
   def addUser = Action { implicit request =>
     try{
       val form = userForm2.bindFromRequest.get
-      val row = UsersRow(0,form.phone,form.email,form.password,form.name,form.company,"user"," ","")
+      val row = UsersRow(0,form.phone,form.email,form.password,form.name,form.company,"user"," ","","")
       val checkPhone=Await.result(usersdao.checkPhoneExist(form.phone),Duration.Inf)
       val checkEmail=Await.result(usersdao.checkEmailExist(form.email),Duration.Inf)
       if(checkPhone.length>0) {
@@ -244,7 +245,41 @@ class UserController  @Inject()(cc: ControllerComponents,onstart:onStart,usersda
   }
 
 
+  val pageForm = Form(
+    mapping(
+      "limit" -> number,
+      "offset" -> number,
+      "order" -> text,
+      "search" -> optional(text),
+      "sort" -> optional(text)
+    )(PageData.apply)(PageData.unapply)
+  )
 
+  def getAllUsers = Action { implicit request =>
+    val page = pageForm.bindFromRequest.get
+    val x = Await.result(usersdao.getAllUser,Duration.Inf)
+    val orderX = TableUtils.dealDataByPage(x, page)
+    val total = orderX.size
+    val tmpX = orderX.slice(page.offset, page.offset + page.limit)
+    val row = tmpX.asInstanceOf[Seq[UsersRow]].map{x=>
+
+      val authority=if(x.authority=="user") "ic-control-inactive" else "ic-control-active"
+      val control=s"<a class=' control-icon mws-ic-16 " + authority + "' onclick=\"changeAuth('"+x.id+"','"+x.authority+"')\"></a>"
+      Json.obj("id" -> x.id,"name"-> x.name,"phone" -> x.phone,"email"->x.email,"company"->x.company,"ip"->x.ip,"authority"->control)
+    }
+    Ok(Json.obj("rows" -> row, "total" -> total))
+  }
+
+
+  def updateAutho(uid:String,authority:String) = Action{implicit request=>
+    try{
+      val autho=if(authority=="user") "admin" else "user"
+      Await.result(usersdao.updateAuthority(uid,autho),Duration.Inf)
+      Ok(Json.obj("valid" -> "true"))
+    }catch {
+      case e : Exception => Ok(Json.obj("valid" ->"false","message" -> e.getMessage))
+    }
+  }
 
 
 }

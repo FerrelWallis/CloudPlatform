@@ -1,53 +1,28 @@
 @()(implicit session: Session)
-@home.main("Home"){
+@home.main("Emboss Abiview") {
 
-@*    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("video-js/video-js.min.css")" media="screen" />*@
-@*    <script type="text/javascript" src="@routes.Assets.versioned("video-js/video.js")"></script>*@
-@*    <script type="text/javascript" src="@routes.Assets.versioned("jquery.danmu.js-master/dist/jquery.danmu.min.js")"></script>*@
 
-    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("DPlayer-1.26.0/mycss/myvideo.css")" media="screen" />
-    <script type="text/javascript" src="@routes.Assets.versioned("DPlayer-1.26.0/dist/DPlayer.min.js")"></script>
-    <script type="text/javascript" src="@routes.Assets.versioned("md5/md5.js")"></script>
+@*    <iframe src="/viewer?file=/mnt/sdb/ww/bak/CloudPlatform/R/lefse/output/lefse_LDA.cladogram.pdf" style="width: 100%;height:100%;">*@
 
-    <div>
-        <div id="dplayer"></div>
+@*    </iframe>*@
 
-    </div>
+
+    <iframe id="pdf" width="100%" height="800"></iframe>
+
 
     <script>
-
-        var url;
-            var id=md5("//vjs.zencdn.net/v/oceans.mp4");
-            const dp = new DPlayer({
-                container: document.getElementById('dplayer'),
-                autoplay: false,
-                loop: false,
-                lang: 'zh-cn',
-                screenshot: true,
-                hotkey: true,
-                preload: 'auto',
-                volume: 0.7,
-                mutex: true,
-                airplay:false,
-                video: {
-                    url: '//vjs.zencdn.net/v/oceans.mp4',
-                    pic: '//vjs.zencdn.net/v/oceans.png',
-                    thumbnails: '//vjs.zencdn.net/v/oceans.png',
-                    type: 'auto',
-                },
-                danmaku: {
-                    id: id,
-                    api: 'https://dplayer.alone88.cn/',
-                }
-            });
-
-
-
-
+        var pdfurl="F:/CloudPlatform/R/abiview/abiview.pdf";
+        $("#pdf").attr("src","/viewer?file=/CloudPlatform/pdf&fileUrl="+pdfurl+"&num="+Math.random());
+        $("#openFile").hide();
 
     </script>
 
-    @home.footer()
-
 
 }
+
+
+
+
+
+
+

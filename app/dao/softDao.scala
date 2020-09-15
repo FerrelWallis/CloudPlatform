@@ -15,15 +15,15 @@ class softDao @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)(
   import profile.api._
 
   def getLastestSix : Future[Seq[SoftRow]] = {
-    db.run(Soft.sortBy(_.id.desc).take(6).result)
+    db.run(Soft.filter(_.status === 1).sortBy(_.id.desc).take(6).result)
   }
 
   def gethotestSix : Future[Seq[SoftRow]] = {
-    db.run(Soft.sortBy(_.likefreq.desc).take(6).result)
+    db.run(Soft.filter(_.status === 1).sortBy(_.likefreq.desc).take(6).result)
   }
 
   def getAllSoft : Future[Seq[SoftRow]] = {
-    db.run(Soft.result)
+    db.run(Soft.sortBy(_.status.desc).result)
   }
 
   def getlikefreq(id:String): Future[Int] = {

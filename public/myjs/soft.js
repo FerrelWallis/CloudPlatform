@@ -1,4 +1,10 @@
-
+$("input[type='text']").keydown(function () {
+    var theEvent = window.event || e;
+    var code = theEvent.keyCode || theEvent.which;
+    if (code == 13) {
+        return false;
+    }
+});
 
 function loadVideo(url,pic) {
     var id=md5(url);

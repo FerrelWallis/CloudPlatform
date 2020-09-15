@@ -2,7 +2,7 @@ package services
 
 import java.util.concurrent.{Executors, TimeUnit}
 
-import dao.softDao
+import dao.{softDao, utilsDao}
 import javax.inject.Inject
 import utils.{TableUtils, Utils}
 
@@ -10,12 +10,14 @@ import scala.collection.mutable
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
-class onStart @Inject()(softDao:softDao){
+class onStart @Inject()(softDao:softDao,utilsDao:utilsDao){
   TableUtils.SoftsMap = Await.result(softDao.getAllSoft, Duration.Inf)
 
   var verifyMap: mutable.HashMap[String, String] = mutable.HashMap()
 
   var verifyTimeMap: mutable.HashMap[String, Long] = mutable.HashMap()
+
+//  var latestNote:Int=Await.result(utilsDao.lateNoteId,Duration.Inf)
 
   verifyConfig
 
@@ -38,6 +40,5 @@ class onStart @Inject()(softDao:softDao){
     // 第二个参数为首次执行的延时时间，第三个参数为定时执行的间隔时间
     service.scheduleAtFixedRate(runnable, 1, 3, TimeUnit.MINUTES)
   }
-
 
 }

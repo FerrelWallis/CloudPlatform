@@ -52,11 +52,14 @@
                                 <input type="file" class="form-control file" id="table1" name="table1" onchange="checkTable('table1')">
                             </div>
                         </div>
+                        <div class="form-group-extra"><span class="must" style="margin-left: 10px">*</span></div>
                         <div class="form-group-extra">
                             <em>
-                                <a href="/assets/files/Igc_table1.txt" target='_blank' style="margin-left: 20px;">示例文件</a>
+                                <a href="/assets/files/Igc_table1.txt" target='_blank'>示例文件1</a>
                             </em>
-                            <span class="must" style="margin-left: 10px">*</span>
+                            <em>
+                                <a href="/assets/files/Igc_table2.txt" target='_blank' style="margin-left: 20px;">示例文件2</a>
+                            </em>
                         </div>
                     </div>
                     <div id="file2" class="one-line" style="display: none;margin-top: 15px;">
@@ -70,11 +73,11 @@
                         </div>
                         <div class="form-group-extra">
                             <em>
-                                <a href="/assets/files/Igc_table2.txt" target='_blank' style="margin-left: 20px;">示例文件</a>
+                                <a href="/assets/files/Igc_table2.txt" target='_blank' style="margin-left: 20px;">示例文件2</a>
                             </em>
                         </div>
                     </div>
-                    <div class="one-line" style="margin-top: 15px">
+                    <div class="one-line" style="margin-top: 15px;display: none">
                         <input type="button" value="增加矩阵" class="btn btn-primary" onclick="addfile()">
                         <input type="button" value="减少矩阵" class="btn btn-primary" onclick="delfile()">
                     </div>
@@ -88,7 +91,7 @@
                         </label>
                     </div>
                     <div class="form-group">
-                        <select name="anatype" id="anatype" style="display: inline-block">
+                        <select name="anatype" id="anatype" style="display: inline-block;width: 80%">
                             <option value="pearson">pearson</option>
                             <option value="spearman">spearman</option>
                         </select>
@@ -106,7 +109,7 @@
                 <li class="active" id="ins_tab1">
                     <a href="###" data-target="#instruction" data-toggle="tab">使用说明</a>
                 </li>
-                <li class="" id="ins_tab1">
+                <li class="" id="out_tab1">
                     <a href="###" data-target="#example" data-toggle="tab">教学视频</a>
                 </li>
                 <li class="" id="his_tab1">
@@ -115,23 +118,97 @@
             </ul>
             <div class="tab-content" style="box-sizing: border-box!important;">
                 <div class="tab-pane fade active in" id="instruction">
-                    可以只上传一个表格，按照表格的行列做计算
-                    也可以上传两个表格，按照每个表格的列做计算
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>1.背景介绍</strong></span><br>
+                        组内相关性分析即对表格中列元素间进行相关性分析，取决于分析对象是样品还是OTU/基因等，相关系数越接近于1，表明相似度越高。
+                        <br>
+                    </p>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>2.操作界面</strong></span><br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/igc1.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;padding-left: 44%">操作界面</p>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        组内相关性分析需要输入的文件包含矩阵文件，文件格式必须是以tab键分割的txt文件。
+                        <br>
+                    </p>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>2.1.矩阵文件</strong></span><br>
+                        矩阵文件必须包含表头，在扩增子分析中，第一列为分组/OTU_id/物种分类等特征，第一行为样本名（样本名必须以字母开头，不能是纯数字）。例如，可以使用
+                        <span style="font-weight:700;"><strong>凌恩生物扩增子结题报告中纲水平</strong></span>的OTU分类表，每一格为该样本注释到对应物种的序列数，位于结果文件夹的
+                        <span style="font-weight:700;"><strong>01.OTU_Taxa/normalize/tax_summary_a/class.xls</strong></span>，可以在Excel中打开，然后另存为以tab键分隔的.txt文件，示例文件如下：
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/igc2.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        在转录组分析中，可以直接使用
+                        <span style="font-weight:700;"><strong>FPKM</strong></span>统计表，例如
+                        <span style="font-weight:700;"><strong>凌恩生物转录组分析结题报告</strong></span>中文件路径为
+                        <span style="font-weight:700;"><strong>GeneExp/genes.fpkm.txt</strong></span>的文件，第一列为基因id，第一行为样本名，示例文件如下：
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/igc3.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>2.2.选择分析类型</strong></span><br>
+                        云平台提供2种相关性算法，pearson相关系数用来衡量两个随机变量之间的相关性，适合连续性变量、符合正态分布假设的数据；spearman相关系数又称秩相关系数，是利用两变量的秩次大小作线性相关分析，对原始变量的分布不作要求。适合于定序变量、不满足正态分布假设或总体分布未知的数据，属于非参数统计方法，适用范围要广些。
+                        <br>
+                        选择完成后，点击“提交”按键，即可开始分析<br>
+                    </p>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>2.3.查看任务</strong></span><br>
+                        提交任务后，点击界面右侧的“历史任务”模块，或者点击界面“我的任务”，都可以查看任务编号、软件名称和状态等信息，点击任务编号，即可查看分析结果。
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/igc4.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        在任务详情界面，展示的是任务参数、结果文件列表和在线调整图片3个区域，提供结果文件下载和图片调整功能。<br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/igc5.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <br><br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>3.示例图片</strong></span><br>
+                        云平台提供权重网络图和heatmap热图，都可以根据需求在线调整。
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/igc6.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <br>
+                    <img src="/assets/images/softpic/instruction/igc7.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>4.结果文件</strong></span><br>
+                        结果文件包含相关性系数矩阵、p值矩阵、相关性系数c值和p值分析结果等<br>
+                        <span style="font-weight:700;"><strong>相关性系数矩阵：</strong></span>
+                        第一行和第一列为样本名，表中数值为两个样本的相关系数，数值越大，表示两个样本的相关性越大，越相近。
+                    </p>
+                    <img src="/assets/images/softpic/instruction/igc8.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>P值矩阵：</strong></span>
+                        第一行和第一列为样本名，表中数值为两个样本的相关显著性p值，数值越大，表示两个样本的相关性越大，越相近。
+                    </p>
+                    <img src="/assets/images/softpic/instruction/igc9.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>相关性系数c值和p值分析结果</strong></span><br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/igc10.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>根据p值生成的星星矩阵</strong></span><br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/igc11.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <br>
                 </div>
                 <div class="tab-pane fade" id="example">
-                    <h3 style="margin-bottom: 10px;">输出类型1:</h3>
-                    <h5 style="margin-bottom: 2px">示例参数: </h5>
-                    <p>1. 是否绘制数据点：no</p>
-                    <br>
-                    <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/boxplot_example1.png" alt="生物云平台">
-                    <br>
-                    <br>
-                    <h3 style="margin-bottom: 10px;">输出类型2:</h3>
-                    <h5 style="margin-bottom: 2px">示例参数: </h5>
-                    <p>1. 是否绘制数据点：yes</p>
-                    <br>
-                    <img class="img-rounded img-thumbnail img-responsive" src="/assets/images/softpic/exampleResult/boxplot_example2.png" alt="生物云平台">
-
+                    <h5 style="margin-bottom: 2px">视频录制中...敬请期待！</h5>
                 </div>
                 <div id="history" class="form1_ins tab-pane fade">
                     <a id="btn-refresh" class="btn_refresh mws-i-24 i-refresh-3" onclick="refresh('@abbre')">刷新状态</a>
@@ -191,65 +268,62 @@
                 }
             }
 
-            var flagtable1=false,flagtable2=false;
+            var flagtable=false;
 
             function checkTable(param) {
-                console.log(param);
-                var reader=new FileReader();
-                reader.readAsText(document.getElementById(param).files[0],"UTF-8");
-                reader.onload=function () {
-                    let text=reader.result;
-                    let line=text.trim().split('\n');
-                    sample=line[0].trim().split('\t');
-                    var length=sample.length;
-                    for(let i in line){
-                        var r=parseInt(i)+1;
-                        let row=line[i].trim().split('\t');
-                        var name=[];
-                        if(row.length!=length){
-                            if(param=="table1") flagtable1=false;
-                            else flagtable2=false;
-                            swal({
-                                title: "文件格式错误",
-                                text: "输入文件第"+r+"行数据数量不一致",
-                                type: "warning",
-                                confirmButtonText: "确认"
-                            });
-                            return false;
-                        }
-                        for(let j in row){
-                            var c=parseInt(j)+1;
-                            if(i!=0){
-                                if(j!=0 && !checkRate(row[j].trim())){
-                                    if(param=="table1") flagtable1=false;
-                                    else flagtable2=false;
-                                    swal({
-                                        title: "文件格式错误",
-                                        text: "输入文件第"+r+"行,第"+c+"列数据不是数字",
-                                        type: "warning",
-                                        confirmButtonText: "确认"
-                                    });
-                                    return false;
+                return new Promise((resolve, reject) => {
+                    var reader=new FileReader();
+                    reader.readAsText(document.getElementById(param).files[0],"UTF-8");
+                    reader.onload=function () {
+                        let text=reader.result;
+                        let line=text.trim().split('\n');
+                        sample=line[0].trim().split('\t');
+                        var length=sample.length;
+                        for(let i in line){
+                            var r=parseInt(i)+1;
+                            let row=line[i].trim().split('\t');
+                            var name=[];
+                            if(row.length!=length){
+                                flagtable=flagtable&&false;
+                                swal({
+                                    title: "文件格式错误",
+                                    text: "输入文件第"+r+"行数据数量不一致",
+                                    type: "warning",
+                                    confirmButtonText: "确认"
+                                });
+                                resolve(false);
+                            }
+                            for(let j in row){
+                                var c=parseInt(j)+1;
+                                if(i!=0){
+                                    if(j!=0 && !checkRate(row[j].trim())){
+                                        flagtable=flagtable&&false;
+                                        swal({
+                                            title: "文件格式错误",
+                                            text: "输入文件第"+r+"行,第"+c+"列数据不是数字",
+                                            type: "warning",
+                                            confirmButtonText: "确认"
+                                        });
+                                        resolve(false);
+                                    }
+                                }else {
+                                    if(name.indexOf(row[j])>=0){
+                                        flagtable=flagtable&&false;
+                                        swal({
+                                            title: "文件格式错误",
+                                            text: "输入文件第1行,第"+c+"列样品名重复存在，请核实！",
+                                            type: "warning",
+                                            confirmButtonText: "确认"
+                                        });
+                                        resolve(false);
+                                    }else name.push(row[j]);
                                 }
-                            }else {
-                                if(name.indexOf(row[j])>=0){
-                                    if(param=="table1") flagtable1=false;
-                                    else flagtable2=false;
-                                    swal({
-                                        title: "文件格式错误",
-                                        text: "输入文件第1行,第"+c+"列样品名重复存在，请核实！",
-                                        type: "warning",
-                                        confirmButtonText: "确认"
-                                    });
-                                    return false;
-                                }else name.push(row[j]);
                             }
                         }
-                    }
-                    if(param=="table1") flagtable1=true;
-                    else flagtable2=true;
-                    return true;
-                };
+                        flagtable=flagtable&&true;
+                        resolve(true);
+                    };
+                });
             }
 
             function checkRate(input) {
@@ -265,46 +339,42 @@
                 var fv = form.data("formValidation");
                 fv.validate();
                 if (fv.isValid()) {
-                    var bool;
-                    if($("#file2").is(':hidden')) {
-                        checkTable("table1");
-                        bool=flagtable1;
-                    } else {
-                        checkTable("table1");
-                        checkTable("table2");
-                        bool=flagtable1 && flagtable2
-                    }
-                    if(bool && checktaskname()){
-                        var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
-                        var index = layer.alert(element, {
-                            skin: 'layui-layer-lan',
-                            closeBtn: 0,
-                            title: "提醒",
-                            btn: []
-                        });
-                        setTimeout(function () {
-                            layer.close(index);
-                            var form1 = new FormData($("#IGC")[0]);
-                            $.ajax({
-                                url: "/CloudPlatform/SoftTool/runIGC?tablenum="+tablenum,
-                                type: "post",
-                                processData: false,
-                                contentType: false,
-                                data: form1,
-                                success: function (data) {
-                                    removeul();
-                                    loadHistory("@abbre");
-                                    $("#his_tab1").addClass("active");
-                                    $("#out_tab1").removeClass("active");
-                                    $("#ins_tab1").removeClass("active");
-                                    $("#history").addClass("active").addClass("in");
-                                    $("#example").removeClass("active");
-                                    $("#instruction").removeClass("active");
-                                    getTaskName("IGC","IGC");
-                                }
+                    flagtable=true;
+                    var check=[];
+                    check.push(checkTable('table1'));
+                    Promise.all(check).then((r)=>{
+                        if(flagtable && checktaskname()){
+                            var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
+                            var index = layer.alert(element, {
+                                skin: 'layui-layer-lan',
+                                closeBtn: 0,
+                                title: "提醒",
+                                btn: []
                             });
-                        }, 2000);
-                    }
+                            setTimeout(function () {
+                                layer.close(index);
+                                var form1 = new FormData($("#IGC")[0]);
+                                $.ajax({
+                                    url: "/CloudPlatform/SoftTool/runIGC?tablenum="+tablenum,
+                                    type: "post",
+                                    processData: false,
+                                    contentType: false,
+                                    data: form1,
+                                    success: function (data) {
+                                        removeul();
+                                        loadHistory("@abbre");
+                                        $("#his_tab1").addClass("active");
+                                        $("#out_tab1").removeClass("active");
+                                        $("#ins_tab1").removeClass("active");
+                                        $("#history").addClass("active").addClass("in");
+                                        $("#example").removeClass("active");
+                                        $("#instruction").removeClass("active");
+                                        getTaskName("IGC","IGC");
+                                    }
+                                });
+                            }, 2000);
+                        }
+                    });
                 }
             }
 

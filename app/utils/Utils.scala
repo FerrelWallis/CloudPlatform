@@ -22,6 +22,8 @@ object Utils{
 
   val windowsPath="F:/CloudPlatform/"
   val linuxPath="/mnt/sdb/ww/CloudPlatform/"
+  //bak
+//  val linuxPath="/mnt/sdb/ww/bak/CloudPlatform/"
 
 //  val RPath : String= {
 //    if (new File(windowsPath).exists()) "\"C:/Program Files/R/R-3.6.3/bin/Rscript.exe\" " else linuxPath+""
@@ -100,6 +102,14 @@ object Utils{
     execCommand.exec(command)
   }
 
+  //Linux下
+  def psToPdf(pspath:String,pdfpath:String)={
+    //$path/R_value_top_10_pairs.pdf $path/top.jpg
+    val command = s"ps2pdf "+ pspath + " " + pdfpath
+    val execCommand = new ExecCommand
+    //exec需要指定结果输出路径的时候，不指定默认本地任务路径
+    execCommand.exec(command)
+  }
 
 
 

@@ -16,7 +16,7 @@ trait Tables {
   import slick.jdbc.{GetResult => GR}
 
   /** DDL for all tables. Call .create to execute. */
-  lazy val schema: profile.SchemaDescription = Ak.schema ++ Danmu.schema ++ Dutys.schema ++ Soft.schema ++ Users.schema
+  lazy val schema: profile.SchemaDescription = Ak.schema ++ Dutys.schema ++ Notice.schema ++ Soft.schema ++ Users.schema
   @deprecated("Use .schema instead of .ddl", "3.0")
   def ddl = schema
 
@@ -42,29 +42,6 @@ trait Tables {
   }
   /** Collection-like TableQuery object for table Ak */
   lazy val Ak = new TableQuery(tag => new Ak(tag))
-
-  /** Entity class storing rows of table Danmu
-   *  @param sabbre Database column sabbre SqlType(VARCHAR), PrimaryKey, Length(255,true)
-   *  @param danmus Database column danmus SqlType(TEXT) */
-  case class DanmuRow(sabbre: String, danmus: String)
-  /** GetResult implicit for fetching DanmuRow objects using plain SQL queries */
-  implicit def GetResultDanmuRow(implicit e0: GR[String]): GR[DanmuRow] = GR{
-    prs => import prs._
-    DanmuRow.tupled((<<[String], <<[String]))
-  }
-  /** Table description of table danmu. Objects of this class serve as prototypes for rows in queries. */
-  class Danmu(_tableTag: Tag) extends profile.api.Table[DanmuRow](_tableTag, Some("cloudplatform"), "danmu") {
-    def * = (sabbre, danmus) <> (DanmuRow.tupled, DanmuRow.unapply)
-    /** Maps whole row to an option. Useful for outer joins. */
-    def ? = ((Rep.Some(sabbre), Rep.Some(danmus))).shaped.<>({r=>import r._; _1.map(_=> DanmuRow.tupled((_1.get, _2.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
-
-    /** Database column sabbre SqlType(VARCHAR), PrimaryKey, Length(255,true) */
-    val sabbre: Rep[String] = column[String]("sabbre", O.PrimaryKey, O.Length(255,varying=true))
-    /** Database column danmus SqlType(TEXT) */
-    val danmus: Rep[String] = column[String]("danmus")
-  }
-  /** Collection-like TableQuery object for table Danmu */
-  lazy val Danmu = new TableQuery(tag => new Danmu(tag))
 
   /** Entity class storing rows of table Dutys
    *  @param id Database column id SqlType(INT), AutoInc, PrimaryKey
@@ -116,6 +93,47 @@ trait Tables {
   /** Collection-like TableQuery object for table Dutys */
   lazy val Dutys = new TableQuery(tag => new Dutys(tag))
 
+  /** Entity class storing rows of table Notice
+   *  @param id Database column id SqlType(INT), AutoInc, PrimaryKey
+   *  @param title Database column title SqlType(TEXT)
+   *  @param pubtime Database column pubtime SqlType(TEXT)
+   *  @param failtime Database column failtime SqlType(TEXT)
+   *  @param width Database column width SqlType(TEXT)
+   *  @param top Database column top SqlType(TEXT)
+   *  @param left Database column left SqlType(TEXT)
+   *  @param content Database column content SqlType(TEXT) */
+  case class NoticeRow(id: Int, title: String, pubtime: String, failtime: String, width: String, top: String, left: String, content: String)
+  /** GetResult implicit for fetching NoticeRow objects using plain SQL queries */
+  implicit def GetResultNoticeRow(implicit e0: GR[Int], e1: GR[String]): GR[NoticeRow] = GR{
+    prs => import prs._
+    NoticeRow.tupled((<<[Int], <<[String], <<[String], <<[String], <<[String], <<[String], <<[String], <<[String]))
+  }
+  /** Table description of table notice. Objects of this class serve as prototypes for rows in queries. */
+  class Notice(_tableTag: Tag) extends profile.api.Table[NoticeRow](_tableTag, Some("cloudplatform"), "notice") {
+    def * = (id, title, pubtime, failtime, width, top, left, content) <> (NoticeRow.tupled, NoticeRow.unapply)
+    /** Maps whole row to an option. Useful for outer joins. */
+    def ? = ((Rep.Some(id), Rep.Some(title), Rep.Some(pubtime), Rep.Some(failtime), Rep.Some(width), Rep.Some(top), Rep.Some(left), Rep.Some(content))).shaped.<>({r=>import r._; _1.map(_=> NoticeRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get, _8.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+
+    /** Database column id SqlType(INT), AutoInc, PrimaryKey */
+    val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
+    /** Database column title SqlType(TEXT) */
+    val title: Rep[String] = column[String]("title")
+    /** Database column pubtime SqlType(TEXT) */
+    val pubtime: Rep[String] = column[String]("pubtime")
+    /** Database column failtime SqlType(TEXT) */
+    val failtime: Rep[String] = column[String]("failtime")
+    /** Database column width SqlType(TEXT) */
+    val width: Rep[String] = column[String]("width")
+    /** Database column top SqlType(TEXT) */
+    val top: Rep[String] = column[String]("top")
+    /** Database column left SqlType(TEXT) */
+    val left: Rep[String] = column[String]("left")
+    /** Database column content SqlType(TEXT) */
+    val content: Rep[String] = column[String]("content")
+  }
+  /** Collection-like TableQuery object for table Notice */
+  lazy val Notice = new TableQuery(tag => new Notice(tag))
+
   /** Entity class storing rows of table Soft
    *  @param id Database column id SqlType(INT), AutoInc, PrimaryKey
    *  @param types Database column types SqlType(VARCHAR), Length(255,true)
@@ -124,18 +142,19 @@ trait Tables {
    *  @param descreption Database column descreption SqlType(TEXT)
    *  @param pic Database column pic SqlType(TEXT)
    *  @param likefreq Database column likefreq SqlType(INT)
-   *  @param money Database column money SqlType(INT) */
-  case class SoftRow(id: Int, types: String, abbrename: String, sname: String, descreption: String, pic: String, likefreq: Int, money: Int)
+   *  @param money Database column money SqlType(INT)
+   *  @param status Database column status SqlType(INT) */
+  case class SoftRow(id: Int, types: String, abbrename: String, sname: String, descreption: String, pic: String, likefreq: Int, money: Int, status: Int)
   /** GetResult implicit for fetching SoftRow objects using plain SQL queries */
   implicit def GetResultSoftRow(implicit e0: GR[Int], e1: GR[String]): GR[SoftRow] = GR{
     prs => import prs._
-    SoftRow.tupled((<<[Int], <<[String], <<[String], <<[String], <<[String], <<[String], <<[Int], <<[Int]))
+    SoftRow.tupled((<<[Int], <<[String], <<[String], <<[String], <<[String], <<[String], <<[Int], <<[Int], <<[Int]))
   }
   /** Table description of table soft. Objects of this class serve as prototypes for rows in queries. */
   class Soft(_tableTag: Tag) extends profile.api.Table[SoftRow](_tableTag, Some("cloudplatform"), "soft") {
-    def * = (id, types, abbrename, sname, descreption, pic, likefreq, money) <> (SoftRow.tupled, SoftRow.unapply)
+    def * = (id, types, abbrename, sname, descreption, pic, likefreq, money, status) <> (SoftRow.tupled, SoftRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = ((Rep.Some(id), Rep.Some(types), Rep.Some(abbrename), Rep.Some(sname), Rep.Some(descreption), Rep.Some(pic), Rep.Some(likefreq), Rep.Some(money))).shaped.<>({r=>import r._; _1.map(_=> SoftRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get, _8.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = ((Rep.Some(id), Rep.Some(types), Rep.Some(abbrename), Rep.Some(sname), Rep.Some(descreption), Rep.Some(pic), Rep.Some(likefreq), Rep.Some(money), Rep.Some(status))).shaped.<>({r=>import r._; _1.map(_=> SoftRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get, _8.get, _9.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column id SqlType(INT), AutoInc, PrimaryKey */
     val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
@@ -153,6 +172,8 @@ trait Tables {
     val likefreq: Rep[Int] = column[Int]("likefreq")
     /** Database column money SqlType(INT) */
     val money: Rep[Int] = column[Int]("money")
+    /** Database column status SqlType(INT) */
+    val status: Rep[Int] = column[Int]("status")
   }
   /** Collection-like TableQuery object for table Soft */
   lazy val Soft = new TableQuery(tag => new Soft(tag))
@@ -166,18 +187,19 @@ trait Tables {
    *  @param company Database column company SqlType(VARCHAR), Length(255,true)
    *  @param authority Database column authority SqlType(VARCHAR), Length(255,true)
    *  @param like Database column like SqlType(TEXT)
-   *  @param ip Database column ip SqlType(TEXT) */
-  case class UsersRow(id: Int, phone: String, email: String, pwd: String, name: String, company: String, authority: String, like: String, ip: String)
+   *  @param ip Database column ip SqlType(TEXT)
+   *  @param readnote Database column readnote SqlType(TEXT) */
+  case class UsersRow(id: Int, phone: String, email: String, pwd: String, name: String, company: String, authority: String, like: String, ip: String, readnote: String)
   /** GetResult implicit for fetching UsersRow objects using plain SQL queries */
   implicit def GetResultUsersRow(implicit e0: GR[Int], e1: GR[String]): GR[UsersRow] = GR{
     prs => import prs._
-    UsersRow.tupled((<<[Int], <<[String], <<[String], <<[String], <<[String], <<[String], <<[String], <<[String], <<[String]))
+    UsersRow.tupled((<<[Int], <<[String], <<[String], <<[String], <<[String], <<[String], <<[String], <<[String], <<[String], <<[String]))
   }
   /** Table description of table users. Objects of this class serve as prototypes for rows in queries. */
   class Users(_tableTag: Tag) extends profile.api.Table[UsersRow](_tableTag, Some("cloudplatform"), "users") {
-    def * = (id, phone, email, pwd, name, company, authority, like, ip) <> (UsersRow.tupled, UsersRow.unapply)
+    def * = (id, phone, email, pwd, name, company, authority, like, ip, readnote) <> (UsersRow.tupled, UsersRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = ((Rep.Some(id), Rep.Some(phone), Rep.Some(email), Rep.Some(pwd), Rep.Some(name), Rep.Some(company), Rep.Some(authority), Rep.Some(like), Rep.Some(ip))).shaped.<>({r=>import r._; _1.map(_=> UsersRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get, _8.get, _9.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = ((Rep.Some(id), Rep.Some(phone), Rep.Some(email), Rep.Some(pwd), Rep.Some(name), Rep.Some(company), Rep.Some(authority), Rep.Some(like), Rep.Some(ip), Rep.Some(readnote))).shaped.<>({r=>import r._; _1.map(_=> UsersRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get, _8.get, _9.get, _10.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column id SqlType(INT), AutoInc, PrimaryKey */
     val id: Rep[Int] = column[Int]("id", O.AutoInc, O.PrimaryKey)
@@ -197,6 +219,8 @@ trait Tables {
     val like: Rep[String] = column[String]("like")
     /** Database column ip SqlType(TEXT) */
     val ip: Rep[String] = column[String]("ip")
+    /** Database column readnote SqlType(TEXT) */
+    val readnote: Rep[String] = column[String]("readnote")
   }
   /** Collection-like TableQuery object for table Users */
   lazy val Users = new TableQuery(tag => new Users(tag))

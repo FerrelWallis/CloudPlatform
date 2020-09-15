@@ -1505,6 +1505,7 @@ if (typeof jQuery === 'undefined') {
 
             this._submitIfValid = false;
             for (var field in this.options.fields) {
+                // console.log(field);
                 this.validateField(field);
             }
 

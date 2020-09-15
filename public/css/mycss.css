@@ -16,53 +16,121 @@
 
 
 .Boxplot {
-    background: url(../images/softpic/box.jpg) 50% center no-repeat;
+    background: url(../images/softpic/temp/box.png) 50% center no-repeat;
     background-size: contain;
 }
 .CCA {
-    background: url(../images/softpic/cca.jpg) 50% center no-repeat;
+    background: url(../images/softpic/temp/cca.png) 50% center no-repeat;
     background-size: contain;
 }
 .NetWeight{
-    background: url("../images/softpic/net.jpg")50% center no-repeat;
+    background: url("../images/softpic/temp/net.png")50% center no-repeat;
     background-size: contain;
 }
 .NetDirected{
-    background: url("../images/softpic/net.jpg")50% center no-repeat;
+    background: url("../images/softpic/temp/net.png")50% center no-repeat;
     background-size: contain;
 }
 .Heatmap{
-    background: url(../images/softpic/heatmap.jpg)50% center no-repeat;
+    background: url(../images/softpic/temp/heatmap.png)50% center no-repeat;
     background-size: contain;
 }
 .GO{
-    background: url(../images/softpic/go.jpg)50% center no-repeat;
+    background: url(../images/softpic/temp/go.png)50% center no-repeat;
     background-size: contain;
 }
 .KEGG{
-    background: url(../images/softpic/kegg.jpg)50% center no-repeat;
+    background: url(../images/softpic/temp/kegg.png)50% center no-repeat;
     background-size: contain;
 }
 .PCA{
-    background: url(../images/softpic/pca.jpg)50% center no-repeat;
+    background: url(../images/softpic/temp/pca.png)50% center no-repeat;
     background-size: contain;
 }
 .Venn{
-    background: url(../images/softpic/Jvenn.png) 50% center no-repeat;
+    background: url(../images/softpic/temp/Jvenn.png) 50% center no-repeat;
     background-size: contain;
 }
 .IGC{
-    background: url(../images/softpic/igc.jpg) 50% center no-repeat;
+    background: url(../images/softpic/temp/igc.png) 50% center no-repeat;
     background-size: contain;
 }
 .TAX{
-    background: url(../images/softpic/tax.jpg) 50% center no-repeat;
+    background: url(../images/softpic/temp/tax.png) 50% center no-repeat;
     background-size: contain;
 }
-.Scaplot{
-    background: url(../images/softpic/Jvenn.png) 50% center no-repeat;
+.BAR{
+    background: url(../images/softpic/temp/bar.png) 50% center no-repeat;
     background-size: contain;
 }
+.FAP{
+    background: url(../images/softpic/temp/fap.png) 50% center no-repeat;
+    background-size: contain;
+}
+.PIC{
+    background: url(../images/softpic/temp/pic.png) 50% center no-repeat;
+    background-size: contain;
+}
+.LEF{
+    background: url(../images/softpic/temp/lef.png) 50% center no-repeat;
+    background-size: contain;
+}
+.ABI{
+    background: url(../images/softpic/temp/abi.png) 50% center no-repeat;
+    background-size: contain;
+}
+.CIR{
+    background: url(../images/softpic/temp/cir.png) 50% center no-repeat;
+    background-size: contain;
+}
+.PRE{
+    background: url(../images/softpic/temp/pre.png) 50% center no-repeat;
+    background-size: contain;
+}
+.RSQ{
+    background: url(../images/softpic/temp/rsq.png) 50% center no-repeat;
+    background-size: contain;
+}
+.GTF{
+    background: url(../images/softpic/temp/gtf.png) 50% center no-repeat;
+    background-size: contain;
+}
+.PMR{
+    background: url(../images/softpic/temp/pmr.png) 50% center no-repeat;
+    background-size: contain;
+}
+
+
+.VOC{
+    background: url(../images/softpic/temp/voc.png) 50% center no-repeat;
+    background-size: contain;
+}
+.MHT{
+    background: url(../images/softpic/temp/mht.png) 50% center no-repeat;
+    background-size: contain;
+}
+.RAD{
+    background: url(../images/softpic/temp/rad.png) 50% center no-repeat;
+    background-size: contain;
+}
+.TRM{
+    background: url(../images/softpic/temp/trm.png) 50% center no-repeat;
+    background-size: contain;
+}
+.TPC{
+    background: url(../images/softpic/temp/tpc.png) 50% center no-repeat;
+    background-size: contain;
+}
+.VIO{
+    background: url(../images/softpic/temp/vio.png) 50% center no-repeat;
+    background-size: contain;
+}
+
+
+/*.Scaplot{*/
+/*    background: url(../images/softpic/temp/Jvenn.png) 50% center no-repeat;*/
+/*    background-size: contain;*/
+/*}*/
 
 
 
@@ -682,7 +750,7 @@
 
 .yellow-icon{
     /*color: #fcf811;*/
-    color: #ff4d17;
+    color: #ff9c00;
 }
 
 
