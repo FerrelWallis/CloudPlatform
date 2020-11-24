@@ -21,9 +21,9 @@ import scala.util.Random
 object Utils{
 
   val windowsPath="F:/CloudPlatform/"
-  val linuxPath="/mnt/sdb/ww/CloudPlatform/"
+//  val linuxPath="/mnt/sdb/ww/CloudPlatform/"
   //bak
-//  val linuxPath="/mnt/sdb/ww/bak/CloudPlatform/"
+  val linuxPath="/mnt/sdb/ww/bak/CloudPlatform/"
 
 //  val RPath : String= {
 //    if (new File(windowsPath).exists()) "\"C:/Program Files/R/R-3.6.3/bin/Rscript.exe\" " else linuxPath+""

@@ -134,19 +134,19 @@
 @*                        <input type="submit" class="mws-search-submit" />*@
 @*                    </form>*@
 @*                </div>*@
-                <div id="mws-navigation">
+                <div id="mws-navigation" style="background: #003366">
                     <ul>
                         <li><a href="@routes.HomeController.index()" class="mws-i-24 i-home">主页</a></li>
                         <li><a onclick="checklog('/CloudPlatform/PersonalCenter')"  class="mws-i-24 i-single-user">个人中心</a></li>
                         <li>
                             <a href="#"  class="mws-i-24 i-blocks-images">软件中心</a>
                             <ul style="padding-top: 8px;padding-bottom: 5px;height: 272px">
-                                <li style="margin-top: 10px"><a href="/CloudPlatform/home/allsoft?types=li_like">我的收藏</a></li>
+                                <li style="margin-top: 10px"><a onclick="checklog('/CloudPlatform/home/allsoft?types=li_like')">我的收藏</a></li>
                                 <li><a href="/CloudPlatform/home/allsoft?types=li_allsoft">所有软件</a></li>
                                 <li><a href="/CloudPlatform/home/allsoft?types=li_function">功能分析</a></li>
                                 <li><a href="/CloudPlatform/home/allsoft?types=li_cluster">聚类分析</a></li>
                                 <li><a href="/CloudPlatform/home/allsoft?types=li_paint">基础绘图</a></li>
-                                <li><a href="/CloudPlatform/home/allsoft?types=li_checkdiff">统计检验与差异分析</a></li>
+                                <li><a href="/CloudPlatform/home/allsoft?types=li_check">统计检验与差异分析</a></li>
                                 <li><a href="/CloudPlatform/home/allsoft?types=li_sequence">序列处理</a></li>
                                 <li><a href="/CloudPlatform/home/allsoft?types=li_annotation">注释工具</a></li>
                                 <li><a href="/CloudPlatform/home/allsoft?types=li_chart">表格与格式转化</a></li>
@@ -154,7 +154,8 @@
                         </li>
                         <li><a onclick="checklog('/CloudPlatform/myTask')"  class="mws-i-24 i-clipboard-1">我的任务</a></li>
                         <li><a onclick="checklog('/CloudPlatform/NoticeList')" class="mws-i-24 i-megaphone">公告列表</a><a id="liNotice" data-reveal-id="latestNotice" style="display: none"></a></li>
-                        <li><a href="/CloudPlatform/home/updateNews" class="mws-i-24 i-info-about">更新日志</a></li>
+                        <li><a onclick="checklog('/CloudPlatform/feedback')" class="mws-i-24 i-headphones">意见反馈</a><a id="liFeedback" data-reveal-id="feedbackPage" style="display: none"></a></li>
+                        <li><a href="/CloudPlatform/home/updateNews" class="mws-i-24 i-info-about">更新日志</a><a id="liLog" data-reveal-id="logPage" style="display: none"></a></li>
                         <li id="manager" style="display: none"><a href="/CloudPlatform/managerPanel" class="mws-i-24 i-computer-imac">管理员面板</a></li>
                     </ul>
                 </div>
@@ -169,6 +170,10 @@
 
 
         <script>
+
+            function test() {
+                $("#liMailbox").click();
+            }
 
             if("@session.get("uAuthority")"=="admin") $("#manager").show();
 

@@ -23,7 +23,7 @@
             }
             .fontleft{
                 margin-top: 5px;
-                width: 110px;
+                width: 130px;
                 text-align: right;
             }
             .fontright{
@@ -86,7 +86,18 @@
                                             <label style="float: left">（默认所有）</label>
                                         </div>
                                     </div>
-                                    <div class="form-group-p">
+                                    <div class="form-group-p novirtual">
+                                        <div class="form-group picleft">
+                                            <label for="">是否绘制分界线：</label>
+                                        </div>
+                                        <div class="form-group right picright">
+                                            <select name="showah" id="showah" onchange="checkshowah()">
+                                                <option value="TRUE">yes</option>
+                                                <option value="FALSE">no</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group-p limit">
                                         <div class="form-group picleft">
                                             <label for="">分界线位置：</label>
                                         </div>
@@ -161,7 +172,19 @@
                                         </div>
                                     </div>
                                     <br>
-                                    <div class="form-group-p">
+                                    <div class="form-group-p novirtual limit">
+                                        <div id="snamecolor">
+                                            <div class="form-group">
+                                                <label>分界线上方点颜色：</label>
+                                            </div>
+                                            <div class="form-group" style="width: 60%">
+                                                <div  class="evo-cp-wrap" style="margin-right: 10px">
+                                                    <input id="hpccolo"  name="hpccolo" value=" " class="colorPicker evo-cp0">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group-p limit">
                                         <div id="snamecolor">
                                             <div class="form-group">
                                                 <label>水平分界线颜色：</label>
@@ -187,19 +210,35 @@
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="fontpara">
-                                    <div class="form-group-p virtual">
-                                        <div class="form-group picleft">
+                                    <div class="form-group-p virtual nolimit">
+                                        <div class="form-group fontleft">
                                             <label for="">数据点大小：</label>
                                         </div>
-                                        <div class="form-group picright" style="margin-left: 10px">
-                                            <input id="ps" name="ps" data-slider-id='sps' type="text" data-slider-min="0" data-slider-max="10" data-slider-step="1" data-slider-value="2"/>
+                                        <div class="form-group fontright" style="line-height: 39px;">
+                                            <input id="ps" name="ps" data-slider-id='sps' type="text" data-slider-min="0" data-slider-max="10" data-slider-step="0.5" data-slider-value="2"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group-p novirtual limit">
+                                        <div class="form-group fontleft">
+                                            <label for="">线上数据点大小：</label>
+                                        </div>
+                                        <div class="form-group fontright" style="line-height: 39px;">
+                                            <input id="pshigh" name="pshigh" data-slider-id='spshigh' type="text" data-slider-min="0" data-slider-max="5" data-slider-step="0.5" data-slider-value="2"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group-p novirtual limit">
+                                        <div class="form-group fontleft">
+                                            <label for="">线下数据点大小：</label>
+                                        </div>
+                                        <div class="form-group fontright" style="line-height: 39px;">
+                                            <input id="pslow" name="pslow" data-slider-id='spslow' type="text" data-slider-min="0" data-slider-max="5" data-slider-step="0.5" data-slider-value="2"/>
                                         </div>
                                     </div>
                                     <div class="form-group-p virtual">
-                                        <div class="form-group picleft">
+                                        <div class="form-group fontleft">
                                             <label for="">数据名大小：</label>
                                         </div>
-                                        <div class="form-group picright" style="margin-left: 10px">
+                                        <div class="form-group fontright" style="line-height: 39px;">
                                             <input id="lbs" name="lbs" data-slider-id='slbs' type="text" data-slider-min="0" data-slider-max="10" data-slider-step="1" data-slider-value="2"/>
                                         </div>
                                     </div>
@@ -208,7 +247,7 @@
                                             <label for="">分界线粗细：</label>
                                         </div>
                                         <div class="form-group fontright" style="line-height: 39px;">
-                                            <input id="ahsize" name="ahsize" data-slider-id='sahsize' type="text" data-slider-min="0" data-slider-max="2" data-slider-step="0.1" data-slider-value="0.8"/>
+                                            <input id="ahsize" name="ahsize" data-slider-id='sahsize' type="text" data-slider-min="0" data-slider-max="4" data-slider-step="0.1" data-slider-value="0.8"/>
                                         </div>
                                     </div>
                                     <div class="form-group-p novirtual">
@@ -217,6 +256,22 @@
                                         </div>
                                         <div class="form-group fontright" style="line-height: 39px;">
                                             <input id="xts" name="xts" data-slider-id='sxts' type="text" data-slider-min="0" data-slider-max="50" data-slider-step="1" data-slider-value="15"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group-p novirtual">
+                                        <div class="form-group fontleft">
+                                            <label for="">x轴字体距X轴距离：</label>
+                                        </div>
+                                        <div class="form-group fontright" style="line-height: 39px;">
+                                            <input id="xtphjust" name="xtphjust" data-slider-id='sxtphjust' type="text" data-slider-min="1" data-slider-max="2" data-slider-step="0.1" data-slider-value="1"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group-p novirtual">
+                                        <div class="form-group fontleft">
+                                            <label>x轴字体旋转角度：</label>
+                                        </div>
+                                        <div class="form-group fontright" style="line-height: 39px;">
+                                            <input id="xtpangle" name="xtpangle" data-slider-id='sxtpangle' type="text" data-slider-min="0" data-slider-max="360" data-slider-step="5" data-slider-value="60"/>
                                         </div>
                                     </div>
                                     <div class="form-group-p">
@@ -256,7 +311,7 @@
                                             <label for="">说明图标大小：</label>
                                         </div>
                                         <div class="form-group fontright" style="line-height: 39px;">
-                                            <input id="lis" name="lis" data-slider-id='slis' type="text" data-slider-min="0" data-slider-max="10" data-slider-step="1" data-slider-value="14"/>
+                                            <input id="lis" name="lis" data-slider-id='slis' type="text" data-slider-min="0" data-slider-max="10" data-slider-step="1" data-slider-value="3"/>
                                         </div>
                                     </div>
                                     <div class="form-group-p">
@@ -314,7 +369,7 @@
 
     <script>
 
-            const updatetime="2020-08-24";
+            const updatetime="2020-09-19";
 
             function checkupdate(){
                 $(".update").text(updatetime);
@@ -434,6 +489,7 @@
                             }
                         },
                         ahcolo: colorValidators,
+                        hpccolo: colorValidators,
                         lbscolo: colorValidators
                     }
                 });
@@ -451,6 +507,7 @@
 
             $(document).ready(function () {
                 if("@row.status"=="已完成"){
+                    checkupdate();
                     $("#MHT").show();
                     $.ajax({
                         url:"/CloudPlatform/SoftTool/getManhattanData?taskname=@row.taskname",
@@ -491,11 +548,21 @@
                             $(".evo-cp-wrap").css("float", "left");
                             $(".evo-cp-wrap").css("width", "180px");
                             checkVirtual();
-                            checkupdate();
+                            if(samnum>1) checkshowah();
                         }
                     });
                 }
             });
+
+                function checkshowah() {
+                    if($("#showah").val()=="TRUE") {
+                        $(".nolimit").hide();
+                        $(".limit").show();
+                    } else {
+                        $(".nolimit").show();
+                        $(".limit").hide();
+                    }
+                }
 
                 function checkVirtual() {
                     if(samnum>1) {

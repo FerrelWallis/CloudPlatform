@@ -48,6 +48,10 @@ class dutyDao @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)(
       db.run(Dutys.filter(_.uid===Integer.parseInt(uid)).filter(_.taskname===taskname).result)
     }
 
+  def getRunningDuty:Future[Seq[DutysRow]]={
+    db.run(Dutys.filter(_.status==="运行中").result)
+  }
+
 
   def getDutyByType(uid:String,sabbrename:String):Future[Seq[DutysRow]]={
     db.run(Dutys.filter(_.uid===Integer.parseInt(uid)).filter(_.sabbrename===sabbrename).sortBy(_.subtime.desc).result)

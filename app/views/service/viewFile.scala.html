@@ -1,4 +1,4 @@
-@(taskname:String,filename:String)(implicit session: Session)
+@(taskname:String,filename:String,filetype:String)(implicit session: Session)
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -11,24 +11,55 @@
         <meta http-equiv="X-UA-Compatible" content="IE=8"> <!--以IE8模式渲染-->
         <meta http-equiv="X-UA-Compatible" content="IE=7"> <!--以IE7模式渲染-->
 
-        <script type="text/javascript" src="@routes.Assets.versioned("bootstrap/js/jquery-3.1.1.min.js")"></script>
-
         <title>@filename</title>
 
+        <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("css/base.css")" media="screen" />
+        <link rel="stylesheet" href="@routes.Assets.versioned("zui/zui.min.css")" media="screen" />
+
+        <script type="text/javascript" src="@routes.Assets.versioned("bootstrap/js/jquery-3.1.1.min.js")"></script>
+
+        <style>
+                pre {
+                    background-color: unset;
+                    border: unset;
+                }
+        </style>
+
     </head>
-<body>
-    <pre id="file_content">
+    <body style="height: 100%;width: 100%;background: unset!important;">
 
-    </pre>
-</body>
+        <pre id="file_content" style="width: 100%;">
 
-<script>
-        $.ajax({
-            url:"/CloudPlatform/Utils/readFileContent?taskname=@taskname&filename=@filename",
-            type:"post",
-            success:function (data) {
-                $("#file_content").text(data.content);
+        </pre>
+
+        <div id="pdf_part" style="width: 100%;height:100%;float: left;display: none">
+            <iframe id="pdf" width="100%" height="100%" style="border: lightgray 1px solid;"></iframe>
+        </div>
+
+    </body>
+
+    <script>
+            if("@filetype"=="pdf"){
+                $.ajax({
+                    url:"/CloudPlatform/Utils/getFilePath?taskname=@taskname&filename=@filename",
+                    type:"post",
+                    success:function (data) {
+                        $("#pdf").attr("src","/CloudPlatform/Utils/viewer?file=/CloudPlatform/pdf&fileUrl="+data.pdfUrl+"&num="+Math.random());
+                        $("#pdf_part").show();
+                        $("#file_content").hide();
+                    }
+                });
+            } else {
+                $.ajax({
+                    url:"/CloudPlatform/Utils/readFileContent?taskname=@taskname&filename=@filename",
+                    type:"post",
+                    success:function (data) {
+                        $("#file_content").text(data.content);
+                        $("#pdf_part").hide();
+                        $("#file_content").show();
+                    }
+                });
             }
-        });
-</script>
+
+    </script>
 </html>

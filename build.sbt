@@ -29,5 +29,5 @@ libraryDependencies ++= Seq(
   "org.apache.commons" % "commons-compress" % "1.18",
   "org.apache.pdfbox" % "pdfbox" % "2.0.19",
   "com.aliyun" % "aliyun-java-sdk-core" % "3.7.1",
-  "com.aliyun" % "aliyun-java-sdk-dysmsapi" % "1.1.0"
+  "com.aliyun" % "aliyun-java-sdk-dysmsapi" % "1.1.0"  //短信服务
 )

@@ -55,9 +55,11 @@
                         </div>
                         <div class="form-group-extra">
                             <em>
-                                <a href='/assets/files/otu_taxa_table.biom' target='_blank' style="margin-left: 20px;">biom示例文件</a>
+                                <a href='/assets/files/otu_table.biom' target='_blank'>示例文件(biom)</a>
                             </em>
-
+                            <em>
+                                <a href='/assets/files/otu_table.txt' target='_blank' style="margin-left: 20px;">示例文件(txt)</a>
+                            </em>
                         </div>
                         <br>
                         <br>
@@ -83,7 +85,75 @@
             </ul>
             <div class="tab-content" style="box-sizing: border-box!important;">
                 <div class="tab-pane fade active in" id="instruction">
-                    <h5 style="margin-bottom: 2px">更详细使用说明编写中...敬请期待！</h5>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>1.背景介绍</strong></span><br>
+                        功能预测是基于扩增子测序数据开展微生物群落功能研究的重要内容，FAPROTAX是功能预测软件中的一枝独秀，其应用灵活，不受数据库局限（Greengene、silva和RDP都可），较适用于对环境样本（如海洋、湖泊等）的生物地球化学循环过程（特别是碳、氢、氮、磷、硫等元素循环）进行功能注释预测。原理是基于已发表验证的可培养菌文献，预测准确度较好，但相比于PICRUSt和Tax4Fun来说预测的覆盖度可能会降低。
+                        <br>
+                    </p>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>2.操作界面</strong></span><br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/fap1.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;padding-left: 44%">操作界面</p>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        FAPROTAX分析需要输入的文件包含OTU丰度表，文件格式支持biom格式和txt两种格式的。
+                        <br>
+                    </p>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>2.1.OTU丰度表</strong></span><br>
+                        BIOM格式是微生物组领域最常用的结果保存格式，优点是可将OTU或Feature表、样本属性、物种信息等多个表保存于同一个文件中，且格式统一，体积更小巧，目前被微生物组领域几乎所有主流软件所支持。此处可以直接使用
+                        <span style="font-weight:700;"><strong>凌恩生物扩增子结题报告</strong></span>中biom格式的OTU丰度表，位于结果文件夹的
+                        <span style="font-weight:700;"><strong>01.OTU_Taxa/ normalize/otu_taxa_table.biom</strong></span>，示例文件如下：
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/fap2.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        也可以使用
+                        <span style="font-weight:700;"><strong>凌恩生物扩增子结题报告</strong></span>中excel格式的OTU丰度表，位于结果文件夹的
+                        <span style="font-weight:700;"><strong>01.OTU_Taxa/ normalize/otu_taxa_table.xls</strong></span>，在使用前需要用excel打开，首行增加“# Constructed from biom file”，并另存为制表符分隔的txt文件，示例文件如下：
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/fap3.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        上传文件后，点击“提交”按键，即可开始分析
+                        <br>
+                    </p>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>2.2.查看任务</strong></span><br>
+                        提交任务后，点击界面右侧的“历史任务”模块，或者点击界面“我的任务”，都可以查看任务编号、软件名称和状态等信息，点击任务编号，即可查看分析结果。
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/fap4.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        在任务详情界面，展示的是任务参数和结果文件列表2个区域，提供结果文件下载功能。<br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/fap5.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <br><br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>3.结果文件</strong></span><br>
+                        结果文件包含功能丰度表、biom格式的功能丰度表、每个功能相关的OTU的丰度表压缩包和与功能相关的总的OTU列表。
+                        <br>
+                        功能丰度表（functional_table.xls）：第一列为预测的功能列表，其后为样本列，数值表示相对丰度。(functional_table.biom为biom格式的功能丰度表。)
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/fap6.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        功能相关的总OTU列表（functional_otu.xls）：第一列为预测的功能列表，其后该功能类别包含的OTU编号。
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/fap7.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        每个功能相关的OTU丰度表压缩包（otuTables.zip）：每个功能为一个单独的文件，记录每个样本中对应该功能的OTU丰度信息。<br>
+                    </p>
                 </div>
                 <div class="tab-pane fade" id="example">
                     <h5 style="margin-bottom: 2px">视频录制中...敬请期待！</h5>

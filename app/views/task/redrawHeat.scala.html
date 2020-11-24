@@ -274,6 +274,23 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div id="groupcolor" class="one-line" style="display: none">
+                                        <div style="border: 1px solid lightgrey;border-radius: 5px;padding: 10px;margin-left: 30px">
+                                            <div class="form-group-p" style="padding-left: 0">
+                                                <div style="width: 100%;margin-left: 10px">
+                                                    <label>行列分组颜色设置：</label>
+                                                </div>
+                                            </div>
+                                            <br><br>
+                                            <div class="form-group-p" >
+                                                <div class="form-group" style="width: 85%">
+                                                    <ul id="gmycolor"></ul>
+                                                    <input type="text" id="gdesigncolor" name="gdesigncolor" class="form-control" value="" style="display: none">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+                                    </div>
                                 </div>
                                 <div class="tab-pane fade" id="fontpara">
                                     <div class="form-group-p">
@@ -373,7 +390,7 @@
 
     <script>
 
-            const updatetime="2020-07-29";
+            const updatetime="2020-10-29";
 
             function checkupdate(){
                 $(".update").text(updatetime);
@@ -414,6 +431,8 @@
         var colornum=0;
         var allcol=0;
         var allrow=0;
+        var gcnum=0;
+        var groupname=[];
 
             function formValidation() {
                 $('#Heatmap').formValidation({
@@ -521,15 +540,13 @@
 
             $(document).ready(function () {
                 if("@row.status"=="已完成"){
+                    checkupdate();
                     $("#Heatmap").show();
                     $.ajax({
                         url:"/CloudPlatform/SoftTool/getHeatData?taskname=@row.taskname",
                         type:"post",
                         success:function (data) {
                             $("#redraw_pic").attr("src","/CloudPlatform/pic?path="+data.pics[0]+"&num="+Math.random());
-                            // $("#downPic").attr("href","/CloudPlatform/SoftTool/download?path="+data.downpics+"&num="+Math.random());
-                            // $("#downPng").attr("href","/CloudPlatform/SoftTool/download?path="+data.downpng+"&num="+Math.random());
-                            // $("#downTiff").attr("href","/CloudPlatform/SoftTool/download?path="+data.downtiffs+"&num="+Math.random());
                             $("#rnum").text(data.rnum);
                             $("#cnum").text(data.cnum);
                             allcol=data.allcol;
@@ -554,15 +571,48 @@
                             bordercolor();
                             showr();
                             showc();
+
+                            //分组颜色
+                            console.log(data.groupcolor);
+                            if(data.groupcolor=="") {
+                                gcnum=0;
+                                $("#groupcolor").hide();
+                            }
+                            else {
+                                showgroupcolor(data.groupcolor);
+                                $("#groupcolor").show();
+                            }
                             $("#borcolor .evo-cp-wrap").css("float", "left");
                             $("#borcolor .evo-cp-wrap").css("width", "120px");
                             $("#nacolor .evo-cp-wrap").css("float", "left");
                             $("#nacolor .evo-cp-wrap").css("width", "120px");
-                            checkupdate();
                         }
                     });
                 }
             });
+
+                function showgroupcolor(data) {
+                    groupname=[];
+                    var temp=data.toString().split(",");
+                    gcnum=temp.length;
+                    var colo="";
+                    for(let i=0;i<gcnum;i++){
+                        var gname=temp[i].split(":")[0];
+                        groupname.push(gname);
+                        colo +="<li class='form-group' style='width: 100%'><div style=\"float: left;width: 30%;margin-top: 5px;\"><label>"+gname+"</label></div><div style=' width: 70%;float: left;'><input id='gcolor"+i+"'  name='gcolor"+i+"' class='colorPicker evo-cp0'></div></li>";
+                    }
+                    $("#gmycolor").html(colo);
+                    for(let i=0;i<gcnum;i++){
+                        var gco=temp[i].split(":")[1];
+                        $("#Heatmap").formValidation('addField','gcolor'+i, colorValidators);
+                        $("#gcolor"+i).colorpicker({color: gco, defaultPalette: 'web', showOn: "button"})
+                                .on("change.color",function (event,color){
+                                    $("#Heatmap").formValidation("revalidateField",'gcolor'+i);
+                                });
+                    }
+                    $("#groupcolor .evo-cp-wrap").css("float", "left");
+                    $("#groupcolor .evo-cp-wrap").css("width", "180px");
+                }
 
 
             function splitcolor(param) {
@@ -659,6 +709,10 @@
                         for(var i=0;i<colornum;i++)
                             colors.push($("#color"+i).val());
                         $("#designcolor").val(colors.join(":"));
+                        var gcolors=[];
+                        for(var i=0;i<gcnum;i++)
+                            gcolors.push(groupname[i]+":"+$("#gcolor"+i).val());
+                        $("#gdesigncolor").val(gcolors.join(","));
                         var form1 = new FormData($("#Heatmap")[0]);
                         $.ajax({
                             url: "/CloudPlatform/SoftTool/redrawHeat?rtree="+$("#rtree").val()+"&ctree="+$("#ctree").val()+"&xfs="+$("#xfs").val()+"&yfs="+$("#yfs").val()+"&sc="+$("#sc").val()+"&xfa="+$("#xfa").val()+"&fn="+$("#fn").val()+"&taskname=@row.taskname",

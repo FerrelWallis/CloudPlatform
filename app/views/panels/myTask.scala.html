@@ -14,18 +14,16 @@
     <script src="@routes.Assets.versioned("layer-v3.0/layer/layer.js")" type="text/javascript"></script>
 
     <style>
-            .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary {
+            .btn-primary:hover, .btn-primary:focus, .btn-primary.focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
                 color: #fff;
-                background-color: black;
-                border-color: black;
-                -webkit-box-shadow: 0 2px 1px rgba(0, 0, 0, .1);
-                box-shadow: 0 2px 1px rgba(0, 0, 0, .1);
+                background-color: #0d2648;
+                border-color: #0d2648;
             }
+
             .btn-primary {
                 color: #fff;
-                text-shadow: 0 -1px 0 rgba(0, 0, 0, .2);
-                background-color: #353535;
-                border-color: #353535;
+                background-color: #0d2648;
+                border-color: #0d2648;
             }
             .btn-lg {
                 padding: 10px 31px;
@@ -42,6 +40,25 @@
                 color: #fff;
                 background-color: #0d2648!important;
                 border-color: #0d2648!important;
+            }
+            .sweet-alert .text-muted {
+                color: gray;
+            }
+            .sweet-alert .lead {
+                font: 13px/1.5 'PTSansRegular', Arial, Helvetica, sans-serif;
+                font-size: 15.5px;
+                margin-bottom: 20px;
+                line-height: 1.4;
+            }
+            .sweet-alert h1, h2, h3, h4, h5, h6 {
+                font-family: "Helvetica Neue", Helvetica, 'Microsoft Yahei', 'Hiragino Sans GB', 'WenQuanYi Micro Hei', Tahoma, Arial, sans-serif;
+                font-weight: 700;
+                line-height: 1.1;
+                color: inherit;
+                font-size: 20px;
+                margin-top: 20px;
+                margin-bottom: 10px;
+                text-shadow: 0 1px 0 #fff;
             }
     </style>
 
@@ -77,13 +94,11 @@
                 loading();
 
                 $("#remove").on("click", function () {
-                    console.log(111);
                     if ($("input:checked")[0] == null) {
                         alert("请选择需要删除的消息");
                         return;
                     }
                     var rows = $("#table").bootstrapTable('getSelections');// 获得要删除的数据
-                    console.log(rows);
                     if (rows.length == 0) {// rows 主要是为了判断是否选中，下面的else内容才是主要
                         alert("请先选择要删除的记录!");
                         return;
@@ -199,9 +214,29 @@
 
             }
 
+            function showlog(taskname,canmanage) {
+                $.ajax({
+                    url: "/CloudPlatform/MyTasks/showlog?taskname=" + taskname,
+                    type: "post",
+                    success: function (data) {
+                        if(data.canmanage==0) {
+                            swal({
+                                title: "运行日志为空",
+                                text: "运行日志为空！",
+                                type: "warning",
+                                confirmButtonText: "确认"
+                            });
+                        }else {
+                            $("#logContent").text(data.content);
+                            $("#liLog").click();
+                        }
+                    }
+                });
+            }
+
             function downtask(taskname,status) {
                 if(status==="已完成"){
-                    window.location.href = "/CloudPlatform/SoftTool/downloadZip?taskname="+taskname;
+                    window.location.href = "/CloudPlatform/SoftTool/downloadZip?taskname="+taskname+"&num="+Math.random();
                 }else{
                     swal({
                         title: "无法下载",

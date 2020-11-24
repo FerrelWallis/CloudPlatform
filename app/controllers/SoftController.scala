@@ -76,6 +76,10 @@ class SoftController @Inject()(cc: ControllerComponents,softdao:softDao,userdao:
     Ok(views.html.soft.lefse(abbre))
   }
 
+  def lefse2(abbre:String)=Action{implicit request=>
+    Ok(views.html.soft.lefse2(abbre))
+  }
+
   def abiview(abbre:String)=Action{implicit request=>
     Ok(views.html.soft.abiview(abbre))
   }
@@ -107,6 +111,59 @@ class SoftController @Inject()(cc: ControllerComponents,softdao:softDao,userdao:
   def violin(abbre:String)=Action{implicit request=>
     Ok(views.html.soft.violin(abbre))
   }
+
+  def freqhisto(abbre:String)=Action{implicit request=>
+    Ok(views.html.soft.freqHisto(abbre))
+  }
+
+  def breakbar(abbre:String)=Action{implicit request=>
+    Ok(views.html.soft.breakbar(abbre))
+  }
+
+  def circos(abbre:String)=Action{implicit request=>
+    Ok(views.html.soft.circos(abbre))
+  }
+
+  def pcoa(abbre:String)=Action{implicit request=>
+    Ok(views.html.soft.pcoa(abbre))
+  }
+
+  def pie(abbre:String)=Action{implicit request=>
+    Ok(views.html.soft.pie(abbre))
+  }
+
+  def errorbreakline(abbre:String)=Action{implicit request=>
+    Ok(views.html.soft.errorBreakLine(abbre))
+  }
+
+  def bubble(abbre:String)=Action{implicit request=>
+    Ok(views.html.soft.bubble(abbre))
+  }
+
+  def tableTrans(abbre:String)=Action{implicit request=>
+    Ok(views.html.soft.tableTransposition(abbre))
+  }
+
+  def merge2table(abbre:String)=Action{implicit request=>
+    Ok(views.html.soft.mergeTwoTable(abbre))
+  }
+
+  def mergemultable(abbre:String)=Action{implicit request=>
+    Ok(views.html.soft.mergeMulTable(abbre))
+  }
+
+  def tree(abbre:String)=Action{implicit request=>
+    Ok(views.html.soft.treemapmap(abbre))
+  }
+
+  def ternary(abbre:String)=Action{implicit request=>
+    Ok(views.html.soft.ternaryDialog(abbre))
+  }
+
+  def intraclass(abbre:String)=Action{implicit request=>
+    Ok(views.html.soft.intraclassCorrelation(abbre))
+  }
+
 
   def scaplot(abbre:String)=Action{implicit request=>
     Ok(views.html.soft.scatterplots(abbre))

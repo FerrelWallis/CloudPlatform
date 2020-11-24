@@ -31,7 +31,7 @@
 
             .ui-tabs .ui-tabs-nav li a {
                 float: left;
-                padding: 8px 3.5em 9px 3.5em;
+                padding: 8px 4.5em 9px 4.5em;
                 text-decoration: none;
                 outline: none;
                 color: black;
@@ -144,9 +144,28 @@
                 -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
                 background: transparent;
             }
+            .sweet-alert .text-muted {
+                color: gray;
+            }
+            .sweet-alert .lead {
+                font: 13px/1.5 'PTSansRegular', Arial, Helvetica, sans-serif;
+                font-size: 15.5px;
+                margin-bottom: 20px;
+                line-height: 1.4;
+            }
+            .sweet-alert h1, h2, h3, h4, h5, h6 {
+                font-family: "Helvetica Neue", Helvetica, 'Microsoft Yahei', 'Hiragino Sans GB', 'WenQuanYi Micro Hei', Tahoma, Arial, sans-serif;
+                font-weight: 700;
+                line-height: 1.1;
+                color: inherit;
+                font-size: 20px;
+                margin-top: 20px;
+                margin-bottom: 10px;
+                text-shadow: 0 1px 0 #fff;
+            }
     </style>
 
-    <div class="container main padding" style="background: white; height: 810px; width: 96.5%;">
+    <div class="container main padding" style="background: white; min-height: 810px; width: 96.5%;">
         <div class="mws-panel grid_8 manager">
             <div class="mws-tabs" style="height: 100%">
                 <div class="col-md-2" style="height: 100%">
@@ -154,15 +173,14 @@
                         <ul class="manager_ul">
                             <li><a href="#notice">发布公告</a></li>
                             <li><a href="#auth">用户列表</a></li>
+                            <li><a href="#feed">反馈列表</a></li>
+                            <li><a href="#runningnote" style="padding: 8px 3em 9px 3em">滚动通知栏设置</a></li>
                         </ul>
                     </div>
                 </div>
                 <div class="col-md-9" style="height: 100%; width: 83%;">
-                    <div id="notice" class="manager_panel" style="padding-top: 0px;
-                        width: 96%;
-                        padding-right: 0px;">
-                        <form id="subNotice" method="GET" enctype="multipart/form-data" class="form-inline" style="box-sizing: border-box !important;
-                            margin-top: 10px">
+                    <div id="notice" class="manager_panel" style="padding-top: 0px; width: 96%; padding-right: 0px;">
+                        <form id="subNotice" method="GET" enctype="multipart/form-data" class="form-inline" style="box-sizing: border-box !important;  margin-top: 10px">
                             <h3 style="margin-top: 0">发布公告</h3>
                             <hr style="margin-top: 0; margin-bottom: 30px;">
                             <div>
@@ -249,8 +267,7 @@
                             <input type="button" value="发&nbsp;&nbsp;布" name="submit" class="btn btn-primary submit" onclick="submitNotice()">
                         </form>
                     </div>
-                    <div id="auth" class="manager_panel" style="width: 96%;
-                        padding-right: 0px;">
+                    <div id="auth" class="manager_panel" style="width: 96%; padding-right: 0px;">
                         <form>
                             <h3 style="margin-top: 0">用户列表</h3>
                             <hr style="margin-top: 0; margin-bottom: 30px;">
@@ -266,13 +283,92 @@
                             </div>
                         </form>
                     </div>
+                    <div id="feed" class="manager_panel" style="width: 96%; padding-right: 0px;">
+                        <form>
+                            <h3 style="margin-top: 0">反馈列表</h3>
+                            <hr style="margin-top: 0; margin-bottom: 30px;">
+                            <div class="container" style="width: 98%; margin: unset; max-width: unset; background: white">
+                                    <!--data-toolbar：设置装按钮的容器为id为toolbar的。-->
+                                <div id="toolbar2">&nbsp;搜索：</div>
+                                <div id="action2" >
+                                    <input type="button" value="刷新列表" class="btn btn-primary btn-dark" onclick="refresh()" style="float: right;margin-top: 10px;margin-right: 10px;">
+                                </div>
+                                <table class="display table table-bordered" style="width: 99.9%" id="table2" data-pagination="true" data-search="true"
+                                data-toolbar="#toolbar2" data-page-list="[10,25,50,100,all]" data-search-align="left" data-multiple-search="true">
+                                </table>
+                            </div>
+                        </form>
+                    </div>
+                    <div id="runningnote" class="manager_panel" style="padding-top: 0px; width: 96%; padding-right: 0px;">
+                        <form id="subRunning" method="GET" enctype="multipart/form-data" class="form-inline" style="box-sizing: border-box !important;  margin-top: 10px">
+                            <h3 style="margin-top: 0">滚动通知栏设置</h3>
+                            <hr style="margin-top: 0; margin-bottom: 30px;">
+                            <div style="padding-left: 25px">
+                                <div class="form-group-p">
+                                    <div class="form-group">
+                                        <label>通知1：</label>
+                                    </div>
+                                    <div class="form-group" style="width: 90%">
+                                        <textarea id="runnote1" name="runnote1" class="form-control kindeditorSimple" style="width: 100%;height:80px;" placeholder="最多75个字"></textarea>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="form-group-p">
+                                    <div class="form-group">
+                                        <label>通知2：</label>
+                                    </div>
+                                    <div class="form-group" style="width: 90%">
+                                        <textarea id="runnote2" name="runnote2" class="form-control kindeditorSimple" style="width: 100%;height:80px;" placeholder="最多75个字"></textarea>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="form-group-p">
+                                    <div class="form-group">
+                                        <label>通知3：</label>
+                                    </div>
+                                    <div class="form-group" style="width: 90%">
+                                        <textarea id="runnote3" name="runnote3" class="form-control kindeditorSimple" style="width: 100%;height:80px;" placeholder="最多75个字"></textarea>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="form-group-p">
+                                    <div class="form-group">
+                                        <label>通知4：</label>
+                                    </div>
+                                    <div class="form-group" style="width: 90%">
+                                        <textarea id="runnote4" name="runnote4" class="form-control kindeditorSimple" style="width: 100%;height:80px;" placeholder="最多75个字"></textarea>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="form-group-p">
+                                    <div class="form-group">
+                                        <label>通知5：</label>
+                                    </div>
+                                    <div class="form-group" style="width: 90%">
+                                        <textarea id="runnote5" name="runnote5" class="form-control kindeditorSimple" style="width: 100%;height:80px;" placeholder="最多75个字"></textarea>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="form-group-p">
+                                    <div class="form-group">
+                                        <label>通知6：</label>
+                                    </div>
+                                    <div class="form-group" style="width: 90%">
+                                        <textarea id="runnote6" name="runnote6" class="form-control kindeditorSimple" style="width: 100%;height:80px;" placeholder="最多75个字"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <br>
+                            <input type="button" value="确认更新" name="submit" class="btn btn-primary submit" onclick="updateRun()">
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-
 
             $(document).ready(function () {
                 formValidation();
@@ -294,7 +390,23 @@
                     $("#subNotice").formValidation("revalidateField", "pubtime");
                 });
                 loading();
+                loading2();
+                loadRunning();
             });
+
+            function loadRunning() {
+                $.ajax({
+                    url: "/CloudPlatform/Utils/getAllRunning",
+                    type: "post",
+                    success: function (data) {
+                        $.each(data.rows,function (i,v) {
+                            var i=v[0];
+                            var content=v[1];
+                            $("#runnote"+i).val(content);
+                        });
+                    }
+                });
+            }
 
             function loading() {
                 $('#table').bootstrapTable({
@@ -334,6 +446,74 @@
                         title: '权限',
                         field: 'authority',
                     }]
+                });
+            }
+
+            function loading2() {
+                $('#table2').bootstrapTable({
+                    method: 'post',
+                    url: "/CloudPlatform/Utils/getAllFeeds",
+                    sidePagination: "server",
+                    pageNumber: 1,
+                    pagination: true,
+                    pageList: [10, 25, 50, 100],
+                    contentType: "application/x-www-form-urlencoded",
+                    clickToSelect: true,//点击行选中
+                    columns: [{
+                        title: '提交日期',
+                        field: 'subtime',
+                        sortable: 'true'
+                    },{
+                        title: '用户名',
+                        field: 'name',
+                        sortable: 'true'
+                    },{
+                        title: '手机号',
+                        field: 'phone',
+                        sortable: 'true'
+                    }, {
+                        title: '标题',
+                        field: 'title',
+                        sortable: 'true'
+                    }, {
+                        title: '浏览状态',
+                        field: 'process',
+                        sortable: 'true'
+                    }, {
+                        title: '操作',
+                        field: 'control'
+                    }],
+                    onClickCell: function (field, value, row, $element) {
+                        if(field==="control") {
+                            var index=$element.parent().data('index');
+                            row.process="<p style='color: cadetblue; margin: 0px;'>已读</p>";
+                            $('#table2').bootstrapTable('updateRow', {
+                                index: index,
+                                row: row
+                            });
+                        }
+                    }
+                });
+            }
+
+            function refresh() {
+                $('#table2').bootstrapTable('destroy');
+                loading2();
+            }
+
+            function openFeedpage(fid,name,phone) {
+                $.ajax({
+                    url: "/CloudPlatform/Utils/getFeedsByFid?fid="+fid+"&adpage=true",
+                    type: "post",
+                    success: function (data) {
+                        $("#feedHead").text(data.title);
+                        $("#feedName").text(name);
+                        $("#feedPhone").text(phone);
+                        $("#feedSubtime").text(data.subtime);
+                        $("#feedContent").html("");
+                        $("#feedContent").append(data.content);
+                        $("#liFeedback").click();
+                    }
                 });
             }
 
@@ -441,6 +621,8 @@
                                             text: "发布成功！",
                                             type: "success",
                                             confirmButtonText: "确认"
+                                        },function (isConfirm) {
+                                            window.location.href = "/CloudPlatform/managerPanel";
                                         });
                                     }
                                 });
@@ -459,6 +641,42 @@
                 $("#latestNotice").css("top", $("#top").val() + "%");
                 $("#latestNotice").css("left", $("#left").val() + "%");
                 $("#liNotice").click();
+            }
+
+            function updateRun() {
+                var form = $("#subRunning");
+                var fv = form.data("formValidation");
+                fv.validate();
+                if (fv.isValid()) {
+                    if (confirm("是否确认更新？")) {
+                        var element = "<div id='content'><span id='info'>更新中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width:30px;height:20px;float:right;padding-right:11px;padding-top:2px;'></div>";
+                        var index = layer.alert(element, {
+                            skin: 'layui-layer-lan',
+                            closeBtn: 0,
+                            title: "提醒",
+                            btn: []
+                        });
+                        setTimeout(function () {
+                            layer.close(index);
+                            var form1 = new FormData($("#subRunning")[0]);
+                            $.ajax({
+                                url: "/CloudPlatform/Utils/updateRunning",
+                                type: "post",
+                                processData: false,
+                                contentType: false,
+                                data: form1,
+                                success: function (data) {
+                                    swal({
+                                        title: "更新成功",
+                                        text: "更新成功！",
+                                        type: "success",
+                                        confirmButtonText: "确认"
+                                    });
+                                }
+                            });
+                        }, 2000);
+                    }
+                }
             }
 
             function formValidation() {
@@ -526,6 +744,82 @@
                             validators: {
                                 notEmpty: {
                                     message: '不能为空!'
+                                }
+                            }
+                        }
+                    }
+                });
+                $('#subRunning').formValidation({
+                    framework: 'bootstrap',
+                    icon: {
+                        valid: 'glyphiconglyphicon-ok',
+                        invalid: 'glyphiconglyphicon-remove',
+                        validating: 'glyphiconglyphicon-refresh'
+                    },
+                    fields: {
+                        runnote1: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                stringLength: {
+                                    max: 75,
+                                    message: '不得超过75个字符！'
+                                }
+                            }
+                        },
+                        runnote2: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                stringLength: {
+                                    max: 75,
+                                    message: '不得超过75个字符！'
+                                }
+                            }
+                        },
+                        runnote3: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                stringLength: {
+                                    max: 75,
+                                    message: '不得超过75个字符！'
+                                }
+                            }
+                        },
+                        runnote4: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                stringLength: {
+                                    max: 75,
+                                    message: '不得超过75个字符！'
+                                }
+                            }
+                        },
+                        runnote5: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                stringLength: {
+                                    max: 75,
+                                    message: '不得超过75个字符！'
+                                }
+                            }
+                        },
+                        runnote6: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                stringLength: {
+                                    max: 75,
+                                    message: '不得超过75个字符！'
                                 }
                             }
                         }

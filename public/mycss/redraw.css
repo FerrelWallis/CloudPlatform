@@ -229,7 +229,7 @@ label {
     border-radius: 11.5px;
 }
 .layui-layer-lan .layui-layer-title {
-    background: #333;
+    background: #1f3851;
     color: #fff;
     border: none;
     border-top-left-radius: 11.5px;
@@ -331,4 +331,13 @@ a, a:visited {
 
 .update{
     color: red;
+}
+.label-overflow{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 100%;
+    display: block;
+    word-break: break-all;
+    word-wrap: break-word;
 }

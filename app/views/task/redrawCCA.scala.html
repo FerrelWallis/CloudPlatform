@@ -489,6 +489,7 @@
 
             $(document).ready(function () {
                 if("@row.status"=="已完成"){
+                    checkupdate();
                     $("#CCA").show();
                     $.ajax({
                         url:"/CloudPlatform/SoftTool/getCCAData?taskname=@row.taskname",
@@ -540,7 +541,6 @@
                             $(".evo-cp-wrap").css("float", "left");
                             $("#mycolor .evo-cp-wrap").css("width", "70%");
                             $("#snamecolor .evo-cp-wrap").css("width", "95px");
-                            checkupdate();
                         }
                     });
                 }

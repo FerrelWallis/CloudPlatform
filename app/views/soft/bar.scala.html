@@ -50,31 +50,38 @@
                 <br><br>
                 <div>
                     <div id="mydiv1" class="one-line">
-                        <div class="form-group-p" style="width: 500px">
+                        <div class="form-group-p" style="width: 450px">
                             <div class="form-group">
-                                <label for="exampleInputName0">矩阵文件：</label>
+                                <label for="exampleInputName0"><em>1： </em>上传矩阵文件：</label>
                             </div>
                             <div class="form-group">
                                 <input type="file" class="form-control file" id="table1" name="table1" onchange="checkTable()">
                             </div>
                         </div>
                         <div class="form-group-extra">
-                            <em><a href="/assets/files/bar_table.txt" target='_blank'>示例文件</a></em>
+                            <em><a href="/assets/files/bar_table.txt" target='_blank' style="margin-left: 5px;">示例文件</a></em>
                         </div>
                         <br>
                         <br>
                     </div>
-                    <div id="mydiv0" class="one-line">
-                        <div class="form-group-p" style="width: 500px">
+                    <div class="form-group-p">
+                        <div class="form-group">
+                            <label style="float: left;"><em>2： </em>是否分组绘图</label>
+                            <input type="checkbox" name="isgroup" id="isgroup" class="form-control" style="height: 13px;width: auto;float: left;margin-top: 9px;margin-left: 5px">
+                        </div>
+                    </div>
+                    <br>
+                    <div id="group" class="one-line" style="display: none">
+                        <div class="form-group-p" style="width: 450px">
                             <div class="form-group">
-                                <label for="exampleInputName0">分组文件：</label>
+                                <label for="exampleInputName0">上传分组文件：</label>
                             </div>
                             <div class="form-group">
                                 <input type="file" class="form-control file" id="table2" name="table2" onchange="checkGroupfile()">
                             </div>
                         </div>
                         <div class="form-group-extra">
-                            <em><a href="/assets/files/bar_group.txt" target='_blank'>示例文件</a></em>
+                            <em><a href="/assets/files/bar_group.txt" target='_blank' style="margin-left: 5px;">示例文件</a></em>
                         </div>
                         <br>
                         <br>
@@ -169,7 +176,7 @@
                     <br>
                 </div>
                 <div class="tab-pane fade" id="example">
-                    <h5 style="margin-bottom: 2px">视频录制中...敬请期待！</h5>
+                    <div id="dplayer"></div>
                 </div>
                 <div id="history" class="form1_ins tab-pane fade">
                     <a id="btn-refresh" class="btn_refresh mws-i-24 i-refresh-3" onclick="refresh('@abbre')">刷新状态</a>
@@ -197,7 +204,7 @@
                 formValidation();
                 loadHistory("@abbre");
                 getTaskName("BAR","BAR");
-                // loadVideo("//13125180.s21v.faiusr.com/58/ABUIABA6GAAgxZ2K_QUorKzs7gc.mp4","/assets/images/softpic/video/cca_video.png")
+                loadVideo("//13125180.s21v.faiusr.com/58/ABUIABA6GAAg_L6R_wUomKf9nwE.mp4","/assets/images/softpic/video/bar_video.png")
             });
 
             function bar() {
@@ -222,7 +229,7 @@
                                 layer.close(index);
                                 var form1 = new FormData($("#BAR")[0]);
                                 $.ajax({
-                                    url: "/CloudPlatform/SoftTool/runBar",
+                                    url: "/CloudPlatform/SoftTool/runBar?isgroup=" + $("#isgroup").prop("checked"),
                                     type: "post",
                                     processData: false,
                                     contentType: false,
@@ -244,6 +251,15 @@
                     });
                 }
             }
+
+            $("#isgroup").click(function () {
+                var isSelected = this.checked;
+                if (isSelected === true) {
+                    $("#group").show();
+                } else {
+                    $("#group").hide();
+                }
+            });
 
             var sample;
             var flagtable=true;
@@ -306,51 +322,56 @@
 
             function checkGroupfile() {
                 return new Promise((resolve, reject) => {
-                    var reader=new FileReader();
-                    reader.readAsText(document.getElementById('table2').files[0],"UTF-8");
-                    reader.onload=function () {
-                        let text=reader.result;
-                        let line=text.trim().split('\n');
-                        var name=[];
-                        for(let i in line) {
-                            if(i!=0){
-                                let row=line[i].trim().split('\t');
-                                var r=parseInt(i)+1;
-                                if(row.length!=2){
-                                    flagtable=flagtable&&false;
-                                    swal({
-                                        title: "分组文件格式错误",
-                                        text: "分组文件第"+r+"行格式错误，必须为两列！",
-                                        type: "warning",
-                                        confirmButtonText: "确认"
-                                    });
-                                    resolve(false);
-                                }
-                                if(sample.indexOf(row[0])<0){
-                                    flagtable=flagtable&&false;
-                                    swal({
-                                        title: "分组文件格式错误",
-                                        text: "分组文件第"+r+"行样品名不存在，请核对矩阵文件！",
-                                        type: "warning",
-                                        confirmButtonText: "确认"
-                                    });
-                                    resolve(false);
-                                }
-                                if(name.indexOf(row[0])>=0){
-                                    flagtable=flagtable&&false;
-                                    swal({
-                                        title: "分组文件错误",
-                                        text: "分组文件第"+r+"行样品名重复存在，请核实！",
-                                        type: "warning",
-                                        confirmButtonText: "确认"
-                                    });
-                                    resolve(false);
-                                }else name.push(row[0]);
-                            }
-                        }
+                    if(!$("#isgroup").prop("checked")) {
                         flagtable=flagtable&&true;
                         resolve(true);
-                    };
+                    }else{
+                        var reader=new FileReader();
+                        reader.readAsText(document.getElementById('table2').files[0],"UTF-8");
+                        reader.onload=function () {
+                            let text=reader.result;
+                            let line=text.trim().split('\n');
+                            var name=[];
+                            for(let i in line) {
+                                if(i!=0){
+                                    let row=line[i].trim().split('\t');
+                                    var r=parseInt(i)+1;
+                                    if(row.length!=2){
+                                        flagtable=flagtable&&false;
+                                        swal({
+                                            title: "分组文件格式错误",
+                                            text: "分组文件第"+r+"行格式错误，必须为两列！",
+                                            type: "warning",
+                                            confirmButtonText: "确认"
+                                        });
+                                        resolve(false);
+                                    }
+                                    if(sample.indexOf(row[0])<0){
+                                        flagtable=flagtable&&false;
+                                        swal({
+                                            title: "分组文件格式错误",
+                                            text: "分组文件第"+r+"行样品名不存在，请核对矩阵文件！",
+                                            type: "warning",
+                                            confirmButtonText: "确认"
+                                        });
+                                        resolve(false);
+                                    }
+                                    if(name.indexOf(row[0])>=0){
+                                        flagtable=flagtable&&false;
+                                        swal({
+                                            title: "分组文件错误",
+                                            text: "分组文件第"+r+"行样品名重复存在，请核实！",
+                                            type: "warning",
+                                            confirmButtonText: "确认"
+                                        });
+                                        resolve(false);
+                                    }else name.push(row[0]);
+                                }
+                            }
+                            flagtable=flagtable&&true;
+                            resolve(true);
+                        };
+                    }
                 });
             }
 

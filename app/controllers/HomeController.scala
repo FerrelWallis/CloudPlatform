@@ -57,6 +57,10 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
     Ok(views.html.panels.noteList())
   }
 
+  def feedback=Action{implicit request=>
+    Ok(views.html.panels.feedbak())
+  }
+
 
 
 
@@ -72,11 +76,11 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
   }
 
   def test= Action {implicit request=>
-    Ok(views.html.test.soft())
+    Ok(views.html.test.header())
   }
 
   def testlog= Action {implicit request=>
-    Ok(views.html.panels.news())
+    Ok(views.html.test.allsoft())
   }
 
   def testSlider=Action{implicit request=>

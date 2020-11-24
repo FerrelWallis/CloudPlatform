@@ -190,6 +190,7 @@
 
             $(document).ready(function () {
                 if("@row.status"=="已完成"){
+                    checkupdate();
                     $("#ABI").show();
                     $.ajax({
                         url:"/CloudPlatform/SoftTool/getAbiData?taskname=@row.taskname",
@@ -200,7 +201,6 @@
                             $.each(data.elements,function (i,v) {
                                 $("#"+i).val(v);
                             });
-                            checkupdate();
                         }
                     });
                 }

@@ -151,6 +151,7 @@
 
             $(document).ready(function () {
                 if("@row.status"=="已完成"){
+                    checkupdate();
                     $("#GO").show();
                     $.ajax({
                         url:"/CloudPlatform/SoftTool/getLefse?taskname=@row.taskname",
@@ -165,7 +166,6 @@
                                 var num=i+1;
                                 $("#redraw_pic"+num).attr("src","/CloudPlatform/pic?path="+v+"&num="+Math.random());
                             });
-                            checkupdate();
                         }
                     });
                 }

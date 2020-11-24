@@ -407,7 +407,7 @@
                             layer.close(index);
                             var form1 = new FormData($("#PCA1")[0]);
                             $.ajax({
-                                url: "/CloudPlatform/SoftTool/runPCA?isgroup=" + $("#isgroup").prop("checked") + "&table=" + table + "&group=" + group,
+                                url: "/CloudPlatform/SoftTool/runPCA?isgroup=" + $("#isgroup").prop("checked") + "&table=" + table + "&group=" + group + "&abbre=@abbre",
                                 type: "post",
                                 processData: false,
                                 contentType: false,

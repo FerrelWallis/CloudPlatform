@@ -320,6 +320,30 @@
                                     <div class="tab-pane fade active in" id="picpara">
                                         <div class="form-group-p">
                                             <div class="form-group picleft">
+                                                <label>归一化：</label>
+                                            </div>
+                                            <div class="form-group right picright">
+                                                <select id="sc" name="sc" style="width: 100%">
+                                                    <option value="col">column</option>
+                                                    <option value="row">row</option>
+                                                    <option value="none">none</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group-p">
+                                            <div class="form-group picleft">
+                                                <label>是否取lg：</label>
+                                            </div>
+                                            <div class="form-group right picright">
+                                                <select id="lg" name="lg" style="width: 100%">
+                                                    <option value="none">none</option>
+                                                    <option value="lg2">lg2</option>
+                                                    <option value="lg10">lg10</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group-p">
+                                            <div class="form-group picleft">
                                                 <label>热图显示部分：</label>
                                             </div>
                                             <div class="form-group right picright">
@@ -409,30 +433,6 @@
                                             </div>
                                             <div class="form-group picright">
                                                 <input type="text" id="cp" name="cp" class="form-control" placeholder="数字" value="1" style="width: 50px;float: left;margin-right: 5px;margin-top: 5px;margin-left: 10px;">
-                                            </div>
-                                        </div>
-                                        <div class="form-group-p">
-                                            <div class="form-group picleft">
-                                                <label>归一化：</label>
-                                            </div>
-                                            <div class="form-group right picright">
-                                                <select id="sc" name="sc" style="width: 100%">
-                                                    <option value="col">column</option>
-                                                    <option value="row">row</option>
-                                                    <option value="none">none</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-group-p">
-                                            <div class="form-group picleft">
-                                                <label>是否取lg：</label>
-                                            </div>
-                                            <div class="form-group right picright">
-                                                <select id="lg" name="lg" style="width: 100%">
-                                                    <option value="none">none</option>
-                                                    <option value="lg2">lg2</option>
-                                                    <option value="lg10">lg10</option>
-                                                </select>
                                             </div>
                                         </div>
                                         <div class="form-group-p">
@@ -910,8 +910,8 @@
 
             $(document).ready(function () {
                 if("@row.status"=="已完成"){
-                    $("#IGC").show();
                     checkupdate();
+                    $("#IGC").show();
                     loading();
                 }
             });
@@ -1006,8 +1006,6 @@
                         $("#borcolor .evo-cp-wrap").css("width", "120px");
                         $("#nacolor .evo-cp-wrap").css("float", "left");
                         $("#nacolor .evo-cp-wrap").css("width", "120px");
-
-                        checkupdate();
                     }
                 });
             }

@@ -133,7 +133,10 @@
                                 if((ii+1)%2==0) colo="even";
                                 else colo="odd";
                                 ii++;
-                                html += "<tr class='"+ colo +"'><td>" + data.name[i] + "</td><td>" + data.ins[i] + "</td><td><a onclick='downloadFile(\""+data.name[i]+"\")' class='fa fa-download'></a></td></tr>";
+                                if(data.name[i].toString().indexOf("tre")>=0)
+                                    html += "<tr class='"+ colo +"'><td>" + data.name[i] + "</td><td>" + data.ins[i] + "</td><td style='padding: 8px 0px 8px 16px;width: 60px;'><a onclick='downloadFile(\""+data.name[i]+"\")' class='fa fa-download'></a><a href=" + "'/CloudPlatform/Utils/previewFile?taskname=@row.taskname&filename="+data.name[i]+"&filetype=txt'" + " class='fa fa-eye' target='_blank'></a></td></tr>";
+                                else
+                                    html += "<tr class='"+ colo +"'><td>" + data.name[i] + "</td><td>" + data.ins[i] + "</td><td style='padding: 8px 0px 8px 16px;width: 60px;'><a onclick='downloadFile(\""+data.name[i]+"\")' class='fa fa-download'></a></td></tr>";
                             }else {
                                 for(let g in genes){
                                     console.log(genes[g]);
@@ -142,7 +145,7 @@
                                         if((ii+1)%2==0) colo="even";
                                         else colo="odd";
                                         ii++;
-                                        html += "<tr class='"+ colo +"'><td>" + data.name[i] + "</td><td>" + data.ins[i] + "</td><td><a onclick='downloadFile(\""+data.name[i]+"\")' class='fa fa-download'></a></td></tr>";
+                                        html += "<tr class='"+ colo +"'><td>" + data.name[i] + "</td><td>" + data.ins[i] + "</td><td style='padding: 8px 0px 8px 16px;width: 60px;'><a onclick='downloadFile(\""+data.name[i]+"\")' class='fa fa-download'></a></td></tr>";
                                     }
                                 }
                             }

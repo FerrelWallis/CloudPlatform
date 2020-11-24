@@ -141,6 +141,16 @@ class PreviewController @Inject()(cc: ControllerComponents,dutydao:dutyDao) exte
     }
   }
 
+  def preLF2(taskname:String) = Action {implicit request=>
+    val id=request.session.get("userId").get
+    val row=Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf)
+    if(row.length==1){
+      Ok(views.html.task.redrawLefse2(row.head))
+    }else{
+      Redirect(routes.HomeController.mytask())
+    }
+  }
+
   def preABI(taskname:String) = Action {implicit request=>
     val id=request.session.get("userId").get
     val row=Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf)
@@ -210,5 +220,106 @@ class PreviewController @Inject()(cc: ControllerComponents,dutydao:dutyDao) exte
       Redirect(routes.HomeController.mytask())
     }
   }
+
+  def preVIO(taskname:String) = Action {implicit request=>
+    val id=request.session.get("userId").get
+    val row=Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf)
+    if(row.length==1){
+      Ok(views.html.task.redrawViolin(row.head))
+    }else{
+      Redirect(routes.HomeController.mytask())
+    }
+  }
+
+  def preFH(taskname:String) = Action {implicit request=>
+    val id=request.session.get("userId").get
+    val row=Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf)
+    if(row.length==1){
+      Ok(views.html.task.redrawFreqHisto(row.head))
+    }else{
+      Redirect(routes.HomeController.mytask())
+    }
+  }
+
+  def preBRB(taskname:String) = Action {implicit request=>
+    val id=request.session.get("userId").get
+    val row=Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf)
+    if(row.length==1){
+      Ok(views.html.task.redrawBreakbar(row.head))
+    }else{
+      Redirect(routes.HomeController.mytask())
+    }
+  }
+
+  def prePCO(taskname:String) = Action {implicit request=>
+    val id=request.session.get("userId").get
+    val row=Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf)
+    if(row.length==1){
+      Ok(views.html.task.RedrawPCA(row.head))
+    }else{
+      Redirect(routes.HomeController.mytask())
+    }
+  }
+
+  def preBIS(taskname:String) = Action {implicit request=>
+    val id=request.session.get("userId").get
+    val row=Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf)
+    if(row.length==1){
+      Ok(views.html.task.redrawPie(row.head))
+    }else{
+      Redirect(routes.HomeController.mytask())
+    }
+  }
+
+  def preEBL(taskname:String) = Action {implicit request=>
+    val id=request.session.get("userId").get
+    val row=Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf)
+    if(row.length==1){
+      Ok(views.html.task.redrawEBLine(row.head))
+    }else{
+      Redirect(routes.HomeController.mytask())
+    }
+  }
+
+  def preBB(taskname:String) = Action {implicit request=>
+    val id=request.session.get("userId").get
+    val row=Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf)
+    if(row.length==1){
+      Ok(views.html.task.redrawBubble(row.head))
+    }else{
+      Redirect(routes.HomeController.mytask())
+    }
+  }
+
+  def preCIR(taskname:String) = Action {implicit request=>
+    val id=request.session.get("userId").get
+    val row=Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf)
+    if(row.length==1){
+      Ok(views.html.task.redrawCircos(row.head))
+    }else{
+      Redirect(routes.HomeController.mytask())
+    }
+  }
+
+  def preTM(taskname:String) = Action {implicit request=>
+    val id=request.session.get("userId").get
+    val row=Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf)
+    if(row.length==1){
+      Ok(views.html.task.redrawTreemapmap(row.head))
+    }else{
+      Redirect(routes.HomeController.mytask())
+    }
+  }
+
+  def preTRY(taskname:String) = Action {implicit request=>
+    val id=request.session.get("userId").get
+    val row=Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf)
+    if(row.length==1){
+      Ok(views.html.task.redrawTernary(row.head))
+    }else{
+      Redirect(routes.HomeController.mytask())
+    }
+  }
+
 
 }

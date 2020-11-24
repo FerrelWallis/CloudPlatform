@@ -1,0 +1,756 @@
+@(abbre:String)(implicit session: Session)
+@home.main("PCoA"){
+
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("css/test/mysoft.css")" media="screen" />
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("bootstrap-fileinput-master/css/fileinput.css")" media="screen" />
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("mycss/soft.css")" media="screen" />
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("DPlayer-1.26.0/mycss/myvideo.css")" media="screen" />
+
+    <script type="text/javascript" src="@routes.Assets.versioned("DPlayer-1.26.0/dist/DPlayer.min.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.versioned("md5/md5.js")"></script>
+        <!--button弹出操作-->
+    <script src="@routes.Assets.versioned("layer-v3.0/layer/layer.js")" type="text/javascript"></script>
+    <script type="text/javascript" src="@routes.Assets.versioned("js/myzui.min.js")"></script>
+
+    <style>
+            .file-input{
+                width: 330px;
+            }
+
+    </style>
+
+    <div class="col-md-12 mysoft-content" style="width: 98%">
+        <div class="mysoft-content-left whitebox" style="width: 771px;overflow-y: auto">
+            <form id="PCO" method="GET" enctype="multipart/form-data" class="form1 well form-inline tab-pane fade active in" style="box-sizing: border-box!important;">
+                <div class="softpic mws-ic @abbre"> </div>
+                <h3 class="tools-title">PCoA</h3>
+                <div class="form-group">
+                    <h2>
+                    </h2>
+                </div><br><br>
+                <div class="form-group-p">
+                    <div class="form-group">
+                        <label for="mytaskname">任务编号：</label>
+                    </div>
+                    <div class="form-group">
+                        <input id="mytaskname" type="text" class="form-control" name="taskname">
+                    </div>
+                </div>
+                <br><br>
+                <div class="form-group-p" style="width: 100%">
+                    <label for="exampleInputName2">
+                        <em>1： </em>上传矩阵表格文件：<span class="must">&nbsp;&nbsp;*</span>
+                    </label>
+                    <br>
+                    <div class="one-line">
+                        <div class="form-group-p" style="width: auto">
+                            <div class="form-group">
+                                <ul class="nav nav-tabs" style="width: 300px">
+                                    <li class="active">
+                                        <a href="###" onclick="curtable(1)" data-target="#tab1Content2" data-toggle="tab">手动输入</a>
+                                    </li>
+                                    <li>
+                                        <a href="###" onclick="curtable(2)" data-target="#tab1Content1" data-toggle="tab">输入文件</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="form-group-p" style="width: auto">
+                            <div class="form-group">
+                                <em>
+                                    <a onclick="showexample('table')">示例文件</a>
+                                </em>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-content">
+                        <div class="tab-pane fade" id="tab1Content1">
+                            <p><br></p>
+                            <div id="div1" class="one-line">
+                                <div class="form-group-p">
+                                    <div class="form-group">
+                                        <label for="exampleInputName2">上传文件：</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="file" class="form-control file" id="table1" name="table1" onchange="checkTablefile()">
+                                    </div>
+                                </div>
+                                <br>
+                                <br>
+                            </div>
+                            <p></p>
+                        </div>
+                        <div class="tab-pane fade active in" id="tab1Content2">
+                            <p>
+                            </p>
+                            <div class="tab-pane form-group" id="tabContent2">
+                                <textarea id="txdata1" name="txdata1" class="form-control kindeditorSimple" style="width: 100%;height:150px;" placeholder="手动输入时,点击示例文件，示例将导入文本框。上传文件时，点击示例文件，将直接下载文件。文本框右下角可调节文本框大小。"></textarea>
+                            </div>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+                <br>
+                <h4>可选输入：</h4>
+                <br>
+                <div class="form-group-p">
+                    <div class="form-group ">
+                        <label><em>2： </em>是否显示样本名：</label>
+                    </div>
+                    <div class="form-group right">
+                        <select id="showname" name="showname" style="width: 30%;" onchange="shown()">
+                            <option value="FALSE">no</option>
+                            <option value="TRUE">yes</option>
+                        </select>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <div class="form-group-p" id="showerro" style="display: none">
+                    <div class="form-group" style="margin-left: 25px">
+                        <label>是否显示箭头：</label>
+                    </div>
+                    <div class="form-group right">
+                        <select name="showerro" style="width: 30%;">
+                            <option value="TRUE">yes</option>
+                            <option value="FALSE">no</option>
+                        </select>
+                    </div>
+                    <br>
+                </div>
+                <div class="form-group-p">
+                    <div class="form-group">
+                        <label style="float: left;"><em>3： </em>是否分组绘图</label>
+                        <input type="checkbox" name="isgroup" value="A" id="isgroup" class="form-control" style="height: 13px;width: auto;float: left;margin-top: 9px;margin-left: 5px">
+                    </div>
+                </div>
+                <br>
+                <div id="group" style="display: none;">
+                    <div class="form-group-p">
+                        <label>上传或输入分组文件</label>
+                        <br>
+                        <div class="one-line">
+                            <div class="form-group-p" style="width: auto">
+                                <div class="form-group">
+                                    <ul class="nav nav-tabs" style="width: 300px">
+                                        <li class="active">
+                                            <a href="###" onclick="curgroup(1)" data-target="#tab2Content2" data-toggle="tab">手动输入</a>
+                                        </li>
+                                        <li>
+                                            <a href="###" onclick="curgroup(2)" data-target="#tab2Content1" data-toggle="tab">输入文件</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="form-group-p" style="width: auto">
+                                <div class="form-group">
+                                    <em>
+                                        <a onclick="showexample('group')">示例文件</a>
+                                    </em>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-content">
+                            <div class="tab-pane fade" id="tab2Content1">
+                                <p><br></p>
+                                <div id="div2" class="one-line">
+                                    <div class="form-group-p" style="width: auto">
+                                        <div class="form-group">
+                                            <label for="exampleInputName2">输入分组文件：</label>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <input type="file" class="form-control file" id="table2" name="table2" onchange="checkGroupfile()">
+                                            <img id="tempimg2" dynsrc="" src="" style="display:none">
+                                        </div>
+                                    </div>
+                                    <br>
+                                </div>
+                                <p></p>
+                            </div>
+                            <div class="tab-pane fade active in" id="tab2Content2">
+                                <p>
+                                </p>
+                                <div class="tab-pane form-group" id="tabContent2">
+                                    <textarea id="txdata2" name="txdata2" class="form-control kindeditorSimple" style="width: 100%;height:150px;" placeholder="手动输入时,点击示例文件，示例将导入文本框。上传文件时，点击示例文件，将直接下载文件。文本框右下角可调节文本框大小。"></textarea>
+                                </div>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                    <div class="form-group-p" style="display: none">
+                        <div class="form-group">
+                            <label>是否绘制分组圈：</label>
+                        </div>
+                        <div class="form-group right">
+                            <select name="drawcircle" style="width: 30%;">
+                                <option value="FALSE">no</option>
+                                <option value="TRUE">yes</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <br>
+                <input type="hidden" value="upload" name="act">
+                <input type="hidden" value="pca" name="action">
+                <input type="button" value="提&nbsp;&nbsp;交" name="submit" class="btn btn-primary" style="margin-bottom: 20px" onclick="PCA()">
+            </form>
+        </div>
+
+        <div class="handler"></div>
+
+        <div class="mysoft-content-right" style="width: 279px;">
+            <div class="tab-content" style="box-sizing: border-box!important;padding: 0;">
+                <div class="form1 tab-pane fade active in">
+                    <ul class="nav nav-tabs">
+                        <li class="active" id="ins_tab1">
+                            <a href="#" data-target="#instruction1" data-toggle="tab">使用说明</a>
+                        </li>
+                        <li class="" id="out_tab1">
+                            <a href="#" data-target="#form1" data-toggle="tab" id="outcome">教学视频</a>
+                        </li>
+                        <li class="" id="his_tab1">
+                            <a href="#" data-target="#history" data-toggle="tab">历史任务</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" style="box-sizing: border-box!important;">
+                        <div id="instruction1" class="form1_ins tab-pane fade active in">
+                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                                <span style="font-weight:700;"><strong>1.背景介绍</strong></span><br>
+                                PCoA（principal co-ordinates analysis）主坐标分析是一种展示样本间相似性的分析方式，它的分析思路与PCA分析基本一致， 都是通过降维方式寻找复杂样本中的主要样本差异距离。与PCA不同的是，PCoA主要利用Unifrac、Bray-Curtis等样本距离信息进行计算以及降维图形展示，因此结果更集中于体现样本间的相异性距离。
+                                <br>
+                            </p>
+                            <br>
+                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                                <span style="font-weight:700;"><strong>2.操作方法</strong></span><br>
+                            </p>
+                            <img src="/assets/images/softpic/instruction/pco1.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;padding-left: 44%">操作界面</p>
+                            <br>
+                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                                <span style="font-weight:700;"><strong>2.1.矩阵文件</strong></span><br>
+                                云平台支持手动输入和上传矩阵文件两种输入文件方式，矩阵文件必须包含表头，在扩增子分析中，第一列为分组/OTU_id/物种分类等特征，第一行为样本名（样本名必须以字母开头，不能是纯数字），此处使用
+                                <span style="font-weight:700;"><strong>凌恩生物扩增子结题报告中纲水平</strong></span>
+                                的OTU分类表，每一格为该样本注释到对应物种的序列数，位于结果文件夹的
+                                <span style="font-weight:700;"><strong>01.OTU_Taxa/normalize/tax_summary_a/class.xls</strong></span>
+                                ，可以在Excel中打开，然后另存为以tab键分隔的.txt文件，示例文件如下：
+                                <br>
+                            </p>
+                            <img src="/assets/images/softpic/instruction/pco2.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                            <br>
+                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                                在转录组分析中，可以直接使用<span style="font-weight:700;"><strong>凌恩生物转录组分析结题报告</strong></span>
+                                中的FPKM统计表，文件路径为<span style="font-weight:700;"><strong>GeneExp/genes.fpkm.txt</strong></span>
+                                ，第一列为基因id，第一行为样本名，示例文件如下：
+                                <br>
+                            </p>
+                            <img src="/assets/images/softpic/instruction/pco3.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                            <br>
+                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                                上传文件后，点击“提交”按键，即可开始分析<br>
+                            </p>
+                            <br>
+                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                                <span style="font-weight:700;"><strong>2.2.选择参数</strong></span><br>
+                                (1) 是否显示样本名：是或否<br>
+                                (2) 是否分组绘图<br>
+                                如果选择按分组绘图，可以选择手动输入或上传分组文件，第一列为样本名，第二列为分组名，示例文件如下：<br>
+                            </p>
+                            <img src="/assets/images/softpic/instruction/pco4.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                            <br>
+                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                                上传文件后，点击“提交”按键，即可开始分析<br>
+                            </p>
+                            <br>
+                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                                <span style="font-weight:700;"><strong>2.3.查看任务</strong></span><br>
+                                提交任务后，点击界面右侧的“历史任务”模块，或者点击界面“我的任务”，都可以查看任务编号、软件名称和状态等信息，点击任务编号，即可查看分析结果。
+                                <br>
+                            </p>
+                            <img src="/assets/images/softpic/instruction/pco5.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                            <br>
+                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                                在任务详情界面，展示的是任务参数、结果文件列表和在线调整图片3个区域，提供结果文件下载和图片调整功能。<br>
+                            </p>
+                            <img src="/assets/images/softpic/instruction/pco6.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                            <br>
+                            <br>
+                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                                <span style="font-weight:700;"><strong>3.示例图片</strong></span><br>
+                                通过数据布局参数、颜色参数和字体参数三个模块在线调整图片。<br>
+                                (1) 数据布局参数包括选择XY轴数据、是否显示样本名、是否画圈、放大显示区域、图片尺寸和清晰度；<br>
+                                (2) 颜色参数部分可以自主选择配色；<br>
+                                (3) 字体参数部分可以调整XY轴字体旋转角度、字体大小、标题大小、设定XY轴标题和主标题；<br>
+                            </p>
+                            <img src="/assets/images/softpic/instruction/pco7.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                            <br>
+                            <br>
+                            <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                                <span style="font-weight:700;"><strong>4.结果文件</strong></span><br>
+                                结果文件包含PCoA结果图和PCoA值表格。<br>
+                                PCoA值表格：第一列为维度，第二列为该维度解释结果的百分比。<br>
+                            </p>
+                            <img src="/assets/images/softpic/instruction/pco8.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                            <br>
+                        </div>
+                        <div id="form1" class="tab-pane fade">
+                            <h5 style="margin-bottom: 2px">视频录制中...敬请期待！</h5>
+                            <div id="dplayer"></div>
+                        </div>
+                        <div id="history" class="form1_ins tab-pane fade">
+                            <a id="btn-refresh" class="btn_refresh mws-i-24 i-refresh-3" onclick="refresh('@abbre')">刷新状态</a>
+                            <ul id="hisul" style="margin-top: 15px">
+                                <li id="hislist" class="hislist">
+                                    <div class="his_time"><span>任务编号</span></div>
+                                    <div class="his_time"><span style="margin-left: -20px;">结束时间</span></div>
+                                    <div class="his_name"><span style="margin-left: -23px;">状态</span></div>
+                                    <hr>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="@routes.Assets.versioned("js/toolsAdjust.js")"></script>
+    @*    <script src="@routes.Assets.versioned("bootstrap-table-master/bootstrap-table.js")" type="text/javascript"></script>*@
+    @*    <script src="@routes.Assets.versioned("bootstrap-table-master/locale/bootstrap-table-en-US.min.js")" type="text/javascript"></script>*@
+    <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/fileinput.min.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/locales/zh.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("myjs/soft.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+
+            $(document).ready(function () {
+                formValidation();
+                loadHistory("@abbre");
+                getTaskName("PCO","PCO");
+                // loadVideo("//13125180.s21v.faiusr.com/58/ABUIABA6GAAg_Z2K_QUojLX0pwY.mp4","/assets/images/softpic/video/pca_video.png")
+            });
+
+            $("#isgroup").click(function () {
+                var isSelected = this.checked;
+                if (isSelected === true) {
+                    $("#group").show();
+                } else {
+                    $("#group").hide();
+                }
+            });
+
+            //bootstrap fileinput 选择文件后处理事件
+            $("#table1").on("filebatchselected", function(event, files) {
+                if($("#table2").val()!="") checkGroupfile();
+            });
+
+            function PCA() {
+                var form = $("#PCO");
+                var fv = form.data("formValidation");
+                fv.validate();
+                if (fv.isValid()) {
+                    flagtable=true;
+                    var check=[];
+                    check.push(checkTablefile());
+                    check.push(checkGroupfile());
+                    Promise.all(check).then((r)=>{
+                        if(flagtable&&checktaskname()){
+                            var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
+                            var index = layer.alert(element, {
+                                skin: 'layui-layer-lan',
+                                closeBtn: 0,
+                                title: "提醒",
+                                btn: []
+                            });
+                            setTimeout(function () {
+                                layer.close(index);
+                                var form1 = new FormData($("#PCO")[0]);
+                                $.ajax({
+                                    url: "/CloudPlatform/SoftTool/runPcoa?isgroup=" + $("#isgroup").prop("checked") + "&table=" + table + "&group=" + group + "&abbre=@abbre",
+                                    type: "post",
+                                    processData: false,
+                                    contentType: false,
+                                    data: form1,
+                                    success: function (data) {
+                                        removeul();
+                                        loadHistory("@abbre");
+                                        $("#his_tab1").addClass("active");
+                                        $("#out_tab1").removeClass("active");
+                                        $("#ins_tab1").removeClass("active");
+                                        $("#history").addClass("active").addClass("in");
+                                        $("#form1").removeClass("active");
+                                        $("#instruction1").removeClass("active");
+                                        getTaskName("PCO","PCO");
+                                    }
+                                });
+
+                            }, 2000);
+                        }
+                    });
+                }
+            }
+
+            var sample;
+            var flaggroupfile=true;
+            var flagtable=true;
+
+            function checkTablefile() {
+                return new Promise((resolve,reject) =>{
+                    if(table==2 && $("#table1").val()==""){
+                        flagtable=flagtable&&false;
+                        swal({
+                            title: "矩阵文件错误",
+                            text: "请上传矩阵文件！",
+                            type: "warning",
+                            confirmButtonText: "确认"
+                        });
+                        resolve(false);
+                    }
+                    else if(table==2 && $("#table1").val()!=""){
+                        var reader=new FileReader();
+                        reader.readAsText(document.getElementById('table1').files[0],"UTF-8");
+                        reader.onload=function () {
+                            let text=reader.result;
+                            let line=text.trim().split('\n');
+                            resolve(checktable(line));
+                        };
+                    }
+                    else if(table==1 && $("#txdata1").val()==""){
+                        flagtable=flagtable&&false;
+                        swal({
+                            title: "矩阵文件错误",
+                            text: "请上传矩阵文件！",
+                            type: "warning",
+                            confirmButtonText: "确认"
+                        });
+                        resolve(false);
+                    }
+                    else if(table==1 && $("#txdata1").val()!=""){
+                        let line=$("#txdata1").val().trim().split('\n');
+                        resolve(checktable(line));
+                    }
+                });
+            }
+
+            function checktable(line) {
+                sample=line[0].trim().split('\t');
+                var length=sample.length;
+                for(let i in line){
+                    var r=parseInt(i)+1;
+                    let row=line[i].trim().split('\t');
+                    var name=[];
+                    if(row.length!=length){
+                        flagtable=flagtable&&false;
+                        swal({
+                            title: "矩阵文件格式错误",
+                            text: "矩阵文件第"+r+"行数据数量不一致",
+                            type: "warning",
+                            confirmButtonText: "确认"
+                        });
+                        return false;
+                    }
+                    for(let j in row){
+                        var c=parseInt(j)+1;
+                        if(i!=0){
+                            if(j!=0 && !checkRate(row[j].trim())){
+                                flagtable=flagtable&&false;
+                                swal({
+                                    title: "矩阵文件格式错误",
+                                    text: "矩阵文件第"+r+"行,第"+c+"列数据不是数字",
+                                    type: "warning",
+                                    confirmButtonText: "确认"
+                                });
+                                return false;
+                            }
+                        }else {
+                            if(name.indexOf(row[j])>=0){
+                                flagtable=flagtable&&false;
+                                swal({
+                                    title: "矩阵文件错误",
+                                    text: "矩阵文件第1行,第"+c+"列样品名重复存在，请核实！",
+                                    type: "warning",
+                                    confirmButtonText: "确认"
+                                });
+                                return false;
+                            }else name.push(row[j]);
+                        }
+                    }
+                }
+                flagtable=flagtable&&true;
+                return true;
+            }
+
+            function checkGroupfile() {
+                // if($("#table1").val()==""&&$("#txdata1").val()==""){
+                //     flaggroupfile=false;
+                //     // var file = document.getElementById('table2');
+                //     // file.value = '';
+                //     // $(".file-caption-name").attr("title","");
+                //     // $(".file-caption-name").text("");
+                //     $("#div2").find(".fileinput-remove").click();
+                //     swal({
+                //         title: "请先上传矩阵文件",
+                //         text: "请先上传矩阵文件！",
+                //         type: "warning",
+                //         confirmButtonText: "确认"
+                //     });
+                //     return;
+                // }
+                return new Promise((resolve, reject) => {
+                    if(!$("#isgroup").prop("checked")) {
+                        flagtable=flagtable&&true;
+                        resolve(true);
+                    }
+                    else if(group==2 && $("#table2").val()==""){
+                        flagtable=flagtable&&false;
+                        swal({
+                            title: "分组文件错误",
+                            text: "请上传分组，或取消分组绘图！",
+                            type: "warning",
+                            confirmButtonText: "确认"
+                        });
+                        resolve(false);
+                    }
+                    else if(group==2 && $("#table2").val()!=""){
+                        var reader=new FileReader();
+                        reader.readAsText(document.getElementById('table2').files[0],"UTF-8");
+                        reader.onload=function () {
+                            let text=reader.result;
+                            let line=text.trim().split('\n');
+                            resolve(checkgroup(line));
+                        };
+                    }
+                    else if(group==1 && $("#txdata2").val()==""){
+                        flagtable=flagtable&&false;
+                        swal({
+                            title: "分组文件错误",
+                            text: "请上传分组，或取消分组绘图！",
+                            type: "warning",
+                            confirmButtonText: "确认"
+                        });
+                        resolve(false);
+                    }
+                    else if(group==1 && $("#txdata2").val()!=""){
+                        let line=$("#txdata2").val().trim().split('\n');
+                        resolve(checkgroup(line));
+                    }
+                });
+            }
+
+            function checkgroup(line) {
+                var name=[];
+                console.log(line.length);
+                for(let i in line) {
+                    let row=line[i].trim().split('\t');
+                    var r=parseInt(i)+1;
+                    if(row.length!=2){
+                        flagtable=flagtable&&false;
+                        swal({
+                            title: "分组文件格式错误",
+                            text: "分组文件第"+r+"行格式错误，必须为两列！",
+                            type: "warning",
+                            confirmButtonText: "确认"
+                        });
+                        return false;
+                    }
+                    if(sample.indexOf(row[0])<0){
+                        flagtable=flagtable&&false;
+                        swal({
+                            title: "分组文件格式错误",
+                            text: "分组文件第"+r+"行样品名不存在，请核对矩阵文件！",
+                            type: "warning",
+                            confirmButtonText: "确认"
+                        });
+                        return false;
+                    }
+                    if(name.indexOf(row[0])>=0){
+                        flagtable=flagtable&&false;
+                        swal({
+                            title: "分组文件错误",
+                            text: "分组文件第"+r+"行样品名重复存在，请核实！",
+                            type: "warning",
+                            confirmButtonText: "确认"
+                        });
+                        return false;
+                    }else name.push(row[0]);
+                }
+                flagtable=flagtable&&true;
+                return true;
+            }
+
+            function checkRate(input) {
+                // var re = /^(-?\d+)(\.\d+)?$/;
+                var re=/^[+-]?[\d]+([\.][\d]+)?([Ee][+-]?[\d]+)?$/;//判断字符串是否为浮点数或科学计数法
+                if (!re.test(input)) {
+                    return false;
+                }else return true;
+            }
+
+            function shown() {
+                var param = $("#showname").val();
+                if (param == "TRUE") $("#showerro").show();
+                else $("#showerro").hide();
+            }
+
+            var table=1;
+            var group=1;
+
+            function curtable(param) {
+                table=param;
+            }
+            function curgroup(param) {
+                group=param;
+            }
+
+            var ta="name\tB1\tB2\tB3\tB4\tB5\tB6\tC1\tC2\tC3\tC4\tC5\tC6\tE1\tE2\tE3\tE4\tE5\tE6\tH1\tH2\tH3\tH4\tH5\tH6\tG1\tG2\tG3\tG4\tG5\tG6\tI1\tI2\tI3\tI4\tI5\tI6\tJ1\tJ2\tJ3\tJ4\tJ5\tJ6\n" +
+                    "Lipids\t1165.87\t820.7\t976.56\t1119.08\t742.55\t1117.43\t647.42\t712.8\t683.34\t527.11\t663.03\t675.47\t559.49\t577.67\t570.04\t648.77\t489.19\t624.68\t681.78\t732.65\t597.1\t587.81\t703.57\t670.15\t612.84\t709.59\t771.33\t631.91\t696.15\t812.43\t697.69\t656.01\t668.59\t634.01\t627.18\t691.51\t653.25\t705.78\t713.59\t895.7\t668.94\t716.21\n" +
+                    "Acylcarnitine\t3289.73\t3472.21\t2675.97\t2511.18\t2826.11\t2977.09\t3357.84\t2545.62\t2826.6\t2906\t2451.6\t3306.43\t1244.46\t1879.27\t1631.38\t1908.08\t2124.09\t1861.02\t2211.26\t1312.34\t1862.16\t1790.6\t1582.64\t1544.41\t1682.67\t1577.18\t1385.96\t1504.82\t1312.14\t1355.64\t1696.66\t1620.68\t1489.54\t2047.7\t2048.87\t2117.05\t2283.9\t1801.42\t1759.18\t1490.42\t1574.32\t1474.77\n" +
+                    "Free\t1628.62\t564.89\t608.93\t664.42\t663.23\t664.25\t429.29\t564.34\t620.4\t644.78\t363.42\t645.11\t136.6\t123.7\t145.7\t123.36\t371.03\t355.12\t153.11\t235.21\t386.84\t127.89\t119.35\t135.15\t337.11\t298.35\t167.27\t152.61\t146.04\t178.96\t157.4\t166.14\t157.08\t157.26\t547.73\t466.33\t459.4\t489.67\t274.91\t173.52\t203.27\t189.82\n" +
+                    "Bile\t64.07\t74.46\t39.9\t24.5\t43.35\t23.89\t107.89\t119.37\t301.99\t122.12\t113.48\t164.31\t68.48\t308.18\t240.83\t626.43\t218.44\t99.23\t929.66\t50.93\t157.7\t150.48\t123.14\t226.03\t69.95\t80.28\t125.24\t111.31\t125.26\t74.49\t90.47\t147\t169.66\t711.15\t118.36\t100.68\t93.65\t56.37\t89.72\t62.51\t91.18\t57.38\n" +
+                    "Neurotransmitter\t63.7\t78.68\t76.5\t81.69\t90.21\t71.23\t92.81\t72.14\t75.08\t101.75\t77.43\t80.96\t44.82\t64.24\t62.17\t59.29\t57.05\t55.31\t67.31\t42.77\t63.67\t57.81\t47.45\t61.65\t59.06\t56.33\t59.27\t62.72\t49.65\t65.85\t74.19\t77.16\t71.53\t81.83\t64.64\t53.08\t58.47\t57.19\t73.87\t80.37\t71.86\t61.28\n" +
+                    "Amino\t694.97\t1189.65\t920.38\t796.67\t915.27\t941.49\t1374.3\t937.89\t802.88\t943.5\t911.51\t1135.64\t298.84\t474.53\t329.27\t347.58\t646.88\t492.34\t335.41\t329.5\t483.62\t502.88\t414.09\t336.89\t416.36\t358.41\t281.19\t375.75\t322.81\t342.89\t454.32\t360.85\t274.22\t300.27\t604.18\t613.59\t604.11\t384.04\t324.98\t300.24\t334.78\t297.96\n" +
+                    "Organic\t183.32\t277.97\t197.54\t164.59\t266.88\t242.15\t259.88\t173.25\t149.64\t227.61\t164.31\t285.8\t106.1\t126.21\t107.54\t105.83\t143.36\t132.56\t109.45\t117.13\t133.82\t141.23\t121.97\t129.99\t137.21\t142.58\t85.06\t128.24\t99.21\t121.41\t121.54\t112.46\t132.42\t105.5\t103.87\t148.68\t197.55\t163.8\t138.68\t97.12\t134.66\t103.61\n" +
+                    "Carbohydrates\t201.82\t398.34\t252.46\t263.99\t306.68\t278.28\t371.62\t262.13\t364.17\t325.81\t290.1\t349.59\t147.77\t167.19\t269.61\t177.56\t231.1\t219.31\t160.87\t104.92\t174.72\t156\t141.35\t187.19\t195.51\t147.68\t110.83\t155.35\t124.79\t127.1\t148.56\t163.6\t169.49\t180.7\t160.12\t205.31\t322.51\t143.15\t197.06\t119.44\t119.66\t105.97\n" +
+                    "Amines\t94.57\t119.86\t122.01\t95.75\t133.65\t119.55\t75.87\t69.45\t79.46\t80.41\t74.19\t64.89\t45.73\t61.99\t55.32\t59.71\t59.41\t59.13\t54.73\t56.75\t61.6\t52.81\t52.07\t53.54\t59.12\t76.36\t69.8\t82.5\t55.19\t55.67\t64.91\t67.55\t60.49\t70.32\t63.87\t72.19\t79.03\t64.34\t87.03\t71.91\t74.67\t68.04\n" +
+                    "Indoles\t16.22\t7.33\t16.34\t10.13\t10.86\t9.15\t22.06\t21.06\t18.51\t12.09\t15.32\t7.15\t18.65\t19.94\t27.59\t30.29\t22.95\t17.31\t19.68\t30.95\t15.16\t14.61\t14.1\t20.99\t21.13\t13.23\t38.76\t40.16\t30.64\t26.33\t41.79\t45.94\t51.43\t42.57\t17.58\t14.89\t25.17\t17.9\t69.26\t52.96\t93.71\t61.4\n" +
+                    "Phenols\t19.16\t181.78\t24.14\t24.62\t24.31\t141.04\t143.25\t22.37\t21.28\t22.9\t19.43\t142.74\t34.72\t60.15\t37.14\t37.44\t25.15\t24.66\t42.61\t32.07\t26.17\t55.65\t69.8\t37.89\t28.36\t27.47\t43.97\t42.9\t34.31\t39.7\t79.65\t68.5\t44.91\t53.03\t30.94\t27.25\t28.12\t35.12\t43.03\t57.61\t40.3\t41.83\n" +
+                    "Purines\t53.25\t148.56\t86.69\t72.07\t107.68\t142.2\t168.93\t57.05\t106.49\t133.79\t103.94\t125.55\t63.56\t155.55\t51.62\t57.53\t113.65\t97.38\t51.08\t45.5\t88.85\t191.82\t126.34\t53.89\t68.05\t55.89\t63.54\t55.22\t37.49\t51.49\t117.75\t111.36\t61.17\t90.07\t69.24\t86.47\t111.03\t69.02\t109.6\t75.29\t57.59\t53.09\n" +
+                    "Pyridines\t76.41\t100.73\t87.98\t71.98\t97.95\t75.58\t74.09\t72.66\t76.87\t87.54\t69.78\t62.19\t37.7\t52.33\t51.34\t51.18\t58.66\t47.81\t48.06\t40.68\t61.01\t48.07\t42.56\t52.61\t48.66\t44.25\t48.54\t72.14\t70.31\t35.03\t54.72\t65.18\t59.17\t59.97\t50.03\t46.17\t52.55\t48.8\t49.57\t56.58\t70.59\t71.04\n" +
+                    "Peptides\t41.49\t142.97\t27.9\t32.57\t40.65\t56.39\t106.71\t43.08\t35.81\t39.41\t33.18\t54.39\t26.39\t57.1\t25.01\t36.44\t23.75\t30.93\t27.17\t42.88\t29.66\t117.58\t71.97\t31.76\t54.12\t32.63\t31.76\t36.29\t37.98\t52.65\t67.56\t46.94\t32.91\t25.57\t27.65\t30.06\t49.87\t35.17\t29.91\t24.92\t45.6\t41.35\n";
+
+            var go= "B1\tB\n" +
+                    "B2\tB\n" +
+                    "B3\tB\n" +
+                    "B4\tB\n" +
+                    "B5\tB\n" +
+                    "B6\tB\n" +
+                    "C1\tC\n" +
+                    "C2\tC\n" +
+                    "C3\tC\n" +
+                    "C4\tC\n" +
+                    "C5\tC\n" +
+                    "C6\tC\n" +
+                    "E1\tE\n" +
+                    "E2\tE\n" +
+                    "E3\tE\n" +
+                    "E4\tE\n" +
+                    "E5\tE\n" +
+                    "E6\tE\n" +
+                    "H1\tH\n" +
+                    "H2\tH\n" +
+                    "H3\tH\n" +
+                    "H4\tH\n" +
+                    "H5\tH\n" +
+                    "H6\tH\n" +
+                    "G1\tG\n" +
+                    "G2\tG\n" +
+                    "G3\tG\n" +
+                    "G4\tG\n" +
+                    "G5\tG\n" +
+                    "G6\tG\n" +
+                    "I1\tI\n" +
+                    "I2\tI\n" +
+                    "I3\tI\n" +
+                    "I4\tI\n" +
+                    "I5\tI\n" +
+                    "I6\tI\n" +
+                    "J1\tJ\n" +
+                    "J2\tJ\n" +
+                    "J3\tJ\n" +
+                    "J4\tJ\n" +
+                    "J5\tJ\n" +
+                    "J6\tJ";
+
+            function showexample(type) {
+                if(type=="table"){
+                    if(table==1) {
+                        $("#txdata1").val(ta);
+                        $("#PCO").formValidation("revalidateField", "txdata1");
+                    }
+                    else window.open("/assets/files/pcoa_table.txt");
+                }
+                if(type=="group"){
+                    if(group==1) {
+                        $("#txdata2").val(go);
+                        $("#PCO").formValidation("revalidateField", "txdata2");
+                    }
+                    else window.open("/assets/files/pcoa_group.txt");
+                }
+            }
+
+            function formValidation() {
+                $('#PCO').formValidation({
+                    framework: 'bootstrap',
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        taskname: {
+                            validators: {
+                                notEmpty: {
+                                    message: '任务编号不能为空!'
+                                },
+                                remote:{
+                                    type: 'POST',
+                                    url: '@routes.DutyController.checktaskname()',
+                                    message: "任务编号重复，请重新输入",
+                                    delay: 1000
+                                }
+                            }
+                        },
+                        table1: {
+                            validators: {
+                                notEmpty: {
+                                    message: '必须上传矩阵表格文件!'
+                                },
+                                file: {
+                                    // extension: 'jpeg,jpg,png',
+                                    // type: 'image/jpeg,image/png',
+                                    maxSize: 5*1024*1024,
+                                    message: '文件不得大于5M！'
+                                }
+                            }
+                        },
+                        txdata1: {
+                            validators: {
+                                notEmpty: {
+                                    message: '必须输入矩阵表格文件!'
+                                }
+                            }
+                        },
+                        table2: {
+                            validators: {
+                                notEmpty: {
+                                    message: '必须上传分组文件!或者取消分组绘图'
+                                },
+                                file: {
+                                    // extension: 'jpeg,jpg,png',
+                                    // type: 'image/jpeg,image/png',
+                                    maxSize: 5*1024*1024,
+                                    message: '文件不得大于5M！'
+                                }
+                            }
+                        },
+                        txdata2: {
+                            validators: {
+                                notEmpty: {
+                                    message: '必须输入分组文件!或者取消分组绘图'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+
+
+    </script>
+}

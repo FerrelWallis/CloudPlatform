@@ -75,6 +75,9 @@
                     </table>
                 </div>
                 <br><br>
+                <span class="title">查看运行日志:</span>
+                <span class="content align"><a class="button" id="log" onclick="showlog()">运行日志</a></span>
+                <br><br>
                 <span class="title">下载结果文件包:</span>
                 <span class="content align"><a class="button" id="download" onclick="downloadZip()">下载</a></span>
             </div>
@@ -125,14 +128,15 @@
                         else colo="odd";
                         var readfile="";
                         if(data.name[i].indexOf("pdf")>=0){
-                            readfile="";
+                            readfile="'/CloudPlatform/Utils/previewFile?taskname=@row.taskname&filename="+data.name[i]+"&filetype=pdf'";
                         } else if(data.name[i].indexOf("xls")>=0) {
-                            readfile="";
+                            readfile="'/CloudPlatform/Utils/previewFile?taskname=@row.taskname&filename="+data.name[i]+"&filetype=xls'";
                         } else {
-                            readfile="'/CloudPlatform/Utils/previewFile?taskname=@row.taskname&filename="+data.name[i]+"'";
+                            readfile="'/CloudPlatform/Utils/previewFile?taskname=@row.taskname&filename="+data.name[i]+"&filetype=txt'";
                         }
-                        html += "<tr class='"+ colo +"'><td>" + data.name[i] + "</td><td>" + data.ins[i] + "</td><td><a onclick='downloadFile(\""+data.name[i]+"\")' class='fa fa-download'></a></td></tr>";
-                        // html += "<tr class='"+ colo +"'><td>" + data.name[i] + "</td><td>" + data.ins[i] + "</td><td><a onclick='downloadFile(\""+data.name[i]+"\")' class='fa fa-download'></a><a href="+readfile+" class='fa fa-eye' target='_blank' style='margin-left=10px;'></a></td></tr>";
+                        // html += "<tr class='"+ colo +"'><td>" + data.name[i] + "</td><td>" + data.ins[i] + "</td><td><a onclick='downloadFile(\""+data.name[i]+"\")' class='fa fa-download'></a></td></tr>";
+                        if(data.name[i].indexOf("zip")>=0) html += "<tr class='"+ colo +"'><td>" + data.name[i] + "</td><td>" + data.ins[i] + "</td><td style='padding: 8px 0px 8px 16px;width: 60px;'><a onclick='downloadFile(\""+data.name[i]+"\")' class='fa fa-download'></a></td></tr>";
+                        else html += "<tr class='"+ colo +"'><td>" + data.name[i] + "</td><td>" + data.ins[i] + "</td><td style='padding: 8px 0px 8px 16px;width: 60px;'><a onclick='downloadFile(\""+data.name[i]+"\")' class='fa fa-download'></a><a href=" + readfile + " class='fa fa-eye' target='_blank' style='margin-left: 10px;'></a></td></tr>";
                     });
                     $("#filesUrl").html(html);
                 }
@@ -174,4 +178,24 @@
                     window.location.href = "/CloudPlatform/SoftTool/downloadZip?taskname=@row.taskname&num="+Math.random();
                 }
             }
+
+        function showlog(){
+            $.ajax({
+                url: "/CloudPlatform/MyTasks/showlog?taskname=@row.taskname",
+                type: "post",
+                success: function (data) {
+                    if(data.canmanage==0){
+                        swal({
+                            title: "运行日志为空",
+                            text: "运行日志为空！",
+                            type: "warning",
+                            confirmButtonText: "确认"
+                        });
+                    }else {
+                        $("#logContent").text(data.content);
+                        $("#liLog").click();
+                    }
+                }
+            });
+        }
     </script>

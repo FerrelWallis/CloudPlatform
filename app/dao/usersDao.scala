@@ -16,6 +16,14 @@ class usersDao @Inject()(protected val dbConfigProvider: DatabaseConfigProvider)
     db.run(Users.filter(_.id === Integer.parseInt(id)).result.head)
   }
 
+  def getByPhone(phone:String): Future[UsersRow] = {
+    db.run(Users.filter(_.phone === phone).result.head)
+  }
+
+  def getByEmail(email:String): Future[UsersRow] = {
+    db.run(Users.filter(_.email === email).result.head)
+  }
+
   def getAllUser : Future[Seq[UsersRow]] = {
     db.run(Users.result)
   }

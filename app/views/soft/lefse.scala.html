@@ -45,68 +45,40 @@
                     <div id="file1" class="one-line">
                         <div class="form-group-p">
                             <div class="form-group">
-                                <label for="filepath1">OTU丰度表 1：</label>
+                                <label for="filepath1">OTU丰度表：</label>
                             </div>
                             <div class="form-group">
-                                <input type="file" class="form-control file" id="table1" name="table1" onchange="checkTable('table1')">
+                                <input type="file" class="form-control file" id="table1" name="table1">
                             </div>
                         </div>
                         <div class="form-group-extra">
                             <em>
-                                <a href="/assets/files/lefse_otu1.txt" target='_blank' style="margin-left: 20px;">示例文件</a>
+                                <a href="/assets/files/lefse_otu_table.biom" target='_blank'>示例文件(biom)</a>
                             </em>
-                            <span class="must" style="margin-left: 10px">*</span>
-                        </div>
-                    </div>
-                    <div id="file2" class="one-line" style="margin-top: 15px;">
-                        <div class="form-group-p">
-                            <div class="form-group">
-                                <label for="filepath1">OTU丰度表 2：</label>
-                            </div>
-                            <div class="form-group">
-                                <input type="file" class="form-control file" id="table2" name="table2" onchange="checkTable('table2')">
-                            </div>
-                        </div>
-                        <div class="form-group-extra">
                             <em>
-                                <a href="/assets/files/lefse_otu2.txt" target='_blank' style="margin-left: 20px;">示例文件</a>
+                                <a href="/assets/files/lefse_otutable.txt" target='_blank' style="margin-left: 20px;">示例文件(txt)</a>
                             </em>
-                            <span class="must" style="margin-left: 10px">*</span>
                         </div>
                     </div>
                 </div>
-                <div class="one-line" style="margin-top: 15px;">
-                    <input type="button" value="增加表格" class="btn btn-primary" onclick="addFile()">
-                    <input type="button" value="减少表格" class="btn btn-primary" onclick="delFile()">
-                </div>
+@*                <div class="one-line" style="margin-top: 15px;">*@
+@*                    <input type="button" value="增加表格" class="btn btn-primary" onclick="addFile()">*@
+@*                    <input type="button" value="减少表格" class="btn btn-primary" onclick="delFile()">*@
+@*                </div>*@
                 <br>
-                <div class="one-line" style="margin-top: 15px;">
+                <div class="one-line">
                     <div class="form-group-p">
                         <div class="form-group">
                             <label for="filepath1">分组文件：</label>
                         </div>
                         <div id="group_part" class="form-group">
-                            <input type="file" class="form-control file" id="group" name="group" onchange="checkGroup()">
+                            <input type="file" class="form-control file" id="group" name="group">
                         </div>
                     </div>
                     <div class="form-group-extra">
                         <em>
                             <a href="/assets/files/lefse_map.txt" target='_blank' style="margin-left: 20px;">示例文件</a>
                         </em>
-                        <span class="must" style="margin-left: 10px">*</span>
-                    </div>
-                </div>
-                <br>
-                <div class="form-group-p">
-                    <div class="form-group">
-                        <label for="">
-                            对数绝对值的阈值&nbsp;：</label>
-                    </div>
-                    <div class="form-group">
-                        <label style="width:50px;">
-                            <input type="text" id="l" name="l" class="form-control" placeholder="数字" value="2" style="width: 60px">
-                        </label>
-                        <span class="must" style="margin-left: 10px">*</span>
                     </div>
                 </div>
                 <br>
@@ -130,7 +102,7 @@
             <div class="tab-content" style="box-sizing: border-box!important;">
                 <div class="tab-pane fade active in" id="instruction">
                     <p style="color: red;">OTU文件第一行必须是# Constructed from biom file</p>
-                    <p style="color: red;">第二行第一个必须是OTU ID，中间OTU和ID之间以空格分隔，其余都以制表符分隔</p>
+                    <p style="color: red;">第二行第一个必须是#OTU ID，中间OTU和ID之间以空格分隔，其余都以制表符分隔</p>
                     <br>
                     <h5 style="margin-bottom: 2px">更详细使用说明编写中...敬请期待！</h5>
                 </div>
@@ -164,7 +136,6 @@
                 getTaskName("Lefse","LEF");
             });
 
-            var filenum=2;
             const fileValidators = {
                 validators: {
                     notEmpty: {
@@ -179,246 +150,46 @@
                 }
             };
 
-            function addFile() {
-                filenum=filenum+1;
-                var files = "<div id=\"file"+filenum+"\" class=\"one-line\" style=\"margin-top: 15px;\">\n" +
-                        "                        <div class=\"form-group-p\">\n" +
-                        "                            <div class=\"form-group\">\n" +
-                        "                                <label for=\"filepath1\">OTU丰度表 "+filenum+"：</label>\n" +
-                        "                            </div>\n" +
-                        "                            <div class=\"form-group\">\n" +
-                        "                                <input type=\"file\" class=\"form-control file\" id=\"table"+filenum+"\" name=\"table"+filenum+"\" onchange=\"checkTable('table"+filenum+"')\">\n" +
-                        "                            </div>\n" +
-                        "                        </div>\n" +
-                        "                    </div>";
-                $("#myform").append(files);
-                $(".file").fileinput({
-                    showPreview: false,
-                    showUpload:false,
-                    showRemove:true,
-                    browseLabel: "选择文件"
-                });
-                $("#Lefse").formValidation('addField',"table"+filenum, fileValidators);
-            }
-
-            function delFile() {
-                if(filenum==2){
-                    swal({
-                        title: "删除失败",
-                        text: "删除失败，最小数量为2个！",
-                        type: "warning",
-                        confirmButtonText: "确认"
-                    });
-                }else{
-                    $("#file"+filenum).remove();
-                    filenum=filenum-1;
-                    console.log('filenum'+filenum);
-                    $("#Lefse").formValidation('removeField','table'+filenum);
-                }
-            }
-
             var sample,tablesflag=true;
-
-            function checkTable(param) {
-                return new Promise((resolve, reject) => {
-                    var reader=new FileReader();
-                    reader.readAsText(document.getElementById(param).files[0],"UTF-8");
-                    reader.onload=function () {
-                        let text=reader.result;
-                        let line=text.trim().split('\n');
-                        var head=line[0].trim().split('\t');
-                        sample=line[1].trim().split('\t');
-                        var length=sample.length;
-                        var num=param.toString().substring(5);
-                        if(head!="#Constructed from biom file") {
-                            tablesflag=tablesflag&&false;
-                            swal({
-                                title: "第 "+num+" 个OTU表格式错误",
-                                text: "OTU表格第1行必须为 “#Constructed from biom file” ,请核实！",
-                                type: "warning",
-                                confirmButtonText: "确认"
-                            });
-                            resolve(false);
-                        }else if(sample[0]!="OTU ID"){
-                            tablesflag=tablesflag&&false;
-                            swal({
-                                title: "第 "+num+" 个OTU表格式错误",
-                                text: "OTU表格第2行第一列表头必须为 “OTU ID”,OTU和ID中间以空格分隔！ ",
-                                type: "warning",
-                                confirmButtonText: "确认"
-                            });
-                            resolve(false);
-                        }else{
-                            for(let i in line){
-                                if(i!=0){
-                                    var r=parseInt(i)+1;
-                                    let row=line[i].trim().split('\t');
-                                    var name=[];
-                                    if(row.length!=length){
-                                        tablesflag=tablesflag&&false;
-                                        swal({
-                                            title: "第 "+num+" 个OTU表格式错误",
-                                            text: "输入文件第"+r+"行数据数量不一致",
-                                            type: "warning",
-                                            confirmButtonText: "确认"
-                                        });
-                                        resolve(false);
-                                    }
-                                    for(let j in row){
-                                        var c=parseInt(j)+1;
-                                        if(i!=1){
-                                            if(j!=0 && !checkRate(row[j].trim())){
-                                                tablesflag=tablesflag&&false;
-                                                swal({
-                                                    title: "第 "+num+" 个OTU表格式错误",
-                                                    text: "输入文件第"+r+"行,第"+c+"列数据不是数字",
-                                                    type: "warning",
-                                                    confirmButtonText: "确认"
-                                                });
-                                                resolve(false);
-                                            }
-                                        }else {
-                                            if(name.indexOf(row[j])>=0){
-                                                tablesflag=tablesflag&&false;
-                                                swal({
-                                                    title: "第 "+num+" 个OTU表格式错误",
-                                                    text: "输入文件第1行,第"+c+"列样品名重复存在，请核实！",
-                                                    type: "warning",
-                                                    confirmButtonText: "确认"
-                                                });
-                                                resolve(false);
-                                            }else name.push(row[j]);
-                                        }
-                                    }
-                                }
-
-                            }
-                            tablesflag=tablesflag&&true;
-                            resolve(true);
-                        }
-                    };
-                });
-            }
-
-            function checkGroup() {
-                return new Promise((resolve, reject) => {
-                    if($("#table1").val()==""){
-                        tablesflag=tablesflag&&false;
-                        $("#Lefse").formValidation("revalidateField", "table1");
-                        $("#group_part").find(".fileinput-remove").click();
-                        swal({
-                            title: "请先上传OUT丰度表",
-                            text: "请先上传OUT丰度表！",
-                            type: "warning",
-                            confirmButtonText: "确认"
-                        });
-                        resolve(false);
-                    }
-                    var reader=new FileReader();
-                    reader.readAsText(document.getElementById('group').files[0],"UTF-8");
-                    reader.onload=function () {
-                        let text=reader.result;
-                        let line=text.trim().split('\n');
-                        var name=[];
-                        for(let i in line) {
-                            if(i!=0){
-                                let row=line[i].trim().split('\t');
-                                var r=parseInt(i)+1;
-                                if(row.length!=2){
-                                    tablesflag=tablesflag&&false;
-                                    swal({
-                                        title: "分组文件格式错误",
-                                        text: "分组文件第"+r+"行格式错误，必须为两列！",
-                                        type: "warning",
-                                        confirmButtonText: "确认"
-                                    });
-                                    resolve(false);
-                                }
-                                if(sample.indexOf(row[0])<0){
-                                    tablesflag=tablesflag&&false;
-                                    swal({
-                                        title: "分组文件格式错误",
-                                        text: "分组文件第"+r+"行样品名不存在，请核对OTU文件！",
-                                        type: "warning",
-                                        confirmButtonText: "确认"
-                                    });
-                                    resolve(false);
-                                }
-                                if(name.indexOf(row[0])>=0){
-                                    tablesflag=tablesflag&&false;
-                                    swal({
-                                        title: "分组文件错误",
-                                        text: "分组文件第"+r+"行样品名重复存在，请核实！",
-                                        type: "warning",
-                                        confirmButtonText: "确认"
-                                    });
-                                    resolve(false);
-                                }else name.push(row[0]);
-                            }
-                        }
-                        tablesflag=tablesflag&&true;
-                        resolve(true);
-                    };
-                });
-            }
-
-            function checkRate(input) {
-                // var re = /^(-?\d+)(\.\d+)?$/;
-                var re=/^[+-]?[\d]+([\.][\d]+)?([Ee][+-]?[\d]+)?$/;//判断字符串是否为浮点数或科学计数法
-                if (!re.test(input)) {
-                    return false;
-                }else return true;
-            }
 
             function dolefse() {
                 var form = $("#Lefse");
                 var fv = form.data("formValidation");
                 fv.validate();
                 if (fv.isValid()) {
-                    tablesflag=true;
-                    var i=1;
-                    var tablecheck=[];
-                    while(i<=filenum){
-                        tablecheck.push(checkTable("table"+i.toString()));
-                        i++;
-                    }
-                    tablecheck.push(checkGroup());
-                    //解决onload异步问题
-                    Promise.all(tablecheck).then((r)=>{
-                        if(tablesflag){
-                            if(checktaskname()){
-                                var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
-                                var index = layer.alert(element, {
-                                    skin: 'layui-layer-lan',
-                                    closeBtn: 0,
-                                    title: "提醒",
-                                    btn: []
+                    if(tablesflag){
+                        if(checktaskname()){
+                            var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
+                            var index = layer.alert(element, {
+                                skin: 'layui-layer-lan',
+                                closeBtn: 0,
+                                title: "提醒",
+                                btn: []
+                            });
+                            setTimeout(function () {
+                                layer.close(index);
+                                var form1 = new FormData($("#Lefse")[0]);
+                                $.ajax({
+                                    url: "/CloudPlatform/SoftTool/runLefse",
+                                    type: "post",
+                                    processData: false,
+                                    contentType: false,
+                                    data: form1,
+                                    success: function (data) {
+                                        removeul();
+                                        loadHistory("@abbre");
+                                        $("#his_tab1").addClass("active");
+                                        $("#out_tab1").removeClass("active");
+                                        $("#ins_tab1").removeClass("active");
+                                        $("#history").addClass("active").addClass("in");
+                                        $("#example").removeClass("active");
+                                        $("#instruction").removeClass("active");
+                                        getTaskName("Lefse","LEF");
+                                    }
                                 });
-                                setTimeout(function () {
-                                    layer.close(index);
-                                    var form1 = new FormData($("#Lefse")[0]);
-                                    $.ajax({
-                                        url: "/CloudPlatform/SoftTool/runLefse?filenum="+filenum,
-                                        type: "post",
-                                        processData: false,
-                                        contentType: false,
-                                        data: form1,
-                                        success: function (data) {
-                                            removeul();
-                                            loadHistory("@abbre");
-                                            $("#his_tab1").addClass("active");
-                                            $("#out_tab1").removeClass("active");
-                                            $("#ins_tab1").removeClass("active");
-                                            $("#history").addClass("active").addClass("in");
-                                            $("#example").removeClass("active");
-                                            $("#instruction").removeClass("active");
-                                            getTaskName("Lefse","LEF");
-                                        }
-                                    });
-                                }, 2000);
-                            }
+                            }, 2000);
                         }
-                    });
+                    }
 
                 }
             }
@@ -459,30 +230,16 @@
                                 }
                             }
                         },
-                        table2: {
+                        group: {
                             validators: {
                                 notEmpty: {
-                                    message: '必须上传otu丰度表！或减少表格数量'
+                                    message: '必须上传分组文件！'
                                 },
                                 file: {
                                     // extension: 'jpeg,jpg,png',
                                     // type: 'image/jpeg,image/png',
                                     maxSize: 5*1024*1024,
                                     message: '文件不得大于5M！'
-                                }
-                            }
-                        },
-                        l:{
-                            validators: {
-                                notEmpty: {
-                                    message: '不能为空'
-                                },
-                                numeric: {
-                                    message: '必须为数字！'
-                                },
-                                greaterThan: {
-                                    value: 0,
-                                    message: "必须大于0！"
                                 }
                             }
                         }

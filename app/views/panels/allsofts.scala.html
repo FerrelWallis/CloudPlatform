@@ -91,7 +91,7 @@
                             <li><a id="li_function" href="#funlist" onclick="loadSoft('function')">功能分析</a></li>
                             <li><a id="li_cluster" href="#clulist" onclick="loadSoft('cluster')">聚类分析</a></li>
                             <li><a id="li_paint" href="#paintlist" onclick="loadSoft('paint')">基础绘图</a></li>
-                            <li><a id="li_checkdiff" href="#checklist" onclick="loadSoft('check')">统计检验与差异</a></li>
+                            <li><a id="li_check" href="#checklist" onclick="loadSoft('check')">统计检验与差异分析</a></li>
                             <li><a id="li_sequence" href="#seqlist" onclick="loadSoft('sequence')">序列处理</a></li>
                             <li><a id="li_annotation" href="#annolist" onclick="loadSoft('annotation')">注释工具</a></li>
                             <li><a id="li_chart" href="#chartlist" onclick="loadSoft('chart')">表格与格式转化</a></li>
@@ -100,7 +100,7 @@
                     </div>
 
                     <div style="width: 100%;margin-top: 20px;float: left;">
-                        <div class="input-group" style="width: 260px;float: left;margin-left: 640px">
+                        <div class="input-group" style="width: 260px;float: left;margin-left: 20px">
                             <input id="searchbar" type="text" class="form-control" placeholder="">
                             <span class="input-group-btn">
                                 <button class="btn btn-default search-btn" type="button" onclick="searchsoft()">
@@ -159,15 +159,7 @@
 
             $(document).ready(function () {
                 $("#@types").click();
-                loadSoft("all");
-                loadSoft("like");
-                loadSoft("function");
-                loadSoft("cluster");
-                loadSoft("paint");
-                loadSoft("sequence");
-                loadSoft("check");
-                loadSoft("annotation");
-                loadSoft("chart");
+                loadSoft("@types".substring(3));
             });
 
 
@@ -187,6 +179,7 @@
             }
 
             function loadSoft(param,content){
+                if(@session.get("userId").isEmpty && param=="like") openSignin();
                 removeul(param);
                 var url="";
                 if(param=="all") url = "/CloudPlatform/Softwares/home/alllist";

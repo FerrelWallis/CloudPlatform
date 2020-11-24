@@ -117,7 +117,7 @@
                                     </div>
                                     <div class="form-group-p">
                                         <div class="form-group picleft">
-                                            <label>是否画圈：</label>
+                                            <label>是否画置信椭圆：</label>
                                         </div>
                                         <div class="form-group right picright">
                                             <select id="c" name="c">
@@ -469,9 +469,10 @@
 
             $(document).ready(function () {
                 if("@row.status"=="已完成"){
+                    checkupdate();
                     $("#PCA").show();
                     $.ajax({
-                        url:"/CloudPlatform/SoftTool/getPCAData?taskname=@row.taskname",
+                        url:"/CloudPlatform/SoftTool/getPCAData?taskname=@row.taskname&abbre=@row.sabbrename",
                         type:"post",
                         success:function (data) {
                             $("#redraw_pic").attr("src","/CloudPlatform/pic?path="+data.pics[0]+"&num="+Math.random());
@@ -507,7 +508,6 @@
                             });
                             $(".evo-cp-wrap").css("float", "left");
                             $(".evo-cp-wrap").css("width", "180px");
-                            checkupdate();
                             changebig();
                         }
                     });
@@ -543,7 +543,7 @@
                         $("#color").val(c.join(":"));
                         var form1 = new FormData($("#PCA")[0]);
                         $.ajax({
-                            url: "/CloudPlatform/SoftTool/redrawPCA?taskname=@row.taskname",
+                            url: "/CloudPlatform/SoftTool/redrawPCA?taskname=@row.taskname&abbre=@row.sabbrename",
                             type: "post",
                             processData: false,
                             contentType: false,

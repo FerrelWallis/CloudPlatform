@@ -1,0 +1,1156 @@
+@import models.Tables.DutysRow
+@(row:DutysRow)(implicit session: Session)
+@home.main("Task Preview"){
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("bootstrap-slider-master/css/bootstrap-slider.css")" media="screen" />
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("font-awesome-4.7.0/css/font-awesome.min.css")" media="screen" />
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("bootstrap-fileinput-master/css/fileinput.css")" media="screen" />
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("palette/evol-colorpicker.min.css")" media="screen" />
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("mycss/redraw.css")" media="screen" />
+
+    <script type="text/javascript" src="@routes.Assets.versioned("js/jquery-ui.js")"></script>
+    <script src="@routes.Assets.versioned("layer-v3.0/layer/layer.js")" type="text/javascript"></script>
+    <script type="text/javascript" src="@routes.Assets.versioned("palette/evol-colorpicker.min.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.versioned("bootstrap-slider-master/bootstrap-slider.js")"></script>
+
+    <style>
+            .form-group-p {
+                display: inline-block;
+                width: 100%;
+                margin: 0px 0 0px 0;
+            }
+            .evo-pointer {
+                cursor: pointer;
+                margin-top: unset;
+            }
+            #GO.mws-panel-content {
+                width: 95% !important;
+                padding: 24px;
+                float: left;
+                background: white;
+            }
+            .use-flex{
+                display:flex;
+                width: calc(100% - 30px);
+            }
+            .use-flex>div:first-child{
+                flex:none;
+            }
+            .use-flex>div:last-child{
+                flex:1;
+            }
+            input, select {
+                margin-left: 0px;
+            }
+            .slider.slider-horizontal {
+                width: 100%;
+            }
+    </style>
+
+    <div class="container" style="width: 98.5%;margin: unset;max-width: unset;padding: 5px">
+        @task.preview(row)
+        <div class="mws-panel grid_8" style="background: white!important;">
+            <div class="mws-panel-body" style="border: unset">
+                <div id="GO" style="display: none" class="mws-panel-content">
+                    <hr>
+                    <ul class="nav nav-tabs" style="background: #f2f2f2;">
+                        <li class="active">
+                            <a href="#" data-target=".form1" data-toggle="tab">LDA分析柱图</a>
+                        </li>
+                        <li class="">
+                            <a href="#" data-target=".form2" data-toggle="tab">进化分支图</a>
+                        </li>
+                        <li class="">
+                            <a href="#" data-target=".form3" data-toggle="tab">差异特征图</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" style="box-sizing: border-box!important;overflow: auto;scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.2);scrollbar-width: thin;height: 96%;">
+                        <form id="res" method="GET" enctype="multipart/form-data" class="form1 well form-inline tab-pane fade active in" style="box-sizing: border-box!important;">
+                            <div class="redraw-head" style="margin-bottom: 10px;margin-top: 10px;">
+                                <h3 style="display: inline-block">显示结果图：</h3>
+                                <div class="dropdown" style="display: inline-block">
+                                    <button class="btn btn-dark dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false" style="padding: 7px 30px;text-shadow: unset;border-radius: 7px;">
+                                        下载结果图
+                                    </button>
+                                    <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 35px, 0px); top: 0px; left: 0px; will-change: transform;width: 150px">
+                                        <a class="dropdown-item" id="downPic1" onclick="downloadpics('lefse_LDA','pdf')">下载 pdf</a>
+@*                                        <a class="dropdown-item" id="downPng1" onclick="downloadpics('lefse_LDA','png')">下载 png</a>*@
+@*                                        <a class="dropdown-item" id="downTiff1" onclick="downloadpics('lefse_LDA','tiff')">下载 tiff</a>*@
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="width: 65%;float: left">
+                                <iframe id="pdf1" width="100%" height="650px" style="border: lightgray 1px solid;"></iframe>
+                            </div>
+                            <div class="redraw_panel redraw-right" style="width: 35%;float: left;margin-bottom: 30px;display: none">
+                                <div class="tab-content" style="box-sizing: border-box!important;">
+                                    <h4 style="padding-left: 30px; margin-top: 0px; font-size: 15px; margin-bottom: 20px;">绘图参数：</h4>
+                                    <div class="form-group-p use-flex">
+                                        <div class="form-group">
+                                            <label>条形图方向：</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <select id="resorientation" name="resorientation" style="width: 100%;">
+                                                <option value="h">水平</option>
+                                                <option value="v" selected>垂直</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="form-group-p use-flex">
+                                        <div class="form-group" style="position: relative;">
+                                            <label for="format">要绘制的标签级别数</label>
+                                            <div style="float:right; position: absolute; right: 11px; top: 5px;">
+                                                <div id='gaptip1' style="display: none">
+                                                    <div class='tooltip fade top in' style='width: 200px; bottom: 20px; right: -89px; display: block;'>
+                                                        <div class='tooltip-arrow'></div>
+                                                        <div class='tooltip-inner'>要绘制的标签级别数, -1 表示绘制所有, 1 为默认值</div>
+                                                    </div>
+                                                </div>
+                                                <i class="mws-ic-16 ic-question1" onmouseover="gapfocus('gaptip1')" onmouseout="gapblur('gaptip1')" style="padding-left: 22px; background-position: center; padding-top: 2px;"></i>
+                                            </div>
+                                            <label style="padding-left: 15px;">：</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" id="resnscl" name="resnscl" style="width: 100%;"/>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="form-group-p use-flex">
+                                        <div class="form-group">
+                                            <label for="format">特征名最大长度：</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" id="resmfl" name="resmfl" style="width: 100%;"/>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="form-group-p use-flex" style="margin: 0 0 10px 0;">
+                                        <div class="form-group">
+                                            <label for="format">主标题：</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" name="restitle" id="restitle" value="" placeholder="请输入英文，中文默认不显示" class="form-control input-sm">
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="form-group-p use-flex">
+                                        <div class="form-group">
+                                            <label for="format">标题字体大小：</label>
+                                        </div>
+                                        <div class="form-group" style="line-height: 29px;">
+                                            <input id="restfs" name="restfs" data-slider-id='srestfs' type="text" data-slider-min="0" data-slider-max="30" data-slider-step="1"/>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="form-group-p use-flex">
+                                        <div class="form-group">
+                                            <label for="format">标签字体大小：</label>
+                                        </div>
+                                        <div class="form-group" style="line-height: 29px;">
+                                            <input id="resffs" name="resffs" data-slider-id='sresffs' type="text" data-slider-min="0" data-slider-max="20" data-slider-step="1"/>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="form-group-p use-flex">
+                                        <div class="form-group">
+                                            <label for="format">类名字体大小：</label>
+                                        </div>
+                                        <div class="form-group" style="line-height: 29px;">
+                                            <input id="rescfs" name="rescfs" data-slider-id='srescfs' type="text" data-slider-min="0" data-slider-max="20" data-slider-step="1"/>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="form-group-p use-flex">
+                                        <div class="form-group">
+                                            <label for="format">清晰度：</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <select id="resdpi" name="resdpi" style="width: 100%;">
+                                                <option value="300">300</option>
+                                                <option value="600">600</option>
+                                                <option value="96">96</option>
+                                                <option value="72">72</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="form-group-p use-flex">
+                                        <div class="form-group" style="position: relative;">
+                                            <label for="">图片长宽 (宽度--高度)</label>
+                                            <div style="float:right; position: absolute; right: 11px; top: 5px;">
+                                                <div id='gaptip2' style="display: none">
+                                                    <div class='tooltip fade top in' style='width: 200px; bottom: 20px; right: -89px; display: block;'>
+                                                        <div class='tooltip-arrow'></div>
+                                                        <div class='tooltip-inner'>高度设置, 仅在条形图方向为垂直时生效，水平时为自适应。宽度设置, 仅在条形图方向为水平时生效，垂直时为自适应。</div>
+                                                    </div>
+                                                </div>
+                                                <i class="mws-ic-16 ic-question1" onmouseover="gapfocus('gaptip2')" onmouseout="gapblur('gaptip2')" style="padding-left: 22px; background-position: center; padding-top: 2px;"></i>
+                                            </div>
+                                            <label style="padding-left: 15px;">：</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" id="reswidth" name="reswidth" class="form-control" placeholder="数字" value="15" style="width: calc(47.5% - 5px);float: left;margin-right: 5px">
+                                            <label style="float: left; width: 5%;">--</label>
+                                            <input type="text" id="resheight" name="resheight" class="form-control" placeholder="数字" value="12" style="width: calc(47.5% - 5px);  margin-left: 5px;float: left">
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <input type="button" value="绘&nbsp;&nbsp;制" name="submit" class="btn btn-primary btn-dark" onclick="DrawRes()" style="margin-left: 30px">
+                            </div>
+                            <div class="update_panel" style="width: 100%;float: left;margin-bottom: 30px;">
+                                <div style="padding: 20px">
+                                    <h3 style="color: red">通知：</h3>
+                                    <span style="color: red">软件版本已在<label class="update"></label>更新！<label class="update"></label> 前运行的 @row.sname 任务仅可下载结果文件，不支持重新绘图。</span>
+                                </div>
+                            </div>
+                        </form>
+                        <form id="cla" method="GET" enctype="multipart/form-data" class="form2 well form-inline tab-pane fade" style="box-sizing: border-box!important;">
+                            <div class="redraw-head" style="margin-bottom: 10px;margin-top: 10px;">
+                                <h3 style="display: inline-block">显示结果图：</h3>
+                                <div class="dropdown" style="display: inline-block">
+                                    <button class="btn btn-dark dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false" style="padding: 7px 30px;text-shadow: unset;border-radius: 7px;">
+                                        下载结果图
+                                    </button>
+                                    <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 35px, 0px); top: 0px; left: 0px; will-change: transform;width: 150px">
+                                        <a class="dropdown-item" id="downPic2" onclick="downloadpics('lefse_LDA.cladogram','pdf')">下载 pdf</a>
+@*                                        <a class="dropdown-item" id="downPng2" onclick="downloadpics('lefse_LDA.cladogram','png')">下载 png</a>*@
+@*                                        <a class="dropdown-item" id="downTiff2" onclick="downloadpics('lefse_LDA.cladogram','tiff')">下载 tiff</a>*@
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="width: 65%;float: left">
+                                <iframe id="pdf2" width="100%" height="650px" style="border: lightgray 1px solid;"></iframe>
+                            </div>
+                            <div class="redraw_panel redraw-right" style="width: 35%;float: left;margin-bottom: 30px;display: none">
+                                <ul class="nav nav-tabs" style="margin-left: 30px; margin-bottom: 30px;">
+                                    <li class="active" id="ins_tab1" >
+                                        <a href="###" data-target="#picpara" data-toggle="tab">数据布局参数</a>
+                                    </li>
+                                    <li class="" id="out_tab1">
+                                        <a href="###" data-target="#fontpara" data-toggle="tab">字体参数</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content" style="box-sizing: border-box!important;">
+                                    <div class="tab-pane fade active in" id="picpara">
+                                        <div class="form-group-p use-flex">
+                                            <div class="form-group" style="position: relative;">
+                                                <label for="">设置树的根节点</label>
+                                                <div style="float:right; position: absolute; right: 11px; top: 5px;">
+                                                    <div id='gaptip3' style="display: none">
+                                                        <div class='tooltip fade top in' style='width: 200px; bottom: 20px; right: -89px; display: block;'>
+                                                            <div class='tooltip-arrow'></div>
+                                                            <div class='tooltip-inner'>输入分类群的全名，分类群级别之间用“.”符号分隔。不填，默认根节点是最高级别分类群。</div>
+                                                        </div>
+                                                    </div>
+                                                    <i class="mws-ic-16 ic-question1" onmouseover="gapfocus('gaptip3')" onmouseout="gapblur('gaptip3')" style="padding-left: 22px; background-position: center; padding-top: 2px;"></i>
+                                                </div>
+                                                <label style="padding-left: 15px;">：</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="text" id="clasc" name="clasc" class="form-control" style="float: left; margin-right: 5px">
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="form-group-p use-flex">
+                                            <div class="form-group" style="position: relative;">
+                                                <label for="format">是否展开非叶节点的分类学级别</label>
+                                                <div style="float:right; position: absolute; right: 11px; top: 5px;">
+                                                    <div id='gaptip4' style="display: none">
+                                                        <div class='tooltip fade top in' style='width: 200px; bottom: 20px; right: -89px; display: block;'>
+                                                            <div class='tooltip-arrow'></div>
+                                                            <div class='tooltip-inner'>是否将没有子节点的非叶子分类单元展开到叶子级别，并使用展开的分类单元名称命名新级别。</div>
+                                                        </div>
+                                                    </div>
+                                                    <i class="mws-ic-16 ic-question1" onmouseover="gapfocus('gaptip4')" onmouseout="gapblur('gaptip4')" style="padding-left: 22px; background-position: center; padding-top: 2px;"></i>
+                                                </div>
+                                                <label style="padding-left: 15px;">：</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <select id="claevl" name="claevl" style="width: 100%;">
+                                                    <option value="1">yes</option>
+                                                    <option value="0">no</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="form-group-p use-flex">
+                                            <div class="form-group" style="position: relative;">
+                                                <label for="">最大分类学级别数</label>
+                                                <div style="float:right; position: absolute; right: 11px; top: 5px;">
+                                                    <div id='gaptip4' style="display: none">
+                                                        <div class='tooltip fade top in' style='width: 200px; bottom: 20px; right: -89px; display: block;'>
+                                                            <div class='tooltip-arrow'></div>
+                                                            <div class='tooltip-inner'>可以将分枝进化图的分类学级别限制在你期望的级别内。</div>
+                                                        </div>
+                                                    </div>
+                                                    <i class="mws-ic-16 ic-question1" onmouseover="gapfocus('gaptip4')" onmouseout="gapblur('gaptip4')" style="padding-left: 22px; background-position: center; padding-top: 2px;"></i>
+                                                </div>
+                                                <label style="padding-left: 15px;">：</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="text" id="claml" name="claml" class="form-control" placeholder="数字" value="15">
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="form-group-p use-flex">
+                                            <div class="form-group" style="position: relative;">
+                                                <label for="format">是否绘制左边分类图例：</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <select id="claclv" name="claclv" style="width: 100%;">
+                                                    <option value="1">yes</option>
+                                                    <option value="0">no</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="form-group-p use-flex">
+                                            <div class="form-group" style="position: relative;">
+                                                <label for="">较低级别分类群之间的间隔</label>
+                                                <div style="float:right; position: absolute; right: 11px; top: 5px;">
+                                                    <div id='gaptip5' style="display: none">
+                                                        <div class='tooltip fade top in' style='width: 200px; bottom: 20px; right: -89px; display: block;'>
+                                                            <div class='tooltip-arrow'></div>
+                                                            <div class='tooltip-inner'>设置属于不同父分类群的较低级别分类群之间的间隔。根据该级别叶子节点密度，该参数会自动调节</div>
+                                                        </div>
+                                                    </div>
+                                                    <i class="mws-ic-16 ic-question1" onmouseover="gapfocus('gaptip5')" onmouseout="gapblur('gaptip5')" style="padding-left: 22px; background-position: center; padding-top: 2px;"></i>
+                                                </div>
+                                                <label style="padding-left: 15px;">：</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="text" id="clacs" name="clacs" class="form-control" placeholder="数字" value="15">
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="form-group-p use-flex">
+                                            <div class="form-group">
+                                                <label for="">径向上外部级别的数量：</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="text" id="clarsl" name="clarsl" class="form-control" placeholder="数字" value="15">
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="form-group-p use-flex">
+                                            <div class="form-group" style="position: relative;">
+                                                <label for="">绘制标签的分类学级别范围</label>
+                                                <div style="float:right; position: absolute; right: 11px; top: 5px;">
+                                                    <div id='gaptip6' style="display: none">
+                                                        <div class='tooltip fade top in' style='width: 200px; bottom: 20px; right: -89px; display: block;'>
+                                                            <div class='tooltip-arrow'></div>
+                                                            <div class='tooltip-inner'>(初始-最终)该参数可以用来避免给没有有效信息的内部分类群添加标签。同时，可以去除大部分外部分类群，来避免标签太过密集或重叠。</div>
+                                                        </div>
+                                                    </div>
+                                                    <i class="mws-ic-16 ic-question1" onmouseover="gapfocus('gaptip6')" onmouseout="gapblur('gaptip6')" style="padding-left: 22px; background-position: center; padding-top: 2px;"></i>
+                                                </div>
+                                                <label style="padding-left: 15px;">：</label>
+                                            </div>
+                                            <br>
+                                            <div class="form-group">
+                                                <input type="text" id="clalstartl" name="clalstartl" class="form-control" placeholder="数字" value="15" style="width: calc(47.5% - 5px);float: left;margin-right: 5px">
+                                                <label style="float: left; width: 5%; text-align: center;">-</label>
+                                                <input type="text" id="clalstopl" name="clalstopl" class="form-control" placeholder="数字" value="12" style="width: calc(47.5% - 5px);  margin-left: 5px;float: left">
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="form-group-p use-flex">
+                                            <div class="form-group" style="position: relative;">
+                                                <label for="">标签缩写的分类学级别范围</label>
+                                                <div style="float:right; position: absolute; right: 11px; top: 5px;">
+                                                    <div id='gaptip7' style="display: none">
+                                                        <div class='tooltip fade top in' style='width: 200px; bottom: 20px; right: -89px; display: block;'>
+                                                            <div class='tooltip-arrow'></div>
+                                                            <div class='tooltip-inner'>设置分类学级别范围(初始-最终)，该参数用来构造分类群全名的缩写。</div>
+                                                        </div>
+                                                    </div>
+                                                    <i class="mws-ic-16 ic-question1" onmouseover="gapfocus('gaptip7')" onmouseout="gapblur('gaptip7')" style="padding-left: 22px; background-position: center; padding-top: 2px;"></i>
+                                                </div>
+                                                <label style="padding-left: 15px;">：</label>
+                                            </div>
+                                            <br>
+                                            <div class="form-group">
+                                                <input type="text" id="claastartl" name="claastartl" class="form-control" placeholder="数字" value="15" style="width: calc(47.5% - 5px);float: left;margin-right: 5px">
+                                                <label style="float: left; width: 5%; text-align: center;">-</label>
+                                                <input type="text" id="claastopl" name="claastopl" class="form-control" placeholder="数字" value="12" style="width: calc(47.5% - 5px);  margin-left: 5px;float: left">
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="form-group-p use-flex">
+                                            <div class="form-group">
+                                                <label for="">分类群节点大小范围(最小--最大)：</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="text" id="claminps" name="claminps" class="form-control" placeholder="数字" value="15" style="width: calc(47.5% - 5px);float: left;margin-right: 5px">
+                                                <label style="float: left; width: 5%; text-align: center;">-</label>
+                                                <input type="text" id="clamaxps" name="clamaxps" class="form-control" placeholder="数字" value="12" style="width: calc(47.5% - 5px);  margin-left: 5px;float: left">
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="form-group-p use-flex" style="margin: 0 0 10px 0;">
+                                            <div class="form-group" style="position: relative;">
+                                                <label for="">给右侧的水平空间比例</label>
+                                                <div style="float:right; position: absolute; right: 11px; top: 5px;">
+                                                    <div id='gaptip8' style="display: none">
+                                                        <div class='tooltip fade top in' style='width: 200px; bottom: 20px; right: -89px; display: block;'>
+                                                            <div class='tooltip-arrow'></div>
+                                                            <div class='tooltip-inner'>以防标签名太长而导致标签图例需要更多空间，可以通过这个参数扩大右边标签图例占比</div>
+                                                        </div>
+                                                    </div>
+                                                    <i class="mws-ic-16 ic-question1" onmouseover="gapfocus('gaptip8')" onmouseout="gapblur('gaptip8')" style="padding-left: 22px; background-position: center; padding-top: 2px;"></i>
+                                                </div>
+                                                <label style="padding-left: 15px;">：</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="text" id="clarsp" name="clarsp" class="form-control" placeholder="数字" value="15">
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="form-group-p use-flex">
+                                            <div class="form-group">
+                                                <label for="format">清晰度：</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <select id="cladpi" name="cladpi" style="width: 100%">
+                                                    <option value="300">300</option>
+                                                    <option value="600">600</option>
+                                                    <option value="96">96</option>
+                                                    <option value="72">72</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="fontpara">
+                                        <div class="form-group-p use-flex">
+                                            <div class="form-group">
+                                                <label for="format">进化枝标签透明度：</label>
+                                            </div>
+                                            <div class="form-group" style="line-height: 29px;">
+                                                <input id="claalpha" name="claalpha" data-slider-id='sclaalpha' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.1"/>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="form-group-p use-flex">
+                                            <div class="form-group">
+                                                <label for="">分类群节点边缘线宽度：</label>
+                                            </div>
+                                            <div class="form-group" style="line-height: 29px;">
+                                                <input id="clapew" name="clapew" data-slider-id='sclapew' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.05"/>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="form-group-p use-flex">
+                                            <div class="form-group">
+                                                <label for="">兄弟节点连接线宽度：</label>
+                                            </div>
+                                            <div class="form-group" style="line-height: 29px;">
+                                                <input id="clascw" name="clascw" data-slider-id='sclascw' type="text" data-slider-min="0" data-slider-max="5" data-slider-step="0.1"/>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="form-group-p use-flex">
+                                            <div class="form-group">
+                                                <label for="">父节点连接线宽度：</label>
+                                            </div>
+                                            <div class="form-group" style="line-height: 29px;">
+                                                <input id="clapcw" name="clapcw" data-slider-id='sclapcw' type="text" data-slider-min="0" data-slider-max="4" data-slider-step="0.05"/>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="form-group-p use-flex" style="margin: 0 0 10px 0;">
+                                            <div class="form-group">
+                                                <label for="">主标题：</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="text" id="clatitle" name="clatitle" class="form-control" placeholder="请输入英文，中文默认不显示" value="15">
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="form-group-p use-flex">
+                                            <div class="form-group">
+                                                <label for="format">标题文字大小：</label>
+                                            </div>
+                                            <div class="form-group" style="line-height: 29px;">
+                                                <input id="clatfs" name="clatfs" data-slider-id='sclatfs' type="text" data-slider-min="0" data-slider-max="30" data-slider-step="1"/>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="form-group-p use-flex">
+                                            <div class="form-group">
+                                                <label for="format">标签和标签图例文字大小：</label>
+                                            </div>
+                                            <div class="form-group" style="line-height: 29px;">
+                                                <input id="clalfs" name="clalfs" data-slider-id='sclalfs' type="text" data-slider-min="0" data-slider-max="20" data-slider-step="1"/>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="form-group-p use-flex">
+                                            <div class="form-group">
+                                                <label for="format">分类图例文字大小：</label>
+                                            </div>
+                                            <div class="form-group" style="line-height: 29px;">
+                                                <input id="claclfs" name="claclfs" data-slider-id='sclaclfs' type="text" data-slider-min="0" data-slider-max="30" data-slider-step="1"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <input type="button" value="绘&nbsp;&nbsp;制" name="submit" class="btn btn-primary btn-dark" onclick="DrawCla()" style="margin-left: 30px">
+                            </div>
+                            <div class="update_panel redraw-right" style="width: 40%;float: left;margin-bottom: 30px;">
+                                <div style="padding: 20px">
+                                    <h3 style="color: red">通知：</h3>
+                                    <span style="color: red">软件版本已在<label class="update"></label>更新！<label class="update"></label> 前运行的 @row.sname 任务仅可下载结果文件，不支持重新绘图。</span>
+                                </div>
+                            </div>
+                        </form>
+                        <form id="fea" method="GET" enctype="multipart/form-data" class="form3 well form-inline tab-pane fade" style="box-sizing: border-box!important;">
+                            <div class="redraw-head" style="margin-bottom: 10px;margin-top: 10px;">
+                                <h3 style="display: inline-block">显示结果图：</h3>
+                                <div class="dropdown" style="display: inline-block">
+                                    <button class="btn btn-dark dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false" style="padding: 7px 30px;text-shadow: unset;border-radius: 7px;">
+                                        下载结果图
+                                    </button>
+                                    <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 35px, 0px); top: 0px; left: 0px; will-change: transform;width: 150px">
+                                        <a class="dropdown-item" id="downPic2" onclick="downloadpics('lefse_LDA.feature','pdf')">下载 pdf</a>
+@*                                        <a class="dropdown-item" id="downPng2" onclick="downloadpics('lefse_LDA.cladogram','png')">下载 png</a>*@
+@*                                        <a class="dropdown-item" id="downTiff2" onclick="downloadpics('lefse_LDA.cladogram','tiff')">下载 tiff</a>*@
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="width: 65%;float: left">
+                                <iframe id="pdf3" width="100%" height="650px" style="border: lightgray 1px solid;"></iframe>
+                            </div>
+                            <div class="redraw_panel redraw-right" style="width: 35%;float: left;margin-bottom: 30px;display: none">
+                                <div class="tab-content" style="box-sizing: border-box!important;">
+                                    <h4 style="padding-left: 30px; margin-top: 0px; font-size: 15px; margin-bottom: 20px;">绘图参数：</h4>
+                                    <div class="form-group-p use-flex">
+                                        <div class="form-group">
+                                            <label for="format">绘制选项：</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <select id="feaf" name="feaf" onchange="checkfeaf()" style="width: 100%;">
+                                                <option value="all">绘制全部</option>
+                                                <option value="diff">仅绘制差异显著特征</option>
+                                                <option value="one" selected>指定一个特征绘制(仅差异显著)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="feafname" style="display: none">
+                                        <div class="form-group-p use-flex">
+                                            <div class="form-group" style="position: relative;">
+                                                <label for="format">指定绘制特征名</label>
+                                                <div style="float:right; position: absolute; right: 11px; top: 5px;">
+                                                    <div id='gaptip9' style="display: none">
+                                                        <div class='tooltip fade top in' style='width: 200px; bottom: 20px; right: -89px; display: block;'>
+                                                            <div class='tooltip-arrow'></div>
+                                                            <div class='tooltip-inner'>指定一个特征绘制，选项仅包含差异显著的特征名。</div>
+                                                        </div>
+                                                    </div>
+                                                    <i class="mws-ic-16 ic-question1" onmouseover="gapfocus('gaptip9')" onmouseout="gapblur('gaptip9')" style="padding-left: 22px; background-position: center; padding-top: 2px;"></i>
+                                                </div>
+                                                <label style="padding-left: 15px;">：</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <select id="feafname" name="feafname" style="width: 100%;">
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <br>
+                                    </div>
+                                    <div class="form-group-p use-flex">
+                                        <div class="form-group">
+                                            <label for="format">是否绘制平均线：</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <select id="feasmean" name="feasmean" style="width: 100%;">
+                                                <option value="y">yes</option>
+                                                <option value="n">no</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="form-group-p use-flex">
+                                        <div class="form-group">
+                                            <label for="format">是否绘制中位线：</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <select id="feasmedian" name="feasmedian" style="width: 100%;">
+                                                <option value="y">yes</option>
+                                                <option value="n">no</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="form-group-p use-flex">
+                                        <div class="form-group" style="position: relative;">
+                                            <label for="">y值最小值</label>
+                                            <div style="float:right; position: absolute; right: 11px; top: 5px;">
+                                                <div id='gaptip10' style="display: none">
+                                                    <div class='tooltip fade top in' style='width: 200px; bottom: 20px; right: -89px; display: block;'>
+                                                        <div class='tooltip-arrow'></div>
+                                                        <div class='tooltip-inner'>设置-1表示自动计算y值最小值，该参数由0与90%的最小丰度值之间的最大值所得。</div>
+                                                    </div>
+                                                </div>
+                                                <i class="mws-ic-16 ic-question1" onmouseover="gapfocus('gaptip10')" onmouseout="gapblur('gaptip10')" style="padding-left: 22px; background-position: center; padding-top: 2px;"></i>
+                                            </div>
+                                            <label style="padding-left: 15px;">：</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" id="feabot" name="feabot" class="form-control" placeholder="数字" value="15">
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="form-group-p use-flex" style="margin: 0 0 10px 0;">
+                                        <div class="form-group" style="position: relative;">
+                                            <label for="">y值最大值</label>
+                                            <div style="float:right; position: absolute; right: 11px; top: 5px;">
+                                                <div id='gaptip11' style="display: none">
+                                                    <div class='tooltip fade top in' style='width: 200px; bottom: 20px; right: -89px; display: block;'>
+                                                        <div class='tooltip-arrow'></div>
+                                                        <div class='tooltip-inner'>设置-1表示自动计算y值最大值，该参数将由最高丰度值和三倍的最高副类中位数之间的最小值所得。</div>
+                                                    </div>
+                                                </div>
+                                                <i class="mws-ic-16 ic-question1" onmouseover="gapfocus('gaptip11')" onmouseout="gapblur('gaptip11')" style="padding-left: 22px; background-position: center; padding-top: 2px;"></i>
+                                            </div>
+                                            <label style="padding-left: 15px;">：</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" id="featop" name="featop" class="form-control" placeholder="数字" value="12">
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="form-group-p use-flex">
+                                        <div class="form-group">
+                                            <label for="format">标题字体大小：</label>
+                                        </div>
+                                        <div class="form-group" style="line-height: 29px;">
+                                            <input id="featfs" name="featfs" data-slider-id='sfeatfs' type="text" data-slider-min="0" data-slider-max="30" data-slider-step="1"/>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="form-group-p use-flex">
+                                        <div class="form-group">
+                                            <label for="format">类名字体大小：</label>
+                                        </div>
+                                        <div class="form-group" style="line-height: 29px;">
+                                            <input id="feacfs" name="feacfs" data-slider-id='sfeacfs' type="text" data-slider-min="0" data-slider-max="30" data-slider-step="1"/>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="form-group-p use-flex">
+                                        <div class="form-group">
+                                            <label for="format">副类名和Y轴字体大小：</label>
+                                        </div>
+                                        <div class="form-group" style="line-height: 29px;">
+                                            <input id="feafs" name="feafs" data-slider-id='sfeafs' type="text" data-slider-min="0" data-slider-max="30" data-slider-step="1"/>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="form-group-p use-flex">
+                                        <div class="form-group">
+                                            <label for="format">清晰度：</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <select id="feadpi" name="feadpi" style="width: 100%;">
+                                                <option value="300">300</option>
+                                                <option value="600">600</option>
+                                                <option value="96">96</option>
+                                                <option value="72">72</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="form-group-p use-flex">
+                                        <div class="form-group picleft">
+                                            <label for="">图片长宽 (宽度--高度)：</label>
+                                        </div>
+                                        <div class="form-group picright">
+                                            <input type="text" id="feawidth" name="feawidth" class="form-control" placeholder="数字" value="12" style="width: calc(47.5% - 5px); float: left; margin-right: 5px">
+                                            <label style="float: left; width: 5%;">--</label>
+                                            <input type="text" id="feaheight" name="feaheight" class="form-control" placeholder="数字" value="10" style="width: calc(47.5% - 5px); margin-left: 5px; float: left">
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <input type="button" value="绘&nbsp;&nbsp;制" name="submit" class="btn btn-primary btn-dark" onclick="DrawFea()" style="margin-left: 30px">
+                            </div>
+                            <div class="update_panel redraw-right" style="width: 40%;float: left;margin-bottom: 30px;">
+                                <div style="padding: 20px">
+                                    <h3 style="color: red">通知：</h3>
+                                    <span style="color: red">软件版本已在<label class="update"></label>更新！<label class="update"></label> 前运行的 @row.sname 任务仅可下载结果文件，不支持重新绘图。</span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/fileinput.min.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/locales/zh.js")" type="text/javascript"></script>
+
+    <script>
+            const updatetime="2020-07-29";
+
+            function checkupdate(){
+                $(".update").text(updatetime);
+                if("@row.subtime".split(" ")[0]<updatetime) {
+                    $(".update_panel").show();
+                    $(".redraw_panel").hide();
+                } else {
+                    $(".redraw_panel").show();
+                    $(".update_panel").hide();
+                }
+            }
+
+            function downloadpics(picname,suffix){
+                if("@row.status"!=="已完成"){
+                    swal({
+                        title: "无法下载",
+                        text: "任务未完成，无法下载！",
+                        type: "warning",
+                        confirmButtonText: "确认"
+                    });
+                }else{
+                    window.location.href = "/CloudPlatform/SoftTool/download?taskname=@row.taskname&picname="+picname+"&suffix="+suffix+"&num="+Math.random();
+                }
+            }
+
+            function gapfocus(para) {
+                $("#"+para).show();
+            }
+            function gapblur(para) {
+                $("#"+para).hide();
+            }
+
+            function checkfeaf() {
+                if($("#feaf").val() == "one") $(".feafname").show();
+                else $(".feafname").hide();
+            };
+
+            var lefse_LDA=true;
+            var pdfurl=[];
+
+            $(document).ready(function ()  {
+                if("@row.status"=="已完成"){
+                    checkupdate();
+                    $("#GO").show();
+                    $.ajax({
+                        url:"/CloudPlatform/SoftTool/getLefse2?taskname=@row.taskname",
+                        type:"post",
+                        success:function (data) {
+                            if(data.lefse_LDA=="false") {
+                                $("#redraw_pic1").hide();
+                                $(".LDA_nopic").show();
+                                lefse_LDA=false;
+                            }else lefse_LDA=true;
+                            $.each(data.pdfUrl,function (i,v) {
+                                var num=i+1;
+                                pdfurl.push(v);
+                                $("#pdf"+num).attr("src","/CloudPlatform/Utils/viewer?file=/CloudPlatform/pdf&fileUrl="+v+"&num="+Math.random());
+                            });
+                            $.each(data.res,function (i,v) {
+                                if($("#"+i).attr("data-slider-id")==null) $("#"+i).val(v);
+                                else {
+                                    $("#"+i).bootstrapSlider({tooltip:'always'});
+                                    $("#" + i).bootstrapSlider('setValue', v);
+                                }
+                            });
+                            $.each(data.cla,function (i,v) {
+                                if($("#"+i).attr("data-slider-id")==null) $("#"+i).val(v);
+                                else {
+                                    $("#"+i).bootstrapSlider({tooltip:'always'});
+                                    $("#" + i).bootstrapSlider('setValue', v);
+                                }
+                            });
+                            $.each(data.fea,function (i,v) {
+                                if($("#"+i).attr("data-slider-id")==null) $("#"+i).val(v);
+                                else {
+                                    $("#"+i).bootstrapSlider({tooltip:'always'});
+                                    $("#" + i).bootstrapSlider('setValue', v);
+                                }
+                            });
+                            var cols="";
+                            $.each(data.fname,function (i,v) {
+                                cols +="<option value='"+v+"'>"+v+"</option>";
+                            });
+                            $("#feafname").html(cols);
+                            checkfeaf();
+                        }
+                    });
+                }
+            });
+
+            function DrawRes() {
+                var form = $("#res");
+                var fv = form.data("formValidation");
+                fv.validate();
+                if (fv.isValid()) {
+                    var element = "<div id='content'><span id='info'>绘图中，请耐心等待...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
+                    var index = layer.alert(element, {
+                        skin: 'layui-layer-lan',
+                        closeBtn: 0,
+                        title: "提醒",
+                        btn: []
+                    });
+                    var form1 = new FormData($("#res")[0]);
+                    $.ajax({
+                        url: "/CloudPlatform/SoftTool/redrawLefRes?taskname=@row.taskname",
+                        type: "post",
+                        processData: false,
+                        contentType: false,
+                        data: form1,
+                        success: function (data) {
+                            $("#pdf1").attr("src","/CloudPlatform/Utils/viewer?file=/CloudPlatform/pdf&fileUrl="+pdfurl[0]+"&num="+Math.random());
+                            layer.close(index);
+                        }
+                    });
+                }else {
+                    swal({
+                        title: "参数设置错误",
+                        text: "有参数不合法，请核实！",
+                        type: "error",
+                        confirmButtonText: "确认"
+                    });
+                }
+            }
+
+            function DrawCla() {
+                var form = $("#cla");
+                var fv = form.data("formValidation");
+                fv.validate();
+                if (fv.isValid()) {
+                    var element = "<div id='content'><span id='info'>绘图中，请耐心等待...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
+                    var index = layer.alert(element, {
+                        skin: 'layui-layer-lan',
+                        closeBtn: 0,
+                        title: "提醒",
+                        btn: []
+                    });
+                    var form1 = new FormData($("#cla")[0]);
+                    $.ajax({
+                        url: "/CloudPlatform/SoftTool/redrawLefCla?taskname=@row.taskname",
+                        type: "post",
+                        processData: false,
+                        contentType: false,
+                        data: form1,
+                        success: function (data) {
+                            $("#pdf2").attr("src","/CloudPlatform/Utils/viewer?file=/CloudPlatform/pdf&fileUrl="+pdfurl[1]+"&num="+Math.random());
+                            layer.close(index);
+                        }
+                    });
+                }else {
+                    switchToInvalid();
+                    swal({
+                        title: "参数设置错误",
+                        text: "有参数不合法，请核实！",
+                        type: "error",
+                        confirmButtonText: "确认"
+                    });
+                }
+            }
+
+            function DrawFea() {
+                var form = $("#fea");
+                var fv = form.data("formValidation");
+                fv.validate();
+                if (fv.isValid()) {
+                    var element = "<div id='content'><span id='info'>绘图中，请耐心等待...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
+                    var index = layer.alert(element, {
+                        skin: 'layui-layer-lan',
+                        closeBtn: 0,
+                        title: "提醒",
+                        btn: []
+                    });
+                    var form1 = new FormData($("#fea")[0]);
+                    $.ajax({
+                        url: "/CloudPlatform/SoftTool/redrawLefFea?taskname=@row.taskname",
+                        type: "post",
+                        processData: false,
+                        contentType: false,
+                        data: form1,
+                        success: function (data) {
+                            $("#pdf3").attr("src","/CloudPlatform/Utils/viewer?file=/CloudPlatform/pdf&fileUrl="+pdfurl[2]+"&num="+Math.random());
+                            layer.close(index);
+                        }
+                    });
+                }else {
+                    swal({
+                        title: "参数设置错误",
+                        text: "有参数不合法，请核实！",
+                        type: "error",
+                        confirmButtonText: "确认"
+                    });
+                }
+            }
+
+            function formValidation() {
+                $('#res').formValidation({
+                    framework: 'bootstrap',
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    excluded: [':disabled'],
+                    fields: {
+                        resnscl: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        resmfl: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        restitle: {
+                            validators:{
+                                callback:{
+                                    message: '标题不可包含汉字!',
+                                    callback: function (value, validator, $field) {
+                                        return checktitle("restitle");
+                                    }
+                                }
+                            }
+                        },
+                        reswidth: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        resheight: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        }
+                    }
+                });
+                $('#cla').formValidation({
+                    framework: 'bootstrap',
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    excluded: [':disabled'],
+                    fields: {
+                        claml: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        clacs: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        clarsl: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        clalstartl: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        clalstopl: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        claastartl: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        claastopl:{
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        clamaxps:{
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        claminps:{
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        clarsp:{
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        clatitle: {
+                            validators:{
+                                callback:{
+                                    message: '标题不可包含汉字!',
+                                    callback: function (value, validator, $field) {
+                                        return checktitle("clatitle");
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+                $('#fea').formValidation({
+                    framework: 'bootstrap',
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    excluded: [':disabled'],
+                    fields: {
+                        feawidth: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        feaheight: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        featop: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        feabot: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            function checktitle(param){
+                var val = $("#"+param).val();
+                var rule = /[\u4e00-\u9fa5]+/;
+                return !(rule.test(val));
+            }
+
+            function switchToInvalid() {
+                $(".help-block[data-fv-result='INVALID']").each(function () {
+                    if($(this).parent().parent().attr('id')){
+                        if($(this).parent().parent().attr('id').toString().indexOf("color")>=0){
+                            $("a[data-target='#colopara']").click();
+                        }else{
+                            var parent=$(this).parent().parent().parent().attr('id');
+                            $("a[data-target='#"+parent+"']").click();
+                        }
+                    } else{
+                        var parent=$(this).parent().parent().parent().attr('id');
+                        $("a[data-target='#"+parent+"']").click();
+                    }
+                    return false;
+                });
+            }
+
+    </script>
+
+
+
+}

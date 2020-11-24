@@ -1,0 +1,363 @@
+@import models.Tables.DutysRow
+@(row:DutysRow)(implicit session: Session)
+@home.main("Task Preview"){
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("bootstrap-slider-master/css/bootstrap-slider.css")" media="screen" />
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("font-awesome-4.7.0/css/font-awesome.min.css")" media="screen" />
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("bootstrap-fileinput-master/css/fileinput.css")" media="screen" />
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("palette/evol-colorpicker.min.css")" media="screen" />
+
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("mycss/redraw.css")" media="screen" />
+
+    <script type="text/javascript" src="@routes.Assets.versioned("js/jquery-ui.js")"></script>
+    <script src="@routes.Assets.versioned("layer-v3.0/layer/layer.js")" type="text/javascript"></script>
+    <script type="text/javascript" src="@routes.Assets.versioned("palette/evol-colorpicker.min.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.versioned("bootstrap-slider-master/bootstrap-slider.js")"></script>
+
+
+    <style>
+            .fontleft{
+                margin-top: 5px;
+                width: 130px;
+                text-align: right;
+            }
+            .fontright{
+                width: 230px;
+            }
+
+    </style>
+
+    <div class="container" style="width: 98.5%;margin: unset;max-width: unset;padding: 5px">
+        @task.preview(row)
+        <div class="mws-panel grid_8" style="background: white!important;">
+            <div class="mws-panel-body" style="border: unset">
+                <div class="mws-panel-content" style="width: 96%;padding-top: 0;padding-right: 0">
+                    <hr>
+                    <div class="redraw-head">
+                        <h3 style="display: inline-block">重新绘图：</h3>
+                        <div class="dropdown" style="display: inline-block">
+                            <button class="btn btn-dark dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false" style="padding: 7px 30px;text-shadow: unset;border-radius: 7px;">
+                                下载结果图
+                            </button>
+                            <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 35px, 0px); top: 0px; left: 0px; will-change: transform;width: 150px">
+                                <a class="dropdown-item" id="downPic" onclick="downloadpics('pie','pdf')">下载 pdf</a>
+                                <a class="dropdown-item" id="downPng" onclick="downloadpics('pie','png')">下载 png</a>
+                                <a class="dropdown-item" id="downTiff" onclick="downloadpics('pie','tiff')">下载 tiff</a>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <form id="BIS" style="display: none" method="GET" enctype="multipart/form-data">
+                        <div style="width: 60%;float: left">
+                            <img id="redraw_pic" src="" style="width: 100%;height: auto" >
+                        </div>
+                        <div class="redraw_panel redraw-right" style="width: 40%;float: left;margin-bottom: 30px;">
+                            <ul class="nav nav-tabs" style="margin-left: 20px">
+                                <li class="active" id="ins_tab1" >
+                                    <a href="###" data-target="#picpara" data-toggle="tab">数据布局参数</a>
+                                </li>
+                                <li class="" id="col_tab1" >
+                                    <a href="###" data-target="#colopara" data-toggle="tab">颜色参数</a>
+                                </li>
+                                <li class="" id="out_tab1">
+                                    <a href="###" data-target="#fontpara" data-toggle="tab">字体参数</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content" style="box-sizing: border-box!important;padding-top: 30px">
+                                <div class="tab-pane fade active in" id="picpara">
+                                    <div class="form-group-p">
+                                        <div class="form-group">
+                                            <label for="qushi">饼图形状：</label>
+                                        </div>
+                                        <div class="form-group" style="width: 200px;">
+                                            <select name="pt" id="pt">
+                                                <option value="full">圆形饼图</option>
+                                                <option value="ring">环形饼图</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group-p">
+                                        <div class="form-group">
+                                            <label>图片清晰度：</label>
+                                        </div>
+                                        <div class="form-group right">
+                                            <select id="dpi" name="dpi" style="width: 45%;">
+                                                <option value="72">72</option>
+                                                <option value="96">96</option>
+                                                <option value="300">300</option>
+                                                <option value="600">600</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group-p">
+                                        <div class="form-group" style="margin-top: 5px;">
+                                            <label for="">图片宽高：</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" id="width" name="width" class="form-control" placeholder="数字" value="20" style="width: 50px;float: left;margin-right: 5px;margin-top: 5px">
+                                            <label style="float: left;margin-top: 12px;">X</label>
+                                            <input type="text" id="height" name="height" class="form-control" placeholder="数字" value="20" style="width: 50px;  margin-left: 5px;float: left;margin-top: 5px;margin-right: 20px">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="colopara">
+                                    <div class="one-line" >
+                                        <div style="border: 1px solid lightgrey;border-radius: 5px;padding: 10px;margin-left: 30px">
+                                            <div class="form-group-p" style="padding-left: 0">
+                                                <div style="width: 100%;margin-top: 10px">
+                                                    <label>自定义颜色(当前分组 - 颜色)：</label>
+                                                    <span id="groupname"></span>
+                                                </div>
+                                            </div>
+                                            <br><br>
+                                            <div class="form-group-p" >
+                                                <div class="form-group" style="width: 85%">
+                                                    <ul id="mycolor">
+                                                    </ul>
+                                                    <input type="text" id="color" name="color" class="form-control" value="" style="display: none">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                </div>
+                                <div class="tab-pane fade" id="fontpara">
+                                    <div class="form-group-p">
+                                        <div class="form-group" style="margin-top: 5px;">
+                                            <label for="">标题字体大小：</label>
+                                        </div>
+                                        <div class="form-group" style="line-height: 39px;">
+                                            <input id="tssize" name="tssize" data-slider-id='stssize' type="text" data-slider-min="0" data-slider-max="50" data-slider-step="1" data-slider-value="18"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group-p">
+                                        <div class="form-group" style="margin-top: 5px;">
+                                            <label for="">标题内容：</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" id="tsname" name="tsname" class="form-control" placeholder="标题不可含有汉字" value="" style="width: 100%; float: left;margin-top: 5px;margin-right: 20px">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <input type="button" value="绘&nbsp;&nbsp;制" name="submit" class="btn btn-primary btn-dark" onclick="DrawPie()" style="margin-left: 30px">
+                        </div>
+                        <div class="update_panel redraw-right" style="width: 40%;float: left;margin-bottom: 30px;">
+                            <div style="padding: 20px">
+                                <h3 style="color: red">通知：</h3>
+                                <span style="color: red">软件版本已在<label class="update"></label>更新！<label class="update"></label> 前运行的 @row.sname 任务仅可下载结果文件，不支持重新绘图。</span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+            const updatetime="2020-07-29";
+
+            function checkupdate(){
+                $(".update").text(updatetime);
+                if("@row.subtime".split(" ")[0]<=updatetime) {
+                    $(".update_panel").show();
+                    $(".redraw_panel").hide();
+                } else {
+                    $(".redraw_panel").show();
+                    $(".update_panel").hide();
+                }
+            }
+
+            function downloadpics(picname,suffix){
+                if("@row.status"!=="已完成"){
+                    swal({
+                        title: "无法下载",
+                        text: "任务未完成，无法下载！",
+                        type: "warning",
+                        confirmButtonText: "确认"
+                    });
+                }else{
+                    window.location.href = "/CloudPlatform/SoftTool/download?taskname=@row.taskname&picname="+picname+"&suffix="+suffix+"&num="+Math.random();
+                }
+            }
+
+            const colorValidators = {
+                validators: {
+                    notEmpty:{
+                        message: '不能为空!'
+                    },
+                    regexp: {
+                        regexp: /^#([0-9a-fA-F]{6})$/,
+                        message: "色值不合法！色值必须以#开头，色值需为6位"
+                    }
+                }
+            };
+
+            var colornum=0;
+
+            function formValidation() {
+                $('#BIS').formValidation({
+                    framework: 'bootstrap',
+                    excluded: [':disabled'], //默认excluded: [':disabled', ':hidden', ':not(:visible)'] 现在需要hidden的元素也检查
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        width: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                },
+                                greaterThan: {
+                                    value: 1,
+                                    message: "必须大于1！"
+                                }
+                            }
+                        },
+                        height: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                },
+                                greaterThan: {
+                                    value: 1,
+                                    message: "必须大于1！"
+                                }
+                            }
+                        },
+                        tsname:{
+                            validators:{
+                                callback:{
+                                    message: '标题不能有汉字!',
+                                    callback: function (value, validator, $field) {
+                                        return chechtitle("tsname");
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            function chechtitle(param){
+                var val = $("#"+param).val();
+                var rule = /[\u4e00-\u9fa5]+/;
+                return !(rule.test(val));
+            }
+
+            $(document).ready(function () {
+                if("@row.status"=="已完成"){
+                    checkupdate();
+                    $("#BIS").show();
+                    $.ajax({
+                        url:"/CloudPlatform/SoftTool/getPieData?taskname=@row.taskname",
+                        type:"post",
+                        success:function (data) {
+                            $("#redraw_pic").attr("src","/CloudPlatform/pic?path="+data.pics[0]+"&num="+Math.random());
+                            $.each(data.elements,function (i,v) {
+                                if($("#"+i).attr("data-slider-id")==null) $("#"+i).val(v);
+                                else {
+                                    $("#"+i).bootstrapSlider({tooltip:'always'});
+                                    $("#" + i).bootstrapSlider('setValue', v);
+                                }
+                            });
+
+                            colornum=data.group.length;
+                            var colo="";
+                            $.each(data.group,function (i,v) {
+                                colo +="<li class='form-group' style='width: 100%;'><div style='float: left;width: 30%;margin-top: 5px;'><label>"+v+"</label></div><div style='float: left;width: 70%'><input id='color"+i+"'  name='color"+i+"' class='colorPicker evo-cp0'></div></li>";
+                            });
+                            $("#mycolor").html(colo);
+                            $.each(data.group,function (i,v) {
+                                $("#BIS").formValidation('addField','color'+i, colorValidators);
+                                $("#color"+i).colorpicker({color: data.color[i], defaultPalette: 'web',showOn:"button"})
+                                        .on("change.color", function(event, color){ //选择颜色事件
+                                            //formValidation重新验证颜色
+                                            $("#BIS").formValidation("revalidateField", "color"+i);
+                                        });
+                            });
+                            $(".evo-cp-wrap").css("float", "left");
+                            $(".evo-cp-wrap").css("width", "180px");
+                        }
+                    });
+                }
+            });
+
+            function DrawPie() {
+                var form = $("#BIS");
+                var fv = form.data("formValidation");
+                fv.validate();
+                if (fv.isValid()) {
+                    var element = "<div id='content'><span id='info'>绘图中，请耐心等待...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
+                    var index = layer.alert(element, {
+                        skin: 'layui-layer-lan',
+                        closeBtn: 0,
+                        title: "提醒",
+                        btn: []
+                    });
+                    var colors=[];
+                    for(var i=0;i<colornum;i++)
+                        colors.push($("#color"+i).val());
+                    $("#color").val(colors.join(","));
+                    var form1 = new FormData($("#BIS")[0]);
+                    $.ajax({
+                        url: "/CloudPlatform/SoftTool/redrawPie?taskname=@row.taskname",
+                        type: "post",
+                        processData: false,
+                        contentType: false,
+                        data: form1,
+                        success: function (data) {
+                            layer.close(index);
+                            if(data.valid=="false"){
+                                swal({
+                                    title: "错误",
+                                    text: data.message,
+                                    type: "error",
+                                    confirmButtonText: "确认"
+                                });
+                            }else{
+                                $("#redraw_pic").attr("src","/CloudPlatform/pic?path="+data.pics+"&num="+Math.random());
+                            }
+                        }
+                    });
+                }else {
+                    switchToInvalid();
+                    swal({
+                        title: "参数设置错误",
+                        text: "有参数不合法，请核实！",
+                        type: "error",
+                        confirmButtonText: "确认"
+                    });
+                }
+            }
+
+            //找第一个invalid元素，并跳转
+            function switchToInvalid() {
+                $(".help-block[data-fv-result='INVALID']").each(function () {
+                    if($(this).parent().parent().attr('id')){
+                        if($(this).parent().parent().attr('id').toString().indexOf("color")>=0){
+                            $("a[data-target='#colopara']").click();
+                        }else{
+                            var parent=$(this).parent().parent().parent().attr('id');
+                            $("a[data-target='#"+parent+"']").click();
+                        }
+                    } else{
+                        var parent=$(this).parent().parent().parent().attr('id');
+                        $("a[data-target='#"+parent+"']").click();
+                    }
+                    return false;
+                });
+            }
+
+    </script>
+
+}

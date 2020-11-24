@@ -23,7 +23,16 @@
         .fontright{
             width: 230px;
         }
-
+        .use-flex{
+            display:flex;
+            width: calc(100% - 30px);
+        }
+        .use-flex>div:first-child{
+            flex:none;
+        }
+        .use-flex>div:last-child{
+            flex:1;
+        }
     </style>
 
     <div class="container" style="width: 98.5%;margin: unset;max-width: unset;padding: 5px">
@@ -64,23 +73,23 @@
                             </ul>
                             <div class="tab-content" style="box-sizing: border-box!important;padding-top: 30px">
                                 <div class="tab-pane fade active in" id="picpara">
-                                    <div class="form-group-p">
+                                    <div class="form-group-p use-flex">
                                         <div class="form-group">
                                             <label>是否使用百分比作图：</label>
                                         </div>
-                                        <div class="form-group right" style="width: 100px;">
-                                            <select id="pe" name="pe" onchange="checkytext()" style="width: 100px;">
+                                        <div class="form-group right">
+                                            <select id="pe" name="pe" onchange="checkytext()" style="width: calc(100% - 10px);">
                                                 <option value="TRUE">yes</option>
                                                 <option value="FALSE">no</option>
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="form-group-p">
+                                    <div class="form-group-p use-flex">
                                         <div class="form-group">
-                                            <label>说明信息位置：</label>
+                                            <label>图例信息位置：</label>
                                         </div>
                                         <div class="form-group right">
-                                            <select id="lp" name="lp" style="width: 45%;">
+                                            <select id="lp" name="lp" style="width: calc(100% - 10px);">
                                                 <option value="left">left</option>
                                                 <option value="right">right</option>
                                                 <option value="top">top</option>
@@ -88,12 +97,23 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="form-group-p">
+                                    <div class="form-group-p use-flex">
+                                        <div class="form-group">
+                                            <label>图例信息排序：</label>
+                                        </div>
+                                        <div class="form-group right">
+                                            <select id="lo" name="lo" style="width: calc(100% - 10px);">
+                                                <option value="0">按照字母顺序排序</option>
+                                                <option value="1">按照丰度大小排序</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group-p use-flex">
                                         <div class="form-group">
                                             <label>图片清晰度：</label>
                                         </div>
                                         <div class="form-group right">
-                                            <select id="dpi" name="dpi" style="width: 45%;">
+                                            <select id="dpi" name="dpi" style="width: calc(100% - 10px);">
                                                 <option value="72">72</option>
                                                 <option value="96">96</option>
                                                 <option value="300">300</option>
@@ -101,7 +121,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="form-group-p">
+                                    <div class="form-group-p use-flex">
                                         <div class="form-group" style="margin-top: 5px;">
                                             <label for="">图片宽高：</label>
                                         </div>
@@ -254,7 +274,7 @@
 
     <script>
 
-            const updatetime="2020-07-29";
+            const updatetime="2020-11-18";
 
             function checkupdate(){
                 $(".update").text(updatetime);
@@ -385,6 +405,7 @@
 
             $(document).ready(function () {
                 if("@row.status"=="已完成"){
+                    checkupdate();
                     $("#BAR").show();
                     $.ajax({
                         url:"/CloudPlatform/SoftTool/getBarGroupData?taskname=@row.taskname",
@@ -405,7 +426,6 @@
                                     // $("#" + i).val(v);
                                 }
                             });
-                            checkupdate();
                             checkytext();
                         }
                     });

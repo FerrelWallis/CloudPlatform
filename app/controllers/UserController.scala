@@ -15,7 +15,7 @@ import utils.{ExecCommand, TableUtils, Utils}
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, ExecutionContext}
 
-class UserController  @Inject()(cc: ControllerComponents,onstart:onStart,usersdao:usersDao,softdao:softDao)(implicit exec: ExecutionContext) extends AbstractController(cc) {
+class UserController  @Inject()(cc: ControllerComponents,onstart:onStart,utilsController: UtilsController,usersdao:usersDao,softdao:softDao)(implicit exec: ExecutionContext) extends AbstractController(cc) {
 
   case class UserData(user: String, password: String)
 
@@ -23,25 +23,33 @@ class UserController  @Inject()(cc: ControllerComponents,onstart:onStart,usersda
     mapping(
       "user" -> text,
       "password" -> text,
-
     )(UserData.apply)(UserData.unapply)
   )
-
 
   def signIn = Action.async { implicit request =>
     val form = userForm.bindFromRequest.get
     if(form.user.contains("@")){
-      usersdao.checkUserByEmail(form.user, form.password).map { x =>
-        val valid = (x.length == 1).toString
-        val id = if(x.length == 1) x.head.id.toString else ""
+      usersdao.getByEmail(form.user).map{x=>
+        val valid = form.password.equals(utilsController.getMD5String(x.pwd)).toString
+        val id = if(form.password.equals(utilsController.getMD5String(x.pwd))) x.id.toString else ""
         Ok(Json.obj("valid" -> valid,"id" -> id))
       }
+//      usersdao.checkUserByEmail(form.user, form.password).map { x =>
+//        val valid = (x.length == 1).toString
+//        val id = if(x.length == 1) x.head.id.toString else ""
+//        Ok(Json.obj("valid" -> valid,"id" -> id))
+//      }
     }else{
-      usersdao.checkUserByPhone(form.user, form.password).map { x =>
-        val valid = (x.length == 1).toString
-        val id = if(x.length == 1) x.head.id.toString else ""
+      usersdao.getByPhone(form.user).map { x =>
+        val valid = form.password.equals(utilsController.getMD5String(x.pwd)).toString
+        val id = if(form.password.equals(utilsController.getMD5String(x.pwd))) x.id.toString else ""
         Ok(Json.obj("valid" -> valid,"id" -> id))
       }
+//      usersdao.checkUserByPhone(form.user, form.password).map { x =>
+//        val valid = (x.length == 1).toString
+//        val id = if(x.length == 1) x.head.id.toString else ""
+//        Ok(Json.obj("valid" -> valid,"id" -> id))
+//      }
     }
   }
 
@@ -131,7 +139,6 @@ class UserController  @Inject()(cc: ControllerComponents,onstart:onStart,usersda
 
 
   def signInSuccess(path:String,id:String) = Action.async{implicit request=>
-    println(request.remoteAddress)
     usersdao.updateIp(id,request.remoteAddress)
     val session = new Session
     val direct=if(path.indexOf("allsoft")>=0 || path=="/CloudPlatform") "/CloudPlatform/home" else path
@@ -235,8 +242,11 @@ class UserController  @Inject()(cc: ControllerComponents,onstart:onStart,usersda
   def deleteLike(sid:String) = Action{implicit request=>
     try{
       val id=request.session.get("userId").get
-      val like=Await.result(usersdao.getLike(id),Duration.Inf).split("/"+sid).mkString("")
-      Await.result(usersdao.updateLike(id,like),Duration.Inf)
+      val like=Await.result(usersdao.getLike(id),Duration.Inf)
+      val newlike = if(like.indexOf("/"+sid+"/")>=0) like.split("/"+sid+"/").mkString("/")
+      else if(like.substring(like.lastIndexOf("/")+1).equals(sid)) like.substring(0,like.lastIndexOf("/"))
+      else like
+      Await.result(usersdao.updateLike(id,newlike),Duration.Inf)
       Await.result(softdao.delLike(sid),Duration.Inf)
       Ok(Json.obj("valid" -> "true"))
     }catch {

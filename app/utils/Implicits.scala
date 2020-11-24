@@ -1,5 +1,5 @@
 package utils
 
-object Implicits extends MyFileTool with MyStringTool with MyLinesTool {
+object Implicits extends DealOutcome with MyFileTool with MyStringTool with MyLinesTool {
 
 }

@@ -16,29 +16,108 @@ object FilesUtils {
 
   def main(args: Array[String]): Unit = {
 
-    val tableFile1=new File("F:\\CloudPlatform\\users\\6\\IGC8510520\\table1.txt")
-    val g = FileUtils.readLines(tableFile1).asScala.head.trim.split("\t")
-    val e = g
+    val file = FileUtils.readLines(new File("F:\\CloudPlatform\\files\\examples\\VennChart.txt")).asScala
+    val buffer = file.filter(_!="")
+    val file2 = FileUtils.readLines(new File("F:\\CloudPlatform\\files\\examples\\VennChartGroup.txt")).asScala
+    val head = file2.filter(_!="")
 
-    val list=e.drop(1)++g.drop(1).distinct
+    val out=buffer.map{x=>
+      x.split("\t").last
+    }.tail.mkString(":")
 
+    println(out)
 
-    val result=FileUtils.readLines(new File("F:\\CloudPlatform\\users\\6\\IGC8510520\\out\\pandv.xls")).asScala
-    var eid=0;
-
-    var soutar:List[List[String]]=List(List(""))
-    var resultFilter = Array("")
-    result.drop(1).foreach{x=>
-      val ei = x.split("\"").filter(_.trim!="")
-      val source=ei(1)
-      val target=ei(2)
-      if(!soutar.contains(List(source,target)) || !soutar.contains(List(target,source))) {
-        soutar=soutar:+List(source,target):+List(target,source)
-        resultFilter=resultFilter:+x
-      }
+    (1 to 5).foreach{x=>
+      println(x)
     }
 
-    println(resultFilter.drop(1).toList)
+
+
+
+//    val sample=buffer(0).split("\t").tail
+//    val char = Array("A", "B", "C", "D", "E", "F")
+//
+//    val result=buffer.tail.map{x=>
+//      val body=x.trim.split("\t").tail
+//      val gene=x.trim.split("\t")(0).trim
+//      val key=head.map{y=>
+//        val test = y.trim.split(",").map{z=>
+//          val index=sample.indexOf(z.trim)
+//          if(body(index)!="0") z.trim else ""
+//        }
+//        if(!test.contains("")) char(head.indexOf(y)) else ""
+//      }.mkString
+//      (key,gene)
+//    }.filter(r=>r._1!="")
+//
+//    val data = result.groupBy(_._1).map(x => x._1 -> x._2.map(_._2))
+//    val name = head.zipWithIndex.map(x => char(x._2) -> x._1).toMap
+//    val values = result.groupBy(_._1).map(x => x._1 -> x._2.map(_._2).length)
+//
+//    println(data.toBuffer)
+//    println(name.toBuffer)
+//    println(values.toBuffer)
+
+
+//    val buffer = FileUtils.readLines(new File("F:\\CloudPlatform\\files\\examples\\venn.txt")).asScala
+//
+//    val matrix = buffer.map(_.split("[\t|;|,]"))
+//
+//    val head = matrix.head //head=sample
+//    val char = Array("A", "B", "C", "D", "E", "F")
+//
+//    val body = (0 to matrix.head.length-1).map { x =>
+//      matrix.map { y =>
+//        if (x<=y.length) y(x) else ""
+//      }.distinct.tail.filterNot(_=="") //init 去掉数组最后一个元素,tail去掉第一个元素
+//    }.toBuffer
+//    //body=array(每一列数据为一行array,,,)
+//    //      println(body.toList)
+//
+//    val result = body.flatMap { x =>
+//      val test=x.map { y =>
+//        val key = body.filter(_.contains(y)).map(z => char(body.indexOf(z))).mkString
+//        (key, y)
+//      }.distinct
+//      test
+//    }.distinct
+//
+//    println(result)
+//
+//    //result=>array((headers,gene),(),(),())  headers 是该元素的sample对应ABCD
+//    //      println(result.toList)
+//
+//    val data = result.groupBy(_._1).map(x => x._1 -> x._2.map(_._2))
+//    val name = head.zipWithIndex.map(x => char(x._2) -> x._1).toMap
+//    val values = result.groupBy(_._1).map(x => x._1 -> x._2.map(_._2).length)
+//
+//    println(data.toBuffer)
+//    println(name.toBuffer)
+//    println(values.toBuffer)
+
+//    val tableFile1=new File("F:\\CloudPlatform\\users\\6\\IGC8510520\\table1.txt")
+//    val g = FileUtils.readLines(tableFile1).asScala.head.trim.split("\t")
+//    val e = g
+//
+//    val list=e.drop(1)++g.drop(1).distinct
+//
+//
+//    val result=FileUtils.readLines(new File("F:\\CloudPlatform\\users\\6\\IGC8510520\\out\\pandv.xls")).asScala
+//    var eid=0;
+//
+//    var soutar:List[List[String]]=List(List(""))
+//    var resultFilter = Array("")
+//    result.drop(1).foreach{x=>
+//      val ei = x.split("\"").filter(_.trim!="")
+//      val source=ei(1)
+//      val target=ei(2)
+//      if(!soutar.contains(List(source,target)) || !soutar.contains(List(target,source))) {
+//        soutar=soutar:+List(source,target):+List(target,source)
+//        resultFilter=resultFilter:+x
+//      }
+//    }
+//
+//    println(resultFilter.drop(1).toList)
 
 
 //    println(edges)
@@ -273,6 +352,11 @@ object FilesUtils {
 //    println("row="+(head.length-1))
 //    println("col="+(head(1).split("\t").length-1))
   }
+
+
+
+
+
 
   def test={
     val test=FileUtils.readLines(new File("C:\\Users\\yingf\\Desktop\\学习文档\\云平台\\group.txt")).asScala

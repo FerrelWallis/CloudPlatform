@@ -1,5 +1,5 @@
 @(abbre:String)(implicit session: Session)
-@home.main("Treemap"){
+@home.main("Tree"){
 
     <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("css/test/mysoft.css")" media="screen" />
     <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("bootstrap-fileinput-master/css/fileinput.css")" media="screen" />
@@ -173,7 +173,7 @@
                                 layer.close(index);
                                 var form1 = new FormData($("#TRM")[0]);
                                 $.ajax({
-                                    url: "/CloudPlatform/SoftTool/runTreemap?groups="+groups,
+                                    url: "/CloudPlatform/SoftTool/runTreemap?groups=" + groups + "&&isgroup=" + $("#isgroup").prop("checked") ,
                                     type: "post",
                                     processData: false,
                                     contentType: false,

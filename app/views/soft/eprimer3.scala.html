@@ -23,6 +23,11 @@
                 margin-left: 30px;
                 border: unset;
             }
+            .mysoft-content-left .form-group-p {
+                width: 435px;
+                overflow: hidden;
+                display: inline-block;
+            }
     </style>
 
     <div class="col-md-12 mysoft-content" style="width: 98%;">
@@ -44,10 +49,10 @@
                 </div>
                 <br><br><br>
                 <div class="panel panel-default">
-                    <div class="panel-heading" data-toggle="collapse" href="#collapse1" style="width: 94px;">
+                    <div class="panel-heading" data-toggle="collapse" href="#collapse1" style="width: 162px;">
                         <h4 class="panel-title">
                             <a id="pos1">
-                                <span style="font-size:15px;">Input Section</span>
+                                <span style="font-size:15px;">输入部分(Input section)</span>
                             </a>
                         </h4>
                     </div>
@@ -67,7 +72,7 @@
                             <br><br>
                             <div class="form-group-p">
                                 <div class="form-group">
-                                    <label>Pick PCR primer(s)？</label>
+                                    <label>是否选择PCR引物(Pick PCR primers)：</label>
                                 </div>
                                 <div class="form-group">
                                     <select name="primer">
@@ -79,21 +84,21 @@
                             <br><br>
                             <div class="form-group-p">
                                 <div class="form-group">
-                                    <label>Select task：</label>
+                                    <label>选择参数(select task)：</label>
                                 </div>
                                 <div class="form-group">
                                     <select name="task">
-                                        <option value="1:Pick PCR primers" selected="selected">Pick PCR primers</option>
-                                        <option value="2:Pick forward primer only">Pick forward primer only</option>
-                                        <option value="3:Pick reverse primer only">Pick reverse primer only</option>
-                                        <option value="4:No primers needed">No primers needed</option>
+                                        <option value="1:Pick PCR primers" selected="selected">选择pcr引物</option>
+                                        <option value="2:Pick forward primer only">设计正向引物</option>
+                                        <option value="3:Pick reverse primer only">设计反向引物</option>
+                                        <option value="4:No primers needed">不设计引物</option>
                                     </select>
                                 </div>
                             </div>
                             <br><br>
                             <div class="form-group-p">
                                 <div class="form-group">
-                                    <label>Pick hybridization probe？</label>
+                                    <label>是否选择杂交探针(pick hybridization probe)：</label>
                                 </div>
                                 <div class="form-group">
                                     <select name="hybridprobe">
@@ -105,22 +110,32 @@
                             <br><br>
                             <div class="form-group-p" style="width: 465px">
                                 <div class="form-group">
-                                    <label>Primer3 internal oligo mishybridizing library file ：</label><label style="color: red;font-size: 12px">（Optional）</label>
+                                    <label>Primer3内部寡核苷酸文库文件：</label><label style="color: red;font-size: 12px">（Optional）</label>
                                 </div>
                             </div>
                             <div class="form-group-p" style="width: 465px">
-                                <div class="form-group" style="width: 380px">
+                                <div class="form-group">
+                                    <label>(Primer3 internal oligo mishybridizing library file)</label>
+                                </div>
+                            </div>
+                            <div class="form-group-p" style="width: 465px">
+                                <div class="form-group" style="width: 380px;height: 34px;">
                                     <input type="file" class="form-control file" id="table2" name="table2">
                                 </div>
                             </div>
                             <br><br>
                             <div class="form-group-p" style="width: 465px">
                                 <div class="form-group">
-                                    <label>Primer3 mispriming library file：</label><label style="color: red;font-size: 12px">（Optional）</label>
+                                    <label>Primer3错配引物库文件：</label><label style="color: red;font-size: 12px">（Optional）</label>
                                 </div>
                             </div>
                             <div class="form-group-p" style="width: 465px">
-                                <div class="form-group" style="width: 380px">
+                                <div class="form-group">
+                                    <label>(Primer3 mispriming library file)</label>
+                                </div>
+                            </div>
+                            <div class="form-group-p" style="width: 465px">
+                                <div class="form-group" style="width: 380px;height: 34px;">
                                     <input type="file" class="form-control file" id="table3" name="table3">
                                 </div>
                             </div>
@@ -128,10 +143,10 @@
                     </div>
                 </div>
                 <div class="panel panel-default">
-                    <div class="panel-heading" data-toggle="collapse" href="#collapse2" style="width: 180px;">
+                    <div class="panel-heading" data-toggle="collapse" href="#collapse2" style="width: 251px;">
                         <h4 class="panel-title">
                             <a id="pos1">
-                                <span style="font-size:15px;">Program options</span><label style="color: red;font-size: 12px">（Optional)</label>
+                                <span style="font-size:15px;">程序选项(Program options)</span><label style="color: red;font-size: 12px">（Optional)</label>
                             </a>
                         </h4>
                     </div>
@@ -139,7 +154,7 @@
                         <div class="panel-body">
                             <div class="form-group-p">
                                 <div class="form-group">
-                                    <label for="format">Number of results to return：</label>
+                                    <label for="format">返回结果数(Number of results to return):</label>
                                 </div>
                                 <div class="form-group">
                                     <input type="text" name="numreturn" id="numreturn" value="5" placeholder="数字" class="form-control input-sm">
@@ -149,10 +164,10 @@
                     </div>
                 </div>
                 <div class="panel panel-default">
-                    <div class="panel-heading" data-toggle="collapse" href="#collapse3" style="width: 192px;">
+                    <div class="panel-heading" data-toggle="collapse" href="#collapse3" style="width: 262px;">
                         <h4 class="panel-title">
                             <a id="pos1">
-                                <span style="font-size:15px;">Sequence options</span><label style="color: red;font-size: 12px">（Optional)</label>
+                                <span style="font-size:15px;">序列选项(Sequence options)</span><label style="color: red;font-size: 12px">（Optional)</label>
                             </a>
                         </h4>
                     </div>
@@ -160,7 +175,7 @@
                         <div class="panel-body">
                             <div class="form-group-p">
                                 <div class="form-group">
-                                    <label for="format">Included region(s)：</label>
+                                    <label for="format">设计引物区域(Include region)：</label>
                                 </div>
                                 <div class="form-group" >
                                     <input type="text" name="includedregion" id="includedregion" placeholder="" class="form-control input-sm" >
@@ -169,7 +184,7 @@
                             <br><br>
                             <div class="form-group-p">
                                 <div class="form-group">
-                                    <label for="format">Target region(s)：</label>
+                                    <label for="format">目标区域(Target region)：</label>
                                 </div>
                                 <div class="form-group" >
                                     <input type="text" name="targetregion" id="targetregion" placeholder="" class="form-control input-sm" >
@@ -178,7 +193,7 @@
                             <br><br>
                             <div class="form-group-p">
                                 <div class="form-group">
-                                    <label for="format">Excluded region(s)：</label>
+                                    <label for="format">排除区域(Excluded region)：</label>
                                 </div>
                                 <div class="form-group" >
                                     <input type="text" name="excludedregion" id="excludedregion" placeholder="" class="form-control input-sm" >
@@ -187,47 +202,33 @@
                             <br><br>
                             <div class="form-group-p">
                                 <div class="form-group">
-                                    <label for="format">Forward input primer sequence to check：</label>
+                                    <label for="format">检查正向引物序列(Forward input primer sequence to check)：</label>
                                 </div>
-                                <div class="form-group" >
+                            </div>
+                            <div class="form-group-p">
+                                <div class="form-group" style="height: 34px; width: 100%;">
                                     <input type="text" name="forwardinput" id="forwardinput" placeholder="" class="form-control input-sm" >
                                 </div>
                             </div>
                             <br><br>
                             <div class="form-group-p">
                                 <div class="form-group">
-                                    <label for="format">Reverse input primer sequence to check：</label>
+                                    <label for="format">检查反向引物序列(Reverse input primer sequence to check)：</label>
                                 </div>
-                                <div class="form-group" >
+                            </div>
+                            <div class="form-group-p">
+                                <div class="form-group" style="height: 34px; width: 100%;">
                                     <input type="text" name="reverseinput" id="reverseinput" placeholder="" class="form-control input-sm" >
-                                </div>
-                            </div>
-                            <br><br>
-                            <div class="form-group-p">
-                                <div class="form-group">
-                                    <label for="format">Possible left primer of pair location：</label>
-                                </div>
-                                <div class="form-group" >
-                                    <input type="text" name="okleftregion" id="okleftregion" placeholder="" class="form-control input-sm" >
-                                </div>
-                            </div>
-                            <br><br>
-                            <div class="form-group-p">
-                                <div class="form-group">
-                                    <label for="format">Possible right primer of pair location：</label>
-                                </div>
-                                <div class="form-group" >
-                                    <input type="text" name="okrightregion" id="okrightregion" placeholder="" class="form-control input-sm" >
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="panel panel-default">
-                    <div class="panel-heading" data-toggle="collapse" href="#collapse4" style="width: 167px;">
+                    <div class="panel-heading" data-toggle="collapse" href="#collapse4" style="width: 237px;">
                         <h4 class="panel-title">
                             <a id="pos1">
-                                <span style="font-size:15px;">Primer options</span><label style="color: red;font-size: 12px">（Optional)</label>
+                                <span style="font-size:15px;">引物选项(Primer options)</span><label style="color: red;font-size: 12px">（Optional)</label>
                             </a>
                         </h4>
                     </div>
@@ -235,7 +236,7 @@
                         <div class="panel-body">
                             <div class="form-group-p">
                                 <div class="form-group">
-                                    <label for="format">GC clamp：</label>
+                                    <label for="format">GC夹子(GC clamp)：</label>
                                 </div>
                                 <div class="form-group" >
                                     <input type="text" name="gcclamp" id="gcclamp" value="0" placeholder="数字" class="form-control input-sm" >
@@ -244,7 +245,7 @@
                             <br><br>
                             <div class="form-group-p">
                                 <div class="form-group">
-                                    <label for="format">Primer optimum size：</label>
+                                    <label for="format">引物最优长度(Primer optimum size)：</label>
                                 </div>
                                 <div class="form-group" >
                                     <input type="text" name="optsize" id="optsize" value="20" placeholder="数字" class="form-control input-sm" >
@@ -253,7 +254,7 @@
                             <br><br>
                             <div class="form-group-p">
                                 <div class="form-group">
-                                    <label for="format">Primer minimum size：</label>
+                                    <label for="format">引物最小长度(Primer minimum size)：</label>
                                 </div>
                                 <div class="form-group" >
                                     <input type="text" name="minsize" id="minsize" value="18" placeholder="数字" class="form-control input-sm" >
@@ -262,7 +263,7 @@
                             <br><br>
                             <div class="form-group-p">
                                 <div class="form-group">
-                                    <label for="format">Primer maximum size：</label>
+                                    <label for="format">引物最大长度(Primer maximum size)：</label>
                                 </div>
                                 <div class="form-group" >
                                     <input type="text" name="maxsize" id="maxsize" value="27" placeholder="数字" class="form-control input-sm" >
@@ -271,7 +272,7 @@
                             <br><br>
                             <div class="form-group-p">
                                 <div class="form-group">
-                                    <label for="format">Primer optimum Tm：</label>
+                                    <label for="format">引物最优退火温度(Primer optimum Tm)：</label>
                                 </div>
                                 <div class="form-group" >
                                     <input type="text" name="opttm" id="opttm" value="60.0" placeholder="数字" class="form-control input-sm" >
@@ -280,7 +281,7 @@
                             <br><br>
                             <div class="form-group-p">
                                 <div class="form-group">
-                                    <label for="format">Primer minimum Tm：</label>
+                                    <label for="format">引物最低退火温度(Primer minimum Tm)：</label>
                                 </div>
                                 <div class="form-group" >
                                     <input type="text" name="mintm" id="mintm" value="57.0" placeholder="数字" class="form-control input-sm" >
@@ -289,14 +290,14 @@
                             <br><br>
                             <div class="form-group-p">
                                 <div class="form-group">
-                                    <label for="format">Primer maximum Tm：</label>
+                                    <label for="format">引物最高退火温度(Primer maximum Tm)：</label>
                                 </div>
                                 <div class="form-group" >
                                     <input type="text" name="maxtm" id="maxtm" value="63.0" placeholder="数字" class="form-control input-sm" >
                                 </div>
                             </div>
                             <br><br>
-                            <div class="form-group-p">
+                            <div class="form-group-p" style="display: none;">
                                 <div class="form-group">
                                     <label for="format">Maximum difference in Tm of primers：</label>
                                 </div>
@@ -304,10 +305,9 @@
                                     <input type="text" name="maxdifftm" id="maxdifftm" value="100.0" placeholder="数字" class="form-control input-sm" >
                                 </div>
                             </div>
-                            <br><br>
                             <div class="form-group-p">
                                 <div class="form-group">
-                                    <label for="format">Primer optimum GC percent：</label>
+                                    <label for="format">引物最优GC含量(Primer optimum GC percent)：</label>
                                 </div>
                                 <div class="form-group" >
                                     <input type="text" name="ogcpercent" id="ogcpercent" value="50.0" placeholder="数字" class="form-control input-sm" >
@@ -316,7 +316,7 @@
                             <br><br>
                             <div class="form-group-p">
                                 <div class="form-group">
-                                    <label for="format">Primer minimum GC percent：</label>
+                                    <label for="format">引物最低GC含量(Primer minimum GC percent)：</label>
                                 </div>
                                 <div class="form-group" >
                                     <input type="text" name="mingc" id="mingc" value="20.0" placeholder="数字" class="form-control input-sm" >
@@ -325,7 +325,7 @@
                             <br><br>
                             <div class="form-group-p">
                                 <div class="form-group">
-                                    <label for="format">Primer maximum GC percent：</label>
+                                    <label for="format">引物平均GC含量(Primer maximum GC percent)：</label>
                                 </div>
                                 <div class="form-group" >
                                     <input type="text" name="maxgc" id="maxgc" value="80.0" placeholder="数字" class="form-control input-sm" >
@@ -334,14 +334,14 @@
                             <br><br>
                             <div class="form-group-p">
                                 <div class="form-group">
-                                    <label for="format">Salt concentration (mM)：</label>
+                                    <label for="format">盐浓度(Salt concentration (mM))：</label>
                                 </div>
                                 <div class="form-group" >
                                     <input type="text" name="saltconc" id="saltconc" value="50.0" placeholder="数字" class="form-control input-sm" >
                                 </div>
                             </div>
                             <br><br>
-                            <div class="form-group-p">
+                            <div class="form-group-p" style="display: none;">
                                 <div class="form-group">
                                     <label for="format">DNA concentration (nM)：</label>
                                 </div>
@@ -349,10 +349,9 @@
                                     <input type="text" name="dnaconc" id="dnaconc" value="50.0" placeholder="数字" class="form-control input-sm" >
                                 </div>
                             </div>
-                            <br><br>
                             <div class="form-group-p">
                                 <div class="form-group">
-                                    <label for="format">Maximum polynucleotide repeat：</label>
+                                    <label for="format">单核苷酸重复序列(Maximum polynucleotide repeat)：</label>
                                 </div>
                                 <div class="form-group" >
                                     <input type="text" name="maxpolyx" id="maxpolyx" value="5" placeholder="数字" class="form-control input-sm" >
@@ -362,10 +361,10 @@
                     </div>
                 </div>
                 <div class="panel panel-default">
-                    <div class="panel-heading" data-toggle="collapse" href="#collapse5" style="width: 176px;">
+                    <div class="panel-heading" data-toggle="collapse" href="#collapse5" style="width: 246px;">
                         <h4 class="panel-title">
                             <a id="pos1">
-                                <span style="font-size:15px;">Product options</span><label style="color: red;font-size: 12px">（Optional)</label>
+                                <span style="font-size:15px;">产物选项(Product options)</span><label style="color: red;font-size: 12px">（Optional)</label>
                             </a>
                         </h4>
                     </div>
@@ -373,7 +372,7 @@
                         <div class="panel-body">
                             <div class="form-group-p">
                                 <div class="form-group">
-                                    <label for="format">Product optimum size：</label>
+                                    <label for="format">产物平均长度(Product optimum size)：</label>
                                 </div>
                                 <div class="form-group" >
                                     <input type="text" name="psizeopt" id="psizeopt" value="200" placeholder="数字" class="form-control input-sm" >
@@ -382,7 +381,7 @@
                             <br><br>
                             <div class="form-group-p">
                                 <div class="form-group">
-                                    <label for="format">Product size range：</label>
+                                    <label for="format">产物大小范围(Product size range)：</label>
                                 </div>
                                 <div class="form-group" >
                                     <input type="text" name="prange" id="prange" value="100-300" placeholder="数字-数字" class="form-control input-sm" >
@@ -391,7 +390,7 @@
                             <br><br>
                             <div class="form-group-p">
                                 <div class="form-group">
-                                    <label for="format">Product optimum Tm：</label>
+                                    <label for="format">产物最优退火温度(Product optimum Tm)：</label>
                                 </div>
                                 <div class="form-group" >
                                     <input type="text" name="ptmopt" id="ptmopt" value="0.0" placeholder="数字" class="form-control input-sm" >
@@ -400,7 +399,7 @@
                             <br><br>
                             <div class="form-group-p">
                                 <div class="form-group">
-                                    <label for="format">Product minimum Tm：</label>
+                                    <label for="format">产物最小退火温度(Product minimum Tm)：</label>
                                 </div>
                                 <div class="form-group" >
                                     <input type="text" name="ptmmin" id="ptmmin" value="-1000000.0" placeholder="数字" class="form-control input-sm" >
@@ -409,314 +408,10 @@
                             <br><br>
                             <div class="form-group-p">
                                 <div class="form-group">
-                                    <label for="format">Product maximum Tm：</label>
+                                    <label for="format">产物最大退火温度(Product maximum Tm)：</label>
                                 </div>
                                 <div class="form-group" >
                                     <input type="text" name="ptmmax" id="ptmmax" value="1000000.0" placeholder="数字" class="form-control input-sm" >
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading" data-toggle="collapse" href="#collapse6" style="width: 196px;">
-                        <h4 class="panel-title">
-                            <a id="pos1">
-                                <span style="font-size:15px;">Internal oligo input</span><label style="color: red;font-size: 12px">（Optional)</label>
-                            </a>
-                        </h4>
-                    </div>
-                    <div id="collapse6" class="panel-collapse collapse in">
-                        <div class="panel-body">
-                            <div class="form-group-p">
-                                <div class="form-group">
-                                    <label for="format">Internal oligo excluded region：</label>
-                                </div>
-                                <div class="form-group" >
-                                    <input type="text" name="oexcludedregion" id="oexcludedregion" placeholder="" class="form-control input-sm" >
-                                </div>
-                            </div>
-                            <br><br>
-                            <div class="form-group-p">
-                                <div class="form-group">
-                                    <label for="format">Internal oligo input sequence (if any)：</label>
-                                </div>
-                                <div class="form-group" >
-                                    <input type="text" name="oligoinput" id="oligoinput" placeholder="" class="form-control input-sm" >
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading" data-toggle="collapse" href="#collapse7" style="width: 213px;">
-                        <h4 class="panel-title">
-                            <a id="pos1">
-                                <span style="font-size:15px;">Internal oligo options</span><label style="color: red;font-size: 12px">（Optional)</label>
-                            </a>
-                        </h4>
-                    </div>
-                    <div id="collapse7" class="panel-collapse collapse in">
-                        <div class="panel-body">
-                            <div class="form-group-p">
-                                <div class="form-group">
-                                    <label for="format">Internal oligo optimum size：</label>
-                                </div>
-                                <div class="form-group" >
-                                    <input type="text" name="osizeopt" id="osizeopt" value="20" placeholder="数字" class="form-control input-sm" >
-                                </div>
-                            </div>
-                            <br><br>
-                            <div class="form-group-p">
-                                <div class="form-group">
-                                    <label for="format">Internal oligo minimum size：</label>
-                                </div>
-                                <div class="form-group" >
-                                    <input type="text" name="ominsize" id="ominsize" value="18" placeholder="数字" class="form-control input-sm" >
-                                </div>
-                            </div>
-                            <br><br>
-                            <div class="form-group-p">
-                                <div class="form-group">
-                                    <label for="format">Internal oligo maximum size：</label>
-                                </div>
-                                <div class="form-group" >
-                                    <input type="text" name="omaxsize" id="omaxsize" value="27" placeholder="数字" class="form-control input-sm" >
-                                </div>
-                            </div>
-                            <br><br>
-                            <div class="form-group-p">
-                                <div class="form-group">
-                                    <label for="format">Internal oligo optimum Tm：</label>
-                                </div>
-                                <div class="form-group" >
-                                    <input type="text" name="otmopt" id="otmopt" value="60.0" placeholder="数字" class="form-control input-sm" >
-                                </div>
-                            </div>
-                            <br><br>
-                            <div class="form-group-p">
-                                <div class="form-group">
-                                    <label for="format">Internal oligo minimum Tm：</label>
-                                </div>
-                                <div class="form-group" >
-                                    <input type="text" name="otmmin" id="otmmin" value="57.0" placeholder="数字" class="form-control input-sm" >
-                                </div>
-                            </div>
-                            <br><br>
-                            <div class="form-group-p">
-                                <div class="form-group">
-                                    <label for="format">Internal oligo maximum Tm：</label>
-                                </div>
-                                <div class="form-group" >
-                                    <input type="text" name="otmmax" id="otmmax" value="63.0" placeholder="数字" class="form-control input-sm" >
-                                </div>
-                            </div>
-                            <br><br>
-                            <div class="form-group-p">
-                                <div class="form-group">
-                                    <label for="format">Internal oligo optimum GC percent：</label>
-                                </div>
-                                <div class="form-group" >
-                                    <input type="text" name="ogcopt" id="ogcopt" value="50.0" placeholder="数字" class="form-control input-sm" >
-                                </div>
-                            </div>
-                            <br><br>
-                            <div class="form-group-p">
-                                <div class="form-group">
-                                    <label for="format">Internal oligo minimum GC：</label>
-                                </div>
-                                <div class="form-group" >
-                                    <input type="text" name="ogcmin" id="ogcmin" value="20.0" placeholder="数字" class="form-control input-sm" >
-                                </div>
-                            </div>
-                            <br><br>
-                            <div class="form-group-p">
-                                <div class="form-group">
-                                    <label for="format">Internal oligo maximum GC：</label>
-                                </div>
-                                <div class="form-group" >
-                                    <input type="text" name="ogcmax" id="ogcmax" value="80.0" placeholder="数字" class="form-control input-sm" >
-                                </div>
-                            </div>
-                            <br><br>
-                            <div class="form-group-p">
-                                <div class="form-group">
-                                    <label for="format">Internal oligo salt concentration (mM)：</label>
-                                </div>
-                                <div class="form-group" >
-                                    <input type="text" name="osaltconc" id="osaltconc" value="50.0" placeholder="数字" class="form-control input-sm" >
-                                </div>
-                            </div>
-                            <br><br>
-                            <div class="form-group-p">
-                                <div class="form-group">
-                                    <label for="format">Internal oligo DNA concentration (nM)：</label>
-                                </div>
-                                <div class="form-group" >
-                                    <input type="text" name="odnaconc" id="odnaconc" value="50.0" placeholder="数字" class="form-control input-sm" >
-                                </div>
-                            </div>
-                            <br><br>
-                            <div class="form-group-p" style="width: 450px;">
-                                <div class="form-group">
-                                    <label for="format">Internal oligo maximum self complementarity：</label>
-                                </div>
-                                <div class="form-group" >
-                                    <input type="text" name="oanyself" id="oanyself" value="12.0" placeholder="数字" class="form-control input-sm" style="width: 73px;">
-                                </div>
-                            </div>
-                            <br><br>
-                            <div class="form-group-p" style="width: 450px">
-                                <div class="form-group">
-                                    <label for="format">Internal oligo maximum 3' self complementarity：</label>
-                                </div>
-                                <div class="form-group" >
-                                    <input type="text" name="oendself" id="oendself" value="12.0" placeholder="数字" class="form-control input-sm" style="width: 58px;">
-                                </div>
-                            </div>
-                            <br><br>
-                            <div class="form-group-p" style="width: 450px">
-                                <div class="form-group">
-                                    <label for="format">Internal oligo maximum polynucleotide repeat：</label>
-                                </div>
-                                <div class="form-group" >
-                                    <input type="text" name="opolyxmax" id="opolyxmax" value="5" placeholder="数字" class="form-control input-sm" style="width: 65px;">
-                                </div>
-                            </div>
-                            <br><br>
-                            <div class="form-group-p">
-                                <div class="form-group">
-                                    <label for="format">Internal oligo maximum mishybridization：</label>
-                                </div>
-                                <div class="form-group" >
-                                    <input type="text" name="omishybmax" id="omishybmax" value="12.0" placeholder="数字" class="form-control input-sm" >
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading" data-toggle="collapse" href="#collapse8" style="width: 189px;">
-                        <h4 class="panel-title">
-                            <a id="pos1">
-                                <span style="font-size:15px;">Advanced section</span><label style="color: red;font-size: 12px">（Optional)</label>
-                            </a>
-                        </h4>
-                    </div>
-                    <div id="collapse8" class="panel-collapse collapse in">
-                        <div class="panel-body">
-                            <div class="form-group-p">
-                                <div class="form-group">
-                                    <label>Explain flag？</label>
-                                </div>
-                                <div class="form-group">
-                                    <select name="explainflag">
-                                        <option value="Y">yes</option>
-                                        <option value="N" selected>no</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <br><br>
-                            <div class="form-group-p">
-                                <div class="form-group">
-                                    <label>Create results files for each sequence？</label>
-                                </div>
-                                <div class="form-group">
-                                    <select name="fileflag">
-                                        <option value="Y">yes</option>
-                                        <option value="N" selected>no</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <br><br>
-                            <div class="form-group-p">
-                                <div class="form-group">
-                                    <label>Pick anyway？</label>
-                                </div>
-                                <div class="form-group">
-                                    <select name="pickanyway">
-                                        <option value="Y">yes</option>
-                                        <option value="N" selected>no</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <br><br>
-                            <div class="form-group-p">
-                                <div class="form-group">
-                                    <label>Primer maximum mispriming：</label>
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" name="maxmispriming" id="maxmispriming" value="12.0" placeholder="数字" class="form-control input-sm" >
-                                </div>
-                            </div>
-                            <br><br>
-                            <div class="form-group-p">
-                                <div class="form-group">
-                                    <label>Primer pair maximum mispriming：</label>
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" name="pairmaxmispriming" id="pairmaxmispriming" value="24.0" placeholder="数字" class="form-control input-sm" >
-                                </div>
-                            </div>
-                            <br><br>
-                            <div class="form-group-p">
-                                <div class="form-group">
-                                    <label>Maximum Ns accepted in a primer：</label>
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" name="numnsaccepted" id="numnsaccepted" value="0" placeholder="数字" class="form-control input-sm" >
-                                </div>
-                            </div>
-                            <br><br>
-                            <div class="form-group-p">
-                                <div class="form-group">
-                                    <label>Maximum self complementarity：</label>
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" name="selfany" id="selfany" value="8.0" placeholder="数字" class="form-control input-sm" >
-                                </div>
-                            </div>
-                            <br><br>
-                            <div class="form-group-p">
-                                <div class="form-group">
-                                    <label>Maximum 3' self complementarity：</label>
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" name="selfend" id="selfend" value="3.0" placeholder="数字" class="form-control input-sm" >
-                                </div>
-                            </div>
-                            <br><br>
-                            <div class="form-group-p">
-                                <div class="form-group">
-                                    <label>Select Task：</label>
-                                </div>
-                                <div class="form-group">
-                                    <select name="scorrection">
-                                        <option value="0:Schildkraut & Lifson">Schildkraut & Lifson</option>
-                                        <option value="1:SantaLucia" selected="selected">SantaLucia</option>
-                                        <option value="2:Owczarzy et al">Owczarzy et al</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <br><br>
-                            <div class="form-group-p">
-                                <div class="form-group">
-                                    <label>Select formula：</label>
-                                </div>
-                                <div class="form-group">
-                                    <select name="tmformula">
-                                        <option value="0:Breslauer et al">Breslauer et al</option>
-                                        <option value="1:SantaLucia" selected="selected">SantaLucia</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <br><br>
-                            <div class="form-group-p">
-                                <div class="form-group">
-                                    <label>Maximum 3' end stability：</label>
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" name="maxendstability" id="maxendstability" value="9.0" placeholder="数字" class="form-control input-sm" >
                                 </div>
                             </div>
                         </div>
@@ -746,11 +441,100 @@
             </ul>
             <div class="tab-content" style="box-sizing: border-box!important;">
                 <div class="tab-pane fade active in" id="instruction">
-                    <p style="color: red">Primer3 internal oligo mishybridizing library file格式要求：</p>
-                    Similar to MISPRIMING-LIBRARY, except that the event we seek to avoid is hybridization of the internal oligo to sequences in this library rather than priming from them. The file must be in (a slightly restricted) FASTA format (W. B. Pearson and D.J. Lipman, PNAS 85:8 pp 2444-2448 [1988]); we briefly discuss the organization of this file below. If this parameter is specified then EPrimer3 locally aligns each candidate oligo against each library sequence and rejects those primers for which the local alignment score times a specified weight (see below) exceeds INTERNAL-OLIGO-MAX-MISHYB. (The maximum value of the weight is arbitrarily set to 12.0.) Each sequence entry in the FASTA-format file must begin with an 'id line' that starts with '>'. The contents of the id line is 'slightly restricted' in that EPrimer3 parses everything after any optional asterisk ('*') as a floating point number to use as the weight mentioned above. If the id line contains no asterisk then the weight defaults to 1.0. The alignment scoring system used is the same as for calculating complementarity among oligos (e.g. SELF-ANY). The remainder of an entry contains the sequence as lines following the id line up until a line starting with '>' or the end of the file. Whitespace and newlines are ignored. Characters 'A', 'T', 'G', 'C', 'a', 't', 'g', 'c' are retained and any other character is converted to 'N' (with the consequence that any IUB / IUPAC codes for ambiguous bases are converted to 'N'). There are no restrictions on line length. An empty value for this parameter indicates that no library should be used.
-                    <br><br>
-                    <p style="color: red">Primer3 mispriming library file格式要求：</p>
-                    The name of a file containing a nucleotide sequence library of sequences to avoid amplifying (for example repetitive sequences, or possibly the sequences of genes in a gene family that should not be amplified.) The file must be in (a slightly restricted) FASTA format (W. B. Pearson and D.J. Lipman, PNAS 85:8 pp 2444-2448 [1988]); we briefly discuss the organization of this file below. If this parameter is specified then EPrimer3 locally aligns each candidate primer against each library sequence and rejects those primers for which the local alignment score times a specified weight (see below) exceeds MAX-MISPRIMING. (The maximum value of the weight is arbitrarily set to 100.0.) Each sequence entry in the FASTA-format file must begin with an 'id line' that starts with '>'. The contents of the id line is 'slightly restricted' in that EPrimer3 parses everything after any optional asterisk ('*') as a floating point number to use as the weight mentioned above. If the id line contains no asterisk then the weight defaults to 1.0. The alignment scoring system used is the same as for calculating complementarity among oligos (e.g. SELF-ANY). The remainder of an entry contains the sequence as lines following the id line up until a line starting with '>' or the end of the file. Whitespace and newlines are ignored. Characters 'A', 'T', 'G', 'C', 'a', 't', 'g', 'c' are retained and any other character is converted to 'N' (with the consequence that any IUB / IUPAC codes for ambiguous bases are converted to 'N'). There are no restrictions on line length. An empty value for this parameter indicates that no repeat library should be used.
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>1.背景介绍</strong></span><br>
+                        Emboss是一个开放源代码的序列分析软件包，是为分子生物学研究的特别需要而发展起来的，包括大量核酸和蛋白质分析工具，Eprimer3工具主要用于对指定序列设计引物。
+                        <br>
+                    </p>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>2.操作方法</strong></span><br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/pmr1.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;padding-left: 44%">操作界面</p>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>2.1.上传文件</strong></span><br>
+                        上传文件必须是txt格式文件，可以利用NCBI下载的gbk文件，另存为txt文件即可。<br>
+                    </p>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>2.2.选填参数</strong></span><br>
+                        <span style="background-color: yellow">此处的参数全部为选填内容，涉及个性化内容，翻译表达可能有误，建议有需求的老师查阅emboss Eprimer3使用说明手册（http://www.bioinformatics.nl/cgi-bin/emboss/help/eprimer3）进行了解。</span><br>
+                    </p>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;">2.2.1.输入部分（Input section）</span><br>
+                        (1) 选择使用参考：默认为standard<br>
+                        (2) 选择PCR引物(Pick PCR primers)：是 或 否<br>
+                        (3) 选择参数（select task）：选择pcr引物、设计正向引物、设计反向引物、不设计引物<br>
+                        (4) 选择杂交探针（pick hybridization probe？）：是 或 否<br>
+                        (5) Primer3内部寡核苷酸文库文件（Primer3 internal oligo mishybridizing library file）：文件必须是fasta格式的，每个序列条目都必须以“>id line”开头。选定此参数后，EPrimer3将每个候选寡核苷酸相对于每个文库序列进行局部比对，并拒绝局部比对得分乘以指定权重超过INTERNAL-OLIGO-MAX-MISHYB的引物。（权重的最大值任意设置为12.0）。<br>
+                        (6) Primer3错配引物库文件（Primer3 mispriming library file）：文件必须是fasta格式的，每个序列条目都必须以“>id line”开头。选定此参数后，EPrimer3将每个候选引物与每个文库序列进行比对，并拒绝局部比对得分乘以指定权重超过MAX-MISPRIMING的引物。（权重的最大值任意设置为100.0。）<br>
+                    </p>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;">2.2.2.程序选项（Program options）</span><br>
+                        (1) 返回结果数（Number of results to return）：默认为5<br>
+                    </p>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;">2.2.3.序列选项（Sequence options）</span><br>
+                        (1) 设计引物区域（include region）:给定设计引物的范围<br>
+                        (2) 目标区域（target region）<br>
+                        (3) 排除区域（exclude region）: 引物不得与指定的任何区域重叠<br>
+                        (4) 检查正向引物序列（Forward input primer sequence to check）：输入正向引物，并设计与它匹配的反向引物<br>
+                        (5) 检查反向引物序列（Reverse input primer sequence to check）：输入反向引物，并设计与它匹配的正向引物<br>
+                    </p>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;">2.2.4.引物选项（Primer options）</span><br>
+                        (1) GC夹子（GC clamp）<br>
+                        (2) 引物最优长度（Primer optimum size）：默认为20<br>
+                        (3) 引物最小长度（Primer minimum size）：默认为18<br>
+                        (4) 引物最大长度（Primer maximum size）：默认为27<br>
+                        (5) 引物最优退火温度（Primer optimum Tm）：默认为60.0<br>
+                        (6) 引物最低退火温度（Primer minimum Tm）：默认为57.0<br>
+                        (7) 引物最高退火温度（Primer maximum Tm）：默认为63.0<br>
+                        (8) 引物最优GC含量（Primer optimum GC percent）：默认为50.0<br>
+                        (9) 引物最低GC含量（Primer minimum GC percent）：默认为20.0<br>
+                        (10) 引物平均GC含量（Primer maximum GC percent）：默认为80.0<br>
+                        (11) 盐浓度（Salt concentration（mM））：盐的毫摩尔浓度（通常指KCl）在PCR体系中的浓度<br>
+                        (12) 单核苷酸重复序列（Maximum polynucleotide repeat）：引物中的单核苷酸重复序列，默认为5<br>
+                    </p>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;">2.2.5.产物选项（Product options）</span><br>
+                        (1) 产物平均长度（Product optimum size）：默认为200<br>
+                        (2) 产物大小范围（Product size range）：默认为100-300<br>
+                        (3) 产物最优退火温度（Product optimum Tm）：默认为0<br>
+                        (4) 产物最小退火温度（Product minimum Tm）：默认为-100000<br>
+                        (5) 产物最大退火温度（Product maximum Tm）：默认为100000<br>
+                    </p>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        设置完成后，点击“提交“按键，即可开始分析<br>
+                    </p>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>2.3.查看任务</strong></span><br>
+                        提交任务后，点击界面右侧的“历史任务”模块，或者点击界面“我的任务”，都可以查看任务编号、软件名称和状态等信息，点击任务编号，即可查看分析结果。
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/pmr2.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        在任务详情界面，展示的是任务参数和结果文件列表2个区域，提供结果文件下载功能。<br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/pmr3.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <br>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>3.结果文件</strong></span><br>
+                        结果文件部分展示的是通过上传文件设计的引物，示例文件如下：<br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/pmr4.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <br>
                 </div>
                 <div class="tab-pane fade" id="example">
                     <h5 style="margin-bottom: 2px">视频录制中...敬请期待！</h5>

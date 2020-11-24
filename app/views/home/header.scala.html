@@ -2,6 +2,7 @@
 
 <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("mycss/header.css")" media="screen" />
 <script src="@routes.Assets.versioned("layer-v3.0/layer/layer.js")" type="text/javascript"></script>
+<script type="text/javascript" src="@routes.Assets.versioned("md5/md5.js")"></script>
 <style>
         .layui-layer {
             -webkit-overflow-scrolling: touch;
@@ -39,6 +40,18 @@
         width: 800px;
         left: 45%;
     }
+        #latestNotice .submit-btn-area button,#feedbackPage .submit-btn-area button{
+            background: #455b86;
+        }
+        .met-scrollbar {
+            scrollbar-color: rgba(0, 0, 0, 0.2) rgba(0, 0, 0, 0.2);
+            scrollbar-width: thin;
+        }
+        .met-scrollbar::-webkit-scrollbar {
+            width: 7px;
+            height: 11px;
+            background-color: rgba(0, 0, 0, 0.2);
+        }
 </style>
 <div id="mws-header" class="clearfix fix" style="height: 100px">
     <div id="mws-logo-container">
@@ -106,8 +119,13 @@
                         <label for="login-pas">密码：</label>
                     </div>
                     <div class="logright">
-                        <input type="password" id="login-pas" name="password" class="log_re_chan">
+                        <input type="password" id="login-pas" class="log_re_chan">
                         <i class="ti-lock"></i>
+                    </div>
+                </div>
+                <div class="form-gp form-group" style="display: none">
+                    <div class="logright">
+                        <input type="password" id="login-password" name="password" class="log_re_chan">
                     </div>
                 </div>
                 <div class="form-gp form-group">
@@ -120,7 +138,7 @@
                     </div>
                 </div>
                 <div class="submit-btn-area" style="margin-top: 35px">
-                    <button id="form_submit" type="submit" onclick="Signin()">登录 <i class="ti-arrow-right"></i></button>
+                    <button id="form_submit" onclick="Signin()">登录 <i class="ti-arrow-right"></i></button>
                     <a class="signup" data-reveal-id="signup"></a>
                 </div>
                 <div class="form-footer text-center mt-5">
@@ -220,7 +238,7 @@
                     </div>
                 </div>
                 <div class="submit-btn-area" style="margin-top: 44px;" >
-                    <button id="form_submit" type="submit" onclick="Signup()">注册 <i class="ti-arrow-right"></i></button>
+                    <button id="form_submit" onclick="Signup()">注册 <i class="ti-arrow-right"></i></button>
                 </div>
                 <div class="form-footer text-center mt-5">
                     <p class="text-muted" style="margin-top: 33px;font-size: 14px;">已经有帐号? <a onclick="openSignin()" style="cursor: pointer;">登录</a></p>
@@ -276,7 +294,7 @@
                     </div>
                 </div>
                 <div class="submit-btn-area" style="margin-top: 44px;" >
-                    <button id="form_submit" type="submit" onclick="changePassword()">确认修改 <i class="ti-arrow-right"></i></button>
+                    <button id="form_submit" onclick="changePassword()">确认修改 <i class="ti-arrow-right"></i></button>
                 </div>
             </div>
         </form>
@@ -311,7 +329,7 @@
                     </div>
                 </div>
                 <div class="submit-btn-area" style="margin-top: 35px">
-                    <button id="form_submit" type="submit" onclick="MailSignin()">登录 <i class="ti-arrow-right"></i></button>
+                    <button id="form_submit" onclick="MailSignin()">登录 <i class="ti-arrow-right"></i></button>
                     <a class="signup" data-reveal-id="signup"></a>
                 </div>
                 <div class="form-footer text-center mt-5">
@@ -368,7 +386,7 @@
                     </div>
                 </div>
                 <div class="submit-btn-area" style="margin-top: 35px">
-                    <button id="form_submit" type="submit" onclick="changePhone()">重新绑定 <i class="ti-arrow-right"></i></button>
+                    <button id="form_submit" onclick="changePhone()">重新绑定 <i class="ti-arrow-right"></i></button>
 @*                    <a class="signup" data-reveal-id="signup"></a>*@
                 </div>
             </div>
@@ -429,7 +447,7 @@
                     </div>
                 </div>
                 <div class="submit-btn-area" style="margin-top: 35px">
-                    <button id="form_submit" type="submit" onclick="changeDe()">确认修改 <i class="ti-arrow-right"></i></button>
+                    <button id="form_submit" onclick="changeDe()">确认修改 <i class="ti-arrow-right"></i></button>
                 </div>
             </div>
         </form>
@@ -437,10 +455,13 @@
     <a class="close-reveal-modal">&#215;</a>
 </div>
 
-<div id="latestNotice" class="reveal-modal" style="width: 600px; left: 50%;top:12%;">
-    <div class="cont" style="width: 100%">
-        <div class="login-form-head">
-            <h4 id="noteHead" style="font-size: 2.5rem!important;font-family: 'Poppins', sans-serif">标题</h4>
+<div id="latestNotice" class="reveal-modal" style="width: 600px; left: 50%;top:12%;background: white;border-radius: 3px">
+    <div class="cont" style="width: 100%;padding-top: 0px;">
+        <div style="height: 40px;background: #455b86;margin-bottom: 20px;">
+            <p style="text-align: center;padding-top: 10px;font-size: 15px;color: white">查看公告信息</p>
+        </div>
+        <div class="login-form-head" style="padding-top: 0px">
+            <h4 id="noteHead" style="font-size: 2rem!important;font-family: 'Poppins', sans-serif">标题</h4>
             <span style="font-size: 15px;margin-top: 10px;">发布时间：</span><span id="notePubtime">sss</span>
         </div>
         <div class="login-form-body" style="padding-bottom: 26px;overflow-y: auto;max-height: 450px">
@@ -448,12 +469,68 @@
 
             </div>
         </div>
-        <div class="submit-btn-area" style="margin-top: 20px;padding: 0px 50px 0px 50px;">
-            <button id="form_submit" onclick="closeReveal()">确认 <i class="ti-arrow-right"></i></button>
+        <div class="submit-btn-area" style="margin-top: 20px;">
+            <button id="form_submit" onclick="closeReveal()" style="width: 100px; border-radius: 3px; height: 40px;">
+                确认
+@*                    <i class="ti-arrow-right" style="margin-left: 5px;"></i>*@
+            </button>
         </div>
     </div>
     <a class="close-reveal-modal" style="display: none">&#215;</a>
 </div>
+
+<div id="feedbackPage" class="reveal-modal" style="width: 700px; left: 45%;top:12%;background: white;border-radius: 3px">
+    <div class="cont" style="width: 100%;padding-top: 0px;">
+        <div style="height: 40px;background: #455b86;margin-bottom: 20px;">
+            <p style="text-align: center;padding-top: 10px;font-size: 15px;color: white">查看反馈信息</p>
+        </div>
+        <div class="login-form-head" style="padding-top: 0px">
+            <h4 id="feedHead" style="font-size: 2rem!important;font-family: 'Poppins', sans-serif;margin-bottom: 20px;">标题</h4>
+        </div>
+        <div style="padding: 5px 50px 5px 50px;">
+            <span style="font-size: 15px;margin-top: 10px;font-weight: bold;">提交人：</span><span id="feedName"></span>
+        </div>
+        <div style="padding: 5px 50px 5px 50px;">
+            <span style="font-size: 15px;margin-top: 10px;font-weight: bold;">联系方式：</span><span id="feedPhone"></span>
+        </div>
+        <div style="padding: 5px 50px 5px 50px;">
+            <span style="font-size: 15px;margin-top: 10px;font-weight: bold;">提交时间：</span><span id="feedSubtime">sss</span>
+        </div>
+        <div style="padding: 5px 50px 10px 50px;">
+            <span style="font-size: 15px;margin-top: 10px;font-weight: bold;">详细描述：</span>
+        </div>
+        <div class="login-form-body met-scrollbar" style="padding-top: 0px;padding-bottom: 26px;overflow-y: auto;max-height: 450px">
+            <div id="feedContent" class="noteContent"></div>
+        </div>
+        <div class="submit-btn-area" style="margin-top: 20px;">
+            <button id="form_submit" onclick="closeReveal()" style="width: 100px; border-radius: 3px; height: 40px;">
+                确认
+                @*                    <i class="ti-arrow-right" style="margin-left: 5px;"></i>*@
+            </button>
+        </div>
+    </div>
+    <a class="close-reveal-modal" style="display: none">&#215;</a>
+</div>
+
+<div id="logPage" class="reveal-modal" style="width: 700px; left: 45%;top:12%;background: white;border-radius: 3px">
+    <div class="cont" style="width: 100%;padding-top: 0px;">
+        <div style="height: 40px;background: #455b86;margin-bottom: 20px;">
+            <p style="text-align: center;padding-top: 10px;font-size: 15px;color: white">日志信息</p>
+        </div>
+        <div class="login-form-body met-scrollbar" style="padding-top: 0px;padding-bottom: 26px;overflow-y: auto;max-height: 450px">
+            <div class="noteContent">
+                <span id="logContent" style="white-space: pre-line;"></span>
+            </div>
+        </div>
+        <div class="submit-btn-area" style="margin-top: 20px;">
+            <button id="form_submit" onclick="closeReveal()" style="width: 100px; border-radius: 3px; height: 40px;">
+                确认
+            </button>
+        </div>
+    </div>
+    <a class="close-reveal-modal" style="display: none">&#215;</a>
+</div>
+
 
 <script>
         $('.form-gp input').on('focus', function() {
@@ -526,8 +603,10 @@
                     title: "提醒",
                     btn: []
                 });
+                var oldpwd=$("#login-pas").val();
+                $("#login-password").val(md5(oldpwd));
                 $.ajax({
-                    url: "@routes.UserController.signIn()",
+                    url: "/CloudPlatform/User/signIn",
                     type: "post",
                     dataType: "json",
                     data: form.serialize(),
@@ -708,7 +787,6 @@
             var fv = form.data("formValidation");
             fv.validate();
             if (fv.isValid()) {
-                console.log(222);
                 var element = "<div id='content'><span id='info'>修改中，请耐心等待...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
                 var index = layer.alert(element, {
                     skin: 'layui-layer-lan',
@@ -722,9 +800,7 @@
                     dataType: "json",
                     data: form.serialize(),
                     success: function (data) {
-                        console.log(data.valid);
                         if (data.valid === "false") {
-                            console.log(333);
                             layer.close(index);
                             swal({
                                 title: "错误",

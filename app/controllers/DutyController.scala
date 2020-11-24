@@ -100,7 +100,8 @@ class DutyController @Inject()(cc: ControllerComponents,dutydao:dutyDao)(implici
       else if(x.status=="运行失败") "failed"
       else if(x.status=="运行中") "running"
       val status=s"<p id='status' style='margin: 0;' class='"+color+"'>"+x.status+"</p>"
-      val control=s"<a class='control-icon mws-ic-16 ic-delete2' onclick=deltask('"+ x.taskname +"')></a><a class='control-icon mws-ic-16 ic-cloud-download-1' onclick=downtask('"+ x.taskname +"','"+ x.status +"')></a>"
+      val manage=if(new File(Utils.path+"users/"+uid+"/"+x.taskname+"/log.txt").length()==0) "ic-logfile-unable" else "ic-logfile"
+      val control=s"<a class='control-icon mws-ic-16 ic-delete2' onclick=deltask('"+ x.taskname +"')></a><a class='control-icon mws-ic-16 ic-cloud-download-1' onclick=downtask('"+ x.taskname +"','"+ x.status +"')></a><a class='control-icon mws-ic-16 "+manage+"' onclick=showlog('"+ x.taskname +"')></a>"
       Json.obj("taskname" -> taskname,"sname"-> sname,"subtime" -> x.subtime,"finitime"->x.finitime,"status"->status,"control"->control)
     }
 
@@ -161,6 +162,17 @@ class DutyController @Inject()(cc: ControllerComponents,dutydao:dutyDao)(implici
       Await.result(dutydao.deleteDuty(uid,taskname),Duration.Inf)
       FileUtils.deleteDirectory(new File(userDutyDir+uid+"/"+taskname))
       Ok(Json.obj("valid" -> "true"))
+    }catch {
+      case e : Exception => Ok(Json.obj("valid" ->"false","message" -> e.getMessage))
+    }
+  }
+
+  def showLog(taskname:String)=Action{implicit request=>
+    val uid=request.session.get("userId").get
+    try{
+      val file=new File(userDutyDir+uid+"/"+taskname+"/log.txt")
+      val (canmanage,content)=if(file.length()==0) (0,"") else (1,FileUtils.readFileToString(file))
+      Ok(Json.obj("content" -> content,"canmanage"->canmanage))
     }catch {
       case e : Exception => Ok(Json.obj("valid" ->"false","message" -> e.getMessage))
     }

@@ -1,0 +1,460 @@
+@()(implicit session: Session)
+@home.main("Feedback Page") {
+    @*<linkrel="stylesheet"type="text/css"href="@routes.Assets.versioned("css/test/mysoft.css")"media="screen"/>*@
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("mycss/index.css")" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("wangeditor/wangEditor.css")" media="screen"/>
+    <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("bootstrap-table-master/dist/bootstrap.min.css")">
+    <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("bootstrap-table-master/dist/bootstrap-table.min.css")">
+    <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("bootstrap-datepicker-1.9.0/css/bootstrap-datepicker.css")">
+
+    <script type="text/javascript" src="@routes.Assets.versioned("bootstrap/js/bootstrap.js")"></script>
+    <script src = "@routes.Assets.versioned("bootstrap-table-master/dist/bootstrap-table.js")" type = "text/javascript" ></script>
+    <script src="@routes.Assets.versioned("bootstrap-table-master/dist/locale/bootstrap-table-zh-CN.min.js")" type="text/javascript"></script>
+    <script src = "@routes.Assets.versioned("bootstrap-datepicker-1.9.0/js/bootstrap-datepicker.js")" type = "text/javascript" ></script>
+    <script src="@routes.Assets.versioned("bootstrap-datepicker-1.9.0/locales/bootstrap-datepicker.zh-CN.min.js")" type="text/javascript"></script>
+    <script type = "text/javascript" src = "@routes.Assets.versioned("wangeditor/wangEditor.js")" ></script>
+    <script type="text/javascript" src="@routes.Assets.versioned("myjs/jquery-ui-tabs.js")"></script>
+    <script src = "@routes.Assets.versioned("layer-v3.0/layer/layer.js")" type = "text/javascript" ></script>
+
+    <style>
+            .btn-primary:hover, .btn-primary:focus, .btn-primary.focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
+                color: #fff;
+                background-color: #0d2648;
+                border-color: #0d2648;
+            }
+
+            .btn-primary {
+                color: #fff;
+                background-color: #0d2648;
+                border-color: #0d2648;
+            }
+
+            .ui-tabs .ui-tabs-nav li a {
+                float: left;
+                padding: 8px 4.5em 9px 4.5em;
+                text-decoration: none;
+                outline: none;
+                color: black;
+                text-shadow: none;
+            }
+
+            .manager_ul li {
+                width: 100%;
+            }
+
+            .manager {
+                padding-top: 20px;
+            }
+
+            .manager_panel {
+                padding: 1em 0em 1em 1em;
+                float: left;
+            }
+
+            .glyphicon-calendar:before {
+                content: "\e109"
+            }
+
+            input[type="text"], textarea {
+                background: #fff;
+                background: rgba(255, 255, 255, .4);
+                border-top: 1px solid #dfe0de;
+                border-left: 1px solid #dfe0de;
+                border-right: 1px solid #dfe0de;
+                border-bottom: 1px solid #dfe0de;
+                padding: 7px 9px;
+                border-radius: 3px;
+                border-top-right-radius: 3px;
+                border-bottom-right-radius: 3px;
+                color: #888;
+                box-shadow: inset 0 1px 1px rgba(0, 0, 0, .1);
+            }
+
+            .datepicker table tr th, .datepicker table tr td {
+                border: unset !important;
+            }
+
+            .datepicker table tr td .active, .datepicker table tr td .active:hover, .datepicker table tr td .active .disabled, .datepicker table tr td .active .disabled:hover {
+                background-color: #006dcc;
+                background-image: -moz-linear-gradient(to bottom, #08c, #08c);
+                background-image: -ms-linear-gradient(to bottom, #08c, #08c);
+                background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#08c), to(#08c));
+                background-image: -webkit-linear-gradient(to bottom, #08c, #08c);
+                background-image: -o-linear-gradient(to bottom, #08c, #08c);
+                background-image: linear-gradient(to bottom, #08c, #08c);
+                background-repeat: repeat-x;
+                filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#08c', endColorstr='#0044cc', GradientType=0);
+                border-color: #0044cc #0044cc #002a80;
+                border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+                border-top-color: rgba(0, 0, 0, 0.1);
+                filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+                color: #fff;
+                text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+            }
+
+            .submit {
+                padding: 10px 30px 10px 30px;
+                background: #036;
+                float: right;
+                margin-top: 20px;
+                margin-right: 10px;
+            }
+
+            .submit:hover {
+                padding: 10px 30px 10px 30px;
+                background: #0d2648 !important;
+                float: right;
+                margin-top: 20px;
+                margin-right: 10px;
+            }
+
+            #editor table tr th, #editor table tr td {
+                border: 1px solid rgba(120, 130, 140, 0.82) !important;
+            }
+
+            .form-group label {
+                margin-top: 8px;
+                margin-bottom: 0px;
+            }
+
+            h1, h2, h3, h4, h5, h6 {
+                font-family: "HelveticaNeue", Helvetica, 'MicrosoftYahei', 'HiraginoSansGB', 'WenQuanYiMicroHei', Tahoma, Arial, sans-serif;
+                font-weight: 700;
+                line-height: 1.1;
+                color: inherit;
+            }
+
+            h3 {
+                font-size: 16px;
+            }
+
+            .col-xs-1, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9, .col-xs-10, .col-xs-11, .col-xs-12, .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12, .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12, .col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11, .col-lg-12 {
+                position: relative;
+                min-height: 1px;
+                padding-right: 0px;
+                padding-left: 0px;
+            }
+
+            .control-icon {
+                padding-left: 32px;
+                background-position: 12px center;
+            }
+
+            #auth a:active {
+                -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+                background: transparent;
+            }
+            .sweet-alert .text-muted {
+                color: gray;
+            }
+            .sweet-alert .lead {
+                font: 13px/1.5 'PTSansRegular', Arial, Helvetica, sans-serif;
+                font-size: 15.5px;
+                margin-bottom: 20px;
+                line-height: 1.4;
+            }
+            .sweet-alert h1, h2, h3, h4, h5, h6 {
+                font-family: "Helvetica Neue", Helvetica, 'Microsoft Yahei', 'Hiragino Sans GB', 'WenQuanYi Micro Hei', Tahoma, Arial, sans-serif;
+                font-weight: 700;
+                line-height: 1.1;
+                color: inherit;
+                font-size: 20px;
+                margin-top: 20px;
+                margin-bottom: 10px;
+                text-shadow: 0 1px 0 #fff;
+            }
+    </style>
+
+    <div class="container main padding" style="background: white; height: 810px; width: 96.5%;">
+        <div class="mws-panel grid_8 manager">
+            <div class="mws-tabs" style="height: 100%">
+                <div class="col-md-2" style="height: 100%">
+                    <div style="width: 100%; float: left">
+                        <ul class="manager_ul">
+                            <li><a href="#notice">意见反馈</a></li>
+                            <li><a id="tofeed" href="#auth">反馈历史</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-9" style="height: 100%; width: 83%;">
+                    <div id="notice" class="manager_panel" style="padding-top: 0px;
+                        width: 96%;
+                        padding-right: 0px;">
+                        <form id="feedpage" method="GET" enctype="multipart/form-data" class="form-inline" style="box-sizing: border-box !important;
+                            margin-top: 10px">
+                            <h3 style="margin-top: 0">意见反馈</h3>
+                            <hr style="margin-top: 0; margin-bottom: 30px;">
+                            <div>
+                                <div style="width: 50%; display: inline-block">
+                                    <div class="form-group-p">
+                                        <div class="form-group">
+                                            <label>标题：</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <input id="title" type="text" class="form-control" name="title" placeholder="标题" style="width: 260px;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <br>
+                            <div>
+                                <label>详细描述：</label>
+                                <div id="editor" style="width: 100%;">
+                                </div>
+                                <textarea id="txdata" name="txdata" style="display: none;"></textarea>
+                            </div>
+                            @*                            <br>*@
+                            @*                            <br>*@
+                            @*                            <div>*@
+                            @*                                <div class="form-group-p" style="display: inline-block">*@
+                            @*                                    <div class="form-group">*@
+                            @*                                        <label>添加附件：</label>*@
+                            @*                                    </div>*@
+                            @*                                </div>*@
+                            @*                                <div class="form-group-p" style="display: inline-block">*@
+                            @*                                    <div id="group_part" class="form-group" style="width: 450px">*@
+                            @*                                        <input type="file" class="form-control file" id="table1" name="table1">*@
+                            @*                                    </div>*@
+                            @*                                </div>*@
+                            @*                            </div>*@
+                            @*                            <label style="color: #a09f9f;margin-top: 10px;">如有多个文件，请放入压缩包一起上传!</label>*@
+                            <br>
+                            <br>
+                            <input type="button" value="提&nbsp;&nbsp;交" name="submit" class="btn btn-primary submit" onclick="submitFeed()">
+                        </form>
+                    </div>
+                    <div id="auth" class="manager_panel" style="width: 96%;
+                        padding-right: 0px;">
+                        <form>
+                            <h3 style="margin-top: 0">反馈历史记录</h3>
+                            <hr style="margin-top: 0; margin-bottom: 30px;">
+                            <div class="container" style="width: 98%; margin: unset; max-width: unset; background: white">
+                                    <!--data-toolbar：设置装按钮的容器为id为toolbar的。-->
+                                <div id="toolbar">&nbsp;搜索：</div>
+                                <div id="action" >
+                                    <input type="button" id="remove" value="删除记录" class="btn btn-primary btn-dark" style="float: right;margin-top: 10px;margin-right: 10px;">
+                                </div>
+                                <table class="display table table-bordered" style="width: 99.9%" id="table" data-pagination="true" data-search="true"
+                                data-toolbar="#toolbar" data-page-list="[10,25,50,100,all]" data-search-align="left" data-multiple-search="true">
+                                </table>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src = "@routes.Assets.versioned("bootstrap-sweetalert-master/dist/sweetalert.min.js")" type = "text/javascript" ></script>
+
+    <script>
+
+        // window.swal=swal;
+
+            $(document).ready(function () {
+                formValidation();
+                loading();
+                $("#remove").on("click", function () {
+                    if ($("input:checked")[0] == null) {
+                        alert("请选择需要删除的消息");
+                        return;
+                    }
+                    var rows = $("#table").bootstrapTable('getSelections');// 获得要删除的数据
+                    if (rows.length == 0) {// rows 主要是为了判断是否选中，下面的else内容才是主要
+                        alert("请先选择要删除的记录!");
+                        return;
+                    } else {
+                        if (confirm("确认删除吗？")) {
+                            var ids = "";// 声明一个数组
+                            $(rows).each(function () {// 通过获得别选中的来进行遍历
+                                var x = this.content;
+                                var fid = x.toString().substring(x.toString().indexOf("(") + 1, x.toString().indexOf(")"));
+                                ids = ids + fid + ",";// cid为获得到的整条数据中的一列
+                            });
+                            ids = ids.substring(0, ids.length - 1);
+                            console.log(ids);
+                            $.ajax({
+                                url: "/CloudPlatform/Utils/deleteFeeds?ids=" + ids,
+                                type: "post",
+                                success: function (data) {
+                                    if (data.valid === "false") {
+                                        swal({
+                                            title: "错误",
+                                            text: "删除失败！" + data.message,
+                                            type: "error",
+                                            confirmButtonText: "确认"
+                                        });
+                                    } else {
+                                        $('#table').bootstrapTable('destroy');
+                                        loading();
+                                        swal({
+                                            title: "删除成功",
+                                            text: "反馈记录删除成功！",
+                                            type: "success",
+                                            confirmButtonText: "确认"
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+            });
+
+            function loading() {
+                $('#table').bootstrapTable({
+                    method: 'post',
+                    url: "/CloudPlatform/Utils/getFeedsByUid",
+                    sidePagination: "server",
+                    pageNumber: 1,
+                    pagination: true,
+                    pageList: [10, 25, 50, 100],
+                    contentType: "application/x-www-form-urlencoded",
+                    clickToSelect: true,//点击行选中
+                    columns: [{
+                        checkbox: true
+                    }, {
+                        title: '提交日期',
+                        field: 'subtime',
+                        sortable: 'true'
+                    }, {
+                        title: '标题',
+                        field: 'title',
+                        sortable: 'true'
+                    }, {
+                        title: '操作',
+                        field: 'content'
+                    }]
+                });
+            }
+
+            var E = window.wangEditor;
+            var editor = new E('#editor');
+            //自定义菜单配置
+            editor.customConfig.menus = [
+                'head',//标题
+                'bold',//粗体
+                'fontName',//字体
+                'italic',//斜体
+                'underline',//下划线
+                'strikeThrough',//删除线
+                'foreColor',//文字颜色
+                'backColor',//背景颜色
+                'link',//插入链接
+                'list',//列表
+                'justify',//对齐方式
+                'quote',//引用
+                'emoticon',//表情
+                'image',//插入图片
+                'table',//表格
+                'code',//插入代码
+                'undo',//撤销
+                'redo'//重复
+            ];
+            editor.customConfig.colors = [
+                '#ffffff', '#000000', '#330000',
+                '#cccc99', '#cccc00', '#cc9900', '#996600', '#660000',
+                '#ffff99', '#ffcc00', '#ff9900', '#ff0000', '#c4000f',
+                '#ffccff', '#ff99cc', '#ff00cc', '#cc0099',
+                '#ccccff', '#cc99ff', '#996699', '#cc00ff', '#660099',
+                '#ccffff', '#99ccff', '#3399ff', '#6600ff', '#330099',
+                '#ccff00', '#ccff99', '#99cc99', '#339999', '#339900'
+            ];
+            editor.customConfig.uploadImgShowBase64 = true;
+            editor.create();
+
+            //tab
+            $(".mws-tabs").tabs();
+
+            function openFeedpage(fid) {
+                $.ajax({
+                    url: "/CloudPlatform/Utils/getFeedsByFid?fid="+fid+"&adpage=false",
+                    type: "post",
+                    success: function (data) {
+                        $("#feedHead").text(data.title);
+                        $("#feedName").text('@session.get("userName")');
+                        $("#feedPhone").text('@session.get("userPhone")');
+                        $("#feedSubtime").text(data.subtime);
+                        $("#feedContent").html("");
+                        $("#feedContent").append(data.content);
+                        $("#liFeedback").click();
+                    }
+                });
+            }
+
+            function submitFeed() {
+                var form = $("#feedpage");
+                var fv = form.data("formValidation");
+                fv.validate();
+                if (fv.isValid()) {
+                    if (editor.txt.text() === "") {
+                        swal({
+                            title: "详细描述不能为空",
+                            text: "详细描述不能为空!",
+                            type: "warning",
+                            confirmButtonText: "确认"
+                        });
+                    } else {
+                        if (confirm("是否确认提交？")) {
+                            $("#txdata").val(editor.txt.html());
+                            var element = "<div id='content'><span id='info'>提交中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width:30px;height:20px;float:right;padding-right:11px;padding-top:2px;'></div>";
+                            var index = layer.alert(element, {
+                                skin: 'layui-layer-lan',
+                                closeBtn: 0,
+                                title: "提醒",
+                                btn: []
+                            });
+                            setTimeout(function () {
+                                layer.close(index);
+                                var form1 = new FormData($("#feedpage")[0]);
+                                $.ajax({
+                                    url: "/CloudPlatform/Utils/addFeedback",
+                                    type: "post",
+                                    processData: false,
+                                    contentType: false,
+                                    data: form1,
+                                    success: function (data) {
+                                        //旧版本swal不能用.then()
+                                        swal({
+                                            title: "提交成功",
+                                            text: "感谢您的宝贵建议，我们将不断优化微课云平台！请持续关注。",
+                                            type: "success",
+                                            confirmButtonText: "确认"
+                                        },function(isConfirm){
+                                            window.location.href="/CloudPlatform/feedback";
+                                        });
+                                    }
+                                });
+                            }, 2000);
+                        }
+                    }
+                }
+            }
+
+            function formValidation() {
+                $('#feedpage').formValidation({
+                    framework: 'bootstrap',
+                    icon: {
+                        valid: 'glyphiconglyphicon-ok',
+                        invalid: 'glyphiconglyphicon-remove',
+                        validating: 'glyphiconglyphicon-refresh'
+                    },
+                    fields: {
+                        title: {
+                            validators: {
+                                notEmpty: {
+                                    message: '公告标题不能为空!'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+
+
+    </script>
+
+}
