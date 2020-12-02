@@ -121,8 +121,8 @@
                                 </div>
                                 <div class="form-group">
                                     <select name="y">
-                                        <option value="1">all-against-all (约束更严)</option>
-                                        <option value="0">one-against-all (约束不严，运算时间久)</option>
+                                        <option value="1">all-against-all(约束更严)</option>
+                                        <option value="0">one-against-all(约束不严，运算久)</option>
                                     </select>
                                 </div>
                             </div>
@@ -164,10 +164,99 @@
             </ul>
             <div class="tab-content" style="box-sizing: border-box!important;">
                 <div class="tab-pane fade active in" id="instruction">
-                    <p style="color: red;">OTU文件第一行必须是# Constructed from biom file</p>
-                    <p style="color: red;">第二行第一个必须是#OTU ID，中间OTU和ID之间以空格分隔，其余都以制表符分隔</p>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>1.背景介绍</strong></span><br>
+                        LEfse分析即LDA Effect Size分析，可以实现多个分组之间的比较，还进行分组比较的内部进行亚组比较分析，从而找到组间在丰度上有显著差异的物种（即biomaker），主要是通过非参数因子Kruskal-Wallis秩和检验来实现的。<br>
+                        LEfSe2.0在线工具在1.0工具基础上，增加了LDA判别分析结果文件（仅含差异显著）。增加差异特征图，以及所有结果图的重绘功能。<br>
+                    </p>
                     <br>
-                    <h5 style="margin-bottom: 2px">更详细使用说明编写中...敬请期待！</h5>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>2.操作方法</strong></span><br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/lf21.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;padding-left: 44%">操作界面</p>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">lefse分析需要输入的文件包含OTU丰度表和分组文件，OTU丰度表支持biom格式和txt格式文件，分组文件只能是tab键分隔的txt文件。</p>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>2.1.上传文件</strong></span><br>
+                        BIOM格式是微生物组领域最常用的结果保存格式，优点是可将OTU或Feature表、样本属性、物种信息等多个表保存于同一个文件中，且格式统一，体积更小巧，目前被微生物组领域几乎所有主流软件所支持。此处可以直接使用
+                        <span style="font-weight:700;"><strong>凌恩生物扩增子结题报告</strong></span>
+                        中biom格式的OTU丰度表，位于结果文件夹的
+                        <span style="font-weight:700;"><strong>01.OTU_Taxa/normalize/otu_taxa_table.biom</strong></span>
+                        ，示例文件如下：
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/lf22.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        也可以使用<span style="font-weight:700;"><strong>凌恩生物扩增子结题报告</strong></span>
+                        中excel格式的OTU丰度表，位于结果文件夹的
+                        <span style="font-weight:700;"><strong>01.OTU_Taxa/normalize/otu_taxa_table.xls</strong></span>
+                        ，在使用前需要用excel打开，首行增加“# Constructed from biom file”，并另存为制表符分隔的txt文件，示例文件如下：<br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/lf23.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <br>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>2.2.分组文件</strong></span><br>
+                        分组示例文件如下，第一列为样本名，第二列为分组名<br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/lf24.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <br>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>2.3.选择参数</strong></span><br>
+                        (1) 类间因子Kruskal-Wallis秩检验的Alpha值：默认为0.5<br>
+                        (2) 子类间配对Wilcoxon秩检验的Alpha值：默认为0.5<br>
+                        (3) 差异特征LDA对数值的阈值：默认为2<br>
+                        (4) 多组分类分析的分析策略：一对一或一对多（一对一约束更严格，一对多运行时间更长）<br>
+                        (5) 是否仅在子类名相同的情况下，进行子类间的成对比较：yes或no<br>
+                        选择完成后，点击“提交”按键开始分析<br>
+                    </p>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>2.4.查看任务</strong></span><br>
+                        提交任务后，点击界面右侧的“历史任务”模块，或者点击界面“我的任务”，都可以查看任务编号、软件名称和状态等信息，点击任务编号，即可查看分析结果。
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/lf25.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        在任务详情界面，展示的是任务参数、结果文件列表和在线调整图片3个区域，提供结果文件下载和图片调整功能。
+                        <br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/lf26.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <br>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>3.示例图片</strong></span><br>
+                        云平台提供进化分支图、LDA分析柱图和差异特征图，都可以根据需求在线调整。<br>
+                    </p>
+                    <img src="/assets/images/softpic/instruction/lf27.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;padding-left: 44%">进化分支图</p>
+                    <br>
+                    <img src="/assets/images/softpic/instruction/lf28.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;padding-left: 44%">LDA分析柱图</p>
+                    <br>
+                    <img src="/assets/images/softpic/instruction/lf29.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;padding-left: 44%">差异特征图</p>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>4.结果文件</strong></span><br>
+                        结果文件包括LDA分析结果、含差异显著的LDA分析结果、进化分支图、LDA分析柱图和差异特征图，图片均为pdf格式。<br>
+                        <span style="font-weight:700;"><strong>LDA分析结果</strong></span>
+                        ：第一列为物种信息，即每种微生物类群名称；第二列为每种微生物类群在各分组类别中丰度平均值中最大值的log10，如果平均丰度小于10 按照10来计算。（不过这不是原始表格中的丰度，而是标准化后的丰度，LEfSe自己有套标准化方法）；第三列为差异物种富集的组名称；第四列为LDA 值，用以评估其对观测到的组间差异的效应大小，该值越高代表该微生物类群越重要；第五列为Kruskal-Wallis秩和检验的 P 值，若显著，则将这些微生物作为解释类别之间差异的biomaker来看待；若不显著，则该列值为“-”。
+                    </p>
+                    <img src="/assets/images/softpic/instruction/lf210.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <br>
+                    <br>
+                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
+                        <span style="font-weight:700;"><strong>LDA判别分析结果（仅含差异显著）</strong></span>
+                        ：第一列为物种信息，即每种微生物类群名称；第二列为每种微生物类群在各分组类别中丰度平均值中最大值的log10，如果平均丰度小于10 按照10来计算。（不过这不是原始表格中的丰度，而是标准化后的丰度，LEfSe自己有套标准化方法）；第三列为差异物种富集的组名称；第四列为LDA 值，用以评估其对观测到的组间差异的效应大小，该值越高代表该微生物类群越重要；第五列为Kruskal-Wallis秩和检验的 P 值
+                    </p>
+                    <img src="/assets/images/softpic/instruction/lf211.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
+                    <br>
                 </div>
                 <div class="tab-pane fade" id="example">
                     <h5 style="margin-bottom: 2px">视频录制中...敬请期待！</h5>

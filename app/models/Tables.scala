@@ -30,7 +30,7 @@ trait Tables {
     AkRow.tupled((<<[String], <<[String]))
   }
   /** Table description of table ak. Objects of this class serve as prototypes for rows in queries. */
-  class Ak(_tableTag: Tag) extends profile.api.Table[AkRow](_tableTag, Some("cloudbak"), "ak") {
+  class Ak(_tableTag: Tag) extends profile.api.Table[AkRow](_tableTag, Some("cloudplatform"), "ak") {
     def * = (accesskeyid, accesskeysecret) <> (AkRow.tupled, AkRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
     def ? = ((Rep.Some(accesskeyid), Rep.Some(accesskeysecret))).shaped.<>({r=>import r._; _1.map(_=> AkRow.tupled((_1.get, _2.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
@@ -62,7 +62,7 @@ trait Tables {
     DutysRow.tupled((<<[Int], <<[String], <<[Int], <<[String], <<[String], <<[String], <<[String], <<[String], <<[String], <<[String], <<[String]))
   }
   /** Table description of table dutys. Objects of this class serve as prototypes for rows in queries. */
-  class Dutys(_tableTag: Tag) extends profile.api.Table[DutysRow](_tableTag, Some("cloudbak"), "dutys") {
+  class Dutys(_tableTag: Tag) extends profile.api.Table[DutysRow](_tableTag, Some("cloudplatform"), "dutys") {
     def * = (id, taskname, uid, sabbrename, sname, subtime, finitime, status, input, param, elements) <> (DutysRow.tupled, DutysRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
     def ? = ((Rep.Some(id), Rep.Some(taskname), Rep.Some(uid), Rep.Some(sabbrename), Rep.Some(sname), Rep.Some(subtime), Rep.Some(finitime), Rep.Some(status), Rep.Some(input), Rep.Some(param), Rep.Some(elements))).shaped.<>({r=>import r._; _1.map(_=> DutysRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get, _8.get, _9.get, _10.get, _11.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
@@ -108,7 +108,7 @@ trait Tables {
     FeedbackRow.tupled((<<[Int], <<[Int], <<[String], <<[String], <<[String], <<[Int], <<[String]))
   }
   /** Table description of table feedback. Objects of this class serve as prototypes for rows in queries. */
-  class Feedback(_tableTag: Tag) extends profile.api.Table[FeedbackRow](_tableTag, Some("cloudbak"), "feedback") {
+  class Feedback(_tableTag: Tag) extends profile.api.Table[FeedbackRow](_tableTag, Some("cloudplatform"), "feedback") {
     def * = (fid, uid, subtime, title, content, status, process) <> (FeedbackRow.tupled, FeedbackRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
     def ? = ((Rep.Some(fid), Rep.Some(uid), Rep.Some(subtime), Rep.Some(title), Rep.Some(content), Rep.Some(status), Rep.Some(process))).shaped.<>({r=>import r._; _1.map(_=> FeedbackRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
@@ -139,7 +139,7 @@ trait Tables {
    *  @param width Database column width SqlType(TEXT)
    *  @param top Database column top SqlType(TEXT)
    *  @param left Database column left SqlType(TEXT)
-   *  @param content Database column content SqlType(LONGTEXT), Length(2147483647,true) */
+   *  @param content Database column content SqlType(TEXT) */
   case class NoticeRow(id: Int, title: String, pubtime: String, failtime: String, width: String, top: String, left: String, content: String)
   /** GetResult implicit for fetching NoticeRow objects using plain SQL queries */
   implicit def GetResultNoticeRow(implicit e0: GR[Int], e1: GR[String]): GR[NoticeRow] = GR{
@@ -147,7 +147,7 @@ trait Tables {
     NoticeRow.tupled((<<[Int], <<[String], <<[String], <<[String], <<[String], <<[String], <<[String], <<[String]))
   }
   /** Table description of table notice. Objects of this class serve as prototypes for rows in queries. */
-  class Notice(_tableTag: Tag) extends profile.api.Table[NoticeRow](_tableTag, Some("cloudbak"), "notice") {
+  class Notice(_tableTag: Tag) extends profile.api.Table[NoticeRow](_tableTag, Some("cloudplatform"), "notice") {
     def * = (id, title, pubtime, failtime, width, top, left, content) <> (NoticeRow.tupled, NoticeRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
     def ? = ((Rep.Some(id), Rep.Some(title), Rep.Some(pubtime), Rep.Some(failtime), Rep.Some(width), Rep.Some(top), Rep.Some(left), Rep.Some(content))).shaped.<>({r=>import r._; _1.map(_=> NoticeRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get, _8.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
@@ -166,8 +166,8 @@ trait Tables {
     val top: Rep[String] = column[String]("top")
     /** Database column left SqlType(TEXT) */
     val left: Rep[String] = column[String]("left")
-    /** Database column content SqlType(LONGTEXT), Length(2147483647,true) */
-    val content: Rep[String] = column[String]("content", O.Length(2147483647,varying=true))
+    /** Database column content SqlType(TEXT) */
+    val content: Rep[String] = column[String]("content")
   }
   /** Collection-like TableQuery object for table Notice */
   lazy val Notice = new TableQuery(tag => new Notice(tag))
@@ -182,7 +182,7 @@ trait Tables {
     RunningRow.tupled((<<[Int], <<[String]))
   }
   /** Table description of table running. Objects of this class serve as prototypes for rows in queries. */
-  class Running(_tableTag: Tag) extends profile.api.Table[RunningRow](_tableTag, Some("cloudbak"), "running") {
+  class Running(_tableTag: Tag) extends profile.api.Table[RunningRow](_tableTag, Some("cloudplatform"), "running") {
     def * = (id, content) <> (RunningRow.tupled, RunningRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
     def ? = ((Rep.Some(id), Rep.Some(content))).shaped.<>({r=>import r._; _1.map(_=> RunningRow.tupled((_1.get, _2.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
@@ -212,7 +212,7 @@ trait Tables {
     SoftRow.tupled((<<[Int], <<[String], <<[String], <<[String], <<[String], <<[String], <<[Int], <<[Int], <<[Int]))
   }
   /** Table description of table soft. Objects of this class serve as prototypes for rows in queries. */
-  class Soft(_tableTag: Tag) extends profile.api.Table[SoftRow](_tableTag, Some("cloudbak"), "soft") {
+  class Soft(_tableTag: Tag) extends profile.api.Table[SoftRow](_tableTag, Some("cloudplatform"), "soft") {
     def * = (id, types, abbrename, sname, descreption, pic, likefreq, money, status) <> (SoftRow.tupled, SoftRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
     def ? = ((Rep.Some(id), Rep.Some(types), Rep.Some(abbrename), Rep.Some(sname), Rep.Some(descreption), Rep.Some(pic), Rep.Some(likefreq), Rep.Some(money), Rep.Some(status))).shaped.<>({r=>import r._; _1.map(_=> SoftRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get, _8.get, _9.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
@@ -257,7 +257,7 @@ trait Tables {
     UsersRow.tupled((<<[Int], <<[String], <<[String], <<[String], <<[String], <<[String], <<[String], <<[String], <<[String], <<[String]))
   }
   /** Table description of table users. Objects of this class serve as prototypes for rows in queries. */
-  class Users(_tableTag: Tag) extends profile.api.Table[UsersRow](_tableTag, Some("cloudbak"), "users") {
+  class Users(_tableTag: Tag) extends profile.api.Table[UsersRow](_tableTag, Some("cloudplatform"), "users") {
     def * = (id, phone, email, pwd, name, company, authority, like, ip, readnote) <> (UsersRow.tupled, UsersRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
     def ? = ((Rep.Some(id), Rep.Some(phone), Rep.Some(email), Rep.Some(pwd), Rep.Some(name), Rep.Some(company), Rep.Some(authority), Rep.Some(like), Rep.Some(ip), Rep.Some(readnote))).shaped.<>({r=>import r._; _1.map(_=> UsersRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get, _8.get, _9.get, _10.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))

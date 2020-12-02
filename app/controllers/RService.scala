@@ -2201,7 +2201,7 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
       "claclfs"->"8", "cladpi"->"300").toString(),
       "fea"->Json.obj("feaf"->"diff", "feafname"->"", "feawidth"->"13", "feaheight"->"6",
       "featop"->"-1", "feabot"->"0", "featfs"->"14", "feacfs"->"10", "feasmean"->"y", "feasmedian"->"y",
-      "feafs"->"10", "feadpi"->"300").toString()).toString()
+      "feafs"->"10", "feadpi"->"300", "feaca"->"0").toString()).toString()
 
     val y = if(data.y == "1") "一对一（限制较多）" else "一对多（限制较少）"
     val e = if(data.e == "0") "no" else "yes"
@@ -2417,7 +2417,8 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
 
   case class ReLefFeaData(feaf:String, feafname:String, feawidth:String, feaheight:String,
                           featop:String, feabot:String, featfs:String, feacfs:String,
-                          feasmean:String, feasmedian:String, feafs:String, feadpi:String)
+                          feasmean:String, feasmedian:String, feafs:String, feadpi:String,
+                          feaca:String)
 
   val ReLefFeaForm: Form[ReLefFeaData] =Form(
     mapping (
@@ -2432,7 +2433,8 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
       "feasmean"->text,
       "feasmedian"->text,
       "feafs"->text,
-      "feadpi"->text
+      "feadpi"->text,
+      "feaca"->text
     )(ReLefFeaData.apply)(ReLefFeaData.unapply)
   )
 
@@ -2447,7 +2449,7 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
       "fea"->Json.obj("feaf"->data.feaf, "feafname"->data.feafname, "feawidth"->data.feawidth,
       "feaheight"->data.feaheight, "featop"->data.featop, "feabot"->data.feabot, "featfs"->data.featfs,
       "feacfs"->data.feacfs, "feasmean"->data.feasmean, "feasmedian"->data.feasmedian,
-      "feafs"->data.feafs, "feadpi"->data.feadpi).toString()).toString()
+      "feafs"->data.feafs, "feadpi"->data.feadpi, "feaca"->data.feaca).toString()).toString()
 
     Await.result(dutydao.updateElements(id,taskname,elements),Duration.Inf)
 
@@ -2460,7 +2462,7 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
       data.feawidth + " --height " + data.feaheight + " --top " + data.featop + " --bot " +
       data.feabot + " --title_font_size " + data.featfs + " --class_font_size " + data.feacfs +
       " --subcl_mean " + data.feasmean + " --subcl_median " + data.feasmedian + " --font_size " +
-      data.feafs + " --dpi " + data.feadpi
+      data.feafs + " --dpi " + data.feadpi + " --class_angle " + data.feaca
 
     println(command)
 
@@ -4845,11 +4847,11 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
 
     FileUtils.writeStringToFile(new File(s"$dutyDir/temp/run.sh"),command)
     val execCommand = new ExecCommand
-//    execCommand.exect(s"sh $dutyDir/temp/run.sh",dutyDir+"/temp")
+    execCommand.exect(s"sh $dutyDir/temp/run.sh",dutyDir+"/temp")
 
     println(command)
 
-    execCommand.exect(command,dutyDir+"/temp")
+//    execCommand.exect(command,dutyDir+"/temp")
 
     if (execCommand.isSuccess) {
       Utils.pdf2Png(dutyDir+"/out/ternary.pdf",dutyDir+"/out/ternary.png") //替换图片
@@ -4863,6 +4865,173 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
   }
 
 
+
+  //Circos Phylum
+  case class CCSData(taskname:String, L:String)
+
+  val CCSForm: Form[CCSData] =Form(
+    mapping (
+      "taskname"->text,
+      "L"->text
+    )(CCSData.apply)(CCSData.unapply)
+  )
+
+  def doCCS=Action(parse.multipartFormData) { implicit request =>
+    val data = CCSForm.bindFromRequest.get
+    val id=request.session.get("userId").get
+    val dutyDir=creatUserDir(id,data.taskname)
+    var input=""
+
+    val tableFile=new File(dutyDir,"table.txt")
+    val otuFile=new File(dutyDir,"otu_taxa_table.biom")
+    val file1 = request.body.file("table1").get
+    input=input+file1.filename+"/"
+    file1.ref.copyTo(tableFile)
+    tableFile.setExecutable(true,false)
+    tableFile.setReadable(true,false)
+    tableFile.setWritable(true,false)
+
+    val groupFile=new File(dutyDir,"map.txt")
+    val file2 = request.body.file("group").get
+    input+=file2.filename
+    file2.ref.moveTo(groupFile)
+    groupFile.setExecutable(true,false)
+    groupFile.setReadable(true,false)
+    groupFile.setWritable(true,false)
+
+    val elements = Json.obj("L"->data.L, "gs"->"3", "otmin"->"0", "otmax"->"", "df"->"TRUE",
+        "ds"->"TRUE", "dl"->"TRUE", "flpstyle"->"auto", "vjust"->"10", "vjustunit"->"mm",
+        "th1"->"0.05", "th2"->"0.05", "th3"->"0.03", "width"->"10", "height"->"12",
+        "spos"->"90", "flpmaxlen"->"60", "flpfont"->"0.4", "slpfont"->"0.2",
+        "tlpfont"->"0.4").toString()
+
+    val param = "选择作图的OTU层级：" + data.L
+
+    val start=dutyController.insertDuty(data.taskname,id,"CCS","Circos物种关系图",input,param,elements)
+
+    Future{
+      val command0 = if(file1.filename.contains("biom")) {
+        file1.ref.copyTo(otuFile)
+        ""
+      } else "biom convert -i " + tableFile.getAbsolutePath + " -o " + otuFile.getAbsolutePath + " --table-type=\"OTU table\" --to-json --process-obs-metadata taxonomy && \\ \n"
+
+      val commandpack1 = command0 + "dos2unix " + groupFile.getAbsolutePath + " && \\ \n " +
+        "chmod -R 777 " + otuFile.getAbsolutePath + " && \\ \n " +
+        "summarize_taxa.py -i " + otuFile.getAbsolutePath + " -o " + dutyDir + "/out -L " + data.L + " -a" + " && \\ \n " +
+        Utils.path + "R/circos_phylum/sum_tax.pl -i " + dutyDir + "/out/otu_taxa_table_L" + data.L + ".txt -o " + dutyDir + "/out/phylum.xls && \\ \n " +
+        "Rscript " + Utils.path + "R/circos_phylum/circos_phylum.R -i " + dutyDir + "/out/phylum.xls" + " -g " +
+        groupFile.getAbsolutePath + " -o " + dutyDir + "/out"
+
+      println(commandpack1)
+
+      FileUtils.writeStringToFile(new File(s"$dutyDir/temp/run.sh"),commandpack1)
+      val execCommand = new ExecCommand
+      execCommand.exect(s"sh $dutyDir/temp/run.sh",dutyDir+"/temp")
+
+      if (execCommand.isSuccess) {
+        val finish=dutyController.updateFini(id,data.taskname)
+        FileUtils.writeStringToFile(new File(dutyDir,"log.txt"),"Start Time:"+start+"\n\nFinish Time:"+finish+"\n\n运行成功！")
+        creatZip(dutyDir)
+      } else {
+        dutydao.updateFailed(id,data.taskname)
+        FileUtils.writeStringToFile(new File(dutyDir,"log.txt"),"Start Time:"+start+"\n\n错误信息：\n"+execCommand.getErrStr+"\n\n运行失败！")
+      }
+    }
+    Ok(Json.obj("valid" -> "运行中！"))
+  }
+
+  def readCCS(taskname:String): Action[AnyContent] =Action{ implicit request=>
+    val id=request.session.get("userId").get
+    val path=Utils.path+"/users/"+id+"/"+taskname
+    val elements=jsonToMap(Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf).head.elements)
+
+    val groupnum = FileUtils.readLines(new File(path + "/group.txt")).asScala.map{_.replaceAll("\"","").split("\t")(1)}.drop(1).distinct.length
+
+    val (names,colors) = FileUtils.readLines(new File(path + "/out/colors.xls")).asScala.map{x=>
+      val temp = x.replaceAll("\"","").split("\t")
+      (temp.head,temp.last)
+    }.unzip
+
+    val otuid = names.take(names.length - groupnum)
+    val otucolors = colors.take(names.length - groupnum)
+    val group = names.takeRight(groupnum)
+    val groupcolors = colors.takeRight(groupnum)
+
+    Ok(Json.obj("elements"->elements, "gapnum"->names.length,"otuid"->otuid,"otucolor"->otucolors,"group"->group,"groupcolor"->groupcolors))
+  }
+
+  case class ReCCSData(taskname:String, L:String)
+
+  val ReCCSForm: Form[ReCCSData] =Form(
+    mapping (
+      "taskname"->text,
+      "L"->text
+    )(ReCCSData.apply)(ReCCSData.unapply)
+  )
+
+  def redrawCCS=Action(parse.multipartFormData) { implicit request =>
+    val data = ReCCSForm.bindFromRequest.get
+    val id=request.session.get("userId").get
+    val dutyDir=creatUserDir(id,data.taskname)
+    var input=""
+
+    val tableFile=new File(dutyDir,"table.txt")
+    val otuFile=new File(dutyDir,"otu_taxa_table.biom")
+    val file1 = request.body.file("table1").get
+    input=input+file1.filename+"/"
+    file1.ref.copyTo(tableFile)
+    tableFile.setExecutable(true,false)
+    tableFile.setReadable(true,false)
+    tableFile.setWritable(true,false)
+
+    val groupFile=new File(dutyDir,"map.txt")
+    val file2 = request.body.file("group").get
+    input+=file2.filename
+    file2.ref.moveTo(groupFile)
+    groupFile.setExecutable(true,false)
+    groupFile.setReadable(true,false)
+    groupFile.setWritable(true,false)
+
+    val elements = Json.obj("L"->data.L, "gs"->"3", "otmin"->"0", "otmax"->"", "df"->"TRUE",
+      "ds"->"TRUE", "dl"->"TRUE", "flpstyle"->"auto", "vjust"->"10", "vjustunit"->"mm",
+      "th1"->"0.05", "th2"->"0.05", "th3"->"0.03", "width"->"10", "height"->"12",
+      "spos"->"90", "flpmaxlen"->"60", "flpfont"->"0.4", "slpfont"->"0.2",
+      "tlpfont"->"0.4").toString()
+
+    val param = "选择作图的OTU层级：" + data.L
+
+    val start=dutyController.insertDuty(data.taskname,id,"CCS","Circos物种关系图",input,param,elements)
+
+    Future{
+      val command0 = if(file1.filename.contains("biom")) {
+        file1.ref.copyTo(otuFile)
+        ""
+      } else "biom convert -i " + tableFile.getAbsolutePath + " -o " + otuFile.getAbsolutePath + " --table-type=\"OTU table\" --to-json --process-obs-metadata taxonomy && \\ \n"
+
+      val commandpack1 = command0 + "dos2unix " + groupFile.getAbsolutePath + " && \\ \n " +
+        "chmod -R 777 " + otuFile.getAbsolutePath + " && \\ \n " +
+        "summarize_taxa.py -i " + otuFile.getAbsolutePath + " -o " + dutyDir + "/out -L " + data.L + " -a" + " && \\ \n " +
+        Utils.path + "R/circos_phylum/sum_tax.pl -i " + dutyDir + "/out/otu_taxa_table_L" + data.L + ".txt -o " + dutyDir + "/out/phylum.xls && \\ \n " +
+        "Rscript " + Utils.path + "R/circos_phylum/circos_phylum.R -i " + dutyDir + "/out/phylum.xls" + " -g " +
+        groupFile.getAbsolutePath + " -o " + dutyDir + "/out"
+
+      println(commandpack1)
+
+      FileUtils.writeStringToFile(new File(s"$dutyDir/temp/run.sh"),commandpack1)
+      val execCommand = new ExecCommand
+      execCommand.exect(s"sh $dutyDir/temp/run.sh",dutyDir+"/temp")
+
+      if (execCommand.isSuccess) {
+        val finish=dutyController.updateFini(id,data.taskname)
+        FileUtils.writeStringToFile(new File(dutyDir,"log.txt"),"Start Time:"+start+"\n\nFinish Time:"+finish+"\n\n运行成功！")
+        creatZip(dutyDir)
+      } else {
+        dutydao.updateFailed(id,data.taskname)
+        FileUtils.writeStringToFile(new File(dutyDir,"log.txt"),"Start Time:"+start+"\n\n错误信息：\n"+execCommand.getErrStr+"\n\n运行失败！")
+      }
+    }
+    Ok(Json.obj("valid" -> "运行中！"))
+  }
 
 
   val userDutyDir: String =Utils.path+"users/"

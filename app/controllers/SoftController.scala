@@ -164,6 +164,10 @@ class SoftController @Inject()(cc: ControllerComponents,softdao:softDao,userdao:
     Ok(views.html.soft.intraclassCorrelation(abbre))
   }
 
+  def circosphylum(abbre:String)=Action{implicit request=>
+    Ok(views.html.soft.circosPhylum(abbre))
+  }
+
 
   def scaplot(abbre:String)=Action{implicit request=>
     Ok(views.html.soft.scatterplots(abbre))
@@ -197,7 +201,7 @@ class SoftController @Inject()(cc: ControllerComponents,softdao:softDao,userdao:
           "icon icon-star-empty"
         else {
           val userlike=Await.result(userdao.getLike(request.session.get("userId").get),Duration.Inf)
-          if(userlike.indexOf(Integer.toString(x.id))>=0) "icon icon-star yellow-icon"
+          if(userlike.split("/").contains(Integer.toString(x.id))) "icon icon-star yellow-icon"
           else "icon icon-star-empty"
         }
       val like= s"<i class='"+likeclass+"' onmouseover='mover($(this))' onmouseout='mout($(this))' onclick='collect($(this),"+x.id+")'></i>"
@@ -218,7 +222,8 @@ class SoftController @Inject()(cc: ControllerComponents,softdao:softDao,userdao:
           "icon icon-star-empty"
         else {
           val userlike=Await.result(userdao.getLike(request.session.get("userId").get),Duration.Inf)
-          if(userlike.indexOf(Integer.toString(x.id))>=0) "icon icon-star yellow-icon"
+
+          if(userlike.split("/").contains(Integer.toString(x.id))) "icon icon-star yellow-icon"
           else "icon icon-star-empty"
         }
       val like= s"<i class='"+likeclass+"' onmouseover='mover($(this))' onmouseout='mout($(this))' onclick='collect($(this),"+x.id+")'></i>"
@@ -241,7 +246,7 @@ class SoftController @Inject()(cc: ControllerComponents,softdao:softDao,userdao:
           "icon icon-star-empty"
         else {
           val userlike=Await.result(userdao.getLike(request.session.get("userId").get),Duration.Inf)
-          if(userlike.indexOf(Integer.toString(x.id))>=0) "icon icon-star yellow-icon"
+          if(userlike.split("/").contains(Integer.toString(x.id))) "icon icon-star yellow-icon"
           else "icon icon-star-empty"
         }
       val like= s"<i class='"+likeclass+"' onmouseover='mover($(this))' onmouseout='mout($(this))' onclick='collect($(this),"+x.id+")'></i>"
@@ -265,7 +270,7 @@ class SoftController @Inject()(cc: ControllerComponents,softdao:softDao,userdao:
           "icon icon-star-empty"
         else {
           val userlike=Await.result(userdao.getLike(request.session.get("userId").get),Duration.Inf)
-          if(userlike.indexOf(Integer.toString(x.id))>=0) "icon icon-star yellow-icon"
+          if(userlike.split("/").contains(Integer.toString(x.id))) "icon icon-star yellow-icon"
           else "icon icon-star-empty"
         }
       val like= s"<i class='"+likeclass+"' onmouseover='mover($(this))' onmouseout='mout($(this))' onclick='collect($(this),"+x.id+")'></i>"
@@ -290,7 +295,7 @@ class SoftController @Inject()(cc: ControllerComponents,softdao:softDao,userdao:
           "icon icon-star-empty"
         else {
           val userlike=Await.result(userdao.getLike(request.session.get("userId").get),Duration.Inf)
-          if(userlike.indexOf(Integer.toString(x.id))>=0) "icon icon-star yellow-icon"
+          if(userlike.split("/").contains(Integer.toString(x.id))) "icon icon-star yellow-icon"
           else "icon icon-star-empty"
         }
       val like= s"<i class='"+likeclass+"' onmouseover='mover($(this))' onmouseout='mout($(this))' onclick='collect($(this),"+x.id+")'></i>"
@@ -311,7 +316,7 @@ class SoftController @Inject()(cc: ControllerComponents,softdao:softDao,userdao:
           "icon icon-star-empty"
         else {
           val userlike=Await.result(userdao.getLike(request.session.get("userId").get),Duration.Inf)
-          if(userlike.indexOf(Integer.toString(x.id))>=0) "icon icon-star yellow-icon"
+          if(userlike.split("/").contains(Integer.toString(x.id))) "icon icon-star yellow-icon"
           else "icon icon-star-empty"
         }
       val like= s"<i class='"+likeclass+"' onmouseover='mover($(this))' onmouseout='mout($(this))' onclick='collect($(this),"+x.id+")'></i>"
@@ -334,7 +339,7 @@ class SoftController @Inject()(cc: ControllerComponents,softdao:softDao,userdao:
           "icon icon-star-empty"
         else {
           val userlike=Await.result(userdao.getLike(request.session.get("userId").get),Duration.Inf)
-          if(userlike.indexOf(Integer.toString(x.id))>=0) "icon icon-star yellow-icon"
+          if(userlike.split("/").contains(Integer.toString(x.id))) "icon icon-star yellow-icon"
           else "icon icon-star-empty"
         }
       val like= s"<i class='"+likeclass+"' onmouseover='mover($(this))' onmouseout='mout($(this))' onclick='collect($(this),"+x.id+")'></i>"

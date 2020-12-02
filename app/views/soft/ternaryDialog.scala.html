@@ -17,7 +17,7 @@
         <div class="mysoft-content-left whitebox" style="width: 771px;overflow-y: auto">
             <form id="TRY" method="GET" novalidate="novalidate" enctype="multipart/form-data" class="well form-inline" style="box-sizing: border-box!important;">
                 <div class="softpic mws-ic @abbre"></div>
-                <h3 class="tools-title">三原图</h3>
+                <h3 class="tools-title">三元图</h3>
                 <div class="form-group">
                     <h2></h2>
                 </div><br><br>
@@ -51,7 +51,7 @@
                             <label for="exampleInputName2"><em>2：</em>三元分组文件：</label>
                         </div>
                         <div class="form-group">
-                            <input type="file" class="form-control file" id="table2" name="table2" onchange="checkGroup()">
+                            <input type="file" class="form-control file" id="table2" name="table2" onchange="checkGroupfile()">
                         </div>
                     </div>
                     <div class="form-group-extra">
@@ -66,7 +66,7 @@
                             <label for="exampleInputName2"><em>3：</em>富集标注/物种关注文件：</label>
                         </div>
                         <div class="form-group">
-                            <input type="file" class="form-control file" id="table3" name="table3" onchange="checkGroup2()">
+                            <input type="file" class="form-control file" id="table3" name="table3" onchange="checkEnrich()">
                         </div>
                     </div>
                     <div class="form-group-extra">
@@ -149,14 +149,21 @@
                 // loadVideo("//13125180.s21v.faiusr.com/58/ABUIABA6GAAgts3S_QUo_uGeyAc.mp4","/assets/images/softpic/video/heatmap_video.png")
             });
 
+            var sample = [], otuid = [];
+            var flagtable = true;
+
             function runTRY(formId) {
                 var form = $("#TRY");
                 var fv = form.data("formValidation");
                 fv.validate();
                 if (fv.isValid()) {
                     flagtable=true;
+                    sample = [];
+                    otuid = [];
                     var check=[];
                     check.push(checkTable());
+                    check.push(checkGroupfile());
+                    check.push(checkEnrich());
                     Promise.all(check).then((r)=>{
                         if(flagtable && checktaskname()) {
                             var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
@@ -193,8 +200,6 @@
                 }
             }
 
-            var flagtable=true;
-
             function checkTable() {
                 return new Promise((resolve, reject) => {
                     var reader=new FileReader();
@@ -202,21 +207,172 @@
                     reader.onload=function () {
                         let text=reader.result;
                         let line=text.trim().split('\n');
-                        var sample=line[0].trim().split('\t');
+                        sample=line[0].trim().split('\t');
                         var length=sample.length;
                         for(let i in line){
                             var r=parseInt(i)+1;
                             let row=line[i].trim().split('\t');
+                            otuid.push(row[0]);
                             var name=[];
                             if(row.length!=length){
                                 flagtable=flagtable&&false;
                                 swal({
-                                    title: "文件错误",
-                                    text: "文件第"+r+"行数据数量不一致",
+                                    title: "OTU丰度表错误",
+                                    text: "OTU丰度表第"+r+"行数据数量不一致",
                                     type: "warning",
                                     confirmButtonText: "确认"
                                 });
                                 resolve(false);
+                            }
+                            for(let j in row){
+                                var c=parseInt(j)+1;
+                                if(i!=0){
+                                    if(j!=0 && !checkRate(row[j].trim())){
+                                        flagtable=flagtable&&false;
+                                        swal({
+                                            title: "OTU丰度表错误",
+                                            text: "OTU丰度表第"+r+"行,第"+c+"列数据不是数字",
+                                            type: "warning",
+                                            confirmButtonText: "确认"
+                                        });
+                                        resolve(false);
+                                    }
+                                }else {
+                                    if(name.indexOf(row[j])>=0){
+                                        flagtable=flagtable&&false;
+                                        swal({
+                                            title: "OTU丰度表错误",
+                                            text: "OTU丰度表第1行,第"+c+"列样品名重复存在，请核实！",
+                                            type: "warning",
+                                            confirmButtonText: "确认"
+                                        });
+                                        resolve(false);
+                                    }else name.push(row[j]);
+                                }
+                            }
+                        }
+                        flagtable=flagtable&&true;
+                        resolve(true);
+                    };
+                });
+            }
+
+            function checkGroupfile() {
+                return new Promise((resolve, reject) => {
+                    if($("#table1").val()==""){
+                        flagtable=flagtable&&false;
+                        $("#CCA").formValidation("revalidateField", "table1");
+                        $("#group").find(".fileinput-remove").click();
+                        swal({
+                            title: "请先上传OUT丰度表",
+                            text: "请先上传OUT丰度表！",
+                            type: "warning",
+                            confirmButtonText: "确认"
+                        });
+                        resolve(false);
+                    }
+                    var reader=new FileReader();
+                    reader.readAsText(document.getElementById('table2').files[0],"UTF-8");
+                    reader.onload=function () {
+                        let text=reader.result;
+                        let line=text.trim().split('\n');
+                        var name=[];
+                        for(let i in line) {
+                            if(i!=0){
+                                let row=line[i].trim().split('\t');
+                                var r=parseInt(i)+1;
+                                if(row.length!=2){
+                                    flagtable=flagtable&&false;
+                                    swal({
+                                        title: "分组文件格式错误",
+                                        text: "分组文件第"+r+"行格式错误，必须为两列！",
+                                        type: "warning",
+                                        confirmButtonText: "确认"
+                                    });
+                                    resolve(false);
+                                }
+                                if(sample.indexOf(row[0])<0){
+                                    flagtable=flagtable&&false;
+                                    swal({
+                                        title: "分组文件格式错误",
+                                        text: "分组文件第"+r+"行样品名不存在，请核对OTU文件！",
+                                        type: "warning",
+                                        confirmButtonText: "确认"
+                                    });
+                                    resolve(false);
+                                }
+                                if(name.indexOf(row[0])>=0){
+                                    flagtable=flagtable&&false;
+                                    swal({
+                                        title: "分组文件错误",
+                                        text: "分组文件第"+r+"行样品名重复存在，请核实！",
+                                        type: "warning",
+                                        confirmButtonText: "确认"
+                                    });
+                                    resolve(false);
+                                }else name.push(row[0]);
+                            }
+                        }
+                        flagtable=flagtable&&true;
+                        resolve(true);
+                    };
+                });
+            }
+
+            function checkEnrich() {
+                return new Promise((resolve, reject) => {
+                    if($("#table1").val()==""){
+                        flagtable=flagtable&&false;
+                        $("#CCA").formValidation("revalidateField", "table1");
+                        $("#group").find(".fileinput-remove").click();
+                        swal({
+                            title: "请先上传OUT丰度表",
+                            text: "请先上传OUT丰度表！",
+                            type: "warning",
+                            confirmButtonText: "确认"
+                        });
+                        resolve(false);
+                    }
+                    var reader=new FileReader();
+                    reader.readAsText(document.getElementById('table3').files[0],"UTF-8");
+                    reader.onload=function () {
+                        let text=reader.result;
+                        let line=text.trim().split('\n');
+                        var name=[];
+                        for(let i in line) {
+                            if(i!=0){
+                                let row=line[i].trim().split('\t');
+                                var r=parseInt(i)+1;
+                                if(row.length!=2){
+                                    flagtable=flagtable&&false;
+                                    swal({
+                                        title: "分组文件格式错误",
+                                        text: "分组文件第"+r+"行格式错误，必须为两列！",
+                                        type: "warning",
+                                        confirmButtonText: "确认"
+                                    });
+                                    resolve(false);
+                                }
+                                if(otuid.indexOf(row[0])<0){
+                                    flagtable=flagtable&&false;
+                                    swal({
+                                        title: "分组文件格式错误",
+                                        text: "分组文件第"+r+"行OTUID不存在，请核对OTU文件！",
+                                        type: "warning",
+                                        confirmButtonText: "确认"
+                                    });
+                                    resolve(false);
+                                }
+                                if(name.indexOf(row[0])>=0){
+                                    flagtable=flagtable&&false;
+                                    swal({
+                                        title: "分组文件错误",
+                                        text: "分组文件第"+r+"行OTUID重复存在，请核实！",
+                                        type: "warning",
+                                        confirmButtonText: "确认"
+                                    });
+                                    resolve(false);
+                                }else name.push(row[0]);
                             }
                         }
                         flagtable=flagtable&&true;
@@ -257,7 +413,33 @@
                         table1: {
                             validators: {
                                 notEmpty: {
-                                    message: '必须上传矩阵表格文件!'
+                                    message: '必须上传OTU表格文件!'
+                                },
+                                file: {
+                                    // extension: 'jpeg,jpg,png',
+                                    // type: 'image/jpeg,image/png',
+                                    maxSize: 5*1024*1024,
+                                    message: '文件不得大于5M！'
+                                }
+                            }
+                        },
+                        table2: {
+                            validators: {
+                                notEmpty: {
+                                    message: '必须上传三元分组文件!'
+                                },
+                                file: {
+                                    // extension: 'jpeg,jpg,png',
+                                    // type: 'image/jpeg,image/png',
+                                    maxSize: 5*1024*1024,
+                                    message: '文件不得大于5M！'
+                                }
+                            }
+                        },
+                        table3: {
+                            validators: {
+                                notEmpty: {
+                                    message: '必须上传富集标注/物种关注文件!'
                                 },
                                 file: {
                                     // extension: 'jpeg,jpg,png',

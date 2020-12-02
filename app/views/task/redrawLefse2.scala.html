@@ -513,7 +513,7 @@
                                         下载结果图
                                     </button>
                                     <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 35px, 0px); top: 0px; left: 0px; will-change: transform;width: 150px">
-                                        <a class="dropdown-item" id="downPic2" onclick="downloadpics('lefse_LDA.feature','pdf')">下载 pdf</a>
+                                        <a class="dropdown-item" id="downPic2" onclick="downloadpics('lefse_LDA.features','pdf')">下载 pdf</a>
 @*                                        <a class="dropdown-item" id="downPng2" onclick="downloadpics('lefse_LDA.cladogram','png')">下载 png</a>*@
 @*                                        <a class="dropdown-item" id="downTiff2" onclick="downloadpics('lefse_LDA.cladogram','tiff')">下载 tiff</a>*@
                                     </div>
@@ -580,6 +580,21 @@
                                             <select id="feasmedian" name="feasmedian" style="width: 100%;">
                                                 <option value="y">yes</option>
                                                 <option value="n">no</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="form-group-p use-flex">
+                                        <div class="form-group">
+                                            <label for="format">类名标签旋转角度：</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <select id="feaca" name="feaca" style="width: 100%;">
+                                                <option value="0">0</option>
+                                                <option value="45">45</option>
+                                                <option value="90">90</option>
+                                                <option value="315">135</option>
+                                                <option value="270">270</option>
                                             </select>
                                         </div>
                                     </div>
@@ -696,7 +711,7 @@
     <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/locales/zh.js")" type="text/javascript"></script>
 
     <script>
-            const updatetime="2020-07-29";
+            const updatetime="2020-11-26";
 
             function checkupdate(){
                 $(".update").text(updatetime);

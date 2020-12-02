@@ -54,6 +54,7 @@ GET           /CloudPlatform/SoftPage/MMT                            controllers
 GET           /CloudPlatform/SoftPage/TM                             controllers.SoftController.tree(abbre="TM")
 GET           /CloudPlatform/SoftPage/TRY                            controllers.SoftController.ternary(abbre="TRY")
 GET           /CloudPlatform/SoftPage/ITC                            controllers.SoftController.intraclass(abbre="ITC")
+GET           /CloudPlatform/SoftPage/CCS                            controllers.SoftController.circosphylum(abbre="CCS")
 
 GET           /CloudPlatform/SoftPage/Scaplot                        controllers.SoftController.scaplot(abbre="")
 
@@ -219,6 +220,10 @@ POST          /CloudPlatform/SoftTool/redrawTree                     controllers
 POST          /CloudPlatform/SoftTool/runTernary                     controllers.RService.doTernary
 POST          /CloudPlatform/SoftTool/getTernaryData                 controllers.RService.readTernaryData(taskname:String)
 POST          /CloudPlatform/SoftTool/redrawTernary                  controllers.RService.redrawTernary(taskname:String)
+
+POST          /CloudPlatform/SoftTool/runCCS                         controllers.RService.doCCS
+POST          /CloudPlatform/SoftTool/getCCS                         controllers.RService.readCCS(taskname:String)
+POST          /CloudPlatform/SoftTool/redrawCCS                      controllers.RService.redrawCCS
 
 
 POST          /CloudPlatform/Utils/sendMSG                           controllers.UtilsController.sendMSG(phone:String,where:String)

@@ -16,20 +16,34 @@ object FilesUtils {
 
   def main(args: Array[String]): Unit = {
 
-    val file = FileUtils.readLines(new File("F:\\CloudPlatform\\files\\examples\\VennChart.txt")).asScala
-    val buffer = file.filter(_!="")
-    val file2 = FileUtils.readLines(new File("F:\\CloudPlatform\\files\\examples\\VennChartGroup.txt")).asScala
-    val head = file2.filter(_!="")
+    println("/1/22/13/4/5/6/33".split("/").contains("2"))
 
-    val out=buffer.map{x=>
-      x.split("\t").last
-    }.tail.mkString(":")
+//    val (names,colors) = FileUtils.readLines(new File("F:\\CloudPlatform\\R\\circos_species\\input\\colors.xls")).asScala.map{x=>
+//      val temp = x.replaceAll("\"","").split("\t")
+//      (temp.head,temp.last)
+//    }.unzip
+//
+//
+//    val groupnum = FileUtils.readLines(new File("F:\\CloudPlatform\\R\\circos_species\\input\\group.txt")).asScala.map{_.replaceAll("\"","").split("\t")(1)}.drop(1).distinct.length
+//
+//
+//    println(names.toBuffer.takeRight(groupnum))
+//    println(groupnum)
 
-    println(out)
-
-    (1 to 5).foreach{x=>
-      println(x)
-    }
+//    val file = FileUtils.readLines(new File("F:\\CloudPlatform\\files\\examples\\VennChart.txt")).asScala
+//    val buffer = file.filter(_!="")
+//    val file2 = FileUtils.readLines(new File("F:\\CloudPlatform\\files\\examples\\VennChartGroup.txt")).asScala
+//    val head = file2.filter(_!="")
+//
+//    val out=buffer.map{x=>
+//      x.split("\t").last
+//    }.tail.mkString(":")
+//
+//    println(out)
+//
+//    (1 to 5).foreach{x=>
+//      println(x)
+//    }
 
 
 
