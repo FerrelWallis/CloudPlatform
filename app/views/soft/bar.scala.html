@@ -88,8 +88,43 @@
                     </div>
                 </div>
                 <br>
-                <br>
-
+                <div class="panel panel-default">
+                    <div class="panel-heading" data-toggle="collapse" href="#collapseOne">
+                        <h4 class="panel-title">
+                            <a id="pos1">
+                                <span style="font-size:12px;">选填参数（Optional）：</span>
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label>是否将低丰度结果合并为Other：</label>
+                                </div>
+                                <div class="form-group">
+                                    <select name="m">
+                                        <option value="TRUE">yes</option>
+                                        <option value="FALSE">no</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group" style="position: relative">
+                                    <label style="margin-right: 10px">合并丰度低于</label>
+                                </div>
+                                <div class="form-group right" style="line-height: 39px;">
+                                    <input id="mt" name="mt" type="text" style="width: calc(100% - 100px); float: left;" value="1"/>
+                                    <label style="width: 25px;float: left;margin-left: 5px;">%</label>
+                                    <label style="width: 70px;float: left">的OTU</label>
+                                </div>
+                            </div>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+                <br><br>
                 <input type="button" value="提&nbsp;&nbsp;交" name="submit" class="btn btn-primary" onclick="bar()">
             </form>
         </div>
@@ -207,48 +242,56 @@
                 loadVideo("//13125180.s21v.faiusr.com/58/ABUIABA6GAAg_L6R_wUomKf9nwE.mp4","/assets/images/softpic/video/bar_video.png")
             });
 
+            var lock = true;
+            var sample = [];
+            var flagtable=true;
+
             function bar() {
-                var form = $("#BAR");
-                var fv = form.data("formValidation");
-                fv.validate();
-                if (fv.isValid()) {
-                    flagtable=true;
-                    var check=[];
-                    check.push(checkTable());
-                    check.push(checkGroupfile());
-                    Promise.all(check).then((r)=>{
-                        if(flagtable&&checktaskname()) {
-                            var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
-                            var index = layer.alert(element, {
-                                skin: 'layui-layer-lan',
-                                closeBtn: 0,
-                                title: "提醒",
-                                btn: []
+                if(lock) {
+                    lock = false;
+                    var form = $("#BAR");
+                    var fv = form.data("formValidation");
+                    fv.validate();
+                    if (fv.isValid()) {
+                        flagtable=true;
+                        sample = [];
+                        checkTable().then((r)=>{
+                            checkGroupfile().then((r)=>{
+                                if(flagtable && checktaskname()) {
+                                    var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
+                                    var index = layer.alert(element, {
+                                        skin: 'layui-layer-lan',
+                                        closeBtn: 0,
+                                        title: "提醒",
+                                        btn: []
+                                    });
+                                    setTimeout(function () {
+                                        layer.close(index);
+                                        var form1 = new FormData($("#BAR")[0]);
+                                        $.ajax({
+                                            url: "/CloudPlatform/SoftTool/runBar?isgroup=" + $("#isgroup").prop("checked") ,
+                                            type: "post",
+                                            processData: false,
+                                            contentType: false,
+                                            data: form1,
+                                            success: function (data) {
+                                                removeul();
+                                                loadHistory("@abbre");
+                                                $("#his_tab1").addClass("active");
+                                                $("#out_tab1").removeClass("active");
+                                                $("#ins_tab1").removeClass("active");
+                                                $("#history").addClass("active").addClass("in");
+                                                $("#example").removeClass("active");
+                                                $("#instruction").removeClass("active");
+                                                getTaskName("BAR","BAR");
+                                            }
+                                        });
+                                    }, 2000);
+                                }
                             });
-                            setTimeout(function () {
-                                layer.close(index);
-                                var form1 = new FormData($("#BAR")[0]);
-                                $.ajax({
-                                    url: "/CloudPlatform/SoftTool/runBar?isgroup=" + $("#isgroup").prop("checked"),
-                                    type: "post",
-                                    processData: false,
-                                    contentType: false,
-                                    data: form1,
-                                    success: function (data) {
-                                        removeul();
-                                        loadHistory("@abbre");
-                                        $("#his_tab1").addClass("active");
-                                        $("#out_tab1").removeClass("active");
-                                        $("#ins_tab1").removeClass("active");
-                                        $("#history").addClass("active").addClass("in");
-                                        $("#example").removeClass("active");
-                                        $("#instruction").removeClass("active");
-                                        getTaskName("BAR","BAR");
-                                    }
-                                });
-                            }, 2000);
-                        }
-                    });
+                        });
+                    }
+                    lock = true;
                 }
             }
 
@@ -260,9 +303,6 @@
                     $("#group").hide();
                 }
             });
-
-            var sample;
-            var flagtable=true;
 
             function checkTable() {
                 return new Promise((resolve, reject) => {
@@ -428,6 +468,16 @@
                                     // type: 'image/jpeg,image/png',
                                     maxSize: 5*1024*1024,
                                     message: '文件不得大于5M！'
+                                }
+                            }
+                        },
+                        mt:{
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
                                 }
                             }
                         }

@@ -64,6 +64,15 @@
                                         <a class="dropdown-item" onclick="downJson()">下载 json</a>
                                     </div>
                                 </div>
+                                <div class="dropdown" style="display: inline-block">
+                                    <button class="btn btn-dark dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false" style="padding: 7px 30px;text-shadow: unset;border-radius: 7px;">
+                                        下载当前节点、边详细信息
+                                    </button>
+                                    <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 35px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                        <a class="dropdown-item" style="width: auto;" onclick="downloadDrawFile('Network_Edges.xls')">边信息(包含对应r，p，-ln(p)等数据)</a>
+                                        <a class="dropdown-item" style="width: auto;" onclick="downloadDrawFile('Network_Nodes.xls')">节点信息文件(包含点度中心性、紧密度中间性等)</a>
+                                    </div>
+                                </div>
                                 <span style="margin-right: 35px; color: gray; float: right; margin-top: 30px;">提示：点击连线或结点，可查看对应的p值和c值</span>
                             </div>
                             <br>
@@ -613,7 +622,7 @@
 
     <script>
 
-            const updatetime="2020-11-26";
+            const updatetime="2020-12-24";
 
             function checkupdate(){
                 $(".update").text(updatetime);
@@ -637,6 +646,10 @@
                 }else{
                     window.location.href = "/CloudPlatform/SoftTool/download?taskname=@row.taskname&picname="+picname+"&suffix="+suffix+"&num="+Math.random();
                 }
+            }
+
+            function downloadDrawFile(filename){
+                window.location.href = "/CloudPlatform/SoftTool/downloadFile?taskname=@row.taskname&filename=" + filename + "&num="+ Math.random();
             }
 
             const colorValidators = {

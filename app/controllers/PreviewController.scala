@@ -91,6 +91,16 @@ class PreviewController @Inject()(cc: ControllerComponents,dutydao:dutyDao) exte
     }
   }
 
+  def preCCS(taskname:String) = Action {implicit request=>
+    val id=request.session.get("userId").get
+    val row=Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf)
+    if(row.length==1){
+      Ok(views.html.task.redrawCircosPhylum(row.head))
+    }else{
+      Redirect(routes.HomeController.mytask())
+    }
+  }
+
   def preTax(taskname:String) = Action {implicit request=>
     val id=request.session.get("userId").get
     val row=Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf)
@@ -316,6 +326,17 @@ class PreviewController @Inject()(cc: ControllerComponents,dutydao:dutyDao) exte
     val row=Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf)
     if(row.length==1){
       Ok(views.html.task.redrawTernary(row.head))
+    }else{
+      Redirect(routes.HomeController.mytask())
+    }
+  }
+
+
+  def preNMD(taskname:String) = Action {implicit request=>
+    val id=request.session.get("userId").get
+    val row=Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf)
+    if(row.length==1){
+      Ok(views.html.task.redrawNMDS(row.head))
     }else{
       Redirect(routes.HomeController.mytask())
     }

@@ -75,10 +75,39 @@
                                 <div class="tab-pane fade active in" id="picpara">
                                     <div class="form-group-p use-flex">
                                         <div class="form-group">
+                                            <label>自定义X轴样本顺序：</label>
+                                        </div>
+                                        <div class="form-group right">
+                                            <input id="xo" name="xo" type="text" style="width: calc(100% - 10px); float: left; margin-left: 10px;"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group-p use-flex">
+                                        <div class="form-group">
+                                            <label>是否将低丰度结果合并为Other：</label>
+                                        </div>
+                                        <div class="form-group right">
+                                            <select id="m" name="m" style="width: calc(100% - 10px);">
+                                                <option value="TRUE">yes</option>
+                                                <option value="FALSE">no</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group-p use-flex">
+                                        <div class="form-group">
+                                            <label style="margin-right: 10px;">合并丰度低于</label>
+                                        </div>
+                                        <div class="form-group right">
+                                            <input id="mt" name="mt" type="text" style="width: calc(100% - 100px); float: left;" value="1"/>
+                                            <label style="width: 25px;float: left;margin-left: 5px;">%</label>
+                                            <label style="width: 70px;float: left">的OTU</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group-p use-flex">
+                                        <div class="form-group">
                                             <label>是否使用百分比作图：</label>
                                         </div>
                                         <div class="form-group right">
-                                            <select id="pe" name="pe" onchange="checkytext()" style="width: calc(100% - 10px);">
+                                            <select id="pe" name="pe" style="width: calc(100% - 10px);">
                                                 <option value="TRUE">yes</option>
                                                 <option value="FALSE">no</option>
                                             </select>
@@ -161,6 +190,14 @@
                                 <div class="tab-pane fade" id="fontpara">
                                     <div class="form-group-p">
                                         <div class="form-group fontleft" style="margin-top: 5px;">
+                                            <label for="">柱宽大小：</label>
+                                        </div>
+                                        <div class="form-group fontright" style="line-height: 39px;">
+                                            <input id="bw" name="bw" data-slider-id='sbw' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.05" data-slider-value="0.9"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group-p">
+                                        <div class="form-group fontleft" style="margin-top: 5px;">
                                             <label for="">X轴字体大小：</label>
                                         </div>
                                         <div class="form-group fontright" style="line-height: 39px;">
@@ -231,7 +268,7 @@
                                             <input type="text" id="xtext" name="xtext" class="form-control" placeholder="标题不可含有汉字" value="" style="width: 100%;float: left;margin-right: 5px;margin-top: 5px">
                                         </div>
                                     </div>
-                                    <div class="form-group-p" id="ytextpart">
+                                    <div class="form-group-p">
                                         <div class="form-group fontleft" style="margin-top: 5px;">
                                             <label for="">Y轴标题：</label>
                                         </div>
@@ -274,7 +311,7 @@
 
     <script>
 
-            const updatetime="2020-11-18";
+            const updatetime="2020-12-30";
 
             function checkupdate(){
                 $(".update").text(updatetime);
@@ -314,6 +351,7 @@
 
             var colornum=0;
             var genenum=0;
+            var sample = [];
 
             function formValidation() {
                 $('#BAR').formValidation({
@@ -392,6 +430,46 @@
                                     }
                                 }
                             }
+                        },
+                        mt:{
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空!'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        xo:{
+                            validators: {
+                                callback:{
+                                    callback: function (value, validator, $field) {
+                                        if(value != "") {
+                                            var split = value.split(",");
+                                            var name = [];
+                                            if(split.length != sample.length)
+                                                return {
+                                                    valid: false,
+                                                    message: '样本数量不一致！当前输入样本数为：' + split.length
+                                                };
+                                            for(var i in split) {
+                                                if(sample.indexOf(split[i]) < 0)
+                                                    return {
+                                                        valid: false,
+                                                        message: '样本名 "' + split[i] + '" 不存在！请核实'
+                                                    };
+                                                if(name.indexOf(split[i]) < 0) name.push(split[i]);
+                                                else return {
+                                                        valid: false,
+                                                        message: '样本名 "' + split[i] + '"重复输入，请核实！'
+                                                    };
+                                            }
+                                            return true;
+                                        } else return true;
+                                    }
+                                }
+                            }
                         }
                     }
                 });
@@ -412,6 +490,8 @@
                         type:"post",
                         success:function (data) {
                             genenum=data.genenum;
+                            sample = data.sample;
+                            console.log(sample);
                             $("#redraw_pic").attr("src","/CloudPlatform/pic?path="+data.pics[0]+"&num="+Math.random());
                             $.each(data.elements,function (i,v) {
                                 if(i=="color") {
@@ -423,20 +503,12 @@
                                         $("#"+i).bootstrapSlider({tooltip:'always'});
                                         $("#" + i).bootstrapSlider('setValue', v);
                                     }
-                                    // $("#" + i).val(v);
                                 }
                             });
-                            checkytext();
                         }
                     });
                 }
             });
-
-            function checkytext() {
-                var param = $("#pe").val();
-                if (param == "TRUE") $("#ytextpart").hide();
-                else $("#ytextpart").show();
-            }
 
             function splitcolor(param) {
                 var colo="";

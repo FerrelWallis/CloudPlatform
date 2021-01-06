@@ -1,0 +1,477 @@
+@(abbre:String)(implicit session: Session)
+@home.main("Wilcoxon Test"){
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("css/test/mysoft.css")" media="screen" />
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("palette/evol-colorpicker.min.css")" media="screen" />
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("bootstrap-fileinput-master/css/fileinput.css")" media="screen" />
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("mycss/soft.css")" media="screen" />
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("DPlayer-1.26.0/mycss/myvideo.css")" media="screen" />
+
+    <script type="text/javascript" src="@routes.Assets.versioned("DPlayer-1.26.0/dist/DPlayer.min.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.versioned("md5/md5.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.versioned("js/jquery-ui.js")"></script>
+        <!--button弹出操作-->
+    <script src="@routes.Assets.versioned("layer-v3.0/layer/layer.js")" type="text/javascript"></script>
+    <script type="text/javascript" src="@routes.Assets.versioned("js/myzui.min.js")"></script>
+
+    <div class="col-md-12 mysoft-content" style="width: 98%;">
+        <div class="mysoft-content-left whitebox" style="width: 771px;overflow-y: auto">
+            <form id="WT" method="GET" novalidate="novalidate" enctype="multipart/form-data" class="well form-inline" style="box-sizing: border-box!important;">
+                <div class="softpic mws-ic @abbre"></div>
+                <h3 class="tools-title">Wilcoxon秩和检验</h3>
+                <div class="form-group">
+                    <h2></h2>
+                </div><br><br>
+                <div class="form-group-p">
+                    <div class="form-group">
+                        <label for="mytaskname">任务编号：</label>
+                    </div>
+                    <div class="form-group">
+                        <input id="mytaskname" type="text" class="form-control" name="taskname" placeholder="" value="">
+                    </div>
+                </div>
+                <br><br>
+                <div id="div1" class="one-line">
+                    <div class="form-group-p" style="width: 465px">
+                        <div class="form-group">
+                            <label for="exampleInputName2"><em>1：</em>OTU丰度表：</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="file" class="form-control file" id="table1" name="table1" onchange="checkTable()">
+                        </div>
+                    </div>
+                    <div class="form-group-extra">
+                        <em><a href="/assets/files/ttest_table.txt" target='_blank'>示例文件</a></em>
+                    </div>
+                    <br>
+                    <br>
+                </div>
+                <div id="div2" class="one-line">
+                    <div class="form-group-p" style="width: 465px">
+                        <div class="form-group">
+                            <label for="exampleInputName2"><em>2：</em>分组文件(必须为两组)：</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="file" class="form-control file" id="table2" name="table2" onchange="checkGroupfile()">
+                        </div>
+                    </div>
+                    <div class="form-group-extra">
+                        <em><a href="/assets/files/ttest_group.txt" target='_blank'>示例文件</a></em>
+                    </div>
+                    <br>
+                    <br>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading" data-toggle="collapse" href="#collapseOne">
+                        <h4 class="panel-title">
+                            <a id="pos1">
+                                <span style="font-size:12px;">选填参数（Optional）：</span>
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label>是否要做配对T检验：</label>
+                                </div>
+                                <div class="form-group">
+                                    <select name="p">
+                                        <option value="FALSE" selected>no</option>
+                                        <option value="TRUE">yes</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group" style="float: left; display: flow-root; position: relative;">
+                                    <label>是否在p值的正态近似中应用连续性校正：</label>
+                                </div>
+                                <div class="form-group" style="display: flow-root;">
+                                    <select name="tf" style="width: 100%">
+                                        <option value="FALSE">no</option>
+                                        <option value="TRUE" selected>yes</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label>多重校验方法：</label>
+                                </div>
+                                <div class="form-group">
+                                    <select name="c">
+                                        <option value="fdr">fdr</option>
+                                        <option value="holm">holm</option>
+                                        <option value="hochberg">hochberg</option>
+                                        <option value="hommel">hommel</option>
+                                        <option value="bonferroni">bonferroni</option>
+                                        <option value="BH">BH</option>
+                                        <option value="BY">BY</option>
+                                        <option value="none">none</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p form-group">
+                                <div class="form-group" style="float: left; display: flow-root;">
+                                    <label for="format">P值检验阈值(为空则不进行筛选)：</label>
+                                </div>
+                                <div class="form-group" style="display: flow-root;">
+                                    <input id="ptn" name="ptn" type="text" style="width: 100%; "/>
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p form-group">
+                                <div class="form-group" style="float: left; display: flow-root;">
+                                    <label for="format">Q值检验阈值(为空则不进行筛选)：</label>
+                                </div>
+                                <div class="form-group" style="display: flow-root;">
+                                    <input id="qtn" name="qtn" type="text" style="width: 100%; "/>
+                                </div>
+                            </div>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <input type="button" value="提&nbsp;&nbsp;交" name="submit" class="btn btn-primary" onclick="runWT()" style="margin-bottom: 20px">
+            </form>
+        </div>
+
+        <div class="handler"></div>
+
+        <div class="mysoft-content-right" style="width: 279px;box-sizing: border-box!important;">
+            <ul class="nav nav-tabs">
+                <li class="active" id="ins_tab1">
+                    <a href="###" data-target="#instruction" data-toggle="tab">使用说明</a>
+                </li>
+                <li class="" id="out_tab1">
+                    <a href="###" data-target="#example" data-toggle="tab">教学视频</a>
+                </li>
+                <li class="" id="his_tab1">
+                    <a href="#" data-target="#history" data-toggle="tab">历史任务</a>
+                </li>
+            </ul>
+            <div class="tab-content" style="box-sizing: border-box!important;">
+                <div class="tab-pane fade active in" id="instruction">
+                    <h5 style="margin-bottom: 2px">更详细使用说明编写中...敬请期待！</h5>
+                </div>
+                <div class="tab-pane fade" id="example">
+                    <h5 style="margin-bottom: 2px">视频录制中...敬请期待！</h5>
+                    <div id="dplayer"></div>
+                </div>
+                <div id="history" class="form1_ins tab-pane fade">
+                    <a id="btn-refresh" class="btn_refresh mws-i-24 i-refresh-3" onclick="refresh('@abbre')">刷新状态</a>
+                    <ul id="hisul" style="margin-top: 15px">
+                        <li id="hislist" class="hislist">
+                            <div class="his_time"><span>任务编号</span></div>
+                            <div class="his_time"><span style="margin-left: -20px;">结束时间</span></div>
+                            <div class="his_name"><span style="margin-left: -23px;">状态</span></div>
+                            <hr>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="@routes.Assets.versioned("js/toolsAdjust.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.versioned("palette/evol-colorpicker.min.js")"></script>
+    <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/fileinput.min.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/locales/zh.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("myjs/soft.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+
+            function gapfocus(para) {
+                $("#"+para).show();
+            }
+
+            function gapblur(para) {
+                $("#"+para).hide();
+            }
+
+            $(document).ready(function () {
+                formValidation();
+                loadHistory("@abbre");
+                getTaskName("WT","WT");
+                // loadVideo("//13125180.s21v.faiusr.com/58/ABUIABA6GAAgts3S_QUo_uGeyAc.mp4","/assets/images/softpic/video/heatmap_video.png")
+            });
+
+            var sample = [];
+            var flagtable = true;
+            var lock = true;
+
+            function runWT(formId) {
+                if(lock) {
+                    lock = false;
+                    var form = $("#WT");
+                    var fv = form.data("formValidation");
+                    fv.validate();
+                    if (fv.isValid()) {
+                        flagtable=true;
+                        sample = [];
+                        checkTable().then((r)=>{
+                            checkGroupfile().then((r)=>{
+                                if(flagtable && checktaskname()) {
+                                    var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
+                                    var index = layer.alert(element, {
+                                        skin: 'layui-layer-lan',
+                                        closeBtn: 0,
+                                        title: "提醒",
+                                        btn: []
+                                    });
+                                    setTimeout(function () {
+                                        layer.close(index);
+                                        var form1 = new FormData($("#WT")[0]);
+                                        $.ajax({
+                                            url: "/CloudPlatform/SoftTool/runWilcoxon",
+                                            type: "post",
+                                            processData: false,
+                                            contentType: false,
+                                            data: form1,
+                                            success: function (data) {
+                                                removeul();
+                                                loadHistory("@abbre");
+                                                $("#his_tab1").addClass("active");
+                                                $("#out_tab1").removeClass("active");
+                                                $("#ins_tab1").removeClass("active");
+                                                $("#history").addClass("active").addClass("in");
+                                                $("#example").removeClass("active");
+                                                $("#instruction").removeClass("active");
+                                                getTaskName("WT","WT");
+                                            }
+                                        });
+                                    }, 2000);
+                                }
+                            });
+                        });
+                    }
+                    lock = true;
+                }
+            }
+
+            function checkTable() {
+                return new Promise((resolve, reject) => {
+                    var reader=new FileReader();
+                    reader.readAsText(document.getElementById('table1').files[0],"UTF-8");
+                    reader.onload=function () {
+                        let text=reader.result;
+                        let line=text.trim().split('\n');
+                        sample=line[0].trim().split('\t');
+                        var length=sample.length;
+                        for(let i in line){
+                            var r=parseInt(i)+1;
+                            let row=line[i].trim().split('\t');
+                            var name=[];
+                            if(row.length!=length){
+                                flagtable=flagtable&&false;
+                                swal({
+                                    title: "OTU丰度表错误",
+                                    text: "OTU丰度表第"+r+"行数据数量不一致",
+                                    type: "warning",
+                                    confirmButtonText: "确认"
+                                });
+                                resolve(false);
+                            }
+                            for(let j in row){
+                                var c=parseInt(j)+1;
+                                if(i!=0){
+                                    if(j!=0 && !checkRate(row[j].trim())){
+                                        flagtable=flagtable&&false;
+                                        swal({
+                                            title: "OTU丰度表错误",
+                                            text: "OTU丰度表第"+r+"行,第"+c+"列数据不是数字",
+                                            type: "warning",
+                                            confirmButtonText: "确认"
+                                        });
+                                        resolve(false);
+                                    }
+                                }else {
+                                    if(name.indexOf(row[j])>=0){
+                                        flagtable=flagtable&&false;
+                                        swal({
+                                            title: "OTU丰度表错误",
+                                            text: "OTU丰度表第1行,第"+c+"列样品名重复存在，请核实！",
+                                            type: "warning",
+                                            confirmButtonText: "确认"
+                                        });
+                                        resolve(false);
+                                    }else name.push(row[j]);
+                                }
+                            }
+                        }
+                        flagtable=flagtable&&true;
+                        resolve(true);
+                    };
+                });
+            }
+
+            function checkGroupfile() {
+                return new Promise((resolve, reject) => {
+                    if($("#table1").val()==""){
+                        flagtable=flagtable&&false;
+                        $("#WT").formValidation("revalidateField", "table1");
+                        $("#div2").find(".fileinput-remove").click();
+                        swal({
+                            title: "请先上传OUT丰度表",
+                            text: "请先上传OUT丰度表！",
+                            type: "warning",
+                            confirmButtonText: "确认"
+                        });
+                        resolve(false);
+                    }
+                    var reader=new FileReader();
+                    reader.readAsText(document.getElementById('table2').files[0],"UTF-8");
+                    reader.onload=function () {
+                        let text=reader.result;
+                        let line=text.trim().split('\n');
+                        var name=[];
+                        var group=[];
+                        for(let i in line) {
+                            if(i!=0){
+                                let row=line[i].trim().split('\t');
+                                var r=parseInt(i)+1;
+                                if(row.length!=2){
+                                    flagtable=flagtable&&false;
+                                    swal({
+                                        title: "分组文件格式错误",
+                                        text: "分组文件第"+r+"行格式错误，必须为两列！",
+                                        type: "warning",
+                                        confirmButtonText: "确认"
+                                    });
+                                    resolve(false);
+                                }
+                                if(sample.indexOf(row[0])<0){
+                                    flagtable=flagtable&&false;
+                                    swal({
+                                        title: "分组文件格式错误",
+                                        text: "分组文件第"+r+"行样品名不存在，请核对OTU文件！",
+                                        type: "warning",
+                                        confirmButtonText: "确认"
+                                    });
+                                    resolve(false);
+                                }
+                                if(name.indexOf(row[0])>=0){
+                                    flagtable=flagtable&&false;
+                                    swal({
+                                        title: "分组文件错误",
+                                        text: "分组文件第"+r+"行样品名重复存在，请核实！",
+                                        type: "warning",
+                                        confirmButtonText: "确认"
+                                    });
+                                    resolve(false);
+                                }else name.push(row[0]);
+                                if(group.indexOf(row[1]) < 0) group.push(row[1]);
+                            }
+                        }
+                        if(group.length != 2) {
+                            flagtable=flagtable&&false;
+                            swal({
+                                title: "分组文件错误",
+                                text: "分组数量必须为两组！当前分组数量为" + group.length,
+                                type: "warning",
+                                confirmButtonText: "确认"
+                            });
+                            resolve(false);
+                        }else {
+                            flagtable=flagtable&&true;
+                            resolve(true);
+                        }
+                    };
+                });
+            }
+
+            function checkRate(input) {
+                // var re = /^(-?\d+)(\.\d+)?$/;
+                var re=/^[+-]?[\d]+([\.][\d]+)?([Ee][+-]?[\d]+)?$/;//判断字符串是否为浮点数或科学计数法
+                if (!re.test(input)) {
+                    return false;
+                }else return true;
+            }
+
+            function formValidation() {
+                $('#WT').formValidation({
+                    framework: 'bootstrap',
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        taskname: {
+                            validators: {
+                                notEmpty: {
+                                    message: '任务编号不能为空!'
+                                },
+                                remote:{
+                                    type: 'POST',
+                                    url: '@routes.DutyController.checktaskname()',
+                                    message: "任务编号重复，请重新输入"
+                                }
+                            }
+                        },
+                        table1: {
+                            validators: {
+                                notEmpty: {
+                                    message: '必须上传OTU表格文件!'
+                                },
+                                file: {
+                                    // extension: 'jpeg,jpg,png',
+                                    // type: 'image/jpeg,image/png',
+                                    maxSize: 5*1024*1024,
+                                    message: '文件不得大于5M！'
+                                }
+                            }
+                        },
+                        table2: {
+                            validators: {
+                                notEmpty: {
+                                    message: '必须上传分组文件!'
+                                },
+                                file: {
+                                    // extension: 'jpeg,jpg,png',
+                                    // type: 'image/jpeg,image/png',
+                                    maxSize: 5*1024*1024,
+                                    message: '文件不得大于5M！'
+                                }
+                            }
+                        },
+                        ptn:{
+                            validators: {
+                                numeric: {
+                                    message: '必须为数字！'
+                                },
+                                greaterThan: {
+                                    value: 0,
+                                    message: "必须大于0！"
+                                },
+                                lessThan: {
+                                    value: 1,
+                                    message: "必须小于1！"
+                                }
+                            }
+                        },
+                        qtn:{
+                            validators: {
+                                numeric: {
+                                    message: '必须为数字！'
+                                },
+                                greaterThan: {
+                                    value: 0,
+                                    message: "必须大于0！"
+                                },
+                                lessThan: {
+                                    value: 1,
+                                    message: "必须小于1！"
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+
+    </script>
+
+}

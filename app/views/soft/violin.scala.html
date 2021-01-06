@@ -256,49 +256,54 @@
                 if($("#table2").val()!="") checkGroupfile();
             });
 
-            function violin() {
-                var form = $("#VIO");
-                var fv = form.data("formValidation");
-                fv.validate();
-                if (fv.isValid()) {
-                    flagtable=true;
-                    var check=[];
-                    check.push(checkTablefile());
-                    check.push(checkGroupfile());
-                    Promise.all(check).then((r)=>{
-                        if(flagtable && checktaskname()){
-                            var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
-                            var index = layer.alert(element, {
-                                skin: 'layui-layer-lan',
-                                closeBtn: 0,
-                                title: "提醒",
-                                btn: []
-                            });
-                            setTimeout(function () {
-                                layer.close(index);
-                                var form1 = new FormData($("#VIO")[0]);
-                                $.ajax({
-                                    url: "/CloudPlatform/SoftTool/runViolin?isgroup=" + $("#isgroup").prop("checked") + "&table=" + table + "&group=" + group,
-                                    type: "post",
-                                    processData: false,
-                                    contentType: false,
-                                    data: form1,
-                                    success: function (data) {
-                                        removeul();
-                                        loadHistory("@abbre");
-                                        $("#his_tab1").addClass("active");
-                                        $("#out_tab1").removeClass("active");
-                                        $("#ins_tab1").removeClass("active");
-                                        $("#history").addClass("active").addClass("in");
-                                        $("#form1").removeClass("active");
-                                        $("#instruction1").removeClass("active");
-                                        getTaskName("VIO","VIO");
-                                    }
-                                });
+            var lock = true;
 
-                            }, 2000);
-                        }
-                    });
+            function violin() {
+                if(lock) {
+                    lock = false;
+                    var form = $("#VIO");
+                    var fv = form.data("formValidation");
+                    fv.validate();
+                    if (fv.isValid()) {
+                        flagtable=true;
+                        checkTablefile().then((r)=>{
+                            checkGroupfile().then((r)=>{
+                                if(flagtable && checktaskname()){
+                                    var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
+                                    var index = layer.alert(element, {
+                                        skin: 'layui-layer-lan',
+                                        closeBtn: 0,
+                                        title: "提醒",
+                                        btn: []
+                                    });
+                                    setTimeout(function () {
+                                        layer.close(index);
+                                        var form1 = new FormData($("#VIO")[0]);
+                                        $.ajax({
+                                            url: "/CloudPlatform/SoftTool/runViolin?isgroup=" + $("#isgroup").prop("checked") + "&table=" + table + "&group=" + group,
+                                            type: "post",
+                                            processData: false,
+                                            contentType: false,
+                                            data: form1,
+                                            success: function (data) {
+                                                removeul();
+                                                loadHistory("@abbre");
+                                                $("#his_tab1").addClass("active");
+                                                $("#out_tab1").removeClass("active");
+                                                $("#ins_tab1").removeClass("active");
+                                                $("#history").addClass("active").addClass("in");
+                                                $("#form1").removeClass("active");
+                                                $("#instruction1").removeClass("active");
+                                                getTaskName("VIO","VIO");
+                                            }
+                                        });
+
+                                    }, 2000);
+                                }
+                            });
+                        });
+                    }
+                    lock = true;
                 }
             }
 

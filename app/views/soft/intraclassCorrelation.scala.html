@@ -220,7 +220,7 @@
                 loadVideo("//13125180.s21v.faiusr.com/58/ABUIABA6GAAgir_R_wUooK3g5gY.mp4","/assets/images/softpic/video/igc_video.png")
             });
 
-            var flagtable=false;
+            var flagtable=true;
 
             function checkTable(param) {
                 return new Promise((resolve, reject) => {
@@ -286,47 +286,54 @@
                 }else return true;
             }
 
+            var lock = true;
+
             function intraclass() {
-                var form = $("#ITC");
-                var fv = form.data("formValidation");
-                fv.validate();
-                if (fv.isValid()) {
-                    flagtable=true;
-                    var check=[];
-                    check.push(checkTable('table1'));
-                    Promise.all(check).then((r)=>{
-                        if(flagtable && checktaskname()){
-                            var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
-                            var index = layer.alert(element, {
-                                skin: 'layui-layer-lan',
-                                closeBtn: 0,
-                                title: "提醒",
-                                btn: []
-                            });
-                            setTimeout(function () {
-                                layer.close(index);
-                                var form1 = new FormData($("#ITC")[0]);
-                                $.ajax({
-                                    url: "/CloudPlatform/SoftTool/runIGC?tablenum=2",
-                                    type: "post",
-                                    processData: false,
-                                    contentType: false,
-                                    data: form1,
-                                    success: function (data) {
-                                        removeul();
-                                        loadHistory("@abbre");
-                                        $("#his_tab1").addClass("active");
-                                        $("#out_tab1").removeClass("active");
-                                        $("#ins_tab1").removeClass("active");
-                                        $("#history").addClass("active").addClass("in");
-                                        $("#example").removeClass("active");
-                                        $("#instruction").removeClass("active");
-                                        getTaskName("ITC","ITC");
-                                    }
+                if(lock) {
+                    lock = false;
+                    var form = $("#ITC");
+                    var fv = form.data("formValidation");
+                    fv.validate();
+                    if (fv.isValid()) {
+                        flagtable=true;
+                        var check=[];
+                        check.push(checkTable('table1'));
+                        check.push(checkTable('table2'));
+                        Promise.all(check).then((r)=>{
+                            if(flagtable && checktaskname()){
+                                var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
+                                var index = layer.alert(element, {
+                                    skin: 'layui-layer-lan',
+                                    closeBtn: 0,
+                                    title: "提醒",
+                                    btn: []
                                 });
-                            }, 2000);
-                        }
-                    });
+                                setTimeout(function () {
+                                    layer.close(index);
+                                    var form1 = new FormData($("#ITC")[0]);
+                                    $.ajax({
+                                        url: "/CloudPlatform/SoftTool/runIGC?tablenum=2",
+                                        type: "post",
+                                        processData: false,
+                                        contentType: false,
+                                        data: form1,
+                                        success: function (data) {
+                                            removeul();
+                                            loadHistory("@abbre");
+                                            $("#his_tab1").addClass("active");
+                                            $("#out_tab1").removeClass("active");
+                                            $("#ins_tab1").removeClass("active");
+                                            $("#history").addClass("active").addClass("in");
+                                            $("#example").removeClass("active");
+                                            $("#instruction").removeClass("active");
+                                            getTaskName("ITC","ITC");
+                                        }
+                                    });
+                                }, 2000);
+                            }
+                        });
+                    }
+                    lock = true;
                 }
             }
 

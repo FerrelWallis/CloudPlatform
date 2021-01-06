@@ -185,42 +185,48 @@
                 getTaskName("FAPROTAX","FAP");
             });
 
+            var lock = true;
+
             function fap() {
-                var form = $("#FAPROTAX");
-                var fv = form.data("formValidation");
-                fv.validate();
-                if (fv.isValid()) {
-                    if(checktaskname()) {
-                        var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
-                        var index = layer.alert(element, {
-                            skin: 'layui-layer-lan',
-                            closeBtn: 0,
-                            title: "提醒",
-                            btn: []
-                        });
-                        setTimeout(function () {
-                            layer.close(index);
-                            var form1 = new FormData($("#FAPROTAX")[0]);
-                            $.ajax({
-                                url: "/CloudPlatform/SoftTool/runFAPROTAX",
-                                type: "post",
-                                processData: false,
-                                contentType: false,
-                                data: form1,
-                                success: function (data) {
-                                    removeul();
-                                    loadHistory("@abbre");
-                                    $("#his_tab1").addClass("active");
-                                    $("#out_tab1").removeClass("active");
-                                    $("#ins_tab1").removeClass("active");
-                                    $("#history").addClass("active").addClass("in");
-                                    $("#example").removeClass("active");
-                                    $("#instruction").removeClass("active");
-                                    getTaskName("FAPROTAX","FAP");
-                                }
+                if(lock) {
+                    lock = false;
+                    var form = $("#FAPROTAX");
+                    var fv = form.data("formValidation");
+                    fv.validate();
+                    if (fv.isValid()) {
+                        if(checktaskname()) {
+                            var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
+                            var index = layer.alert(element, {
+                                skin: 'layui-layer-lan',
+                                closeBtn: 0,
+                                title: "提醒",
+                                btn: []
                             });
-                        }, 2000);
+                            setTimeout(function () {
+                                layer.close(index);
+                                var form1 = new FormData($("#FAPROTAX")[0]);
+                                $.ajax({
+                                    url: "/CloudPlatform/SoftTool/runFAPROTAX",
+                                    type: "post",
+                                    processData: false,
+                                    contentType: false,
+                                    data: form1,
+                                    success: function (data) {
+                                        removeul();
+                                        loadHistory("@abbre");
+                                        $("#his_tab1").addClass("active");
+                                        $("#out_tab1").removeClass("active");
+                                        $("#ins_tab1").removeClass("active");
+                                        $("#history").addClass("active").addClass("in");
+                                        $("#example").removeClass("active");
+                                        $("#instruction").removeClass("active");
+                                        getTaskName("FAPROTAX","FAP");
+                                    }
+                                });
+                            }, 2000);
+                        }
                     }
+                    lock = true;
                 }
             }
 

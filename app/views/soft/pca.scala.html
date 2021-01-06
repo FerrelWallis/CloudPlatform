@@ -385,55 +385,60 @@
                 if($("#table2").val()!="") checkGroupfile();
             });
 
-        function PCA() {
-            var form = $("#PCA1");
-            var fv = form.data("formValidation");
-            fv.validate();
-            if (fv.isValid()) {
-                flagtable=true;
-                var check=[];
-                check.push(checkTablefile());
-                check.push(checkGroupfile());
-                Promise.all(check).then((r)=>{
-                    if(flagtable&&checktaskname()){
-                        var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
-                        var index = layer.alert(element, {
-                            skin: 'layui-layer-lan',
-                            closeBtn: 0,
-                            title: "提醒",
-                            btn: []
-                        });
-                        setTimeout(function () {
-                            layer.close(index);
-                            var form1 = new FormData($("#PCA1")[0]);
-                            $.ajax({
-                                url: "/CloudPlatform/SoftTool/runPCA?isgroup=" + $("#isgroup").prop("checked") + "&table=" + table + "&group=" + group + "&abbre=@abbre",
-                                type: "post",
-                                processData: false,
-                                contentType: false,
-                                data: form1,
-                                success: function (data) {
-                                    removeul();
-                                    loadHistory("@abbre");
-                                    $("#his_tab1").addClass("active");
-                                    $("#out_tab1").removeClass("active");
-                                    $("#ins_tab1").removeClass("active");
-                                    $("#history").addClass("active").addClass("in");
-                                    $("#form1").removeClass("active");
-                                    $("#instruction1").removeClass("active");
-                                    getTaskName("PCA1","PCA");
-                                }
-                            });
+            var sample = [];
+            var flagtable = true;
+            var lock = true;
 
-                        }, 2000);
-                    }
-                });
+        function PCA() {
+            if(lock) {
+                lock = false;
+                var form = $("#PCA1");
+                var fv = form.data("formValidation");
+                fv.validate();
+                if (fv.isValid()) {
+                    flagtable=true;
+                    sample = [];
+                    checkTablefile().then((r)=>{
+                        checkGroupfile().then((r)=>{
+                            if(flagtable && checktaskname()){
+                                var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
+                                var index = layer.alert(element, {
+                                    skin: 'layui-layer-lan',
+                                    closeBtn: 0,
+                                    title: "提醒",
+                                    btn: []
+                                });
+                                setTimeout(function () {
+                                    layer.close(index);
+                                    var form1 = new FormData($("#PCA1")[0]);
+                                    $.ajax({
+                                        url: "/CloudPlatform/SoftTool/runPCA?isgroup=" + $("#isgroup").prop("checked") + "&table=" + table + "&group=" + group + "&abbre=@abbre",
+                                        type: "post",
+                                        processData: false,
+                                        contentType: false,
+                                        data: form1,
+                                        success: function (data) {
+                                            removeul();
+                                            loadHistory("@abbre");
+                                            $("#his_tab1").addClass("active");
+                                            $("#out_tab1").removeClass("active");
+                                            $("#ins_tab1").removeClass("active");
+                                            $("#history").addClass("active").addClass("in");
+                                            $("#form1").removeClass("active");
+                                            $("#instruction1").removeClass("active");
+                                            getTaskName("PCA1","PCA");
+                                        }
+                                    });
+                                }, 2000);
+                            }
+                        });
+                    });
+                }
+                lock = true;
             }
         }
 
-        var sample;
-        var flaggroupfile=true;
-        var flagtable=true;
+
 
         function checkTablefile() {
             return new Promise((resolve,reject) =>{
@@ -522,21 +527,6 @@
         }
 
         function checkGroupfile() {
-            // if($("#table1").val()==""&&$("#txdata1").val()==""){
-            //     flaggroupfile=false;
-            //     // var file = document.getElementById('table2');
-            //     // file.value = '';
-            //     // $(".file-caption-name").attr("title","");
-            //     // $(".file-caption-name").text("");
-            //     $("#div2").find(".fileinput-remove").click();
-            //     swal({
-            //         title: "请先上传矩阵文件",
-            //         text: "请先上传矩阵文件！",
-            //         type: "warning",
-            //         confirmButtonText: "确认"
-            //     });
-            //     return;
-            // }
             return new Promise((resolve, reject) => {
                 if(!$("#isgroup").prop("checked")) {
                     flagtable=flagtable&&true;

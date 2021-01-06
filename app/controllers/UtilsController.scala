@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 
 import controllers.Assets.Asset
-import dao.{feedbackDao, runningDao, usersDao, utilsDao}
+import dao.{feedbackDao, runningDao, softDao, usersDao, utilsDao}
 import models.Tables._
 import services.onStart
 import javax.inject.Inject
@@ -20,7 +20,7 @@ import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, ExecutionContext, Future, blocking}
 import scala.collection.JavaConverters._
 
-class UtilsController @Inject()(cc: ControllerComponents,onstart:onStart,utilsdao:utilsDao,usersdao:usersDao,feedbackDao:feedbackDao,runningDao:runningDao)(implicit exec: ExecutionContext) extends AbstractController(cc) {
+class UtilsController @Inject()(cc: ControllerComponents,onstart:onStart,utilsdao:utilsDao,usersdao:usersDao,feedbackDao:feedbackDao,runningDao:runningDao, softDao:softDao)(implicit exec: ExecutionContext) extends AbstractController(cc) {
 
 
   //发送短信
@@ -266,5 +266,27 @@ class UtilsController @Inject()(cc: ControllerComponents,onstart:onStart,utilsda
       e.printStackTrace()
       null
   }
+
+
+  val classcn = Seq(("功能分析", "function"), ("聚类分析", "cluster"), ("基础绘图", "paint"), ("统计检验与差异分析", "check"), ("菌群功能分析", "predict"), ("序列处理", "sequence"), ("注释工具", "annotation"), ("表格与表格转换", "chart"))
+
+  //manager softFreq
+  def softFreq = Action { implicit request =>
+    val summary = Await.result(softDao.getAllSoft, Duration.Inf).map(_.likefreq).sum
+
+    val (softpart, classpart) = classcn.map{c =>
+      val softs = Await.result(softDao.getSoftByTypes(c._2), Duration.Inf)
+      val y = (softs.map(_.likefreq).sum.toDouble / summary * 100)
+      val drilldown = if(softs.length == 0) null else c._1
+      val data = softs.map{s =>(s.sname, (s.likefreq.toDouble / summary * 100))}
+
+      (Json.obj("data" -> data, "id" -> c._1, "name" -> c._1),
+        Json.obj("drilldown" -> drilldown, "name" -> c._1, "y" -> y))
+    }.unzip
+
+    Ok(Json.obj("classpart"-> classpart, "softpart" -> softpart))
+  }
+
+
 
 }

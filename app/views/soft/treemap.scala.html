@@ -148,51 +148,57 @@
                 // loadVideo("//13125180.s21v.faiusr.com/58/ABUIABA6GAAgxZ2K_QUorKzs7gc.mp4","/assets/images/softpic/video/cca_video.png")
             });
 
+            var lock = true;
+
             function treemap() {
-                var form = $("#TRM");
-                var fv = form.data("formValidation");
-                fv.validate();
-                if (fv.isValid()) {
-                    flagtable=true;
-                    group=[];
-                    var check=[];
-                    check.push(checkGroupfile());
-                    Promise.all(check).then((r)=>{
-                        var groups="";
-                        if(group.length!=0) groups=group.join(",");
-                        else groups=",,";
-                        if(flagtable&&checktaskname()) {
-                            var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
-                            var index = layer.alert(element, {
-                                skin: 'layui-layer-lan',
-                                closeBtn: 0,
-                                title: "提醒",
-                                btn: []
-                            });
-                            setTimeout(function () {
-                                layer.close(index);
-                                var form1 = new FormData($("#TRM")[0]);
-                                $.ajax({
-                                    url: "/CloudPlatform/SoftTool/runTreemap?groups=" + groups + "&&isgroup=" + $("#isgroup").prop("checked") ,
-                                    type: "post",
-                                    processData: false,
-                                    contentType: false,
-                                    data: form1,
-                                    success: function (data) {
-                                        removeul();
-                                        loadHistory("@abbre");
-                                        $("#his_tab1").addClass("active");
-                                        $("#out_tab1").removeClass("active");
-                                        $("#ins_tab1").removeClass("active");
-                                        $("#history").addClass("active").addClass("in");
-                                        $("#example").removeClass("active");
-                                        $("#instruction").removeClass("active");
-                                        getTaskName("TRM","TRM");
-                                    }
+                if(lock) {
+                    lock = false;
+                    var form = $("#TRM");
+                    var fv = form.data("formValidation");
+                    fv.validate();
+                    if (fv.isValid()) {
+                        flagtable=true;
+                        group=[];
+                        var check=[];
+                        check.push(checkGroupfile());
+                        Promise.all(check).then((r)=>{
+                            var groups="";
+                            if(group.length!=0) groups=group.join(",");
+                            else groups=",,";
+                            if(flagtable&&checktaskname()) {
+                                var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
+                                var index = layer.alert(element, {
+                                    skin: 'layui-layer-lan',
+                                    closeBtn: 0,
+                                    title: "提醒",
+                                    btn: []
                                 });
-                            }, 2000);
-                        }
-                    });
+                                setTimeout(function () {
+                                    layer.close(index);
+                                    var form1 = new FormData($("#TRM")[0]);
+                                    $.ajax({
+                                        url: "/CloudPlatform/SoftTool/runTreemap?groups=" + groups + "&&isgroup=" + $("#isgroup").prop("checked") ,
+                                        type: "post",
+                                        processData: false,
+                                        contentType: false,
+                                        data: form1,
+                                        success: function (data) {
+                                            removeul();
+                                            loadHistory("@abbre");
+                                            $("#his_tab1").addClass("active");
+                                            $("#out_tab1").removeClass("active");
+                                            $("#ins_tab1").removeClass("active");
+                                            $("#history").addClass("active").addClass("in");
+                                            $("#example").removeClass("active");
+                                            $("#instruction").removeClass("active");
+                                            getTaskName("TRM","TRM");
+                                        }
+                                    });
+                                }, 2000);
+                            }
+                        });
+                    }
+                    lock = true;
                 }
             }
 

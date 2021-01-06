@@ -11,7 +11,6 @@
     <script src="@routes.Assets.versioned("layer-v3.0/layer/layer.js")" type="text/javascript"></script>
     <script type="text/javascript" src="@routes.Assets.versioned("js/myzui.min.js")"></script>
 
-
     <style>
             .messager.top {
                 top: 20px;
@@ -57,14 +56,95 @@
                         </div>
                         <div class="form-group-extra">
                             <em>
-                                <a href='/assets/files/otu_table.biom' target='_blank'>示例文件(biom)</a>
+                                <a href='/assets/files/tax4fun_table.biom' target='_blank'>示例文件(biom)</a>
                             </em>
                             <em>
-                                <a href='/assets/files/otu_table.txt' target='_blank' style="margin-left: 20px;">示例文件(txt)</a>
+                                <a href='/assets/files/tax4fun_table.txt' target='_blank' style="margin-left: 20px;">示例文件(txt)</a>
                             </em>
                         </div>
                         <br>
                         <br>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading" data-toggle="collapse" href="#collapseOne">
+                        <h4 class="panel-title">
+                            <a id="pos1">
+                                <span style="font-size:12px;">选填参数（Optional）：</span>
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label>选择SILVA数据库：</label>
+                                </div>
+                                <div class="form-group">
+                                    <select name="r">
+                                        <option value="SILVA123">SILVA123</option>
+                                        <option value="SILVA119">SILVA119</option>
+                                        <option value="SILVA115">SILVA115</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <br><br>
+                            <div class="form-group-p" style="display: none;">
+                                <div class="form-group">
+                                    <label>是否使用预计算的KEGG正相关参考谱计算</label>
+                                    <div style="float:right; position: absolute; right: 11px; bottom: 0px;">
+                                        <div id='gaptip1' style="display: none">
+                                            <div class='tooltip fade top in' style='width: 200px; bottom: 20px; right: -89px; display: block;'>
+                                                <div class='tooltip-arrow'></div>
+                                                <div class='tooltip-inner'>如果为真(默认)，基于16S数据样本的微生物群落的功能能力将使用预计算的KEGG正相关参考谱计算出来; 如果为假，使用预计算的KEGG通路参考谱计算出来的代谢能力将根据MoP方法计算出来</div>
+                                            </div>
+                                        </div>
+                                        <i class="mws-ic-16 ic-question1" onmouseover="gapfocus('gaptip1')" onmouseout="gapblur('gaptip1')" style="padding-left: 22px; background-position: center; padding-top: 2px;"></i>
+                                    </div>
+                                    <label style="padding-left: 15px;">：</label>
+                                </div>
+                                <div class="form-group">
+                                    <select name="fct">
+                                        <option value="TRUE">TRUE</option>
+                                        <option value="FALSE">FALSE</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label>预计算方法：</label>
+                                </div>
+                                <div class="form-group">
+                                    <select name="ref">
+                                        <option value="UProC">UProC</option>
+                                        <option value="PAUDA">PAUDA</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="form-group-p" style="display: none;">
+                                <div class="form-group">
+                                    <label>是否基于100 bp的读数计算</label>
+                                    <div style="float:right; position: absolute; right: 11px; bottom: 0px;">
+                                        <div id='gaptip2' style="display: none">
+                                            <div class='tooltip fade top in' style='width: 200px; bottom: 20px; right: -89px; display: block;'>
+                                                <div class='tooltip-arrow'></div>
+                                                <div class='tooltip-inner'>如果为TRUE（默认），则基于100 bp的读数计算功能参考配置文件，如果为FALSE，则基于400 bp的读数计算参考配置文件</div>
+                                            </div>
+                                        </div>
+                                        <i class="mws-ic-16 ic-question1" onmouseover="gapfocus('gaptip2')" onmouseout="gapblur('gaptip2')" style="padding-left: 22px; background-position: center; padding-top: 2px;"></i>
+                                    </div>
+                                    <label style="padding-left: 15px;">：</label>
+                                </div>
+                                <div class="form-group">
+                                    <select name="srm">
+                                        <option value="TRUE">TRUE</option>
+                                        <option value="FALSE">FALSE</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
                 <br>
@@ -121,7 +201,13 @@
     <script src="@routes.Assets.versioned("myjs/soft.js")" type="text/javascript"></script>
     <script type="text/javascript">
 
+            function gapfocus(para) {
+                $("#"+para).show();
+            }
 
+            function gapblur(para) {
+                $("#"+para).hide();
+            }
 
             $(function () {
                 formValidation();
@@ -129,42 +215,48 @@
                 getTaskName("Tax4Fun","TAX");
             });
 
+            var lock = true;
+
             function taxfun() {
-                var form = $("#Tax4Fun");
-                var fv = form.data("formValidation");
-                fv.validate();
-                if (fv.isValid()) {
-                    if(checktaskname()) {
-                        var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
-                        var index = layer.alert(element, {
-                            skin: 'layui-layer-lan',
-                            closeBtn: 0,
-                            title: "提醒",
-                            btn: []
-                        });
-                        setTimeout(function () {
-                            layer.close(index);
-                            var form1 = new FormData($("#Tax4Fun")[0]);
-                            $.ajax({
-                                url: "/CloudPlatform/SoftTool/runTax4Fun",
-                                type: "post",
-                                processData: false,
-                                contentType: false,
-                                data: form1,
-                                success: function (data) {
-                                    removeul();
-                                    loadHistory("@abbre");
-                                    $("#his_tab1").addClass("active");
-                                    $("#out_tab1").removeClass("active");
-                                    $("#ins_tab1").removeClass("active");
-                                    $("#history").addClass("active").addClass("in");
-                                    $("#example").removeClass("active");
-                                    $("#instruction").removeClass("active");
-                                    getTaskName("Tax4Fun","TAX");
-                                }
+                if(lock) {
+                    lock = false;
+                    var form = $("#Tax4Fun");
+                    var fv = form.data("formValidation");
+                    fv.validate();
+                    if (fv.isValid()) {
+                        if(checktaskname()) {
+                            var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
+                            var index = layer.alert(element, {
+                                skin: 'layui-layer-lan',
+                                closeBtn: 0,
+                                title: "提醒",
+                                btn: []
                             });
-                        }, 2000);
+                            setTimeout(function () {
+                                layer.close(index);
+                                var form1 = new FormData($("#Tax4Fun")[0]);
+                                $.ajax({
+                                    url: "/CloudPlatform/SoftTool/runTax4Fun",
+                                    type: "post",
+                                    processData: false,
+                                    contentType: false,
+                                    data: form1,
+                                    success: function (data) {
+                                        removeul();
+                                        loadHistory("@abbre");
+                                        $("#his_tab1").addClass("active");
+                                        $("#out_tab1").removeClass("active");
+                                        $("#ins_tab1").removeClass("active");
+                                        $("#history").addClass("active").addClass("in");
+                                        $("#example").removeClass("active");
+                                        $("#instruction").removeClass("active");
+                                        getTaskName("Tax4Fun","TAX");
+                                    }
+                                });
+                            }, 2000);
+                        }
                     }
+                    lock = true;
                 }
             }
 

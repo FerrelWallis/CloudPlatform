@@ -168,6 +168,26 @@ class SoftController @Inject()(cc: ControllerComponents,softdao:softDao,userdao:
     Ok(views.html.soft.circosPhylum(abbre))
   }
 
+  def tTest(abbre:String)=Action{implicit request=>
+    Ok(views.html.soft.ttest(abbre))
+  }
+
+  def wilcoxon(abbre:String)=Action{implicit request=>
+    Ok(views.html.soft.wilcoxon(abbre))
+  }
+
+  def kruskaWallis(abbre:String)=Action{implicit request=>
+    Ok(views.html.soft.KruskaWallis(abbre))
+  }
+
+  def anova(abbre:String)=Action{implicit request=>
+    Ok(views.html.soft.anova(abbre))
+  }
+
+  def nmds(abbre:String)=Action{implicit request=>
+    Ok(views.html.soft.nmds(abbre))
+  }
+
 
   def scaplot(abbre:String)=Action{implicit request=>
     Ok(views.html.soft.scatterplots(abbre))
@@ -350,8 +370,6 @@ class SoftController @Inject()(cc: ControllerComponents,softdao:softDao,userdao:
     Ok(Json.obj("rows"->row))
   }
 
-//  def getExampleFile(filename:String)= Action { implicit request =>
-//    Ok()
-//  }
+
 
 }

@@ -12,7 +12,6 @@
     <script src="@routes.Assets.versioned("layer-v3.0/layer/layer.js")" type="text/javascript"></script>
     <script type="text/javascript" src="@routes.Assets.versioned("js/myzui.min.js")"></script>
 
-
     <style>
             .messager.top {
                 top: 20px;
@@ -162,47 +161,53 @@
                 }else return true;
             }
 
+            var lock = true;
+
             function doTrans() {
-                var form = $("#TT");
-                var fv = form.data("formValidation");
-                fv.validate();
-                if (fv.isValid()) {
-                    flagtable=true;
-                    var check=[];
-                    check.push(checkTable());
-                    Promise.all(check).then((r)=>{
-                        if(flagtable&&checktaskname()) {
-                            var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
-                            var index = layer.alert(element, {
-                                skin: 'layui-layer-lan',
-                                closeBtn: 0,
-                                title: "提醒",
-                                btn: []
-                            });
-                            setTimeout(function () {
-                                layer.close(index);
-                                var form1 = new FormData($("#TT")[0]);
-                                $.ajax({
-                                    url: "/CloudPlatform/SoftTool/runTableTrans",
-                                    type: "post",
-                                    processData: false,
-                                    contentType: false,
-                                    data: form1,
-                                    success: function (data) {
-                                        removeul();
-                                        loadHistory("@abbre");
-                                        $("#his_tab1").addClass("active");
-                                        $("#out_tab1").removeClass("active");
-                                        $("#ins_tab1").removeClass("active");
-                                        $("#history").addClass("active").addClass("in");
-                                        $("#example").removeClass("active");
-                                        $("#instruction").removeClass("active");
-                                        getTaskName("TT","TT");
-                                    }
+                if(lock) {
+                    lock = false;
+                    var form = $("#TT");
+                    var fv = form.data("formValidation");
+                    fv.validate();
+                    if (fv.isValid()) {
+                        flagtable=true;
+                        var check=[];
+                        check.push(checkTable());
+                        Promise.all(check).then((r)=>{
+                            if(flagtable&&checktaskname()) {
+                                var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
+                                var index = layer.alert(element, {
+                                    skin: 'layui-layer-lan',
+                                    closeBtn: 0,
+                                    title: "提醒",
+                                    btn: []
                                 });
-                            }, 2000);
-                        }
-                    });
+                                setTimeout(function () {
+                                    layer.close(index);
+                                    var form1 = new FormData($("#TT")[0]);
+                                    $.ajax({
+                                        url: "/CloudPlatform/SoftTool/runTableTrans",
+                                        type: "post",
+                                        processData: false,
+                                        contentType: false,
+                                        data: form1,
+                                        success: function (data) {
+                                            removeul();
+                                            loadHistory("@abbre");
+                                            $("#his_tab1").addClass("active");
+                                            $("#out_tab1").removeClass("active");
+                                            $("#ins_tab1").removeClass("active");
+                                            $("#history").addClass("active").addClass("in");
+                                            $("#example").removeClass("active");
+                                            $("#instruction").removeClass("active");
+                                            getTaskName("TT","TT");
+                                        }
+                                    });
+                                }, 2000);
+                            }
+                        });
+                    }
+                    lock = true;
                 }
             }
 

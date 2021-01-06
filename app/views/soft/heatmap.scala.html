@@ -461,11 +461,11 @@
                 loadVideo("//13125180.s21v.faiusr.com/58/ABUIABA6GAAgts3S_QUo_uGeyAc.mp4","/assets/images/softpic/video/heatmap_video.png")
             });
 
-            var flagtable=true;
-            var row=0;
-            var col=0;
-            var colsample;
-            var rowsample;
+            var flagtable = true;
+            var row = 0;
+            var col = 0;
+            var colsample = [];
+            var rowsample = [];
 
             function checkTable() {
                 return new Promise((resolve, reject) => {
@@ -753,7 +753,6 @@
                 });
             }
 
-
             function checkRate(input) {
                 // var re = /^(-?\d+)(\.\d+)?$/;
                 var re=/^[+-]?[\d]+([\.][\d]+)?([Ee][+-]?[\d]+)?$/;//判断字符串是否为浮点数或科学计数法
@@ -840,50 +839,59 @@
                 }else return true;
             }
 
+            var lock = true;
+
             function runheatmap(formId) {
-                var form = $("#heatmap");
-                var fv = form.data("formValidation");
-                fv.validate();
-                if (fv.isValid()) {
-                    flagtable=true;
-                    var check=[];
-                    check.push(checkTable());
-                    check.push(checkGroupRow());
-                    check.push(checkGroupCol());
-                    check.push(checkTag());
-                    Promise.all(check).then((r)=>{
-                        if(flagtable&&checkcol()&&checkrow()&&checkgroupr()&&checkgroupc()&&checktaskname()) {
-                            var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
-                            var index = layer.alert(element, {
-                                skin: 'layui-layer-lan',
-                                closeBtn: 0,
-                                title: "提醒",
-                                btn: []
+                if(lock) {
+                    lock = false;
+                    var form = $("#heatmap");
+                    var fv = form.data("formValidation");
+                    fv.validate();
+                    if (fv.isValid()) {
+                        flagtable = true;
+                        colsample = [];
+                        rowsample = [];
+                        checkTable().then((r)=>{
+                            var check=[];
+                            check.push(checkGroupRow());
+                            check.push(checkGroupCol());
+                            check.push(checkTag());
+                            Promise.all(check).then((r)=>{
+                                if(flagtable&&checkcol()&&checkrow()&&checkgroupr()&&checkgroupc()&&checktaskname()) {
+                                    var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
+                                    var index = layer.alert(element, {
+                                        skin: 'layui-layer-lan',
+                                        closeBtn: 0,
+                                        title: "提醒",
+                                        btn: []
+                                    });
+                                    setTimeout(function () {
+                                        layer.close(index);
+                                        var form1 = new FormData($("#heatmap")[0]);
+                                        $.ajax({
+                                            url: "/CloudPlatform/SoftTool/runHeatmap?isgroupr="+$("#isgroupr").prop("checked")+"&isgroupc="+$("#isgroupc").prop("checked")+"&istag="+$("#istag").prop("checked"),
+                                            type: "post",
+                                            processData: false,
+                                            contentType: false,
+                                            data: form1,
+                                            success: function (data) {
+                                                removeul();
+                                                loadHistory("@abbre");
+                                                $("#his_tab1").addClass("active");
+                                                $("#out_tab1").removeClass("active");
+                                                $("#ins_tab1").removeClass("active");
+                                                $("#history").addClass("active").addClass("in");
+                                                $("#example").removeClass("active");
+                                                $("#instruction").removeClass("active");
+                                                getTaskName("heatmap","Heat");
+                                            }
+                                        });
+                                    }, 2000);
+                                }
                             });
-                            setTimeout(function () {
-                                layer.close(index);
-                                var form1 = new FormData($("#heatmap")[0]);
-                                $.ajax({
-                                    url: "/CloudPlatform/SoftTool/runHeatmap?isgroupr="+$("#isgroupr").prop("checked")+"&isgroupc="+$("#isgroupc").prop("checked")+"&istag="+$("#istag").prop("checked"),
-                                    type: "post",
-                                    processData: false,
-                                    contentType: false,
-                                    data: form1,
-                                    success: function (data) {
-                                        removeul();
-                                        loadHistory("@abbre");
-                                        $("#his_tab1").addClass("active");
-                                        $("#out_tab1").removeClass("active");
-                                        $("#ins_tab1").removeClass("active");
-                                        $("#history").addClass("active").addClass("in");
-                                        $("#example").removeClass("active");
-                                        $("#instruction").removeClass("active");
-                                        getTaskName("heatmap","Heat");
-                                    }
-                                });
-                            }, 2000);
-                        }
-                    });
+                        });
+                    }
+                    lock = true;
                 }
             }
 

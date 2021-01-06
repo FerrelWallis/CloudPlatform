@@ -16,7 +16,9 @@ object FilesUtils {
 
   def main(args: Array[String]): Unit = {
 
-    println("/1/22/13/4/5/6/33".split("/").contains("2"))
+    val test = (1 to 7).mkString(",")
+
+    println(test)
 
 //    val (names,colors) = FileUtils.readLines(new File("F:\\CloudPlatform\\R\\circos_species\\input\\colors.xls")).asScala.map{x=>
 //      val temp = x.replaceAll("\"","").split("\t")

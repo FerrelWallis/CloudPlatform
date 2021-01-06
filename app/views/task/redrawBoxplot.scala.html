@@ -12,11 +12,10 @@
     <script type="text/javascript" src="@routes.Assets.versioned("palette/evol-colorpicker.min.js")"></script>
     <script type="text/javascript" src="@routes.Assets.versioned("bootstrap-slider-master/bootstrap-slider.js")"></script>
 
-
     <style>
             .picleft{
                 margin-top: 5px;
-                width: 120px;
+                width: 130px;
                 text-align: right;
             }
             .picright{
@@ -24,7 +23,7 @@
             }
             .fontleft{
                 margin-top: 5px;
-                width: 130px;
+                width: 120px;
                 text-align: right;
             }
             .fontright{
@@ -99,6 +98,17 @@
                                     </div>
                                     <div class="form-group-p">
                                         <div class="form-group picleft">
+                                            <label>翻转横纵坐标轴：</label>
+                                        </div>
+                                        <div class="form-group right picright">
+                                            <select id="flip" name="flip">
+                                                <option value="FALSE">no</option>
+                                                <option value="TRUE">yes</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group-p">
+                                        <div class="form-group picleft">
                                             <label>是否绘制数据点：</label>
                                         </div>
                                         <div class="form-group right picright">
@@ -112,24 +122,24 @@
                                         <div class="form-group picleft">
                                             <label for="">数据点透明度(0-1)：</label>
                                         </div>
-                                        <div class="form-group picright" style="margin-left: 10px">
-                                            <input type="text" id="alp" name="alp" class="form-control" placeholder="数字" value="0.8" style="width: 50px;float: left;">
+                                        <div class="form-group picright" style="margin-left: 10px; line-height: 38px;">
+                                            <input type="text" id="alp" name="alp" data-slider-id='salp' data-slider-min="0" data-slider-max="1" data-slider-step="0.05" data-slider-value="0.8" style="width: 100%;">
                                         </div>
                                     </div>
                                     <div class="form-group-p">
                                         <div class="form-group picleft">
                                             <label for="">差异点透明度(0-1)：</label>
                                         </div>
-                                        <div class="form-group picright" style="margin-left: 10px">
-                                            <input type="text" id="add" name="add" class="form-control" placeholder="数字" value="1" style="width: 50px;float: left;">
+                                        <div class="form-group picright" style="margin-left: 10px; line-height: 38px;">
+                                            <input type="text" id="add" name="add" data-slider-id='sadd' data-slider-min="0" data-slider-max="1" data-slider-step="0.05" data-slider-value="1" style="width: 100%;">
                                         </div>
                                     </div>
                                     <div class="form-group-p">
                                         <div class="form-group picleft">
                                             <label for="">盒子宽度(0-1)&nbsp;：</label>
                                         </div>
-                                        <div class="form-group picright" style="margin-left: 10px">
-                                            <input type="text" id="boxwidth" name="boxwidth" class="form-control" placeholder="数字" value="0.7" style="width:50px;">
+                                        <div class="form-group picright" style="margin-left: 10px; line-height: 38px;">
+                                            <input type="text" id="boxwidth" name="boxwidth" data-slider-id='sboxwidth' data-slider-min="0" data-slider-max="1" data-slider-step="0.05" data-slider-value="0.8" style="width: 100%;">
                                         </div>
                                     </div>
                                     <div class="form-group-p">
@@ -137,9 +147,9 @@
                                             <label for="">Y 轴范围&nbsp;：</label>
                                         </div>
                                         <div class="form-group picright" style="margin-left: 10px">
-                                            <input type="text" id="ymin" name="ymin" class="form-control" placeholder="数字" value="" style="width: 50px;float: left;margin-right: 5px;margin-top: 5px">
-                                            <label style="float: left">--</label>
-                                            <input type="text" id="ymax" name="ymax" class="form-control" placeholder="数字" value="" onblur="ylim();" style="width: 50px;  margin-left: 5px;float: left;margin-top: 5px;margin-right: 20px">
+                                            <input type="text" id="ymin" name="ymin" class="form-control" placeholder="数字" value="" style="width: calc(48% - 5px); float: left; margin-right: 5px;">
+                                            <label style="float: left; width: 4%;">--</label>
+                                            <input type="text" id="ymax" name="ymax" class="form-control" placeholder="数字" value="" onblur="ylim();" style="width: calc(48% - 5px); margin-left: 5px; float: left;">
                                         </div>
                                     </div>
                                     <div class="form-group-p">
@@ -147,9 +157,9 @@
                                             <label for="">图片长宽：</label>
                                         </div>
                                         <div class="form-group picright" style="margin-left: 10px">
-                                            <input type="text" id="width" name="width" class="form-control" placeholder="数字" value="12" style="width: 50px;float: left;margin-right: 5px">
-                                            <label style="float: left">--</label>
-                                            <input type="text" id="length" name="length" class="form-control" placeholder="数字" value="10" style="width: 50px;  margin-left: 5px;float: left">
+                                            <input type="text" id="width" name="width" class="form-control" placeholder="数字" value="12" style="width: calc(48% - 5px); float: left; margin-right: 5px">
+                                            <label style="float: left; width: 4%;">--</label>
+                                            <input type="text" id="length" name="length" class="form-control" placeholder="数字" value="10" style="width: calc(48% - 5px); margin-left: 5px;float: left">
                                         </div>
                                     </div>
                                     <div class="form-group-p">
@@ -301,7 +311,7 @@
 
     <script>
 
-        const updatetime="2020-07-29";
+        const updatetime="2020-12-30";
 
         function checkupdate(){
             $(".update").text(updatetime);

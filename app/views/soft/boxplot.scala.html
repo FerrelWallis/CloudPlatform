@@ -18,14 +18,14 @@
                 top: 20px;
                 height: auto;
             }
-    .messager-content {
-        text-align: center;
-        float: left;
-        height: 31px;
-        display: inline-flex;
-        padding: 9px 0 0 0;
-    }
-</style>
+            .messager-content {
+                text-align: center;
+                float: left;
+                height: 31px;
+                display: inline-flex;
+                padding: 9px 0 0 0;
+            }
+    </style>
 
     <div class="col-md-12 mysoft-content" style="width: 98%">
         <div class="  mysoft-content-left  whitebox" style="width: 590px;">
@@ -212,6 +212,7 @@
             });
 
             var flagtable=true;
+            var lock = true;
 
             function checkTable() {
                 return new Promise((resolve, reject) => {
@@ -289,48 +290,50 @@
             }
 
             function boxplot() {
-                var form = $("#Boxplot");
-                var fv = form.data("formValidation");
-                fv.validate();
-                if (fv.isValid()) {
-                    flagtable=true;
-                    var check=[];
-                    check.push(checkTable());
-                    Promise.all(check).then((r)=>{
-                        console.log(r);
-                        console.log(flagtable);
-                        if(flagtable&&checktaskname()) {
-                            var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
-                            var index = layer.alert(element, {
-                                skin: 'layui-layer-lan',
-                                closeBtn: 0,
-                                title: "提醒",
-                                btn: []
-                            });
-                            setTimeout(function () {
-                                layer.close(index);
-                                var form1 = new FormData($("#Boxplot")[0]);
-                                $.ajax({
-                                    url: "/CloudPlatform/SoftTool/runBoxplot",
-                                    type: "post",
-                                    processData: false,
-                                    contentType: false,
-                                    data: form1,
-                                    success: function (data) {
-                                        removeul();
-                                        loadHistory("@abbre");
-                                        $("#his_tab1").addClass("active");
-                                        $("#out_tab1").removeClass("active");
-                                        $("#ins_tab1").removeClass("active");
-                                        $("#history").addClass("active").addClass("in");
-                                        $("#example").removeClass("active");
-                                        $("#instruction").removeClass("active");
-                                        getTaskName("Boxplot","BOX");
-                                    }
+                if(lock) {
+                    lock = false;
+                    var form = $("#Boxplot");
+                    var fv = form.data("formValidation");
+                    fv.validate();
+                    if (fv.isValid()) {
+                        flagtable=true;
+                        var check=[];
+                        check.push(checkTable());
+                        Promise.all(check).then((r)=>{
+                            if(flagtable&&checktaskname()) {
+                                var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
+                                var index = layer.alert(element, {
+                                    skin: 'layui-layer-lan',
+                                    closeBtn: 0,
+                                    title: "提醒",
+                                    btn: []
                                 });
-                            }, 2000);
-                        }
-                    });
+                                setTimeout(function () {
+                                    layer.close(index);
+                                    var form1 = new FormData($("#Boxplot")[0]);
+                                    $.ajax({
+                                        url: "/CloudPlatform/SoftTool/runBoxplot",
+                                        type: "post",
+                                        processData: false,
+                                        contentType: false,
+                                        data: form1,
+                                        success: function (data) {
+                                            removeul();
+                                            loadHistory("@abbre");
+                                            $("#his_tab1").addClass("active");
+                                            $("#out_tab1").removeClass("active");
+                                            $("#ins_tab1").removeClass("active");
+                                            $("#history").addClass("active").addClass("in");
+                                            $("#example").removeClass("active");
+                                            $("#instruction").removeClass("active");
+                                            getTaskName("Boxplot","BOX");
+                                        }
+                                    });
+                                }, 2000);
+                            }
+                        });
+                    }
+                    lock = true;
                 }
             }
 

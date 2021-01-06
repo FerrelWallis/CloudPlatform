@@ -569,51 +569,56 @@
                 // loadVideo("//13125180.s21v.faiusr.com/58/ABUIABA6GAAgts3S_QUo_uGeyAc.mp4","/assets/images/softpic/video/heatmap_video.png")
             });
 
+            var lock = true;
 
             function runEprimer(formId) {
-                var form = $("#PMR");
-                var fv = form.data("formValidation");
-                fv.validate();
-                if (fv.isValid()) {
-                    if(checktaskname()) {
-                        var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
-                        var index = layer.alert(element, {
-                            skin: 'layui-layer-lan',
-                            closeBtn: 0,
-                            title: "提醒",
-                            btn: []
-                        });
-                        setTimeout(function () {
-                            layer.close(index);
-                            var form1 = new FormData($("#PMR")[0]);
-                            $.ajax({
-                                url: "/CloudPlatform/SoftTool/runEprimer",
-                                type: "post",
-                                processData: false,
-                                contentType: false,
-                                data: form1,
-                                success: function (data) {
-                                    removeul();
-                                    loadHistory("@abbre");
-                                    $("#his_tab1").addClass("active");
-                                    $("#out_tab1").removeClass("active");
-                                    $("#ins_tab1").removeClass("active");
-                                    $("#history").addClass("active").addClass("in");
-                                    $("#example").removeClass("active");
-                                    $("#instruction").removeClass("active");
-                                    getTaskName("PMR","PMR");
-                                }
+                if(lock) {
+                    lock = false;
+                    var form = $("#PMR");
+                    var fv = form.data("formValidation");
+                    fv.validate();
+                    if (fv.isValid()) {
+                        if(checktaskname()) {
+                            var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
+                            var index = layer.alert(element, {
+                                skin: 'layui-layer-lan',
+                                closeBtn: 0,
+                                title: "提醒",
+                                btn: []
                             });
-                        }, 2000);
+                            setTimeout(function () {
+                                layer.close(index);
+                                var form1 = new FormData($("#PMR")[0]);
+                                $.ajax({
+                                    url: "/CloudPlatform/SoftTool/runEprimer",
+                                    type: "post",
+                                    processData: false,
+                                    contentType: false,
+                                    data: form1,
+                                    success: function (data) {
+                                        removeul();
+                                        loadHistory("@abbre");
+                                        $("#his_tab1").addClass("active");
+                                        $("#out_tab1").removeClass("active");
+                                        $("#ins_tab1").removeClass("active");
+                                        $("#history").addClass("active").addClass("in");
+                                        $("#example").removeClass("active");
+                                        $("#instruction").removeClass("active");
+                                        getTaskName("PMR","PMR");
+                                    }
+                                });
+                            }, 2000);
+                        }
+                    }else{
+                        switchToInvalid();
+                        swal({
+                            title: "参数设置错误",
+                            text: "有参数不合法，请核实！",
+                            type: "error",
+                            confirmButtonText: "确认"
+                        });
                     }
-                }else{
-                    switchToInvalid();
-                    swal({
-                        title: "参数设置错误",
-                        text: "有参数不合法，请核实！",
-                        type: "error",
-                        confirmButtonText: "确认"
-                    });
+                    lock = true;
                 }
             }
 

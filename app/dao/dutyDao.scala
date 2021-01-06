@@ -5,6 +5,7 @@ import java.util.Date
 
 import javax.inject.Inject
 import models.Tables.{Dutys, DutysRow, Users}
+import net.sf.ehcache.search.aggregator.Count
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 

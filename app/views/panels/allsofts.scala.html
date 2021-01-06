@@ -49,7 +49,7 @@
                 display: block;
                 padding: 3px 0px 8px 10px;
             }
-            ul#all li, ul#like li, ul#function li, ul#cluster li, ul#paint li, ul#check li, ul#sequence li, ul#annotation li, ul#chart li, ul#search li {
+            ul#all li, ul#like li, ul#function li, ul#cluster li, ul#paint li, ul#check li, ul#predict li, ul#sequence li, ul#annotation li, ul#chart li, ul#search li {
                 float: left;
                 margin: 8px;
                 padding: 4px 0px 4px 11px;
@@ -92,6 +92,7 @@
                             <li><a id="li_cluster" href="#clulist" onclick="loadSoft('cluster')">聚类分析</a></li>
                             <li><a id="li_paint" href="#paintlist" onclick="loadSoft('paint')">基础绘图</a></li>
                             <li><a id="li_check" href="#checklist" onclick="loadSoft('check')">统计检验与差异分析</a></li>
+                            <li><a id="li_predict" href="#predictlist" onclick="loadSoft('predict')">菌群功能分析</a></li>
                             <li><a id="li_sequence" href="#seqlist" onclick="loadSoft('sequence')">序列处理</a></li>
                             <li><a id="li_annotation" href="#annolist" onclick="loadSoft('annotation')">注释工具</a></li>
                             <li><a id="li_chart" href="#chartlist" onclick="loadSoft('chart')">表格与格式转化</a></li>
@@ -133,6 +134,10 @@
                 </div>
                 <div id="checklist" style="padding: 1em 0em 1em 1em;float: left;">
                     <ul id="check" class="ui-widget ui-helper-clearfix">
+                    </ul>
+                </div>
+                <div id="predictlist" style="padding: 1em 0em 1em 1em;float: left;">
+                    <ul id="predict" class="ui-widget ui-helper-clearfix">
                     </ul>
                 </div>
                 <div id="seqlist" style="padding: 1em 0em 1em 1em;float: left;">

@@ -45,7 +45,7 @@
                     <br>
                     <br>
                 </div>
-                <div id="div1" class="one-line">
+                <div id="div2" class="one-line">
                     <div class="form-group-p" style="width: 465px">
                         <div class="form-group">
                             <label for="exampleInputName2"><em>2：</em>三元分组文件：</label>
@@ -60,7 +60,7 @@
                     <br>
                     <br>
                 </div>
-                <div id="div1" class="one-line">
+                <div id="div3" class="one-line">
                     <div class="form-group-p" style="width: 465px">
                         <div class="form-group">
                             <label for="exampleInputName2"><em>3：</em>富集标注/物种关注文件：</label>
@@ -151,52 +151,58 @@
 
             var sample = [], otuid = [];
             var flagtable = true;
+            var lock = true;
 
             function runTRY(formId) {
-                var form = $("#TRY");
-                var fv = form.data("formValidation");
-                fv.validate();
-                if (fv.isValid()) {
-                    flagtable=true;
-                    sample = [];
-                    otuid = [];
-                    var check=[];
-                    check.push(checkTable());
-                    check.push(checkGroupfile());
-                    check.push(checkEnrich());
-                    Promise.all(check).then((r)=>{
-                        if(flagtable && checktaskname()) {
-                            var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
-                            var index = layer.alert(element, {
-                                skin: 'layui-layer-lan',
-                                closeBtn: 0,
-                                title: "提醒",
-                                btn: []
+                if(lock) {
+                    lock = false;
+                    var form = $("#TRY");
+                    var fv = form.data("formValidation");
+                    fv.validate();
+                    if (fv.isValid()) {
+                        flagtable=true;
+                        sample = [];
+                        otuid = [];
+                        checkTable().then((r)=>{
+                            var check=[];
+                            check.push(checkGroupfile());
+                            check.push(checkEnrich());
+                            Promise.all(check).then((r)=>{
+                                if(flagtable && checktaskname()) {
+                                    var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
+                                    var index = layer.alert(element, {
+                                        skin: 'layui-layer-lan',
+                                        closeBtn: 0,
+                                        title: "提醒",
+                                        btn: []
+                                    });
+                                    setTimeout(function () {
+                                        layer.close(index);
+                                        var form1 = new FormData($("#TRY")[0]);
+                                        $.ajax({
+                                            url: "/CloudPlatform/SoftTool/runTernary",
+                                            type: "post",
+                                            processData: false,
+                                            contentType: false,
+                                            data: form1,
+                                            success: function (data) {
+                                                removeul();
+                                                loadHistory("@abbre");
+                                                $("#his_tab1").addClass("active");
+                                                $("#out_tab1").removeClass("active");
+                                                $("#ins_tab1").removeClass("active");
+                                                $("#history").addClass("active").addClass("in");
+                                                $("#example").removeClass("active");
+                                                $("#instruction").removeClass("active");
+                                                getTaskName("TRY","TRY");
+                                            }
+                                        });
+                                    }, 2000);
+                                }
                             });
-                            setTimeout(function () {
-                                layer.close(index);
-                                var form1 = new FormData($("#TRY")[0]);
-                                $.ajax({
-                                    url: "/CloudPlatform/SoftTool/runTernary",
-                                    type: "post",
-                                    processData: false,
-                                    contentType: false,
-                                    data: form1,
-                                    success: function (data) {
-                                        removeul();
-                                        loadHistory("@abbre");
-                                        $("#his_tab1").addClass("active");
-                                        $("#out_tab1").removeClass("active");
-                                        $("#ins_tab1").removeClass("active");
-                                        $("#history").addClass("active").addClass("in");
-                                        $("#example").removeClass("active");
-                                        $("#instruction").removeClass("active");
-                                        getTaskName("TRY","TRY");
-                                    }
-                                });
-                            }, 2000);
-                        }
-                    });
+                        });
+                    }
+                    lock = true;
                 }
             }
 
@@ -261,8 +267,8 @@
                 return new Promise((resolve, reject) => {
                     if($("#table1").val()==""){
                         flagtable=flagtable&&false;
-                        $("#CCA").formValidation("revalidateField", "table1");
-                        $("#group").find(".fileinput-remove").click();
+                        $("#TRY").formValidation("revalidateField", "table1");
+                        $("#div2").find(".fileinput-remove").click();
                         swal({
                             title: "请先上传OUT丰度表",
                             text: "请先上传OUT丰度表！",
@@ -323,8 +329,8 @@
                 return new Promise((resolve, reject) => {
                     if($("#table1").val()==""){
                         flagtable=flagtable&&false;
-                        $("#CCA").formValidation("revalidateField", "table1");
-                        $("#group").find(".fileinput-remove").click();
+                        $("#TRY").formValidation("revalidateField", "table1");
+                        $("#div3").find(".fileinput-remove").click();
                         swal({
                             title: "请先上传OUT丰度表",
                             text: "请先上传OUT丰度表！",

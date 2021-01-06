@@ -130,11 +130,27 @@
     <script src="@routes.Assets.versioned("myjs/soft.js")" type="text/javascript"></script>
     <script type="text/javascript">
 
+
             $(function () {
                 formValidation();
                 loadHistory("@abbre");
                 getTaskName("Lefse","LEF");
+                popTip();
             });
+
+
+            function popTip() {
+                swal({
+                    title: "该模块已停止维护",
+                    text: "已推出升级版Lefse2.0模块，旧版lefse停止维护！是否要跳转到Lefse2.0？",
+                    type: "info",
+                    showCancelButton: true,
+                    cancelButtonText: '取 消',//按钮内容
+                    confirmButtonText: '确认跳转'
+                }, function () {
+                    window.location.href = "/CloudPlatform/SoftPage/LF2";
+                });
+            }
 
             const fileValidators = {
                 validators: {
@@ -151,46 +167,51 @@
             };
 
             var sample,tablesflag=true;
+            var lock = true;
 
             function dolefse() {
-                var form = $("#Lefse");
-                var fv = form.data("formValidation");
-                fv.validate();
-                if (fv.isValid()) {
-                    if(tablesflag){
-                        if(checktaskname()){
-                            var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
-                            var index = layer.alert(element, {
-                                skin: 'layui-layer-lan',
-                                closeBtn: 0,
-                                title: "提醒",
-                                btn: []
-                            });
-                            setTimeout(function () {
-                                layer.close(index);
-                                var form1 = new FormData($("#Lefse")[0]);
-                                $.ajax({
-                                    url: "/CloudPlatform/SoftTool/runLefse",
-                                    type: "post",
-                                    processData: false,
-                                    contentType: false,
-                                    data: form1,
-                                    success: function (data) {
-                                        removeul();
-                                        loadHistory("@abbre");
-                                        $("#his_tab1").addClass("active");
-                                        $("#out_tab1").removeClass("active");
-                                        $("#ins_tab1").removeClass("active");
-                                        $("#history").addClass("active").addClass("in");
-                                        $("#example").removeClass("active");
-                                        $("#instruction").removeClass("active");
-                                        getTaskName("Lefse","LEF");
-                                    }
+                if(lock) {
+                    lock = false;
+                    var form = $("#Lefse");
+                    var fv = form.data("formValidation");
+                    fv.validate();
+                    if (fv.isValid()) {
+                        if(tablesflag){
+                            if(checktaskname()){
+                                var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
+                                var index = layer.alert(element, {
+                                    skin: 'layui-layer-lan',
+                                    closeBtn: 0,
+                                    title: "提醒",
+                                    btn: []
                                 });
-                            }, 2000);
+                                setTimeout(function () {
+                                    layer.close(index);
+                                    var form1 = new FormData($("#Lefse")[0]);
+                                    $.ajax({
+                                        url: "/CloudPlatform/SoftTool/runLefse",
+                                        type: "post",
+                                        processData: false,
+                                        contentType: false,
+                                        data: form1,
+                                        success: function (data) {
+                                            removeul();
+                                            loadHistory("@abbre");
+                                            $("#his_tab1").addClass("active");
+                                            $("#out_tab1").removeClass("active");
+                                            $("#ins_tab1").removeClass("active");
+                                            $("#history").addClass("active").addClass("in");
+                                            $("#example").removeClass("active");
+                                            $("#instruction").removeClass("active");
+                                            getTaskName("Lefse","LEF");
+                                        }
+                                    });
+                                }, 2000);
+                            }
                         }
-                    }
 
+                    }
+                    lock = true;
                 }
             }
 

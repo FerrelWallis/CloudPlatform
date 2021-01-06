@@ -78,6 +78,15 @@
                     </div>
                 </div>
                 <br>
+                <div class="form-group-p form-group">
+                    <div style="float: left; display: flow-root;">
+                        <label for="format">最高分类学层级(默认6，到属水平)：</label>
+                    </div>
+                    <div style="display: flow-root;">
+                        <input type="text" name="level" id="level" value="6" class="form-control input-sm" >
+                    </div>
+                </div>
+                <br><br>
                 <div class="panel panel-default">
                     <div class="panel-heading" data-toggle="collapse" href="#collapseOne">
                         <h4 class="panel-title">
@@ -121,18 +130,18 @@
                                 </div>
                                 <div class="form-group">
                                     <select name="y">
-                                        <option value="1">all-against-all(约束更严)</option>
-                                        <option value="0">one-against-all(约束不严，运算久)</option>
+                                        <option value="1">one-against-one</option>
+                                        <option value="0">one-against-all(约束较不严,耗时长)</option>
                                     </select>
                                 </div>
                             </div>
-                            <br><br>
-                            <div class="form-group-p">
+                            <br>
+                            <div class="form-group-p" style="display: none">
                                 <div class="form-group">
                                     <label>是否仅在子类名相同的情况下，进行子类间的成对比较？</label>
                                 </div>
                             </div>
-                            <div class="form-group-p">
+                            <div class="form-group-p" style="display: none">
                                 <div class="form-group" style="width: 100%">
                                     <select name="e" style="width: 100%">
                                         <option value="0">no</option>
@@ -140,7 +149,6 @@
                                     </select>
                                 </div>
                             </div>
-                            <br>
                         </div>
                     </div>
                 </div>
@@ -334,47 +342,53 @@
                 });
             }
 
+            var lock = true;
+
             function dolefse() {
-                var form = $("#LF2");
-                var fv = form.data("formValidation");
-                fv.validate();
-                if (fv.isValid()) {
-                    flagtable=true;
-                    var check=[];
-                    check.push(checkGroupfile());
-                    Promise.all(check).then((r)=>{
-                        if(flagtable&&checktaskname()) {
-                            var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
-                            var index = layer.alert(element, {
-                                skin: 'layui-layer-lan',
-                                closeBtn: 0,
-                                title: "提醒",
-                                btn: []
-                            });
-                            setTimeout(function () {
-                                layer.close(index);
-                                var form1 = new FormData($("#LF2")[0]);
-                                $.ajax({
-                                    url: "/CloudPlatform/SoftTool/runLefse2",
-                                    type: "post",
-                                    processData: false,
-                                    contentType: false,
-                                    data: form1,
-                                    success: function (data) {
-                                        removeul();
-                                        loadHistory("@abbre");
-                                        $("#his_tab1").addClass("active");
-                                        $("#out_tab1").removeClass("active");
-                                        $("#ins_tab1").removeClass("active");
-                                        $("#history").addClass("active").addClass("in");
-                                        $("#example").removeClass("active");
-                                        $("#instruction").removeClass("active");
-                                        getTaskName("LF2","LF2");
-                                    }
+                if(lock) {
+                    lock = false;
+                    var form = $("#LF2");
+                    var fv = form.data("formValidation");
+                    fv.validate();
+                    if (fv.isValid()) {
+                        flagtable=true;
+                        var check=[];
+                        check.push(checkGroupfile());
+                        Promise.all(check).then((r)=>{
+                            if(flagtable&&checktaskname()) {
+                                var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
+                                var index = layer.alert(element, {
+                                    skin: 'layui-layer-lan',
+                                    closeBtn: 0,
+                                    title: "提醒",
+                                    btn: []
                                 });
-                            }, 2000);
-                        }
-                    });
+                                setTimeout(function () {
+                                    layer.close(index);
+                                    var form1 = new FormData($("#LF2")[0]);
+                                    $.ajax({
+                                        url: "/CloudPlatform/SoftTool/runLefse2",
+                                        type: "post",
+                                        processData: false,
+                                        contentType: false,
+                                        data: form1,
+                                        success: function (data) {
+                                            removeul();
+                                            loadHistory("@abbre");
+                                            $("#his_tab1").addClass("active");
+                                            $("#out_tab1").removeClass("active");
+                                            $("#ins_tab1").removeClass("active");
+                                            $("#history").addClass("active").addClass("in");
+                                            $("#example").removeClass("active");
+                                            $("#instruction").removeClass("active");
+                                            getTaskName("LF2","LF2");
+                                        }
+                                    });
+                                }, 2000);
+                            }
+                        });
+                    }
+                    lock = true;
                 }
             }
 
@@ -447,6 +461,16 @@
                             validators: {
                                 notEmpty: {
                                     message: '不能为空！默认值2'
+                                },
+                                numeric: {
+                                    message: '必须为数字！'
+                                }
+                            }
+                        },
+                        level: {
+                            validators: {
+                                notEmpty: {
+                                    message: '不能为空！默认值6'
                                 },
                                 numeric: {
                                     message: '必须为数字！'

@@ -187,6 +187,53 @@
     background-size: contain;
 }
 
+.CCS{
+    background: url(../images/softpic/temp/ccs.png) 50% center no-repeat;
+    background-size: contain;
+}
+.TC{
+    background: url(../images/softpic/temp/tc.png) 50% center no-repeat;
+    background-size: contain;
+}
+.WT{
+    background: url(../images/softpic/temp/wt.png) 50% center no-repeat;
+    background-size: contain;
+}
+.KWT{
+    background: url(../images/softpic/temp/kwt.png) 50% center no-repeat;
+    background-size: contain;
+}
+.AOV{
+    background: url(../images/softpic/temp/aov.png) 50% center no-repeat;
+    background-size: contain;
+}
+
+
+.WGC{
+    background: url(../images/softpic/temp/wgc.png) 50% center no-repeat;
+    background-size: contain;
+}
+.BUB{
+    background: url(../images/softpic/temp/bub.png) 50% center no-repeat;
+    background-size: contain;
+}
+.FG{
+    background: url(../images/softpic/temp/fg.png) 50% center no-repeat;
+    background-size: contain;
+}
+.KRO{
+    background: url(../images/softpic/temp/kro.png) 50% center no-repeat;
+    background-size: contain;
+}
+.PLS{
+    background: url(../images/softpic/temp/pls.png) 50% center no-repeat;
+    background-size: contain;
+}
+.SNE{
+    background: url(../images/softpic/temp/sne.png) 50% center no-repeat;
+    background-size: contain;
+}
+
 
 /*.Scaplot{*/
 /*    background: url(../images/softpic/temp/Jvenn.png) 50% center no-repeat;*/

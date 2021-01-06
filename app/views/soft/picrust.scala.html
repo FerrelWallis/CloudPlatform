@@ -188,58 +188,62 @@
                 $("#checkbox").append(html);
             });
 
+            var lock = true;
 
             function pic() {
-                var form = $("#PICRUST");
-                var fv = form.data("formValidation");
-                fv.validate();
-                if (fv.isValid()) {
-                    var traits=[];
-                    $.each(array, function (n, value) {
-                        if ($("#" + value).is(':checked')) traits.push(value);
-                    });
-                    $("#in_traits").val(traits.join(","));
-                    console.log(traits.join(","));
-                    if(traits.length==0){
-                        swal({
-                            title: "至少选择一个数据基因家族",
-                            text: "至少选择一个数据基因家族！",
-                            type: "warning",
-                            confirmButtonText: "确认"
+                if(lock) {
+                    lock = false;
+                    var form = $("#PICRUST");
+                    var fv = form.data("formValidation");
+                    fv.validate();
+                    if (fv.isValid()) {
+                        var traits=[];
+                        $.each(array, function (n, value) {
+                            if ($("#" + value).is(':checked')) traits.push(value);
                         });
-                    }else{
-                        if(checktaskname()) {
-                            var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
-                            var index = layer.alert(element, {
-                                skin: 'layui-layer-lan',
-                                closeBtn: 0,
-                                title: "提醒",
-                                btn: []
+                        $("#in_traits").val(traits.join(","));
+                        if(traits.length==0){
+                            swal({
+                                title: "至少选择一个数据基因家族",
+                                text: "至少选择一个数据基因家族！",
+                                type: "warning",
+                                confirmButtonText: "确认"
                             });
-                            setTimeout(function () {
-                                layer.close(index);
-                                var form1 = new FormData($("#PICRUST")[0]);
-                                $.ajax({
-                                    url: "/CloudPlatform/SoftTool/runPICRUST",
-                                    type: "post",
-                                    processData: false,
-                                    contentType: false,
-                                    data: form1,
-                                    success: function (data) {
-                                        removeul();
-                                        loadHistory("@abbre");
-                                        $("#his_tab1").addClass("active");
-                                        $("#out_tab1").removeClass("active");
-                                        $("#ins_tab1").removeClass("active");
-                                        $("#history").addClass("active").addClass("in");
-                                        $("#example").removeClass("active");
-                                        $("#instruction").removeClass("active");
-                                        getTaskName("PICRUST","PIC");
-                                    }
+                        }else{
+                            if(checktaskname()) {
+                                var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
+                                var index = layer.alert(element, {
+                                    skin: 'layui-layer-lan',
+                                    closeBtn: 0,
+                                    title: "提醒",
+                                    btn: []
                                 });
-                            }, 2000);
+                                setTimeout(function () {
+                                    layer.close(index);
+                                    var form1 = new FormData($("#PICRUST")[0]);
+                                    $.ajax({
+                                        url: "/CloudPlatform/SoftTool/runPICRUST",
+                                        type: "post",
+                                        processData: false,
+                                        contentType: false,
+                                        data: form1,
+                                        success: function (data) {
+                                            removeul();
+                                            loadHistory("@abbre");
+                                            $("#his_tab1").addClass("active");
+                                            $("#out_tab1").removeClass("active");
+                                            $("#ins_tab1").removeClass("active");
+                                            $("#history").addClass("active").addClass("in");
+                                            $("#example").removeClass("active");
+                                            $("#instruction").removeClass("active");
+                                            getTaskName("PICRUST","PIC");
+                                        }
+                                    });
+                                }, 2000);
+                            }
                         }
                     }
+                    lock = true;
                 }
             }
 

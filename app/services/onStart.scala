@@ -24,10 +24,9 @@ class onStart @Inject()(softDao:softDao,utilsDao:utilsDao,dutyDao:dutyDao,dutyCo
 
   var verifyTimeMap: mutable.HashMap[String, Long] = mutable.HashMap()
 
-//  var latestNote:Int=Await.result(utilsDao.lateNoteId,Duration.Inf)
-
   verifyConfig
   restartRunningDuty
+  softlikeUpdate
 
   def verifyConfig = {
     val runnable = new Runnable {
@@ -43,7 +42,6 @@ class onStart @Inject()(softDao:softDao,utilsDao:utilsDao,dutyDao:dutyDao,dutyCo
         verifyTimeMap = clean
       }
     }
-
     val service = Executors.newSingleThreadScheduledExecutor()
     // 第二个参数为首次执行的延时时间，第三个参数为定时执行的间隔时间
     service.scheduleAtFixedRate(runnable, 1, 3, TimeUnit.MINUTES)
@@ -54,24 +52,24 @@ class onStart @Inject()(softDao:softDao,utilsDao:utilsDao,dutyDao:dutyDao,dutyCo
   def restartRunningDuty ={
     val running=Await.result(dutyDao.getRunningDuty,Duration.Inf)
     running.foreach{duty=>
-//      val dutyDir=Utils.path+"users/"+duty.uid+"/"+duty.taskname
-//      val execCommand = new ExecCommand
-//      execCommand.exect(s"sh $dutyDir/temp/run.sh",dutyDir+"/temp")
-//      if (execCommand.isSuccess) {
-//        new File(dutyDir+"/out").listFiles().filter(_.getName.contains("pdf")).map(_.getAbsolutePath)
-////        Utils.pdf2Png(dutyDir+"/out/circle.pdf",dutyDir+"/out/circle.png")
-////        Utils.pdf2Png(dutyDir+"/out/circle.pdf",dutyDir+"/out/circle.tiff")
-//        dutyController.updateFini(duty.uid.toString,duty.taskname)
-//        rservice.creatZip(dutyDir)
-//      } else {
-//
-//        FileUtils.writeStringToFile(new File(dutyDir,"log.txt"),"错误信息：\n"+execCommand.getErrStr+"\n\n")
-//      }
       val dutyDir=Utils.path+"users/"+duty.taskname
       FileUtils.writeStringToFile(new File(dutyDir,"log.txt"),"错误信息：\n文件格式错误，或云平台更新导致失效！\n\n")
       dutyDao.updateFailed(duty.uid.toString,duty.taskname)
     }
   }
 
+
+  def softlikeUpdate = {
+    val runnable = new Runnable {
+      override def run() = {
+        Await.result(softDao.gethotestFreq,Duration.Inf).map{result =>
+          Await.result(softDao.updateLike(result._1,result._2),Duration.Inf)
+        }
+      }
+    }
+    val service = Executors.newSingleThreadScheduledExecutor()
+    // 第二个参数为首次执行的延时时间，第三个参数为定时执行的间隔时间
+    service.scheduleAtFixedRate(runnable, 0, 3, TimeUnit.DAYS)
+  }
 
 }

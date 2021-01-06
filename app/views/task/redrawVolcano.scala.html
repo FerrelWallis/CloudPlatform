@@ -201,7 +201,7 @@
                                     <div style="border: 1px solid lightgrey;border-radius: 5px;padding: 10px;margin-left: 30px">
                                         <div class="form-group-p" style="padding-left: 0">
                                             <div style="width: 100%;margin-top: 10px">
-                                                <label>数据点分布颜色颜色(part1-4由分界线分隔)：</label>
+                                                <label>数据点颜色分布(part1-4由分界线分隔)：</label>
                                                 <span id="groupname"></span>
                                             </div>
                                         </div>
@@ -328,7 +328,7 @@
                 tooltip:'always'
             });
 
-            const updatetime="2020-09-19";
+            const updatetime="2020-12-10";
 
             function checkupdate(){
                 $(".update").text(updatetime);
@@ -378,14 +378,14 @@
                         success:function (data) {
                             $("#redraw_pic").attr("src","/CloudPlatform/pic?path="+data.pics[0]+"&num="+Math.random());
                             $.each(data.elements,function (i,v) {
-                                if($("#"+i).attr("data-slider-id")==null) $("#"+i).val(v);
-                                else if(i=="color4") {
+                                if(i=="color4") {
                                     $("#color4").colorpicker({color: v, defaultPalette: 'web',showOn:"button"})
                                             .on("change.color", function(event, color){ //选择颜色事件
                                                 //formValidation重新验证颜色
-                                                $("#FH").formValidation("revalidateField", "color4");
+                                                $("#VOC").formValidation("revalidateField", "color4");
                                             });
-                                } else {
+                                } else if($("#"+i).attr("data-slider-id")==null) $("#"+i).val(v);
+                                else {
                                     $("#" + i).bootstrapSlider({tooltip:'always'});
                                     $("#" + i).bootstrapSlider('setValue', v);
                                 }
@@ -529,7 +529,7 @@
                             }
                         }
                     },
-                    color4:colorValidators
+                    color4 :colorValidators
                 });
             }
 

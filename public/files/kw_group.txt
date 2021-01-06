@@ -1,0 +1,11 @@
+NZ	a
+NQ	a
+230Z	a
+230Q	b
+148Z	b
+724Q	b
+115W	b
+1	c
+2	c
+3	c
+4	c
