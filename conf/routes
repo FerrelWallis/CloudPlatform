@@ -16,113 +16,23 @@ GET           /CloudPlatform/managerPanel                            controllers
 GET           /CloudPlatform/NoticeList                              controllers.HomeController.notelist
 GET           /CloudPlatform/feedback                                controllers.HomeController.feedback
 
-GET           /CloudPlatform/SoftPage/GO                             controllers.SoftController.go(abbre="GO")
-GET           /CloudPlatform/SoftPage/KEGG                           controllers.SoftController.kegg(abbre="KEGG")
-GET           /CloudPlatform/SoftPage/PCA                            controllers.SoftController.pca(abbre="PCA")
-GET           /CloudPlatform/SoftPage/CCA                            controllers.SoftController.cca(abbre="CCA")
-GET           /CloudPlatform/SoftPage/Heatmap                        controllers.SoftController.heatmap(abbre="Heatmap")
-GET           /CloudPlatform/SoftPage/Boxplot                        controllers.SoftController.boxplot(abbre="Boxplot")
-GET           /CloudPlatform/SoftPage/NetWeight                      controllers.SoftController.netWeight(abbre="NetWeight")
-GET           /CloudPlatform/SoftPage/Venn                           controllers.SoftController.venn(abbre="Venn")
-GET           /CloudPlatform/SoftPage/NetDirected                    controllers.SoftController.netDirected
-GET           /CloudPlatform/SoftPage/Net                            controllers.SoftController.net
-GET           /CloudPlatform/SoftPage/IGC                            controllers.SoftController.innergroup(abbre="IGC")
-GET           /CloudPlatform/SoftPage/TAX                            controllers.SoftController.tax4fun(abbre="TAX")
-GET           /CloudPlatform/SoftPage/FAP                            controllers.SoftController.faprotax(abbre="FAP")
-GET           /CloudPlatform/SoftPage/PIC                            controllers.SoftController.picrust(abbre="PIC")
-GET           /CloudPlatform/SoftPage/BAR                            controllers.SoftController.bargroup(abbre="BAR")
-GET           /CloudPlatform/SoftPage/LEF                            controllers.SoftController.lefse(abbre="LEF")
-GET           /CloudPlatform/SoftPage/LF2                            controllers.SoftController.lefse2(abbre="LF2")
-GET           /CloudPlatform/SoftPage/ABI                            controllers.SoftController.abiview(abbre="ABI")
-GET           /CloudPlatform/SoftPage/RSQ                            controllers.SoftController.revseq(abbre="RSQ")
-GET           /CloudPlatform/SoftPage/GTF                            controllers.SoftController.getorf(abbre="GTF")
-GET           /CloudPlatform/SoftPage/PMR                            controllers.SoftController.eprimer(abbre="PMR")
-GET           /CloudPlatform/SoftPage/VOC                            controllers.SoftController.volcano(abbre="VOC")
-GET           /CloudPlatform/SoftPage/MHT                            controllers.SoftController.manhattan(abbre="MHT")
-GET           /CloudPlatform/SoftPage/TRM                            controllers.SoftController.treemap(abbre="TRM")
-GET           /CloudPlatform/SoftPage/VIO                            controllers.SoftController.violin(abbre="VIO")
-GET           /CloudPlatform/SoftPage/FH                             controllers.SoftController.freqhisto(abbre="FH")
-GET           /CloudPlatform/SoftPage/BRB                            controllers.SoftController.breakbar(abbre="BRB")
-GET           /CloudPlatform/SoftPage/CIR                            controllers.SoftController.circos(abbre="CIR")
-GET           /CloudPlatform/SoftPage/PCO                            controllers.SoftController.pcoa(abbre="PCO")
-GET           /CloudPlatform/SoftPage/BIS                            controllers.SoftController.pie(abbre="BIS")
-GET           /CloudPlatform/SoftPage/EBL                            controllers.SoftController.errorbreakline(abbre="EBL")
-GET           /CloudPlatform/SoftPage/BB                             controllers.SoftController.bubble(abbre="BB")
-GET           /CloudPlatform/SoftPage/TT                             controllers.SoftController.tableTrans(abbre="TT")
-GET           /CloudPlatform/SoftPage/MTT                            controllers.SoftController.merge2table(abbre="MTT")
-GET           /CloudPlatform/SoftPage/MMT                            controllers.SoftController.mergemultable(abbre="MMT")
-GET           /CloudPlatform/SoftPage/TM                             controllers.SoftController.tree(abbre="TM")
-GET           /CloudPlatform/SoftPage/TRY                            controllers.SoftController.ternary(abbre="TRY")
-GET           /CloudPlatform/SoftPage/ITC                            controllers.SoftController.intraclass(abbre="ITC")
-GET           /CloudPlatform/SoftPage/CCS                            controllers.SoftController.circosphylum(abbre="CCS")
-GET           /CloudPlatform/SoftPage/TC                             controllers.SoftController.tTest(abbre="TC")
-GET           /CloudPlatform/SoftPage/WT                             controllers.SoftController.wilcoxon(abbre="WT")
-GET           /CloudPlatform/SoftPage/KWT                            controllers.SoftController.kruskaWallis(abbre="KWT")
-GET           /CloudPlatform/SoftPage/AOV                            controllers.SoftController.anova(abbre="AOV")
-GET           /CloudPlatform/SoftPage/NMD                            controllers.SoftController.nmds(abbre="NMD")
-
-GET           /CloudPlatform/SoftPage/Scaplot                        controllers.SoftController.scaplot(abbre="")
-
+GET           /CloudPlatform/SoftPage/:abbre                         controllers.SoftController.softPage(abbre:String)
+GET           /CloudPlatform/Mytask/taskPreview/:abbre               controllers.SoftController.previewPage(abbre:String, taskname:String)
 
 GET           /CloudPlatform/Softwares/home/latest                   controllers.SoftController.getlatestSix
 GET           /CloudPlatform/Softwares/home/hotest                   controllers.SoftController.gethotestSix
 GET           /CloudPlatform/Softwares/home/alllist                  controllers.SoftController.getAllSoft
 GET           /CloudPlatform/Softwares/home/types                    controllers.SoftController.getTypes(types:String)
 GET           /CloudPlatform/Softwares/home/search                   controllers.SoftController.getSearch(search:String)
-#GET           /CloudPlatform/Softwares/home/clulist                  controllers.SoftController.getCluster
-#GET           /CloudPlatform/Softwares/home/paintlist                controllers.SoftController.getPaint
 GET           /CloudPlatform/Softwares/home/likelist                 controllers.SoftController.getLike
 GET           /CloudPlatform/Softwares/home/likebref                 controllers.SoftController.getLikebrief
-POST          /CloudPlatform/                 controllers.SoftController.getLikebrief
-
-GET          /CloudPlatform/Mytask/teskPreview/PCA                   controllers.PreviewController.prePCA(taskname:String)
-GET          /CloudPlatform/Mytask/teskPreview/Boxplot               controllers.PreviewController.preBoxplot(taskname:String)
-GET          /CloudPlatform/Mytask/teskPreview/Heatmap               controllers.PreviewController.preHeatmap(taskname:String)
-GET          /CloudPlatform/Mytask/teskPreview/CCA                   controllers.PreviewController.preCCA(taskname:String)
-GET          /CloudPlatform/Mytask/teskPreview/NetWeight             controllers.PreviewController.preNet(taskname:String)
-GET          /CloudPlatform/Mytask/teskPreview/GO                    controllers.PreviewController.preGo(taskname:String)
-GET          /CloudPlatform/Mytask/teskPreview/KEGG                  controllers.PreviewController.preKegg(taskname:String)
-GET          /CloudPlatform/Mytask/teskPreview/IGC                   controllers.PreviewController.preIGC(taskname:String)
-GET          /CloudPlatform/Mytask/teskPreview/TAX                   controllers.PreviewController.preTax(taskname:String)
-GET          /CloudPlatform/Mytask/teskPreview/FAP                   controllers.PreviewController.preDataOnly(taskname:String)
-GET          /CloudPlatform/Mytask/teskPreview/PIC                   controllers.PreviewController.prePIC(taskname:String)
-GET          /CloudPlatform/Mytask/teskPreview/BAR                   controllers.PreviewController.preBar(taskname:String)
-GET          /CloudPlatform/Mytask/teskPreview/LEF                   controllers.PreviewController.preLEF(taskname:String)
-GET          /CloudPlatform/Mytask/teskPreview/LF2                   controllers.PreviewController.preLF2(taskname:String)
-GET          /CloudPlatform/Mytask/teskPreview/ABI                   controllers.PreviewController.preABI(taskname:String)
-GET          /CloudPlatform/Mytask/teskPreview/RSQ                   controllers.PreviewController.preRSQ(taskname:String)
-GET          /CloudPlatform/Mytask/teskPreview/GTF                   controllers.PreviewController.preGTF(taskname:String)
-GET          /CloudPlatform/Mytask/teskPreview/PMR                   controllers.PreviewController.prePMR(taskname:String)
-GET          /CloudPlatform/Mytask/teskPreview/VOC                   controllers.PreviewController.preVOC(taskname:String)
-GET          /CloudPlatform/Mytask/teskPreview/MHT                   controllers.PreviewController.preMHT(taskname:String)
-GET          /CloudPlatform/Mytask/teskPreview/TRM                   controllers.PreviewController.preTRM(taskname:String)
-GET          /CloudPlatform/Mytask/teskPreview/VIO                   controllers.PreviewController.preVIO(taskname:String)
-GET          /CloudPlatform/Mytask/teskPreview/FH                    controllers.PreviewController.preFH(taskname:String)
-GET          /CloudPlatform/Mytask/teskPreview/BRB                   controllers.PreviewController.preBRB(taskname:String)
-GET          /CloudPlatform/Mytask/teskPreview/PCO                   controllers.PreviewController.prePCO(taskname:String)
-GET          /CloudPlatform/Mytask/teskPreview/BIS                   controllers.PreviewController.preBIS(taskname:String)
-GET          /CloudPlatform/Mytask/teskPreview/EBL                   controllers.PreviewController.preEBL(taskname:String)
-GET          /CloudPlatform/Mytask/teskPreview/BB                    controllers.PreviewController.preBB(taskname:String)
-GET          /CloudPlatform/Mytask/teskPreview/CIR                   controllers.PreviewController.preCIR(taskname:String)
-GET          /CloudPlatform/Mytask/teskPreview/TT                    controllers.PreviewController.preDataOnly(taskname:String)
-GET          /CloudPlatform/Mytask/teskPreview/MTT                   controllers.PreviewController.preDataOnly(taskname:String)
-GET          /CloudPlatform/Mytask/teskPreview/MMT                   controllers.PreviewController.preDataOnly(taskname:String)
-GET          /CloudPlatform/Mytask/teskPreview/TM                    controllers.PreviewController.preTM(taskname:String)
-GET          /CloudPlatform/Mytask/teskPreview/TRY                   controllers.PreviewController.preTRY(taskname:String)
-GET          /CloudPlatform/Mytask/teskPreview/ITC                   controllers.PreviewController.preIGC(taskname:String)
-GET          /CloudPlatform/Mytask/teskPreview/CCS                   controllers.PreviewController.preCCS(taskname:String)
-GET          /CloudPlatform/Mytask/teskPreview/TC                    controllers.PreviewController.preDataOnly(taskname:String)
-GET          /CloudPlatform/Mytask/teskPreview/WT                    controllers.PreviewController.preDataOnly(taskname:String)
-GET          /CloudPlatform/Mytask/teskPreview/KWT                   controllers.PreviewController.preDataOnly(taskname:String)
-GET          /CloudPlatform/Mytask/teskPreview/AOV                   controllers.PreviewController.preDataOnly(taskname:String)
-GET          /CloudPlatform/Mytask/teskPreview/NMD                   controllers.PreviewController.preNMD(taskname:String)
 
 #Cluster
-POST          /CloudPlatform/SoftTool/runPCA                         controllers.RClusterController.doPCA(isgroup:Boolean,table:String,group:String,abbre:String)
-POST          /CloudPlatform/SoftTool/getPCAData                     controllers.RClusterController.readPCAData(taskname:String,abbre:String)
-POST          /CloudPlatform/SoftTool/redrawPCA                      controllers.RClusterController.redrawPCA(taskname:String,abbre:String)
+POST          /CloudPlatform/SoftTool/runSoft                        controllers.RService.runSoft(abbre:String, sname:String)
+POST          /CloudPlatform/SoftTool/getParams                      controllers.RService.getParams(taskname:String,abbre:String)
+POST          /CloudPlatform/SoftTool/reDrawRun                      controllers.RService.reDrawRun(taskname:String,abbre:String)
 
-POST          /CloudPlatform/SoftTool/runPcoa                        controllers.RClusterController.doPCA(isgroup:Boolean,table:String,group:String,abbre:String)
+POST          /CloudPlatform/SoftTool/runPcoa                        controllers.RClusterController.doPCOA(isgroup:Boolean,table:String,group:String)
 POST          /CloudPlatform/SoftTool/getPcoaData                    controllers.RClusterController.readPCAData(taskname:String,abbre:String)
 POST          /CloudPlatform/SoftTool/redrawPcoa                     controllers.RClusterController.redrawPCA(taskname:String,abbre:String)
 
@@ -134,6 +44,14 @@ POST          /CloudPlatform/SoftTool/runNMD                         controllers
 POST          /CloudPlatform/SoftTool/getNMDData                     controllers.RClusterController.readNmdsData(taskname:String)
 POST          /CloudPlatform/SoftTool/redrawNMD                      controllers.RClusterController.redrawNmds(taskname:String)
 
+POST          /CloudPlatform/SoftTool/runPCA3                        controllers.RClusterController.do3DPCA(isgroup:Boolean)
+POST          /CloudPlatform/SoftTool/getPCA3Data                    controllers.RClusterController.read3DPCAData(taskname:String)
+POST          /CloudPlatform/SoftTool/redrawPCA3                     controllers.RClusterController.redraw3DPCA(taskname:String)
+
+POST          /CloudPlatform/SoftTool/runRF                          controllers.RClusterController.doRF
+POST          /CloudPlatform/SoftTool/getRFData                      controllers.RClusterController.readRFData(taskname:String)
+POST          /CloudPlatform/SoftTool/redrawRF                       controllers.RClusterController.redrawRF(taskname:String)
+
 
 #Function
 POST          /CloudPlatform/SoftTool/runGo                          controllers.RFunctionController.doGo(types:String,refer:String,table:String)
@@ -142,9 +60,6 @@ POST          /CloudPlatform/SoftTool/redrawGO                       controllers
 
 POST          /CloudPlatform/SoftTool/runTax4Fun                     controllers.RFunctionController.doTax4Fun
 POST          /CloudPlatform/SoftTool/getTAX4Fun                     controllers.RFunctionController.readTax4Fun(taskname:String)
-
-POST          /CloudPlatform/SoftTool/runFAPROTAX                    controllers.RFunctionController.doFAPROTAX
-POST          /CloudPlatform/SoftTool/runPICRUST                     controllers.RFunctionController.doPICRUST
 
 POST          /CloudPlatform/SoftTool/runLefse                       controllers.RFunctionController.doLefse
 POST          /CloudPlatform/SoftTool/getLefse                       controllers.RFunctionController.readLefse(taskname:String)
@@ -155,8 +70,6 @@ POST          /CloudPlatform/SoftTool/redrawLefRes                   controllers
 POST          /CloudPlatform/SoftTool/redrawLefCla                   controllers.RFunctionController.redrawLefCla(taskname:String)
 POST          /CloudPlatform/SoftTool/redrawLefFea                   controllers.RFunctionController.redrawLefFea(taskname:String)
 
-POST          /CloudPlatform/SoftTool/runGetorf                      controllers.RFunctionController.doGetorf
-POST          /CloudPlatform/SoftTool/runEprimer                     controllers.RFunctionController.doEprimer
 
 
 #Paint
@@ -235,6 +148,14 @@ POST          /CloudPlatform/SoftTool/runCCS                         controllers
 POST          /CloudPlatform/SoftTool/getCCS                         controllers.RPaintController.readCCS(taskname:String)
 POST          /CloudPlatform/SoftTool/redrawCCS                      controllers.RPaintController.redrawCCS(taskname:String)
 
+POST          /CloudPlatform/SoftTool/runLIN                         controllers.RPaintController.doLIN
+POST          /CloudPlatform/SoftTool/getLIN                         controllers.RPaintController.readLINData(taskname:String)
+POST          /CloudPlatform/SoftTool/redrawLIN                      controllers.RPaintController.redrawLIN(taskname:String)
+
+POST          /CloudPlatform/SoftTool/runSCA                         controllers.RPaintController.doSCA
+POST          /CloudPlatform/SoftTool/getSCA                         controllers.RPaintController.readSCAData(taskname:String)
+POST          /CloudPlatform/SoftTool/redrawSCA                      controllers.RPaintController.redrawSCA(taskname:String)
+
 
 #Check
 POST          /CloudPlatform/SoftTool/runIGC                         controllers.RCheckController.doIGC(tablenum:Int)
@@ -246,6 +167,11 @@ POST          /CloudPlatform/SoftTool/runTTest                       controllers
 POST          /CloudPlatform/SoftTool/runWilcoxon                    controllers.RCheckController.doWilcoxon
 POST          /CloudPlatform/SoftTool/runKruskal                     controllers.RCheckController.doKruskal
 POST          /CloudPlatform/SoftTool/runAnova                       controllers.RCheckController.doAnova
+
+POST          /CloudPlatform/SoftTool/runPLS                         controllers.RCheckController.doPlsda
+POST          /CloudPlatform/SoftTool/getPLSData                     controllers.RCheckController.readPlsdaData(taskname:String)
+POST          /CloudPlatform/SoftTool/redrawPLS                      controllers.RCheckController.redrawPlsda(taskname:String)
+
 
 #Sequence
 POST          /CloudPlatform/SoftTool/runRevseq                      controllers.RSequenceController.doRevseq
@@ -267,6 +193,13 @@ POST          /CloudPlatform/Utils/getFeedsByFid                     controllers
 POST          /CloudPlatform/Utils/getAllFeeds                       controllers.UtilsController.getAllFeeds
 POST          /CloudPlatform/Utils/deleteFeeds                       controllers.UtilsController.deleteFeeds(ids:String)
 POST          /CloudPlatform/Utils/realDeleteFeeds                   controllers.UtilsController.realDeleteFeeds(ids:String)
+POST          /CloudPlatform/Utils/checkUnReadFeed                   controllers.UtilsController.checkUnreadFeed
+
+POST          /CloudPlatform/Utils/getFeedsMailbyFid                 controllers.UtilsController.getFeedsMailbyFid(fid:String, mid:Int)
+POST          /CloudPlatform/Utils/addMail                           controllers.UtilsController.addMailbox(fid:Int, uid:Int, user:String)
+POST          /CloudPlatform/Utils/getMailsByUid                     controllers.UtilsController.getMailsByUID
+POST          /CloudPlatform/Utils/checkUnReadMails                  controllers.UtilsController.checkUnreadMails
+
 POST          /CloudPlatform/Utils/insertNote                        controllers.UtilsController.insertNotice
 POST          /CloudPlatform/Utils/getLateNote                       controllers.UtilsController.getLatestNotice
 POST          /CloudPlatform/Utils/checkReadNote                     controllers.UtilsController.checkReadNote
@@ -281,7 +214,7 @@ POST          /CloudPlatform/Utils/getSoftFreq                       controllers
 
 #POST          /CloudPlatform/SoftTool/runDirected                    controllers.RService.doDirected(id:String)
 
-#POST           /CloudPlatform/SoftTool/getFiles                     controllers.RService.getFiles(id:String,taskname:String)
+GET         /CloudPlatform/SoftTool/creatDownDuty                  controllers.RService.creatDownDuty(taskname:String,uid:String,num:Double)
 POST          /CloudPlatform/SoftTool/getDownloadFiles               controllers.RService.getDownloadFiles(taskname:String,soft:String)
 GET           /CloudPlatform/SoftTool/downloadFile                   controllers.RService.downloadFile(taskname:String,filename:String,num:Double)
 GET           /CloudPlatform/SoftTool/downloadZip                    controllers.RService.downloadZip(taskname:String,num:Double)
@@ -291,7 +224,9 @@ GET           /CloudPlatform/SoftTool/downloadExamples               controllers
 GET           /CloudPlatform/pic                                     controllers.RService.getPic(path:String,num:Double)
 GET           /CloudPlatform/pdf                                     controllers.RService.getPdf(fileUrl:String)
 
+
 POST          /CloudPlatform/MyTasks/getAllDutys                     controllers.DutyController.getAllDutys
+POST          /CloudPlatform/MyTasks/getDuties                       controllers.DutyController.getDuties
 POST          /CloudPlatform/MyTasks/getDutys                        controllers.DutyController.getAllDutyById
 POST          /CloudPlatform/MyTasks/getDutysByType                  controllers.DutyController.getDutyByType(sabbrename:String)
 POST          /CloudPlatform/MyTasks/deleteDutys                     controllers.DutyController.deleteDutys(ids:String)
@@ -299,6 +234,7 @@ POST          /CloudPlatform/MyTasks/deleteDuty                      controllers
 #GET           /CloudPlatform/MyTasks/taskPreview                     controllers.DutyController.taskPreview(taskname:String)
 POST          /CloudPlatform/MyTasks/checkTaskname                   controllers.DutyController.checktaskname
 POST          /CloudPlatform/MyTasks/showlog                         controllers.DutyController.showLog(taskname:String)
+POST          /CloudPlatform/MyTasks/showlogByUid                    controllers.DutyController.showLogByUid(taskname:String, uid:String)
 
 
 POST          /CloudPlatform/User/signIn                             controllers.UserController.signIn

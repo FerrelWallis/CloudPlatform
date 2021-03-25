@@ -921,49 +921,108 @@ hr {
     overflow:visible;
     clip:auto
 }
-h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6 {
-    font-family:inherit;
-    font-weight:500;
-    line-height:1.1;
-    color:inherit
+h1, h2, h3 {
+    margin-top: 20px;
+    margin-bottom: 10px
 }
-h1 small,h2 small,h3 small,h4 small,h5 small,h6 small,.h1 small,.h2 small,.h3 small,.h4 small,.h5 small,.h6 small,h1 .small,h2 .small,h3 .small,h4 .small,h5 .small,h6 .small,.h1 .small,.h2 .small,.h3 .small,.h4 .small,.h5 .small,.h6 .small {
-    font-weight:400;
-    line-height:1;
-    color:#777
+
+h1 small, h2 small, h3 small {
+    font-size: 65%
 }
-h1,.h1,h2,.h2,h3,.h3 {
-    margin-top:20px;
-    margin-bottom:10px
+
+h4, h5, h6 {
+    margin-top: 10px;
+    margin-bottom: 10px
 }
-h1 small,.h1 small,h2 small,.h2 small,h3 small,.h3 small,h1 .small,.h1 .small,h2 .small,.h2 .small,h3 .small,.h3 .small {
-    font-size:65%
+
+h4 small, h5 small, h6 small {
+    font-size: 75%
 }
-h4,.h4,h5,.h5,h6,.h6 {
-    margin-top:10px;
-    margin-bottom:10px
+
+h1 {
+    font-size: 26px
 }
-h4 small,.h4 small,h5 small,.h5 small,h6 small,.h6 small,h4 .small,.h4 .small,h5 .small,.h5 .small,h6 .small,.h6 .small {
-    font-size:75%
+
+h2 {
+    font-size: 20px
 }
-h1,.h1 {
-    font-size:36px
+
+h3 {
+    font-size: 16px
 }
-h2,.h2 {
-    font-size:30px
+
+h4 {
+    font-size: 15px
 }
-h3,.h3 {
-    font-size:24px
+
+h5 {
+    font-size: 13px
 }
-h4,.h4 {
-    font-size:18px
+
+h6 {
+    font-size: 12px
 }
-h5,.h5 {
-    font-size:14px
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Helvetica Neue", Helvetica, 'Microsoft Yahei', 'Hiragino Sans GB', 'WenQuanYi Micro Hei', Tahoma, Arial, sans-serif;
+    font-weight: 700;
+    line-height: 1.1;
+    color: inherit
 }
-h6,.h6 {
-    font-size:12px
+
+h1 small, h2 small, h3 small, h4 small, h5 small, h6 small {
+    font-weight: 400;
+    line-height: 1;
+    color: gray
 }
+
+h1.header-dividing, h2.header-dividing, h3.header-dividing, h4.header-dividing, h5.header-dividing, h6.header-dividing {
+    padding-bottom: 9px;
+    border-bottom: 1px solid #e5e5e5
+}
+/*h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6 {*/
+/*    font-family:inherit;*/
+/*    font-weight:500;*/
+/*    line-height:1.1;*/
+/*    color:inherit*/
+/*}*/
+/*h1 small,h2 small,h3 small,h4 small,h5 small,h6 small,.h1 small,.h2 small,.h3 small,.h4 small,.h5 small,.h6 small,h1 .small,h2 .small,h3 .small,h4 .small,h5 .small,h6 .small,.h1 .small,.h2 .small,.h3 .small,.h4 .small,.h5 .small,.h6 .small {*/
+/*    font-weight:400;*/
+/*    line-height:1;*/
+/*    color:#777*/
+/*}*/
+/*h1,.h1,h2,.h2,h3,.h3 {*/
+/*    margin-top:20px;*/
+/*    margin-bottom:10px*/
+/*}*/
+/*h1 small,.h1 small,h2 small,.h2 small,h3 small,.h3 small,h1 .small,.h1 .small,h2 .small,.h2 .small,h3 .small,.h3 .small {*/
+/*    font-size:65%*/
+/*}*/
+/*h4,.h4,h5,.h5,h6,.h6 {*/
+/*    margin-top:10px;*/
+/*    margin-bottom:10px*/
+/*}*/
+/*h4 small,.h4 small,h5 small,.h5 small,h6 small,.h6 small,h4 .small,.h4 .small,h5 .small,.h5 .small,h6 .small,.h6 .small {*/
+/*    font-size:75%*/
+/*}*/
+/*h1,.h1 {*/
+/*    font-size:36px*/
+/*}*/
+/*h2,.h2 {*/
+/*    font-size:30px*/
+/*}*/
+/*h3,.h3 {*/
+/*    font-size:24px*/
+/*}*/
+/*h4,.h4 {*/
+/*    font-size:18px*/
+/*}*/
+/*h5,.h5 {*/
+/*    font-size:14px*/
+/*}*/
+/*h6,.h6 {*/
+/*    font-size:12px*/
+/*}*/
 p {
     margin:0 0 10px
 }
@@ -2220,7 +2279,7 @@ textarea.input-lg,textarea.form-group-lg .form-control,select[multiple].input-lg
     position:relative
 }
 .has-feedback .form-control {
-    padding-right:42.5px
+    padding-right:0px
 }
 .form-control-feedback {
     position:absolute;
@@ -2463,13 +2522,13 @@ textarea.input-lg,textarea.form-group-lg .form-control,select[multiple].input-lg
 }
 .btn-primary {
     color: #fff;
-    background-color: #956295;
-    border-color: #954991;
+    background-color: #003366;
+    border-color: #003366;
 }
 .btn-primary:hover,.btn-primary:focus,.btn-primary.focus,.btn-primary:active,.btn-primary.active,.open>.dropdown-toggle.btn-primary {
     color: #fff;
-    background-color: #954991;
-    border-color: #956295;
+    background-color: #0d2648;
+    border-color: #0d2648;
 }
 .btn-primary:active,.btn-primary.active,.open>.dropdown-toggle.btn-primary {
     background-image:none
@@ -3868,7 +3927,7 @@ a.label:hover,a.label:focus {
 }
 .badge {
     display:inline-block;
-    min-width:10px;
+    min-width:0px;
     padding:3px 7px;
     font-size:12px;
     font-weight:700;
@@ -3877,7 +3936,8 @@ a.label:hover,a.label:focus {
     text-align:center;
     white-space:nowrap;
     vertical-align:baseline;
-    background-color:#777;
+    background-color:#f00;
+    /*background-color:#777;*/
     border-radius:10px
 }
 .badge:empty {

@@ -5,6 +5,8 @@
     <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("bootstrap-fileinput-master/css/fileinput.css")" media="screen" />
     <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("mycss/soft.css")" media="screen" />
 
+    <script type="text/javascript" src="@routes.Assets.versioned("DPlayer-1.26.0/dist/DPlayer.min.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.versioned("md5/md5.js")"></script>
         <!--button弹出操作-->
     <script src="@routes.Assets.versioned("layer-v3.0/layer/layer.js")" type="text/javascript"></script>
     <script type="text/javascript" src="@routes.Assets.versioned("js/myzui.min.js")"></script>
@@ -27,117 +29,30 @@
         <div class="  mysoft-content-left  whitebox" style="width: 590px;">
             <form id="Lefse" method="GET" enctype="multipart/form-data" class="well form-inline" style="box-sizing: border-box!important;">
                 <div class="softpic mws-ic @abbre"></div>
-                <h3 class="tools-title">lefse分析</h3>
-                <div class="form-group">
-                    <h2>
-                    </h2>
-                </div><br><br>
-                <div class="form-group-p">
-                    <div class="form-group">
-                        <label for="mytaskname">任务编号：</label>
-                    </div>
-                    <div class="form-group">
-                        <input id="mytaskname" type="text" class="form-control" name="taskname" placeholder="" value="">
-                    </div>
-                </div>
-                <br><br>
-                <div id="myform">
-                    <div id="file1" class="one-line">
-                        <div class="form-group-p">
-                            <div class="form-group">
-                                <label for="filepath1">OTU丰度表：</label>
-                            </div>
-                            <div class="form-group">
-                                <input type="file" class="form-control file" id="table1" name="table1">
-                            </div>
-                        </div>
-                        <div class="form-group-extra">
-                            <em>
-                                <a href="/assets/files/lefse_otu_table.biom" target='_blank'>示例文件(biom)</a>
-                            </em>
-                            <em>
-                                <a href="/assets/files/lefse_otutable.txt" target='_blank' style="margin-left: 20px;">示例文件(txt)</a>
-                            </em>
-                        </div>
-                    </div>
-                </div>
-@*                <div class="one-line" style="margin-top: 15px;">*@
-@*                    <input type="button" value="增加表格" class="btn btn-primary" onclick="addFile()">*@
-@*                    <input type="button" value="减少表格" class="btn btn-primary" onclick="delFile()">*@
-@*                </div>*@
-                <br>
-                <div class="one-line">
-                    <div class="form-group-p">
-                        <div class="form-group">
-                            <label for="filepath1">分组文件：</label>
-                        </div>
-                        <div id="group_part" class="form-group">
-                            <input type="file" class="form-control file" id="group" name="group">
-                        </div>
-                    </div>
-                    <div class="form-group-extra">
-                        <em>
-                            <a href="/assets/files/lefse_map.txt" target='_blank' style="margin-left: 20px;">示例文件</a>
-                        </em>
-                    </div>
-                </div>
-                <br>
-                <br>
+                <h3 class="tools-title">lefse分析</h3><br><br>
+                @units.textinput("","","任务编号：", "taskname","","")
+                @units.fileupload2("", "file1", "OTU丰度表：","table1","lefse_otu_table.biom","lefse_otutable.txt")<br>
+                @units.fileupload("", "", "分组文件：","group","lefse_map.txt")<br>
                 <input type="button" value="提&nbsp;&nbsp;交" name="submit" class="btn btn-primary" onclick="dolefse()">
             </form>
         </div>
-        <div class="handler"></div>
-        <div class="mysoft-content-right" style="width: 460px;">
-            <ul class="nav nav-tabs">
-                <li class="active" id="ins_tab1">
-                    <a href="###" data-target="#instruction" data-toggle="tab">使用说明</a>
-                </li>
-                <li class="" id="out_tab1">
-                    <a href="###" data-target="#example" data-toggle="tab">教学视频</a>
-                </li>
-                <li class="" id="his_tab1">
-                    <a href="#" data-target="#history" data-toggle="tab">历史任务</a>
-                </li>
-            </ul>
-            <div class="tab-content" style="box-sizing: border-box!important;">
-                <div class="tab-pane fade active in" id="instruction">
-                    <p style="color: red;">OTU文件第一行必须是# Constructed from biom file</p>
-                    <p style="color: red;">第二行第一个必须是#OTU ID，中间OTU和ID之间以空格分隔，其余都以制表符分隔</p>
-                    <br>
-                    <h5 style="margin-bottom: 2px">更详细使用说明编写中...敬请期待！</h5>
-                </div>
-                <div class="tab-pane fade" id="example">
-                    <h5 style="margin-bottom: 2px">视频录制中...敬请期待！</h5>
-                </div>
-                <div id="history" class="form1_ins tab-pane fade">
-                    <a id="btn-refresh" class="btn_refresh mws-i-24 i-refresh-3" onclick="refresh('@abbre')">刷新状态</a>
-                    <ul id="hisul" style="margin-top: 15px">
-                        <li id="hislist" class="hislist">
-                            <div class="his_time"><span>任务编号</span></div>
-                            <div class="his_time"><span style="margin-left: -20px;">结束时间</span></div>
-                            <div class="his_name"><span style="margin-left: -23px;">状态</span></div>
-                            <hr>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+        @units.pageRight("更详细使用说明编写中...敬请期待！", "","LEF")
     </div>
 
     <script type="text/javascript" src="@routes.Assets.versioned("js/toolsAdjust.js")"></script>
     <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/fileinput.min.js")" type="text/javascript"></script>
     <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/locales/zh.js")" type="text/javascript"></script>
     <script src="@routes.Assets.versioned("myjs/soft.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("myjs/redraw.js")" type="text/javascript"></script>
     <script type="text/javascript">
-
 
             $(function () {
                 formValidation();
                 loadHistory("@abbre");
                 getTaskName("Lefse","LEF");
+                loadVideo("//13125180.s21v.faiusr.com/58/2/ABUIABA6GAAgl-LjgAYogLqCjwI.mp4","/assets/images/softpic/video/lefse_video.png")
                 popTip();
             });
-
 
             function popTip() {
                 swal({
@@ -151,20 +66,6 @@
                     window.location.href = "/CloudPlatform/SoftPage/LF2";
                 });
             }
-
-            const fileValidators = {
-                validators: {
-                    notEmpty: {
-                        message: '必须上传otu丰度表！或减少表格数量'
-                    },
-                    file: {
-                        // extension: 'jpeg,jpg,png',
-                        // type: 'image/jpeg,image/png',
-                        maxSize: 5*1024*1024,
-                        message: '文件不得大于5M！'
-                    }
-                }
-            };
 
             var sample,tablesflag=true;
             var lock = true;
@@ -217,55 +118,13 @@
 
 
             function formValidation() {
-                $('#Lefse').formValidation({
-                    framework: 'bootstrap',
-                    icon: {
-                        valid: 'glyphicon glyphicon-ok',
-                        invalid: 'glyphicon glyphicon-remove',
-                        validating: 'glyphicon glyphicon-refresh'
-                    },
-                    fields: {
-                        taskname: {
-                            validators: {
-                                notEmpty: {
-                                    message: '任务编号不能为空!'
-                                },
-                                remote:{
-                                    type: 'POST',
-                                    url: '@routes.DutyController.checktaskname()',
-                                    message: "任务编号重复，请重新输入",
-                                    // delay: 1000
-                                }
-                            }
-                        },
-                        table1: {
-                            validators: {
-                                notEmpty: {
-                                    message: '必须上传otu丰度表！或减少表格数量'
-                                },
-                                file: {
-                                    // extension: 'jpeg,jpg,png',
-                                    // type: 'image/jpeg,image/png',
-                                    maxSize: 5*1024*1024,
-                                    message: '文件不得大于5M！'
-                                }
-                            }
-                        },
-                        group: {
-                            validators: {
-                                notEmpty: {
-                                    message: '必须上传分组文件！'
-                                },
-                                file: {
-                                    // extension: 'jpeg,jpg,png',
-                                    // type: 'image/jpeg,image/png',
-                                    maxSize: 5*1024*1024,
-                                    message: '文件不得大于5M！'
-                                }
-                            }
-                        }
-                    }
-                });
+                let field = {};
+                let table = ["table1", "group"];
+                FieldFile(field, table);
+                let text = ["taskname"];
+                FieldTaskname(field, text);
+                let excluded = [":hidden"];
+                addFormValidation("Lefse", field, excluded)
             }
 
 

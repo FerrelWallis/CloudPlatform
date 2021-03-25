@@ -1,6 +1,6 @@
 package controllers
 
-import java.io.{File, FileInputStream}
+import java.io.{File, FileInputStream, FileOutputStream, OutputStreamWriter}
 import java.nio.file.{Files, Path}
 
 import dao.dutyDao
@@ -68,7 +68,8 @@ class RPaintController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
     //数据库加入duty（运行中）
     val start=dutyController.insertDuty(data.taskname,id,"Boxplot","Boxplot 盒型图",input,param,elements)
     //矩阵文件读取写入任务文件下table.txt
-    file1.ref.moveTo(tableFile)
+    rservice.fileTrimMove(file1.ref, tableFile)
+//    file1.ref.moveTo(tableFile)
 
     Future{
       val command = "Rscript "+Utils.path+"R/box/boxplot.R -i "+ tableFile.getAbsolutePath +
@@ -242,42 +243,48 @@ class RPaintController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
     val filename2=
       if(data.cluster_rows=="file") {
         val file=request.body.file("table2").get
-        file.ref.moveTo(treerFile)
+        rservice.fileTrimMove(file.ref, treerFile)
+//        file.ref.moveTo(treerFile)
         "/"+file.filename
       }else ""
 
     val filename3=
       if(data.cluster_cols=="file") {
         val file=request.body.file("table3").get
-        file.ref.moveTo(treecFile)
+        rservice.fileTrimMove(file.ref, treecFile)
+//        file.ref.moveTo(treecFile)
         "/"+file.filename
       }else ""
 
     val filename4=
       if(isgroupr==true) {
         val file=request.body.file("table4").get
-        file.ref.moveTo(grouprFile)
+        rservice.fileTrimMove(file.ref, grouprFile)
+//        file.ref.moveTo(grouprFile)
         "/"+file.filename
       }else ""
 
     val filename5=
       if(isgroupc==true) {
         val file=request.body.file("table5").get
-        file.ref.moveTo(groupcFile)
+        rservice.fileTrimMove(file.ref, groupcFile)
+//        file.ref.moveTo(groupcFile)
         "/"+file.filename
       }else ""
 
     val filename6=
       if(istag==true) {
         val file=request.body.file("table6").get
-        file.ref.moveTo(tagFile)
+        rservice.fileTrimMove(file.ref, tagFile)
+//        file.ref.moveTo(tagFile)
         "/"+file.filename
       }else ""
 
     //在用户下创建任务文件夹和结果文件夹
     val file1=request.body.file("table1").get
     //矩阵文件读取写入任务文件下table.txt
-    file1.ref.moveTo(tableFile)
+    rservice.fileTrimMove(file1.ref, tableFile)
+//    file1.ref.moveTo(tableFile)
     val input= file1.filename+filename2+filename3+filename4+filename5+filename6
     val c=
       if(data.inr=="" && data.inc=="") ""
@@ -570,46 +577,25 @@ class RPaintController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
     //数据库加入duty（运行中）
     val start=dutyController.insertDuty(data.taskname,id,"NetWeight","权重网络图",input,param,elements)
     //矩阵文件读取写入任务文件下table.txt
-    file1.ref.moveTo(tableFile)
-    file2.ref.moveTo(eviFile)
+    rservice.fileTrimMove(file1.ref, tableFile)
+    rservice.fileTrimMove(file2.ref, eviFile)
+//    file1.ref.moveTo(tableFile)
+//    file2.ref.moveTo(eviFile)
 
     Future{
-      val command = "Rscript "+Utils.path+"R/net/network_data.R -i2 "+ tableFile.getAbsolutePath + " -i1 " +
+      val command1 = "Rscript "+Utils.path+"R/net/network_data.R -i2 "+ tableFile.getAbsolutePath + " -i1 " +
         eviFile.getAbsolutePath + " -o " +dutyDir+"/out/result.xls" + " -m1 " + data.anatype + " -m2 " + data.anatype
 
-      println(command)
+      val command2 = "Rscript "+Utils.path+"R/net/node_attr_calculate.R -t "+ dutyDir + "/out/result.xls" +
+        " -pt 0.1 -ct 1 -o " + dutyDir + "/out"
 
-      FileUtils.writeStringToFile(new File(s"$dutyDir/temp/run.sh"),command)
+      println(command1 + "\n" + command2)
+
+      FileUtils.writeStringToFile(new File(s"$dutyDir/temp/run.sh"),command1 + " && \n" + command2)
       val execCommand = new ExecCommand
-      execCommand.exect(command,dutyDir+"/temp")
+      execCommand.exect(Array(command1, command2), new File(dutyDir + "/temp"))
 
       if (execCommand.isSuccess) {
-        val result=FileUtils.readLines(new File(dutyDir + "/out/result.xls")).asScala
-        var resultFilter = Array("")
-        result.drop(1).foreach{x=>
-          val ei = x.split("\"").filter(_.trim!="")
-          val w=ei(3).trim.split("\t").last.toDouble
-          val c=ei(3).trim.split("\t").head.toDouble
-          if(w < 0.1 && Math.abs(c) < 1) {
-            resultFilter=resultFilter:+x
-          }
-        }
-
-        val (outedge, outnode) = resultFilter.drop(1).map{x =>
-          val e = x.replaceAll("\"","").split("\t").filter(_.trim!="")
-          (e(1) + "\t" + e(2) + "\t" + e(3) + "\t" + e(4),List(e(1), e(2)))
-        }.unzip
-
-        FileUtils.writeStringToFile(new File(dutyDir, "/out/curEdge.txt"),"Node1\tNode2\tr\tP\n" + outedge.mkString("\n"))
-        FileUtils.writeStringToFile(new File(dutyDir, "/out/curNode.txt"),"Node\n" + outnode.flatten.distinct.mkString("\n"))
-
-        val command2 = "Rscript "+Utils.path+"R/net/node_attr_calculate.R -e "+ dutyDir + "/out/curEdge.txt" +
-          " -n " + dutyDir + "/out/curNode.txt" + " -o " + dutyDir + "/out"
-
-        println(command2)
-        val execCommand2 = new ExecCommand
-        execCommand2.exect(command2, dutyDir + "/temp")
-
         val finish=dutyController.updateFini(id,data.taskname)
         FileUtils.writeStringToFile(new File(dutyDir,"log.txt"),"Start Time:"+start+"\n\nFinish Time:"+finish+"\n\n运行成功！")
         rservice.creatZip(dutyDir)
@@ -655,22 +641,24 @@ class RPaintController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
 
     var resultFilter = Array("")
     result.drop(1).foreach{x=>
-      val ei = x.split("\"").filter(_.trim!="")
-      val w=ei(3).trim.split("\t").last.toDouble
-      val c=ei(3).trim.split("\t").head.toDouble
-      if(w<elements("pthres").toDouble && Math.abs(c)<elements("cthres").toDouble) {
-        resultFilter=resultFilter:+x
+      val ei = x.split("\t").filter(_.trim!="")
+      if(ei(3) != "NA" && ei(4) != "NA") {
+        val w=ei(4).toDouble
+        val c=ei(3).toDouble
+        if(w<elements("pthres").toDouble && Math.abs(c)<elements("cthres").toDouble) {
+          resultFilter=resultFilter:+x
+        }
       }
     }
 
     val edges=resultFilter.drop(1).map { x =>
       eid = eid + 1
       val id = "e" + eid
-      val e = x.split("\"").filter(_.trim != "")
+      val e = x.split("\t").filter(_.trim != "")
       val source = list.indexOf(e(1))
       val target = list.indexOf(e(2))
-      val weight = e(3).trim.split("\t").last.toDouble
-      val cc = e(3).trim.split("\t").head.toDouble
+      val weight = e(4).toDouble
+      val cc = e(3).toDouble
       val lab = "c=" + cc.formatted("%." + elements("dot") + "f") + "；p=" + weight.formatted("%." + elements("dot") + "f")
       val data = Json.obj("source" -> source, "target" -> target, "weight" -> weight, "label" -> lab)
       Json.obj("data" -> data, "group" -> "edges", "id" -> id)
@@ -737,28 +725,8 @@ class RPaintController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
     val elements=Json.obj("gshape"->data.gshape,"color1"->data.color1,"gopa"->data.gopa,"gsize"->data.gsize,"gfont"->data.gfont,"color2"->data.color2,"eshape"->data.eshape,"color3"->data.color3,"eopa"->data.eopa,"esize"->data.esize,"efont"->data.efont,"color4"->data.color4,"color5"->data.color5,"opacity"->data.opacity,"dot"->data.dot,"pthres"->data.pthres,"cthres"->data.cthres).toString()
     Await.result(dutydao.updateElements(id,taskname,elements),Duration.Inf)
 
-    val result=FileUtils.readLines(new File(path+"/out/result.xls")).asScala
-
-    var resultFilter = Array("")
-    result.drop(1).foreach{x=>
-      val ei = x.split("\"").filter(_.trim!="")
-      val w=ei(3).trim.split("\t").last.toDouble
-      val c=ei(3).trim.split("\t").head.toDouble
-      if(w<data.pthres.toDouble && Math.abs(c)<data.cthres.toDouble) {
-        resultFilter=resultFilter:+x
-      }
-    }
-
-    val (outedge, outnode) = resultFilter.drop(1).map{x =>
-      val e = x.replaceAll("\"","").split("\t").filter(_.trim!="")
-      (e(1) + "\t" + e(2) + "\t" + e(3) + "\t" + e(4),List(e(1), e(2)))
-    }.unzip
-
-    FileUtils.writeStringToFile(new File(path,"/out/curEdge.txt"),"Node1\tNode2\tr\tP\n" + outedge.mkString("\n"))
-    FileUtils.writeStringToFile(new File(path, "/out/curNode.txt"),"Node\n" + outnode.flatten.distinct.mkString("\n"))
-
-    val command = "Rscript "+Utils.path+"R/net/node_attr_calculate.R -e "+ path + "/out/curEdge.txt" +
-      " -n " + path + "/out/curNode.txt" + " -o " + path + "/out"
+    val command = "Rscript "+Utils.path+"R/net/node_attr_calculate.R -t "+ path + "/out/result.xls" +
+      " -pt " + data.pthres + " -ct " + data.cthres + " -o " + path + "/out"
 
     println(command)
 
@@ -856,17 +824,20 @@ class RPaintController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
     val tableFile=new File(dutyDir,"table.txt")
     val groupFile=new File(dutyDir,"group.txt")
     val file1 = request.body.file("table1").get
-    file1.ref.moveTo(tableFile)
+    rservice.fileTrimMove(file1.ref, tableFile)
+//    file1.ref.moveTo(tableFile)
     val file2 = request.body.file("table2")
     val (group,filepara)=if(isgroup) {
-      file2.get.ref.moveTo(groupFile)
+      rservice.fileTrimMove(file2.get.ref, groupFile)
+//      file2.get.ref.moveTo(groupFile)
       (" -g " + groupFile.getAbsolutePath,file1.filename+"/"+file2.get.filename)
     } else ("",file1.filename)
 
     val elements=Json.obj("pe"->"TRUE","color"->"#FF0000:#FFC913:#FFFF00:#008000:#00FFFF:#297EFF:#800080:#FFC0CB",
       "width"->"20", "height"->"20", "dpi"->"300", "lp"->"right", "lo"->"0", "lts"->"15", "ls"->"15",
       "xts"->"18", "yts"->"16", "xls"->"20", "yls"->"20", "xtext"->"", "ytext"->"", "lms"->"19",
-      "lmtext"->"", "ms"->"22", "mstext"->"", "m"->data.m, "mt"->data.mt, "bw"->"0.9", "xo"->"").toString()
+      "lmtext"->"", "ms"->"22", "mstext"->"", "m"->data.m, "mt"->data.mt, "bw"->"0.9", "xo"->"",
+      "xta" -> "0", "xangle"->"0", "yangle"->"90").toString()
 
     //数据库加入duty（运行中）
     val start=dutyController.insertDuty(data.taskname,id,"BAR","柱状图",filepara,"/",elements)
@@ -944,12 +915,15 @@ class RPaintController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
     )(ReBarData.apply)(ReBarData.unapply)
   )
 
-  case class ReBarData2(bw:String, xo:String)
+  case class ReBarData2(bw:String, xo:String, xta:String, xangle:String, yangle:String)
 
   val ReBarForm2: Form[ReBarData2] =Form(
     mapping (
       "bw"->text,
-      "xo"->text
+      "xo"->text,
+      "xta"->text,
+      "xangle"->text,
+      "yangle"->text
     )(ReBarData2.apply)(ReBarData2.unapply)
   )
 
@@ -969,15 +943,15 @@ class RPaintController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
       "ls"->data.ls, "xts"->data.xts, "yts"->data.yts, "xls"->data.xls, "yls"->data.yls,
       "xtext"->data.xtext, "ytext"->data.ytext, "lms"->data.lms, "lmtext"->data.lmtext,
       "ms"->data.ms, "mstext"->data.mstext, "m"->data.m, "mt"->data.mt, "bw" -> data2.bw,
-      "xo" -> data2.xo).toString()
+      "xo" -> data2.xo, "xta" -> data2.xta, "xangle" -> data2.xangle, "yangle" -> data2.yangle).toString()
 
     Await.result(dutydao.updateElements(id,taskname,elements),Duration.Inf)
 
     val ytext=
-      if(!data.ytext.equals(""))" -yls sans:bold.italic:" + data.yls + ":\"" + data.ytext + "\""
+      if(!data.ytext.equals("")) " -yls sans:bold.italic:" + data.yls + ":\"" + data.ytext + "\"" + ":" + data2.yangle
       else ""
     val xtext=
-      if(!data.xtext.equals("")) " -xls sans:bold.italic:" + data.xls + ":\"" + data.xtext + "\""
+      if(!data.xtext.equals("")) " -xls sans:bold.italic:" + data.xls + ":\"" + data.xtext + "\"" + ":" + data2.xangle
       else ""
     val lms=
       if(!data.lmtext.equals("")) " -lms sans:bold.italic:" + data.lms + ":\"" + data.lmtext + "\""
@@ -992,7 +966,7 @@ class RPaintController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
       " -dpi " + data.dpi + " -is " + data.width + ":" + data.height + " -lts sans:bold.italic:" +
       data.lts + " -ls " + data.ls + " -xts sans:bold.italic:" + data.xts + xtext + " -yts sans:bold.italic:" +
       data.yts + ytext + lms + ms + " -lo " + data.lo + " -m " + data.m + " -mt " + data.mt + " -bw " +
-      data2.bw + xo
+      data2.bw + xo + " -xta " + data2.xta
 
     println(command)
 
@@ -1044,7 +1018,8 @@ class RPaintController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
     val abiFile=new File(dutyDir,"abiview.ab1")
     val file = request.body.file("table1").get
     val input=file.filename
-    file.ref.moveTo(abiFile)
+    rservice.fileTrimMove(file.ref, abiFile)
+//    file.ref.moveTo(abiFile)
     abiFile.setExecutable(true,false)
     abiFile.setReadable(true,false)
     abiFile.setWritable(true,false)
@@ -1206,20 +1181,21 @@ class RPaintController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
     val input= file1.filename
     val param= "P值阈值："+data.pcl+"/F值阈值："+data.fcl
 
-
     val elements= Json.obj("pcl"->data.pcl,"fcl"->data.fcl,"xrmin"->"","xrmax"->"",
-      "yrmin"->"","yrmax"->"","sp"->"TRUE","color4"->"black","cs"->"#B7B7B7:#4DAF4A:#1E90FF:#E41A1C",
-      "xts"->"18","yts"->"16","xls"->"20","yls"->"20","xtext"->"log2(FC)","ytext"->"-log10(pvalue)",
-      "lp"->"bottom","lt"->"20","width"->"20","height"->"20","dpi"->"300").toString()
+      "yrmin"->"","yrmax"->"","sp"->"TRUE","color4"->"black","cs"->"blue:red:grey",
+      "xts"->"16","yts"->"16","xls"->"18","yls"->"18","ts"->"20","lts"->"16", "ltes"->"12",
+      "xtext"->"log2(FC)","ytext"->"-log10(pvalue)","tstext"->"","ltstext"->"","width"->"15",
+      "height"->"15","dpi"->"300").toString()
 
     //数据库加入duty（运行中）
     val start=dutyController.insertDuty(data.taskname,id,"VOC","火山图（Volcano）",input,param,elements)
     //矩阵文件读取写入任务文件下table.txt
-    file1.ref.moveTo(tableFile)
+    rservice.fileTrimMove(file1.ref, tableFile)
+//    file1.ref.moveTo(tableFile)
 
     Future{
-      val command = "Rscript "+Utils.path+"R/volcano/mountain.R -i "+ tableFile.getAbsolutePath +
-        " -o " +dutyDir+"/out" + " -pcl " + data.pcl + " -fcl " + data.fcl + " -if pdf -in volcano -lt 6:20"
+      val command = "Rscript "+Utils.path+"R/volcano/volcano.R -i "+ tableFile.getAbsolutePath +
+        " -o " +dutyDir+"/out" + " -pcl " + data.pcl + " -fcl " + data.fcl + " -if pdf -in volcano"
 
       FileUtils.writeStringToFile(new File(s"$dutyDir/temp/run.sh"),command)
       val execCommand = new ExecCommand
@@ -1247,19 +1223,17 @@ class RPaintController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
 
     val elements=rservice.jsonToMap(Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf).head.elements)
     val color=elements("cs").split(":")
+    val group=("DOWN", "UP", "NO")
 
-    val group=("part1","part2","part3","part4")
-
-    //获取图片
     val pics=rservice.getReDrawPics(path)
     val (downpics,downpng,downtiffs)=(path+"/out/volcano.pdf",path+"/out/volcano.png",path+"/out/volcano.tiff")
-    Ok(Json.obj("group"->group,"pics"->pics,"downpng"->downpng,"downpics"->downpics,"downtiffs"->downtiffs,"elements"->elements,"color"->color))
+    Ok(Json.obj("group"->group,"color"->color,"pics"->pics,"elements"->elements))
   }
 
   case class ReVolcanoData(pcl:String,fcl:String,xrmin:String,xrmax:String,yrmin:String,
-                           yrmax:String,sp:String,lp:String,width:String,height:String,
-                           dpi:String,color4:String,color:String,xts:String, xls:String,
-                           xtext:String,yts:String,yls:String,ytext:String,lt:String)
+                           yrmax:String,sp:String,width:String,height:String,dpi:String,
+                           color4:String,color:String,xts:String,xls:String,xtext:String,
+                           yts:String,yls:String,ytext:String)
 
   val ReVolcanoForm: Form[ReVolcanoData] =Form(
     mapping (
@@ -1270,7 +1244,6 @@ class RPaintController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
       "yrmin"->text,
       "yrmax"->text,
       "sp"->text,
-      "lp"->text,
       "width"->text,
       "height"->text,
       "dpi"->text,
@@ -1281,36 +1254,48 @@ class RPaintController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
       "xtext"->text,
       "yts"->text,
       "yls"->text,
-      "ytext"->text,
-      "lt"->text
+      "ytext"->text
     )(ReVolcanoData.apply)(ReVolcanoData.unapply)
+  )
+
+  case class ReVolcanoData2(ts:String,tstext:String,lts:String,ltstext:String,ltes:String)
+
+  val ReVolcanoForm2: Form[ReVolcanoData2] =Form(
+    mapping (
+      "ts"->text,
+      "tstext"->text,
+      "lts"->text,
+      "ltstext"->text,
+      "ltes"->text
+    )(ReVolcanoData2.apply)(ReVolcanoData2.unapply)
   )
 
   def redrawVolcano(taskname:String)=Action(parse.multipartFormData) { implicit request =>
     val data=ReVolcanoForm.bindFromRequest.get
+    val data2=ReVolcanoForm2.bindFromRequest.get
     val id=request.session.get("userId").get
     val dutyDir=Utils.path+"users/"+id+"/"+taskname
-
     val tableFile=new File(dutyDir,"table.txt")
 
-    val elements= Json.obj("pcl"->data.pcl,"fcl"->data.fcl,"xrmin"->data.xrmin,
+    val elements=Json.obj("pcl"->data.pcl,"fcl"->data.fcl,"xrmin"->data.xrmin,
       "xrmax"->data.xrmax,"yrmin"->data.yrmin,"yrmax"->data.yrmax,"sp"->data.sp,"color4"->data.color4,
       "cs"->data.color,"xts"->data.xts,"yts"->data.yts,"xls"->data.xls,"yls"->data.yls,
-      "xtext"->data.xtext,"ytext"->data.ytext,"lp"->data.lp,"lt"->data.lt,"width"->data.width,
-      "height"->data.height,"dpi"->data.dpi).toString()
-
+      "ts"->data2.ts,"lts"->data2.lts, "ltes"->data2.ltes, "xtext"->data.xtext,"ytext"->data.ytext,
+      "tstext"->data2.tstext,"ltstext"->data2.ltstext,"width"->data.width, "height"->data.height,
+      "dpi"->data.dpi).toString()
     Await.result(dutydao.updateElements(id,taskname,elements),Duration.Inf)
 
     val xr=if(data.xrmin=="" || data.xrmax=="") "" else " -xr " + data.xrmin + ":" + data.xrmax
     val yr=if(data.yrmin=="" || data.yrmax=="") "" else " -yr " + data.yrmin + ":" + data.yrmax
 
-    val command = "Rscript "+Utils.path+"R/volcano/mountain.R -i "+ tableFile.getAbsolutePath +
+    val command = "Rscript "+Utils.path+"R/volcano/volcano.R -i "+ tableFile.getAbsolutePath +
       " -o " +dutyDir+"/out" + " -pcl " + data.pcl + " -fcl " + data.fcl + " -sp " + data.sp + xr + yr +
       " -lc \"" + data.color4 + "\" -cs \"" + data.color + "\" -xts sans:bold.italic:" + data.xts +
       " -xls \"sans:bold.italic:" + data.xls + ":" + data.xtext + "\" -yts sans:bold.italic:" +
-      data.yts + " -yls \"sans:bold.italic:" + data.yls + ":" + data.ytext + "\" -lp " + data.lp +
-      " -lt \"6:" + data.lt + "\" -is \"" + data.width + ":" + data.height + "\" -dpi " + data.dpi +
-      " -if pdf -in volcano"
+      data.yts + " -yls \"sans:bold.italic:" + data.yls + ":" + data.ytext + "\" -ts \"sans:bold.italic:" +
+      data2.ts + ":" + data2.tstext + "\" -lts \"sans:bold.italic:" + data2.lts + ":" + data2.ltstext +
+      "\" -ltes sans:bold.italic:" + data2.ltes + " -is \"" + data.width + ":" + data.height + "\" -dpi " +
+      data.dpi + " -if pdf -in volcano"
 
     println(command)
 
@@ -1323,9 +1308,7 @@ class RPaintController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
       Utils.pdf2Png(dutyDir+"/out/volcano.pdf",dutyDir+"/out/volcano.tiff") //替换图片
       rservice.creatZip(dutyDir) //替换压缩文件包
       val pics=dutyDir+"/out/volcano.png"
-      val pdfs=dutyDir+"/out/volcano.pdf"
-      val tiffs=dutyDir+"/out/volcano.tiff"
-      Ok(Json.obj("valid"->"true","pics"->pics,"downpics"->pdfs,"downtiffs"->tiffs))
+      Ok(Json.obj("valid"->"true","pics"->pics))
     } else {
       Ok(Json.obj("valid"->"false"))
     }
@@ -1362,7 +1345,8 @@ class RPaintController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
     //数据库加入duty（运行中）
     val start=dutyController.insertDuty(data.taskname,id,"MHT","曼哈顿图（Manhattan）",input,"/",elements)
     //矩阵文件读取写入任务文件下table.txt
-    file1.ref.moveTo(tableFile)
+    rservice.fileTrimMove(file1.ref, tableFile)
+//    file1.ref.moveTo(tableFile)
 
     Future{
       val command =
@@ -1532,10 +1516,12 @@ class RPaintController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
     val tableFile=new File(dutyDir,"table.tre")
     val groupFile=new File(dutyDir,"group.txt")
     val file1 = request.body.file("table1").get
-    file1.ref.moveTo(tableFile)
+    rservice.fileTrimMove(file1.ref, tableFile)
+//    file1.ref.moveTo(tableFile)
     val file2 = request.body.file("table2")
     val (input,group)=if(isgroup) {
-      file2.get.ref.moveTo(groupFile)
+      rservice.fileTrimMove(file2.get.ref, groupFile)
+//      file2.get.ref.moveTo(groupFile)
       (file1.filename+"/"+file2.get.filename," -g " + groupFile.getAbsolutePath)
     }else (file1.filename,"")
 
@@ -1671,11 +1657,12 @@ class RPaintController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
       if(table=="2") {
         val file1=request.body.file("table1").get
         //矩阵文件读取写入任务文件下table.txt
-        file1.ref.moveTo(tableFile)
+        rservice.fileTrimMove(file1.ref, tableFile)
+//        file1.ref.moveTo(tableFile)
         if(isgroup && group=="2") file1.filename+"/"+ request.body.file("table2").get.filename
         else file1.filename
       } else{
-        FileUtils.writeStringToFile(tableFile, data.txdata1)
+        FileUtils.writeStringToFile(tableFile, data.txdata1.trim)
         if(isgroup && group=="2") request.body.file("table2").get.filename
         else "无"
       }
@@ -1699,11 +1686,11 @@ class RPaintController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
         if(isgroup){
           if(!request.body.file("table2").isEmpty){
             val file = request.body.file("table2").get
-            val groupdatas = FileUtils.readFileToString(file.ref.file)
+            val groupdatas = FileUtils.readFileToString(file.ref.file).trim
             FileUtils.writeStringToFile(groupFile, "#SampleID\tGroup\n"+groupdatas)
             //        request.body.file("table2").get.ref.moveTo(groupFile)
           }else{
-            FileUtils.writeStringToFile(groupFile, "#SampleID\tGroup\n"+data.txdata2)
+            FileUtils.writeStringToFile(groupFile, "#SampleID\tGroup\n"+data.txdata2.trim)
           }
           " -g "+groupFile.getAbsolutePath
         }else ""
@@ -1842,7 +1829,8 @@ class RPaintController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
     val tableFile=new File(dutyDir,"table.txt")
     val file1=request.body.file("table1").get
     //矩阵文件读取写入任务文件下table.txt
-    file1.ref.moveTo(tableFile)
+    rservice.fileTrimMove(file1.ref, tableFile)
+//    file1.ref.moveTo(tableFile)
     tableFile.setExecutable(true,false)
     tableFile.setReadable(true,false)
     tableFile.setWritable(true,false)
@@ -1962,28 +1950,42 @@ class RPaintController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
   }
 
 
+
+
   //BreakBar
+  case class BreakBarData(taskname:String,bspmin:String,bspmax:String)
+
+  val BreakBarForm: Form[BreakBarData] =Form(
+    mapping (
+      "taskname"->text,
+      "bspmin"->text,
+      "bspmax"->text
+    )(BreakBarData.apply)(BreakBarData.unapply)
+  )
+
   def doBreakBar=Action(parse.multipartFormData){implicit request=>
-    val data=TaxFunForm.bindFromRequest.get
+    val data=BreakBarForm.bindFromRequest.get
     val id=request.session.get("userId").get
     val dutyDir=rservice.creatUserDir(id,data.taskname)
     //在用户下创建任务文件夹和结果文件夹
     val tableFile=new File(dutyDir,"table.txt")
     val file1=request.body.file("table1").get
     //矩阵文件读取写入任务文件下table.txt
-    file1.ref.moveTo(tableFile)
+    rservice.fileTrimMove(file1.ref, tableFile)
+//    file1.ref.moveTo(tableFile)
 
-    val elements= Json.obj("bsp"->"", "tps"->"30", "xtpangle"->"90", "xtphjust"->"1",
-      "color"->"#66C2A5:#FC8D62:#8DA0CB:#E78AC3:#A6D854:#FFD92F:#E5C494:#B3B3B3", "xts"->"11",
-      "yts"->"11", "xls"->"14", "yls"->"14", "ms"->"16", "xtext"->"", "ytext"->"", "mstext"->"",
-      "dpi"->"300", "width" -> "7", "height"->"7").toString()
+    val elements= Json.obj("bspmin"->data.bspmin, "bspmax"->data.bspmax, "tps"->"30", "xtpangle"->"90",
+      "xtphjust"->"1", "xtpvjust"->"0.5", "color"->"#66C2A5:#FC8D62:#8DA0CB:#E78AC3:#A6D854:#FFD92F:#E5C494:#B3B3B3",
+      "xts"->"11", "yts"->"11", "xls"->"14", "yls"->"14", "ms"->"16", "xtext"->"", "ytext"->"",
+      "mstext"->"", "dpi"->"300", "width" -> "7", "height"->"7").toString()
 
     //数据库加入duty（运行中）
     val start=dutyController.insertDuty(data.taskname,id,"BRB","断轴柱状图",file1.filename,"/",elements)
 
     Future{
+      val bsp = " -bsp " + data.bspmin + ":" + data.bspmax
       val command = "Rscript "+Utils.path+"R/break_bar/duanzhou.R -i "+ tableFile.getAbsolutePath +
-        " -o " +dutyDir+"/out -if pdf -in breakHisto"
+        " -o " +dutyDir+"/out -if pdf -in breakHisto" + bsp
 
       println(command)
 
@@ -2021,13 +2023,15 @@ class RPaintController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
     Ok(Json.obj("pics"->pics,"elements"->elements,"color"->color,"genenum"->genenum))
   }
 
-  case class ReBreakBarData(bsp:String, tps:String, designcolor:String, dpi:String, width:String, height:String,
-                            xtpangle:String, xtphjust:String, xts:String, xls:String, xtext:String, yts:String,
-                            yls:String, ytext:String, ms:String,mstext:String)
+  case class ReBreakBarData(bspmin:String, bspmax:String, tps:String, designcolor:String, dpi:String,
+                            width:String, height:String, xtpangle:String, xtphjust:String, xtpvjust:String,
+                            xts:String, xls:String, xtext:String, yts:String, yls:String, ytext:String,
+                            ms:String, mstext:String)
 
   val ReBreakBarForm: Form[ReBreakBarData] =Form(
     mapping (
-      "bsp"->text,
+      "bspmin"->text,
+      "bspmax"->text,
       "tps"->text,
       "designcolor"->text,
       "dpi"->text,
@@ -2035,6 +2039,7 @@ class RPaintController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
       "height"->text,
       "xtpangle"->text,
       "xtphjust"->text,
+      "xtpvjust"->text,
       "xts"->text,
       "xls"->text,
       "xtext"->text,
@@ -2047,19 +2052,20 @@ class RPaintController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
   )
 
   def redrawBreakBar(taskname:String)=Action(parse.multipartFormData) { implicit request =>
-    val data=ReBreakBarForm.bindFromRequest.get
-    val id=request.session.get("userId").get
-    val dutyDir=Utils.path+"users/"+id+"/"+taskname
-    val tableFile=new File(dutyDir,"table.txt")
+    val data = ReBreakBarForm.bindFromRequest.get
+    val id = request.session.get("userId").get
+    val dutyDir = Utils.path+"users/"+id+"/"+taskname
+    val tableFile = new File(dutyDir,"table.txt")
 
-    val elements= Json.obj("bsp"->data.bsp, "tps"->data.tps, "xtpangle"->data.xtpangle,
-      "xtphjust"->data.xtphjust, "color"->data.designcolor, "xts"->data.xts, "yts"->data.yts,
-      "xls"->data.xls, "yls"->data.yls, "ms"->data.ms, "xtext"->data.xtext, "ytext"->data.ytext,
-      "mstext"->data.mstext, "dpi"->data.dpi, "width" -> data.width, "height"->data.height).toString()
+    val elements = Json.obj("bspmin"->data.bspmin, "bspmax"->data.bspmax, "tps"->data.tps,
+      "xtpangle"->data.xtpangle, "xtphjust"->data.xtphjust, "xtpvjust"->data.xtpvjust,
+      "color"->data.designcolor, "xts"->data.xts, "yts"->data.yts, "xls"->data.xls, "yls"->data.yls,
+      "ms"->data.ms, "xtext"->data.xtext, "ytext"->data.ytext, "mstext"->data.mstext, "dpi"->data.dpi,
+      "width" -> data.width, "height"->data.height).toString()
 
     Await.result(dutydao.updateElements(id,taskname,elements),Duration.Inf)
 
-    val bsp=if(data.bsp=="") "" else " -bsp " + data.bsp
+    val bsp = " -bsp " + data.bspmin + ":" + data.bspmax
     val xtext=if(data.xtext=="") " " else data.xtext
     val ytext=if(data.ytext=="") " " else data.ytext
     val mstext=if(data.mstext=="") " " else data.mstext
@@ -2068,7 +2074,7 @@ class RPaintController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
     val command =  "Rscript "+Utils.path+"R/break_bar/duanzhou.R -i "+ tableFile.getAbsolutePath +
       " -o " +dutyDir+"/out -if pdf -in breakHisto" + bsp + " -tps " + tps + " -cs \"" + data.designcolor +
       "\" -ms \"sans:bold.italic:" + data.ms + ":" + mstext + ":black\" -xts sans:bold.italic:" + data.xts +
-      " -xtp \"" + data.xtpangle + ":" + data.xtphjust + "\" -yts sans:bold.italic:" + data.yts +
+      " -xtp \"" + data.xtpangle + ":" + data.xtphjust + ":" + data.xtpvjust + "\" -yts sans:bold.italic:" + data.yts +
       " -xls \"sans:bold.italic:" + data.xls + ":black:" + xtext + "\" -yls \"sans:bold.italic:" + data.yls +
       ":black:" + ytext + "\" -is " + data.width + ":" + data.height + " -dpi " + data.dpi
 
@@ -2111,7 +2117,8 @@ class RPaintController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
     val tableFile=new File(dutyDir,"table.txt")
     val file1=request.body.file("table1").get
     //矩阵文件读取写入任务文件下table.txt
-    file1.ref.moveTo(tableFile)
+    rservice.fileTrimMove(file1.ref, tableFile)
+//    file1.ref.moveTo(tableFile)
 
     val elements= Json.obj("pt"->data.pt, "width"->"7", "height"->"7", "tsname"->"",
       "tssize"->"18", "dpi"->"300").toString()
@@ -2232,12 +2239,14 @@ class RPaintController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
     val tableFile=new File(dutyDir,"table.txt")
     val file1=request.body.file("table1").get
     //矩阵文件读取写入任务文件下table.txt
-    file1.ref.moveTo(tableFile)
+    rservice.fileTrimMove(file1.ref, tableFile)
+//    file1.ref.moveTo(tableFile)
 
     val elements= Json.obj("barcolor"->"#0000FF", "linecolor"->"#000000",
       "pointcolor"->"#FFFF00", "rsscale"->data.rsscale, "rscenter"->data.rscenter,
       "xtp"->"60", "xts"->"13", "xls"->"16", "xtext"->"", "yts"->"12", "yls"->"16",
-      "ytext"->"value", "ms"->"16", "mstext"->"", "width"->"7", "height"->"7", "dpi"->"300").toString()
+      "ytext"->"value", "ms"->"16", "mstext"->"", "width"->"7", "height"->"7",
+      "dpi"->"300", "lw"->"0.5").toString()
 
     val param= s"是否归一化：${data.rsscale}/是否中心化：${data.rscenter}"
 
@@ -2281,7 +2290,7 @@ class RPaintController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
   case class ReEBLData(rsscale:String, rscenter:String, dpi:String, width:String, height:String,
                        barcolor:String, linecolor:String, pointcolor:String, xtp:String,
                        xts:String, xls:String, yts:String, yls:String, ms:String,
-                       xtext:String, ytext:String, mstext:String)
+                       xtext:String, ytext:String, mstext:String, lw:String)
 
   val ReEBLForm: Form[ReEBLData] =Form(
     mapping (
@@ -2301,7 +2310,8 @@ class RPaintController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
       "ms"->text,
       "xtext"->text,
       "ytext"->text,
-      "mstext"->text
+      "mstext"->text,
+      "lw"->text
     )(ReEBLData.apply)(ReEBLData.unapply)
   )
 
@@ -2315,7 +2325,7 @@ class RPaintController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
       "pointcolor"->data.pointcolor, "rsscale"->data.rsscale, "rscenter"->data.rscenter,
       "xtp"->data.xtp, "xts"->data.xts, "xls"->data.xls, "xtext"->data.xtext, "yts"->data.yts,
       "yls"->data.yls, "ytext"->data.ytext, "ms"->data.ms, "mstext"->data.mstext,
-      "width"->data.width, "height"->data.height, "dpi"->data.dpi).toString()
+      "width"->data.width, "height"->data.height, "dpi"->data.dpi, "lw"->data.lw).toString()
 
     Await.result(dutydao.updateElements(id,taskname,elements),Duration.Inf)
 
@@ -2329,7 +2339,7 @@ class RPaintController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
       data.xtp + ":1 -xts sans:bold.italic:" + data.xts + " -xls \"sans:bold.italic:" + data.xls +
       ":" + xtext + ":black\"" + " -yts sans:bold.italic:" + data.yts + " -yls \"sans:bold.italic:" +
       data.yls + ":" + ytext + ":black\" -ms \"sans:bold.italic:" + data.ms + ":" + mstext +
-      ":black\" -ls " + data.width + ":" + data.height + " -dpi " + data.dpi
+      ":black\" -ls " + data.width + ":" + data.height + " -dpi " + data.dpi + " -lw " + data.lw
 
     FileUtils.writeStringToFile(new File(s"$dutyDir/temp/run.sh"),command)
     val execCommand = new ExecCommand
@@ -2353,26 +2363,40 @@ class RPaintController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
 
 
   //Bubble
+  case class BBData(taskname:String, filetype:String, top:String)
+
+  val BBForm: Form[BBData] =Form(
+    mapping (
+      "taskname"->text,
+      "filetype"->text,
+      "top"->text
+    )(BBData.apply)(BBData.unapply)
+  )
+
   def doBubble=Action(parse.multipartFormData){implicit request=>
-    val data=TaxFunForm.bindFromRequest.get
+    val data=BBForm.bindFromRequest.get
     val id=request.session.get("userId").get
     val dutyDir=rservice.creatUserDir(id,data.taskname)
     //在用户下创建任务文件夹和结果文件夹
     val tableFile=new File(dutyDir,"table.txt")
     val file1=request.body.file("table1").get
     //矩阵文件读取写入任务文件下table.txt
-    file1.ref.moveTo(tableFile)
-
+    rservice.fileTrimMove(file1.ref, tableFile)
+//    file1.ref.moveTo(tableFile)
     val elements= Json.obj("ps"->"2", "color"->"#E41A1C:#1E90FF:#4DAF4A:#984EA3:#ADD1E5:#999999:#66CC99:#9999CC:#CC6666:#FF8C00",
       "xtp"->"60", "xts"->"11", "xls"->"14", "xtext"->"", "yts"->"11", "yls"->"14", "ytext"->"",
-      "ms"->"16", "mstext"->"", "width"->"7", "height"->"7", "dpi"->"300").toString()
+      "ms"->"16", "mstext"->"", "width"->"10", "height"->"10", "dpi"->"300", "dl"->"50",
+      "top"->data.top, "filetype"->data.filetype).toString()
+
+    val param= s"文件类型：${data.filetype}/用于做图的行数：${data.top}"
 
     //数据库加入duty（运行中）
-    val start=dutyController.insertDuty(data.taskname,id,"BB","气泡图",file1.filename,"/",elements)
+    val start=dutyController.insertDuty(data.taskname,id,"BB","气泡图",file1.filename,param,elements)
 
     Future{
       val command = "Rscript "+Utils.path+"R/bubble/bubble.R -i "+ tableFile.getAbsolutePath +
-        " -o " +dutyDir+"/out -if pdf -in bubble"
+        " -o " +dutyDir+"/out -if pdf -in bubble -dt " + data.filetype + " -top " + data.top +
+        " -is 10:10"
 
       println(command)
 
@@ -2397,19 +2421,21 @@ class RPaintController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
 
   def readBubbleData(taskname:String): Action[AnyContent] =Action{ implicit request=>
     val id=request.session.get("userId").get
-    val path=Utils.path+"/users/"+id+"/"+taskname
+    val path=Utils.path+"users/"+id+"/"+taskname
     val elements=rservice.jsonToMap(Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf).head.elements)
     val color=elements("color").split(":")
-    val group=FileUtils.readLines(new File(path+"/table.txt")).asScala.map{_.split("\t")(1)}.tail.distinct
+    val group=FileUtils.readLines(new File(path+"/out/standard_table.txt")).asScala.map{_.split("\t")(1)}.tail.distinct.sorted
+    val row=FileUtils.readLines(new File(path+"/table.txt")).asScala.length - 1
 
     //获取图片
     val pics=rservice.getReDrawPics(path)
-    Ok(Json.obj("pics"->pics,"elements"->elements,"color"->color,"group"->group))
+    Ok(Json.obj("pics"->pics,"elements"->elements,"color"->color,"group"->group,"row"->row))
   }
 
   case class ReBBData(ps:String, color:String, xtp:String, xts:String, xls:String,
-                      xtext:String, yts:String, yls:String, ytext:String,
-                      ms:String, mstext:String, width:String, height:String, dpi:String)
+                      xtext:String, yts:String, yls:String, ytext:String, ms:String,
+                      mstext:String, width:String, height:String, dpi:String, dl:String,
+                      top:String, filetype:String)
 
   val ReBBForm: Form[ReBBData] =Form(
     mapping (
@@ -2426,7 +2452,10 @@ class RPaintController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
       "mstext"->text,
       "width"->text,
       "height"->text,
-      "dpi"->text
+      "dpi"->text,
+      "dl"->text,
+      "top"->text,
+      "filetype"->text
     )(ReBBData.apply)(ReBBData.unapply)
   )
 
@@ -2439,7 +2468,8 @@ class RPaintController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
     val elements= Json.obj("ps"->data.ps, "color"->data.color, "xtp"->data.xtp,
       "xts"->data.xts, "xls"->data.xls, "xtext"->data.xtext, "yts"->data.yts, "yls"->data.yls,
       "ytext"->data.ytext, "ms"->data.ms, "mstext"->data.mstext, "width"->data.width,
-      "height"->data.height, "dpi"->data.dpi).toString()
+      "height"->data.height, "dpi"->data.dpi, "dl"->data.dl, "top"->data.top,
+      "filetype"->data.filetype).toString()
 
     Await.result(dutydao.updateElements(id,taskname,elements),Duration.Inf)
 
@@ -2448,19 +2478,20 @@ class RPaintController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
     val mstext=if(data.mstext=="") " " else data.mstext
 
     val command = "Rscript "+Utils.path+"R/bubble/bubble.R -i "+ tableFile.getAbsolutePath +
-      " -o " +dutyDir+"/out -if pdf -in bubble -ps " + data.ps + " -pc \"" + data.color + "\"" +
+      " -o " +dutyDir+"/out -if pdf -in bubble -ps " + data.ps + " -pc \"" + data.color +
+      ":#E41A1C:#1E90FF:#4DAF4A:#984EA3:#ADD1E5:#999999:#66CC99:#9999CC:#CC6666:#FF8C00" + "\"" +
       " -xtp " + data.xtp + ":1" + " -xts sans:bold.italic:" + data.xts +
       " -xls \"sans:bold.italic:" + data.xls + ":" + xtext + ":black\"" + " -yts sans:bold.italic:" +
       data.yts + " -yls \"sans:bold.italic:" + data.yls + ":" + ytext +
       ":black\" -ms \"sans:bold.italic:" + data.ms + ":" + mstext +
-      ":black\" -is " + data.width + ":" + data.height + " -dpi " + data.dpi
+      ":black\" -is " + data.width + ":" + data.height + " -dpi " + data.dpi +
+      " -dl " + data.dl + " -top " + data.top + " -dt " + data.filetype
 
     FileUtils.writeStringToFile(new File(s"$dutyDir/temp/run.sh"),command)
     val execCommand = new ExecCommand
     execCommand.exect(s"sh $dutyDir/temp/run.sh",dutyDir+"/temp")
 
     println(command)
-
     //    val execCommand = new ExecCommand
     //    execCommand.exect(command,dutyDir+"/temp")
 
@@ -2469,7 +2500,10 @@ class RPaintController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
       Utils.pdf2Png(dutyDir+"/out/bubble.pdf",dutyDir+"/out/bubble.tiff") //替换图片
       rservice.creatZip(dutyDir) //替换压缩文件包
       val pics=dutyDir+"/out/bubble.png"
-      Ok(Json.obj("valid"->"true","pics"->pics))
+
+      val group=FileUtils.readLines(new File(dutyDir+"/out/standard_table.txt")).asScala.map{_.split("\t")(1)}.tail.distinct.sorted
+      val color=(data.color + ":#E41A1C:#1E90FF:#4DAF4A:#984EA3:#ADD1E5:#999999:#66CC99:#9999CC:#CC6666:#FF8C00").split(":")
+      Ok(Json.obj("valid"->"true","pics"->pics,"color"->color,"group"->group))
     } else {
       Ok(Json.obj("valid"->"false"))
     }
@@ -2495,7 +2529,8 @@ class RPaintController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
     val file1=request.body.file("fttable").get
     val tableFile=new File(dutyDir,file1.filename)
     //矩阵文件读取写入任务文件下table.txt
-    file1.ref.copyTo(tableFile)
+    rservice.fileTrimMove(file1.ref, tableFile)
+//    file1.ref.copyTo(tableFile)
 
     var input=file1.filename
     val filelist=mutable.Buffer(file1.filename)
@@ -2511,7 +2546,8 @@ class RPaintController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
 
     val (cd,cdname)=if(l==false) ("","") else {
       input+="/"+file2.get.filename
-      file2.get.ref.copyTo(new File(dutyDir,file2.get.filename))
+      rservice.fileTrimMove(file2.get.ref, new File(dutyDir,file2.get.filename))
+//      file2.get.ref.copyTo(new File(dutyDir,file2.get.filename))
       (" -cd " + dutyDir + "/" + file2.get.filename,file2.get.filename)
     }
 
@@ -2519,7 +2555,8 @@ class RPaintController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
       " -ot \""+(1 to filenum.toInt).map{x=>
         val file=request.body.file("table"+x)
         input+="/"+file.get.filename
-        file.get.ref.copyTo(new File(dutyDir,file.get.filename))
+        rservice.fileTrimMove(file.get.ref, new File(dutyDir,file.get.filename))
+//        file.get.ref.copyTo(new File(dutyDir,file.get.filename))
         filelist+=file.get.filename
         dutyDir+"/"+file.get.filename
       }.mkString(";") + "\""
@@ -2701,7 +2738,8 @@ class RPaintController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
     val tableFile=new File(dutyDir,"table.txt")
     val file1=request.body.file("table1").get
     //矩阵文件读取写入任务文件下table.txt
-    file1.ref.moveTo(tableFile)
+    rservice.fileTrimMove(file1.ref, tableFile)
+//    file1.ref.moveTo(tableFile)
 
     val elements= Json.obj("sbccolor"->"white", "lbccolor"->"gray", "llccolor"->"black",
       "slccolor"->"#842B00", "xls"->"17", "yls"->"17", "xtext"->"", "ytext"->"", "ms"->"17",
@@ -2836,17 +2874,20 @@ class RPaintController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
     //在用户下创建任务文件夹和结果文件夹
     val tableFile=new File(dutyDir,"table.txt")
     val file1=request.body.file("table1").get
-    file1.ref.moveTo(tableFile)
+    rservice.fileTrimMove(file1.ref, tableFile)
+//    file1.ref.moveTo(tableFile)
 
     val groupFile=new File(dutyDir,"group.txt")
     val file2=request.body.file("table2").get
     //矩阵文件读取写入任务文件下table.txt
-    file2.ref.moveTo(groupFile)
+    rservice.fileTrimMove(file2.ref, groupFile)
+//    file2.ref.moveTo(groupFile)
 
     val tagFile=new File(dutyDir,"tag.txt")
     val file3=request.body.file("table3").get
     //矩阵文件读取写入任务文件下table.txt
-    file3.ref.moveTo(tagFile)
+    rservice.fileTrimMove(file3.ref, tagFile)
+//    file3.ref.moveTo(tagFile)
 
     val psz = if(data.psz == "0") "none" else if(data.psz == "1") "log2" else "log10"
 
@@ -2986,7 +3027,8 @@ class RPaintController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
     val otuFile=new File(dutyDir,"otu_taxa_table.biom")
     val file1 = request.body.file("table1").get
     input=input+file1.filename+"/"
-    file1.ref.copyTo(tableFile)
+    rservice.fileTrimMove(file1.ref, tableFile)
+//    file1.ref.copyTo(tableFile)
     tableFile.setExecutable(true,false)
     tableFile.setReadable(true,false)
     tableFile.setWritable(true,false)
@@ -2994,7 +3036,8 @@ class RPaintController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
     val groupFile=new File(dutyDir,"map.txt")
     val file2 = request.body.file("group").get
     input+=file2.filename
-    file2.ref.moveTo(groupFile)
+    rservice.fileTrimMove(file2.ref, groupFile)
+//    file2.ref.moveTo(groupFile)
     groupFile.setExecutable(true,false)
     groupFile.setReadable(true,false)
     groupFile.setWritable(true,false)
@@ -3013,7 +3056,8 @@ class RPaintController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
 
     Future{
       val command0 = if(file1.filename.contains("biom")) {
-        file1.ref.copyTo(otuFile)
+        rservice.fileTrimMove(file1.ref, otuFile)
+//        file1.ref.copyTo(otuFile)
         ""
       } else "biom convert -i " + tableFile.getAbsolutePath + " -o " + otuFile.getAbsolutePath + " --table-type=\"OTU table\" --to-json --process-obs-metadata taxonomy && \n"
 
@@ -3158,6 +3202,303 @@ class RPaintController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
     }
   }
 
+
+  //Linear Regression
+  def doLIN=Action(parse.multipartFormData){implicit request=>
+    val data=TaxFunForm.bindFromRequest.get
+    val id=request.session.get("userId").get
+    val dutyDir=rservice.creatUserDir(id,data.taskname)
+    val tableFile=new File(dutyDir,"table.txt")
+    val file1=request.body.file("table1").get
+    rservice.fileTrimMove(file1.ref, tableFile)
+//    file1.ref.moveTo(tableFile)
+
+    val elements= Json.obj("mt"->"XY Linear Regression Plot", "ms"->"20",
+      "mc_color"->"black", "xt"->"X", "yt"->"Y", "ac_color"->"black", "ats"->"20",
+      "atc_color"->"black", "als"->"15", "alc_color"->"black", "pc_color"->"#6699ff",
+      "pz"->"4", "sc_color"->"red", "height"->"10", "width"->"10", "dpi"->"300",
+      "fc_color"->"black", "fz"->"5").toString()
+
+    //数据库加入duty（运行中）
+    val start=dutyController.insertDuty(data.taskname,id,"LIN","线性回归图",file1.filename,"/",elements)
+
+    Future{
+      val command = "Rscript "+Utils.path+"R/linearReg/XY.R -i "+ tableFile.getAbsolutePath +
+        " -o " +dutyDir+"/out -if pdf -in linearReg"
+
+      println(command)
+
+      FileUtils.writeStringToFile(new File(s"$dutyDir/temp/run.sh"),command)
+      val execCommand = new ExecCommand
+      //exec需要指定结果输出路径的时候，不指定默认本地任务路径
+      execCommand.exect(command,dutyDir+"/temp")
+
+      if (execCommand.isSuccess) {
+        Utils.pdf2Png(dutyDir+"/out/linearReg.pdf",dutyDir+"/out/linearReg.png")
+        val finish=dutyController.updateFini(id,data.taskname)
+        Utils.pdf2Png(dutyDir+"/out/linearReg.pdf",dutyDir+"/out/linearReg.tiff")
+        FileUtils.writeStringToFile(new File(dutyDir,"log.txt"),"Start Time:"+start+"\n\nFinish Time:"+finish+"\n\n运行成功！")
+        rservice.creatZip(dutyDir)
+      } else {
+        dutydao.updateFailed(id,data.taskname)
+        FileUtils.writeStringToFile(new File(dutyDir,"log.txt"),"Start Time:"+start+"\n\n错误信息：\n"+execCommand.getErrStr+"\n\n")
+      }
+    }
+    Ok(Json.obj("valid" -> "运行中！"))
+  }
+
+  def readLINData(taskname:String): Action[AnyContent] =Action{ implicit request=>
+    val id=request.session.get("userId").get
+    val path=Utils.path+"users/"+id+"/"+taskname
+    val elements=rservice.jsonToMap(Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf).head.elements)
+    val pics=rservice.getReDrawPics(path)
+    Ok(Json.obj("pics"->pics,"elements"->elements))
+  }
+
+  case class ReLINData(mt:String, ms:String, mc_color:String, xt:String, yt:String, ac_color:String,
+                       ats:String, atc_color:String, als:String, alc_color:String, pc_color:String,
+                       pz:String, sc_color:String, height:String, width:String, dpi:String,
+                       fc_color:String, fz:String)
+
+  val ReLINForm: Form[ReLINData] =Form(
+    mapping (
+      "mt"->text,
+      "ms"->text,
+      "mc_color"->text,
+      "xt"->text,
+      "yt"->text,
+      "ac_color"->text,
+      "ats"->text,
+      "atc_color"->text,
+      "als"->text,
+      "alc_color"->text,
+      "pc_color"->text,
+      "pz"->text,
+      "sc_color"->text,
+      "height"->text,
+      "width"->text,
+      "dpi"->text,
+      "fc_color"->text,
+      "fz"->text
+    )(ReLINData.apply)(ReLINData.unapply)
+  )
+
+  def redrawLIN(taskname:String)=Action(parse.multipartFormData) { implicit request =>
+    val data=ReLINForm.bindFromRequest.get
+    val id=request.session.get("userId").get
+    val dutyDir=Utils.path+"users/"+id+"/"+taskname
+    val tableFile=new File(dutyDir,"table.txt")
+
+    val elements= Json.obj("mt"->data.mt, "ms"->data.ms, "mc_color"->data.mc_color,
+      "xt"->data.xt, "yt"->data.yt, "ac_color"->data.ac_color, "ats"->data.ats,
+      "atc_color"->data.atc_color, "als"->data.als, "alc_color"->data.alc_color,
+      "pc_color"->data.pc_color, "pz"->data.pz, "sc_color"->data.sc_color, "height"->data.height,
+      "width"->data.width, "dpi"->data.dpi, "fc_color"->data.fc_color, "fz"->data.fz).toString()
+
+    Await.result(dutydao.updateElements(id,taskname,elements),Duration.Inf)
+
+    val command = "Rscript "+Utils.path+"R/linearReg/XY.R -i "+ tableFile.getAbsolutePath +
+      " -o " +dutyDir+"/out -if pdf -in linearReg -mt \"" + data.mt + "\" -ms " + data.ms +
+      " -mc \"" + data.mc_color + "\" -xt \"" + data.xt + "\" -yt \"" + data.yt + "\" -ac \"" +
+      data.ac_color + "\" -ats " + data.ats + " -atc \"" + data.atc_color + "\" -als " + data.als +
+      " -alc \"" + data.alc_color + "\" -pc \"" + data.pc_color + "\" -pz " + data.pz + " -sc \"" +
+      data.sc_color + "\" -is " + data.height + " -iw " + data.width + " -dpi " + data.dpi +
+      " -fc \"" + data.fc_color + "\" -fz " + data.fz
+
+    FileUtils.writeStringToFile(new File(s"$dutyDir/temp/run.sh"),command)
+    val execCommand = new ExecCommand
+    execCommand.exect(s"sh $dutyDir/temp/run.sh",dutyDir+"/temp")
+
+    println(command)
+    //    val execCommand = new ExecCommand
+    //    execCommand.exect(command,dutyDir+"/temp")
+
+    if (execCommand.isSuccess) {
+      Utils.pdf2Png(dutyDir+"/out/linearReg.pdf",dutyDir+"/out/linearReg.png") //替换图片
+      Utils.pdf2Png(dutyDir+"/out/linearReg.pdf",dutyDir+"/out/linearReg.tiff") //替换图片
+      rservice.creatZip(dutyDir) //替换压缩文件包
+      val pics=dutyDir+"/out/linearReg.png"
+      Ok(Json.obj("valid"->"true","pics"->pics))
+    } else {
+      Ok(Json.obj("valid"->"false"))
+    }
+  }
+
+
+  //scatter plot
+  case class SCAData(taskname:String,xydx:String,xydy:String,xlog:String,ylog:String,m:String)
+
+  val SCAForm: Form[SCAData] =Form(
+    mapping (
+      "taskname"->text,
+      "xydx"->text,
+      "xydy"->text,
+      "xlog"->text,
+      "ylog"->text,
+      "m"->text
+    )(SCAData.apply)(SCAData.unapply)
+  )
+
+  def doSCA=Action(parse.multipartFormData){implicit request=>
+    val data=SCAForm.bindFromRequest.get
+    val id=request.session.get("userId").get
+    val dutyDir=rservice.creatUserDir(id,data.taskname)
+    val tableFile=new File(dutyDir,"table.txt")
+    val file1=request.body.file("table1").get
+    rservice.fileTrimMove(file1.ref, tableFile)
+//    file1.ref.moveTo(tableFile)
+
+    val elements= Json.obj("xydx"->data.xydx, "xydy"->data.xydy, "xl"->data.xlog, "yl"->data.ylog,
+      "m"->data.m, "hl"->"", "vl"->"", "dl"->"", "dc"->"TRUE", "dax"->"TRUE", "cohj"->"1.5", "covj"->"10",
+      "cor_color"->"black", "cos"->"4.5", "big"->"no", "xdamin"->"","xdamax"->"","ydamin"->"","ydamax"->"",
+      "dot_color"->"red", "width" -> "10", "height"->"10", "dpi"->"300", "xts"->"15", "yts"->"15", "xls"->"17",
+      "yls"->"17", "ms"->"17", "xlsangle"->"0", "ylsangle"->"90", "xtext"->"", "ytext"->"", "mstext"->"").toString()
+
+    val param = "作为X轴数据的列：" + data.xydx + "/作为Y轴数据的列：" + data.xydy + "/对X轴数据预处理：" + data.xlog +
+      "/对Y轴数据预处理:" + data.ylog + "/相关分析方法：" + data.m
+
+    val start=dutyController.insertDuty(data.taskname,id,"SCA","高级散点图",file1.filename,param,elements)
+
+    Future{
+
+      val command = "Rscript "+Utils.path+"R/scatterpoint/scatterplot.R -i "+ tableFile.getAbsolutePath +
+        " -o " +dutyDir+"/out -if pdf -xyd " + data.xydx + ":" + data.xydy + " -xl " + data.xlog +
+        " -yl " + data.ylog
+
+      println(command)
+
+      FileUtils.writeStringToFile(new File(s"$dutyDir/temp/run.sh"),command)
+      val execCommand = new ExecCommand
+      //exec需要指定结果输出路径的时候，不指定默认本地任务路径
+      execCommand.exect(command,dutyDir+"/temp")
+
+      if (execCommand.isSuccess) {
+        Utils.pdf2Png(dutyDir+"/out/scatter.pdf",dutyDir+"/out/scatter.png")
+        val finish=dutyController.updateFini(id,data.taskname)
+        Utils.pdf2Png(dutyDir+"/out/scatter.pdf",dutyDir+"/out/scatter.tiff")
+        FileUtils.writeStringToFile(new File(dutyDir,"log.txt"),"Start Time:"+start+"\n\nFinish Time:"+finish+"\n\n运行成功！")
+        rservice.creatZip(dutyDir)
+      } else {
+        dutydao.updateFailed(id,data.taskname)
+        FileUtils.writeStringToFile(new File(dutyDir,"log.txt"),"Start Time:"+start+"\n\n错误信息：\n"+execCommand.getErrStr+"\n\n")
+      }
+    }
+    Ok(Json.obj("valid" -> "运行中！"))
+  }
+
+  def readSCAData(taskname:String): Action[AnyContent] =Action{ implicit request=>
+    val id=request.session.get("userId").get
+    val path=Utils.path+"/users/"+id+"/"+taskname
+    val elements=rservice.jsonToMap(Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf).head.elements)
+
+    val pics=rservice.getReDrawPics(path)
+    Ok(Json.obj("pics"->pics,"elements"->elements))
+  }
+
+  case class ReSCAData(xydx:String, xydy:String, xl:String, yl:String, m:String, hl:String, vl:String, dl:String,
+                       dc:String, dax:String, cohj:String, covj:String, cor_color:String, cos:String, big:String,
+                       xdamin:String, xdamax:String, ydamin:String, ydamax:String, dot_color:String, width:String,
+                       height:String)
+
+  case class ReSCAData2(dpi:String, xts:String, yts:String, xls:String, yls:String, ms:String, xlsangle:String,
+                        ylsangle:String, xtext:String, ytext:String, mstext:String)
+
+  val ReSCAForm: Form[ReSCAData] =Form(
+    mapping (
+      "xydx"->text,
+      "xydy"->text,
+      "xl"->text,
+      "yl"->text,
+      "m"->text,
+      "hl"->text,
+      "vl"->text,
+      "dl"->text,
+      "dc"->text,
+      "dax"->text,
+      "cohj"->text,
+      "covj"->text,
+      "cor_color"->text,
+      "cos"->text,
+      "big"->text,
+      "xdamin"->text,
+      "xdamax"->text,
+      "ydamin"->text,
+      "ydamax"->text,
+      "dot_color"->text,
+      "width"->text,
+      "height"->text
+    )(ReSCAData.apply)(ReSCAData.unapply)
+  )
+
+  val ReSCAForm2: Form[ReSCAData2] =Form(
+    mapping (
+      "dpi"->text,
+      "xts"->text,
+      "yts"->text,
+      "xls"->text,
+      "yls"->text,
+      "ms"->text,
+      "xlsangle"->text,
+      "ylsangle"->text,
+      "xtext"->text,
+      "ytext"->text,
+      "mstext"->text
+    )(ReSCAData2.apply)(ReSCAData2.unapply)
+  )
+
+  def redrawSCA(taskname:String)=Action(parse.multipartFormData) { implicit request =>
+    val data = ReSCAForm.bindFromRequest.get
+    val data2 = ReSCAForm2.bindFromRequest.get
+    val id = request.session.get("userId").get
+    val dutyDir = Utils.path+"users/"+id+"/"+taskname
+    val tableFile = new File(dutyDir,"table.txt")
+
+    val elements = Json.obj("xydx"->data.xydx, "xydy"->data.xydy, "xl"->data.xl, "yl"->data.yl,
+      "m"->data.m, "hl"->data.hl, "vl"->data.vl, "dl"->data.dl, "dc"->data.dc, "dax"->data.dax,
+      "cohj"->data.cohj, "covj"->data.covj, "cor_color"->data.cor_color, "cos"->data.cos, "big"->data.big,
+      "xdamin"->data.xdamin,"xdamax"->data.xdamax,"ydamin"->data.ydamin,"ydamax"->data.ydamax,
+      "dot_color"->data.dot_color, "width"->data.width, "height"->data.height, "dpi"->data2.dpi,
+      "xts"->data2.xts, "yts"->data2.yts, "xls"->data2.xls, "yls"->data2.yls, "ms"->data2.ms,
+      "xlsangle"->data2.xlsangle, "ylsangle"->data2.ylsangle, "xtext"->data2.xtext, "ytext"->data2.ytext,
+      "mstext"->data2.mstext).toString()
+
+    Await.result(dutydao.updateElements(id,taskname,elements),Duration.Inf)
+
+    val big=if(data.big=="no") ""
+    else if(data.big=="x")
+      " -da x:"+data.xdamin+","+data.xdamax
+    else " -da y:"+data.ydamin+","+data.ydamax
+
+    val xtext=if(data2.xtext=="") "" else data2.xtext
+    val ytext=if(data2.ytext=="") "" else data2.ytext
+    val mstext=if(data2.mstext=="") " " else data2.mstext
+
+    val command =  "Rscript "+Utils.path+"R/scatterpoint/scatterplot.R -i "+ tableFile.getAbsolutePath +
+      " -o " + dutyDir + "/out -if pdf -xyd " + data.xydx + ":" + data.xydy + " -xl " + data.xl + " -yl " +
+      data.yl + " -m " + data.m + " -hl " + data.hl + " -vl " + data.vl + " -dl \"" + data.dl + "\" -dc " +
+      data.dc + " -dax " + data.dax + " -coj " + data.cohj + ":" + data.covj + " -coc \"" + data.cor_color +
+      "\" -cos " + data.cos + big + " -doc \"" + data.dot_color + "\" -is " + data.width + ":" + data.height +
+      " -dpi " + data2.dpi + " -xts \"sans:plain:" + data2.xts + "\" -yts \"sans:plain:" + data2.yts +
+      "\" -xls \"sans:plain:" + data2.xls + ":" + xtext + ":" + data2.xlsangle + "\" -yls " +
+      "\"sans:plain:" + data2.yls + ":" + ytext + ":" + data2.ylsangle + "\" -ms \"sans:plain:" +
+      data2.ms + ":" + mstext + "\""
+
+    FileUtils.writeStringToFile(new File(s"$dutyDir/temp/run.sh"),command)
+    val execCommand = new ExecCommand
+    execCommand.exect(s"sh $dutyDir/temp/run.sh",dutyDir+"/temp")
+
+    println(command)
+
+    if (execCommand.isSuccess) {
+      Utils.pdf2Png(dutyDir+"/out/scatter.pdf",dutyDir+"/out/scatter.png") //替换图片
+      Utils.pdf2Png(dutyDir+"/out/scatter.pdf",dutyDir+"/out/scatter.tiff") //替换图片
+      rservice.creatZip(dutyDir) //替换压缩文件包
+      val pics=dutyDir+"/out/scatter.png"
+      Ok(Json.obj("valid"->"true","pics"->pics))
+    } else {
+      Ok(Json.obj("valid"->"false"))
+    }
+  }
 
 
 }

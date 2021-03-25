@@ -1,371 +1,528 @@
 package utils;
 
-import com.google.inject.internal.asm.$ModuleVisitor;
-import com.google.inject.internal.cglib.proxy.$Factory;
-import com.google.inject.internal.cglib.proxy.$InvocationHandler;
+import com.google.protobuf.Internal;
+import com.mysql.jdbc.util.Base64Decoder;
 import javafx.util.Pair;
-import scala.Char;
-import scala.Predef;
-import scala.concurrent.java8.FuturesConvertersImpl;
-import sun.reflect.generics.tree.Tree;
+import scala.Array;
+import scala.collection.mutable.DoubleLinkedList;
+import scala.collection.mutable.LinkedHashSet;
+import scala.compat.java8.converterImpl.StepsDoubleLinkedHashTableValue;
+import sun.awt.ModalExclude;
 
 import java.util.*;
 
 public class leet {
 
-    public static void main(String[] args) {
-        leet test = new leet();
-        int[] nums = new int[]{1,2,3,1};
-        //[2,1,3,null,4]   7
-        String a = "()(()";
-
-        char aa = '1';
-        char bb = '0';
-        String conbine = bb+""+aa;
-        int cc = Integer.parseInt(conbine);
-        System.out.println(cc);
-    }
 
 
-    //BurstBalloons_312
-    //You are given n balloons, indexed from 0 to n - 1. Each balloon is painted with a number on it
-    //represented by an array nums. You are asked to burst all the balloons.
-    //If you burst the ith balloon, you will get nums[left] * nums[i] * nums[right] coins. Here left and
-    //right are adjacent indices of i. After the burst, the left and right then becomes adjacent.
-    //Return the maximum coins you can collect by bursting the balloons wisely.
-
-    //Example 1:
-    //Input: nums = [3,1,5,8]
-    //Output: 167
-    //Explanation:
-    //nums = [3,1,5,8] --> [3,5,8] --> [3,8] --> [8] --> []
-    //coins =  3*1*5    +   3*5*8   +  1*3*8  + 1*8*1 = 167
-
-    //Example 2:
-    //Input: nums = [1,5]
-    //Output: 10
-    //动态规划 子问题：遍历范围内所有的气球，将当前气球作为最后一个气球戳爆时，能获取的最大值。 最后求所有作为最后一个气球求出来的值中的最大值
-    //               例如 [1,2,3,4,5] 假设遍历到 3 所求的就是 当3作为最后一个戳爆的气球，能获取的最大值。
-    //               最后求就是所有气球里面最作为后一个戳爆时能获取到的最大值中最大的数
-    //状态定义： left right边界范围内，
-    //气球作为最后一个被戳破 = max(气球左侧所有气球能获取到的最大值) + max(气球右侧所有气球能获取到的最大值) + 当前nums当前气球 * nums（左边界 - 1） * nums（右边界 + 1）
-    //dp方程： left ~ right范围内： dp[left][right] = max(val[i])   i : left ~ right
-    //        val[i] = max(left ~ i-1) + max(i+1 ~ right) + nums[i] * nums[left-1] * nums[right+1]
-    //时间复杂度：O(n^3)，其中 n 是气球数量。区间数为 n^2，区间迭代复杂度为 O(n)，最终复杂度为 O(n^2×n)=O(n^3)
-    //空间复杂度：O(n^2)，其中 n 是气球数量。缓存大小为区间的个数。
-    public int maxCoins(int[] nums) {
-        int[][] dp = new int[nums.length][nums.length];
-        return maxCoins(nums, 0, nums.length - 1, dp);
-    }
-
-    private int maxCoins(int[] nums, int left, int right, int[][] dp) {
-        if(left > right) return 0;
-        if(dp[left][right] != 0) return dp[left][right];
-        for(int i = left; i <= right; i++) {
-            int maxleft = maxCoins(nums, left, i - 1, dp);
-            int maxright = maxCoins(nums, i + 1, right, dp);
-            int leftedge = 1, rightedge = 1;
-            if(left - 1 >= 0) leftedge = nums[left - 1];
-            if(right + 1 < nums.length) rightedge = nums[right + 1];
-            int lastblast = nums[i] * leftedge * rightedge;
-            dp[left][right] = Math.max(dp[left][right], maxleft + maxright + lastblast);
+    //84.最大矩形面积
+    //动态规划(目前最优) 2ms 时间复杂度O(n) 空间复杂度O(n)
+    public static int largestRectangleArea3(int[] height) {
+        if (height == null || height.length == 0) {
+            return 0;
         }
-        return dp[left][right];
-    }
+        //存放左边比它小的下标
+        int[] leftLess = new int[height.length];
+        //存放右边比它小的下标
+        int[] rightLess = new int[height.length];
+        rightLess[height.length - 1] = height.length;
+        leftLess[0] = -1;
 
-
-    //动态规划 依旧是自顶向下 转变思考方式(实际与上一个一样) 从气球序列里戳气球，改成往两边界为1的区间里填充气球，获取气球的累加值
-    //状态定义： addBalloon(i,j)表示充满ij区间能获取到的最大值 枚举 ij边界中间的空隙mid  addBalloon(i,j) = max(addBalloon(i,mid) + addBalloon(mid,j) + i * j * nums[mid])
-    //dp方程：addBalloon(i,j) = max(addBalloon(i, mid) + addBalloon(mid, j) + i * j * nums[mid]) mid: i+1 ~ j-1 if(i < j-1) 表明ij之间有空隙填充气球的情况下
-    //       addBalloon(i,j) = 0  if(i >= j-1) 表面ij之间不能添加气球
-    //时间复杂度：O(n^3)，其中 n 是气球数量。区间数为 n^2，区间迭代复杂度为 O(n)，最终复杂度为 O(n^2×n)=O(n^3)
-    //空间复杂度：O(n^2)，其中 n 是气球数量。缓存大小为区间的个数。
-    public int maxCoins2(int[] nums) {
-        int[][] dp = new int[nums.length + 2][nums.length + 2];
-        return addBalloon(nums,-1, nums.length, dp);
-    }
-
-    private int addBalloon(int[] nums, int i, int j, int[][] dp) {
-        if(dp[i+1][j+1] != 0) return dp[i+1][j+1];
-        if(i >= j - 1) return 0;
-        int left = i, right = j;
-        if(i == -1) left = 1;
-        if(j == nums.length) right = 1;
-        for(int mid = i + 1; mid < j; mid++) {
-            int sum = left * right * nums[mid] + addBalloon(nums, i, mid, dp) + addBalloon(nums, mid, j, dp);
-            dp[i+1][j+1] = Math.max(sum, dp[i+1][j+1]);
-        }
-        return dp[i+1][j+1];
-    }
-
-
-    //动态规划 自底向上 改变dp访问的顺序
-    //因为  addBalloon(i,j) = max(addBalloon(i, mid) + addBalloon(mid, j) + i * j * nums[mid])
-    //也就是 dp[i][j] = max(dp[i][mid] + dp[mid][j] + i * j * nums[mid]) mid: i ~ j  if(i > j - 1)
-    //时间复杂度：O(n^3)，其中 n 是气球数量。区间数为 n^2，区间迭代复杂度为 O(n)，最终复杂度为 O(n^2×n)=O(n^3)
-    //空间复杂度：O(n^2)，其中 n 是气球数量。缓存大小为区间的个数。
-    public int maxCoins3(int[] nums) {
-        int[] val = new int[nums.length + 2];
-        val[0] = 1; val[nums.length + 1] = 1;
-        for(int i = 0; i < nums.length; i++) val[i+1] = nums[i];
-        int[][] dp = new int[nums.length + 2][nums.length + 2];
-        for(int i = val.length - 3; i >= 0; i--) {
-            for(int j = i + 2; j < val.length; j++) {
-                for(int mid = i + 1; mid < j; mid++) {
-                    dp[i][j] = Math.max(dp[i][j], dp[i][mid] + dp[mid][j] + val[i] * val[j] * val[mid]);
-                }
+        //动态规划（当前元素的结果可由上一级元素的结果获得），计算每个柱子左边比它小的柱子的下标
+        //如果当前元素的左元素小于当前元素，当前的左哨兵为左元素
+        //如果左元素大于当前元素，则p为左元素的哨兵，再判断左元素的哨兵是否大于当前元素，大于则p为哨兵的哨兵
+        for (int i = 1; i < height.length; i++) {
+            int p = i - 1;
+            while (p >= 0 && height[p] >= height[i]) {
+                p = leftLess[p];
             }
+            leftLess[i] = p;
         }
-        return dp[0][nums.length + 1];
+        //计算每个柱子右边比它小的柱子的下标
+        for (int i = height.length - 2; i >= 0; i--) {
+            int p = i + 1;
+            while (p < height.length && height[p] >= height[i]) {
+                p = rightLess[p];
+            }
+            rightLess[i] = p;
+        }
+        int maxArea = 0;
+        //以每个柱子的高度为矩形的高，计算矩形的面积。
+        for (int i = 0; i < height.length; i++) {
+            maxArea = Math.max(maxArea, height[i] * (rightLess[i] - leftLess[i] - 1));
+        }
+        return maxArea;
+    }
+
+    //动态规划 思路和单调栈一致，用dp替代栈来完成寻找左右边界
+    //子问题：当前i的左边界与i-1和i-1的左边界有什么关系
+    //状态定义：leftdp[i]记录左侧最近的一个小于height[i]的下标，
+    //          如果height[i] > height[i-1] 那么 leftdp[i]=i-1
+    //          如果height[i] <= height[i-1] 那么寻找 i-1的左边界leftdp[i-1]，
+    //          查看height[i]是否大于height[leftdp[i-1]]，以此类推直到找到比当前小的x leftdp[i] = x
+    public static int largestRectangleArea4(int[] height) {
+        int len = height.length;
+        int[] leftdp = new int[len], rightdp = new int[len];
+        leftdp[0] = -1;
+        rightdp[len - 1] = len;
+        for(int i = 0; i < len; i++) {
+            int x = i - 1;
+            while (x >= 0 && height[i] < height[x]) {
+                x = leftdp[x];
+            }
+
+        }
+        return 0;
     }
 
 
-    //MaximalSquare_221
-    //Given an m x n binary matrix filled with 0's and 1's, find the largest square containing only 1's and
-    //return its area.
+    //单调栈常数优化 时间复杂度O(n) 空间复杂度O(n) 10ms
+    //左右边界确定不用两次循环，而是一同在左边界确定的过程中，确定有边界。
+    //遍历到i的时候，如果heights[i]小于之前的某个index，需要把index pop出来，
+    //这时说明i是index右边第一个小于height[index]的，即i是index的右边界。
+    //遍历完成，栈内没被pop的说明有边界是height.length
+    public int largestRectangleArea2(int[] heights) {
+        if(heights == null || heights.length == 0) return 0;
+        int len = heights.length;
+        int[] left = new int[len], right = new int[len];
+        Arrays.fill(right, len);
+        Stack<Integer> stack = new Stack<>();
+        for(int i = 0; i < len; i++) {
+            if(!stack.isEmpty() && heights[stack.peek()] >= heights[i]) {
+                right[stack.pop()] = i;
+            }
+            left[i] = stack.isEmpty()? -1 : stack.peek();
+            stack.push(i);
+        }
+        int max = 0;
+        for(int i = 0; i < len; i++) {
+            max = Math.max(max, heights[i] * (right[i] - left[i] - 1));
+        }
+        return max;
+    }
 
+    //单调栈，三次循环，时间复杂度O(n),空间复杂度O(n) 13ms
+    //找以当前heights作为矩形高时，左边能抵达的最远距，即从当前向左找第一个小于当前height的下标，没有就是-1
+    //同理找右边边界
+    //最后算所有height作为高时的面积取最大
+    public int largestRectangleArea(int[] heights) {
+        int[] left = new int[heights.length], right = new int[heights.length];
+        Stack<Integer> stack = new Stack<>(); //单调栈
+        for(int i = 0; i < heights.length; i++) {
+            while (!stack.isEmpty() && heights[stack.peek()] >= heights[i]) {
+                stack.pop();
+            }
+            left[i] = (stack.isEmpty())? -1 : stack.peek();
+            stack.push(i);
+        }
+        stack.clear();
+        for(int i = heights.length - 1; i >= 0; i--) {
+            while (!stack.isEmpty() && heights[stack.peek()] >= heights[i]) {
+                stack.pop();
+            }
+            right[i] = (stack.isEmpty())? heights.length : stack.peek();
+            stack.push(i);
+        }
+        int max = 0;
+        for(int i = 0; i < heights.length; i++) {
+            max = Math.max(max, heights[i] * (right[i] - left[i] - 1));
+        }
+        return max;
+    }
+
+
+    //MaximalRectangle_85
+    //Given a rows x cols binary matrix filled with 0's and 1's, find the largest rectangle containing only 1's and return its area.
     //Example 1:
+    //
+    //
     //Input: matrix = [["1","0","1","0","0"],["1","0","1","1","1"],["1","1","1","1","1"],["1","0","0","1","0"]]
-    //Output: 4
-
+    //Output: 6
+    //Explanation: The maximal rectangle is shown in the above picture.
     //Example 2:
-    //Input: matrix = [["0","1"],["1","0"]]
-    //Output: 1
-
+    //
+    //Input: matrix = []
+    //Output: 0
     //Example 3:
+    //
     //Input: matrix = [["0"]]
     //Output: 0
-
+    //Example 4:
+    //
+    //Input: matrix = [["1"]]
+    //Output: 1
+    //Example 5:
+    //
+    //Input: matrix = [["0","0"]]
+    //Output: 0
+    // 
+    //
     //Constraints:
-    //m == matrix.length
-    //n == matrix[i].length
-    //1 <= m, n <= 300
+    //
+    //rows == matrix.length
+    //cols == matrix[i].length
+    //0 <= row, cols <= 200
     //matrix[i][j] is '0' or '1'.
 
-    //动态规划：子问题：最大正方形面积，把当前访问到的位置作为正方形右下角（前提是当前为1），如果当前位置的左、上、左上都为1 则长宽扩大
-    //状态定义：定义一个spread(i,j)方法 查看当前能否进一步扩展成更大的正方形  matrix[i-1][j]、matrix[i][j-1]、matrix[i-1][j-1]
-    //         如果前 matrix[i][j]为1，则可以作为正方形右下角，基础面积为1.
-    //dp方程：dp[i][j]表示以 i,j为右下角能构成的最大正方形面积
-    public int maximalSquare(char[][] matrix) {
+    //动态规划
+    public int maximalRectangle2(char[][] matrix) {
+        int row = matrix.length, col = matrix[0].length, max = 0;
+        int[] heights = new int[col];
+        for(int i = 0; i < row; i++) {
+            for(int j = 0; j < col; j++) {
+                if(matrix[i][j] == '1') heights[j]++;
+                else heights[j] = 0;
+            }
+            int[] leftdp = new int[col], rightdp = new int[col];
+            leftdp[0] = -1;
+            Arrays.fill(rightdp, col);
+            for(int j = 1; j < col; j++) {
+                int x = j - 1;
+                while (x >= 0 && heights[x] >= heights[j]) {
+                    x = leftdp[x];
+                }
+                leftdp[j] = x;
+            }
+            for(int j = col - 2; j < col; j--) {
+                int x = j + 1;
+                while (x < col && heights[x] >= heights[j]) {
+                    x = rightdp[x];
+                }
+                rightdp[j] = x;
+            }
+            for(int j = 0; j < col; j++) {
+                max = Math.max(max, heights[j] * (rightdp[j] - leftdp[j] - 1));
+            }
+        }
+        return max;
+    }
 
-
-
-        return 0;
+    //单调栈
+    public int maximalRectangle(char[][] matrix) {
+        int row = matrix.length, col = matrix[0].length, max = 0;
+        int[] height = new int[col];
+        for(int i = 0; i < row; i++) {
+            for(int j = 0; j < col; j++) {
+                if(matrix[i][j] == '1') height[j]++;
+                else height[j] = 0;
+            }
+            int[] left = new int[col], right = new int[col];
+            Arrays.fill(right, col);
+            Stack<Integer> stack = new Stack<>();
+            for(int j = 0; j < col; j++) {
+                while (!stack.isEmpty() && height[stack.peek()] >= height[j]){
+                    right[stack.pop()] = j;
+                }
+                left[j] = (stack.isEmpty())? -1 : stack.peek();
+                stack.push(j);
+            }
+            for(int j = 0; j < col; j++) {
+                max = Math.max(max, height[j] * (right[j] - left[j] - 1));
+            }
+        }
+        return max;
     }
 
 
 
+    //456. 132pattern
+    //Given an array of n integers nums, a 132 pattern is a subsequence of three integers nums[i], nums[j]
+    //and nums[k] such that i < j < k and nums[i] < nums[k] < nums[j]. Return true if there is a 132 pattern
+    //in nums, otherwise, return false.
+    //Follow up: The O(n^2) is trivial, could you come up with the O(n logn) or the O(n) solution?
 
-
-
-
-
-
-
-
-
-    //MaxSumofRectangleNoLargerThanK_363
-    //Given a non-empty 2D matrix matrix and an integer k, find the max sum of a rectangle in the matrix such that its sum is no larger than k.
-    //
-    //Example:
-    //
-    //Input: matrix = [[1,0,1],[0,-2,3]], k = 2
-    //Output: 2
-    //Explanation: Because the sum of rectangle [[0, 1], [-2, 3]] is 2,
-    //             and 2 is the max number no larger than k (k = 2).
-    //Note:
-    //
-    //The rectangle inside the matrix must have an area > 0.
-    //What if the number of rows is much larger than the number of columns?
-    public int maxSumSubmatrix(int[][] matrix, int k) {
-        return 0;
-    }
-
-
-    //MinimumWindowSubstring_76
-    //Given two strings s and t, return the minimum window in s which will contain all the characters in t. If there is no such window in s that covers all characters in t, return the empty string "".
-    //
-    //Note that If there is such a window, it is guaranteed that there will always be only one unique minimum window in s.
-    //
-    // 
-    //
     //Example 1:
-    //
-    //Input: s = "ADOBECODEBANC", t = "ABC"
-    //Output: "BANC"
+    //Input: nums = [1,2,3,4]
+    //Output: false
+    //Explanation: There is no 132 pattern in the sequence.
+
     //Example 2:
-    //
-    //Input: s = "a", t = "a"
-    //Output: "a"
-    // 
-    //
-    //Constraints:
-    //
-    //1 <= s.length, t.length <= 105
-    //s and t consist of English letters.
-    // 
-    //
-    //Follow up: Could you find an algorithm that runs in O(n) time?
-    public String minWindow(String s, String t) {
-        return "";
-    }
+    //Input: nums = [3,1,4,2]
+    //Output: true
+    //Explanation: There is a 132 pattern in the sequence: [1, 4, 2].
 
-
-
-    //PalindromicSubstrings_647
-    //Given a string, your task is to count how many palindromic substrings in this string.
-    //The substrings with different start indexes or end indexes are counted as different substrings
-    //even they consist of same characters.
-    //
-    //Example 1:
-    //Input: "abc"
-    //Output: 3
-    //Explanation: Three palindromic strings: "a", "b", "c".
-    //
-    //Example 2:
-    //Input: "aaa"
-    //Output: 6
-    //Explanation: Six palindromic strings: "a", "a", "a", "aa", "aa", "aaa".
-    //
-    //Note:The input string length won't exceed 1000.
-
-    //假设一个回文串中心为 center，该中心对应的最大回文串右边界为 right。存在一个 i 为当前回文串中心，满足 i > center，那么也存在一个 j 与 i 关于 center 对称，可以根据 Z[i] 快速计算出 Z[j]。
-    //
-    //当 i < right 时，找出 i 关于 center 的对称点 j = 2 * center - i。此时以 i 为中心，半径为 right - i 的区间内存在的最大回文串的半径 Z[i] 等于 Z[j]。
-    //
-    //例如，对于字符串 A = '@#A#B#A#A#B#A#＄'，当 center = 7, right = 13, i = 10 时，center 为两个字母 A 中间的 #，最大回文串右边界为最后一个 #，i 是最后一个 B，j 是第一个 B。
-    //
-    //在 [center - (right - center), right] 中，区间中心为 center，右边界为 right，i 和 j 关于 center 对称，且 Z[j] = 3，可以快速计算出 Z[i] = min(right - i, Z[j]) = 3。
-    //
-    //在 while 循环中，只有当 Z[i] 超过 right - i 时，才需要逐个比较字符。这种情况下，Z[i] 每增加 1，right 也会增加 1，且最多能够增加 2*N+2 次。因此这个过程是线性的。
-    //
-    //最后，对 Z 中每一项 v 计算 (v+1) / 2，然后求和。假设给定最大回文串中心为 C，半径为 R，那么以 C 为中心，半径为 R-1, R-2, ..., 0 的子串也都是回文串。例如 abcdedcba 是以 e 为中心，半径为 4 的回文串，那么 e，ded，cdedc，bcdedcb 和 abcdedcba 也都是回文串。
-    //
-    //除以 2 是因为实际回文串的半径为 v 的一半。例如回文串 a#b#c#d#e#d#c#b#a 的半径为实际原回文串半径的 2 倍。
-
-    //1 manacher算法
-    public int countSubstrings(String s) {
-        return 0;
-    }
-
-
-
-    //2 中心扩散法3ms
-
-
-
-    //3 动态规划
-
-
-    //SplitArrayLargestSum_410
-    //Given an array nums which consists of non-negative integers and an integer m, you can split the array into m non-empty continuous subarrays.
-    //
-    //Write an algorithm to minimize the largest sum among these m subarrays.
-    //
-    // 
-    //
-    //Example 1:
-    //
-    //Input: nums = [7,2,5,10,8], m = 2
-    //Output: 18
-    //Explanation:
-    //There are four ways to split nums into two subarrays.
-    //The best way is to split it into [7,2,5] and [10,8],
-    //where the largest sum among the two subarrays is only 18.
-    //Example 2:
-    //
-    //Input: nums = [1,2,3,4,5], m = 2
-    //Output: 9
     //Example 3:
-    //
-    //Input: nums = [1,4,4], m = 3
-    //Output: 4
-    public int splitArray(int[] nums, int m) {
-        return 0;
+    //Input: nums = [-1,3,2,0]
+    //Output: true
+    //Explanation: There are three 132 patterns in the sequence: [-1, 3, 2], [-1, 3, 0] and [-1, 2, 0].
+
+    //Constraints:
+    //n == nums.length
+    //1 <= n <= 104
+    //-109 <= nums[i] <= 109
+
+    //特殊3，2，1  1，2，1  1,3,3
+    public static void main(String[] args) {
+        leet test = new leet();
+        System.out.println(test.find132pattern(new int[]{1,2,1,3}));
     }
 
+    //单调栈 实现
+    public boolean find132pattern(int[] nums) {
+        Stack<Integer> stack = new Stack<>();
+        for(int i = 0; i < nums.length; i++) {
+            while (!stack.isEmpty() && nums[stack.peek()] >= nums[i]) {
+                stack.pop();
+            }
 
-    //StudentAttendanceRecordI_551
-    //You are given a string representing an attendance record for a student. The record only contains the following three characters:
-    //'A' : Absent.
-    //'L' : Late.
-    //'P' : Present.
-    //A student could be rewarded if his attendance record doesn't contain more than one 'A' (absent) or more than two continuous 'L' (late).
-    //
-    //You need to return whether the student could be rewarded according to his attendance record.
-    //
-    //Example 1:
-    //Input: "PPALLP"
-    //Output: True
-    //Example 2:
-    //Input: "PPALLL"
-    //Output: False
-    public boolean checkRecord(String s) {
+            stack.push(i);
+        }
         return false;
     }
 
 
-    //StudentAttendanceRecordII_552
-    //Given a positive integer n, return the number of all possible attendance records with length n, which will be regarded as rewardable. The answer may be very large, return it after mod 109 + 7.
-    //
-    //A student attendance record is a string that only contains the following three characters:
-    //
-    //'A' : Absent.
-    //'L' : Late.
-    //'P' : Present.
-    //A record is regarded as rewardable if it doesn't contain more than one 'A' (absent) or more than two continuous 'L' (late).
-    //
+
+
+
+    //DistinctSubsequences_115
+    //Given a string S and a string T, count the number of distinct subsequences of S which equals T.
+    //A subsequence of a string is a new string which is formed from the original string by deleting some
+    //(can be none) of the characters without disturbing the relative positions of the remaining characters.
+    //(ie, "ACE" is a subsequence of "ABCDE" while "AEC" is not). It's guaranteed the answer fits on a
+    //32-bit signed integer.
+
     //Example 1:
-    //Input: n = 2
-    //Output: 8
+    //Input: S = "rabbbit", T = "rabbit"
+    //Output: 3
     //Explanation:
-    //There are 8 records with length 2 will be regarded as rewardable:
-    //"PP" , "AP", "PA", "LP", "PL", "AL", "LA", "LL"
-    //Only "AA" won't be regarded as rewardable owing to more than one absent times.
-    //Note: The value of n won't exceed 100,000.
-    public int checkRecord(int n) {
-        return 0;
+    //As shown below, there are 3 ways you can generate "rabbit" from S.
+    //(The caret symbol ^ means the chosen letters)
+    //rabbbit
+    //^^^^ ^^
+    //rabbbit
+    //^^ ^^^^
+    //rabbbit
+    //^^^ ^^^
+
+    //Example 2:
+    //Input: S = "babgbag", T = "bag"
+    //Output: 5
+    //Explanation:
+    //As shown below, there are 5 ways you can generate "bag" from S.
+    //(The caret symbol ^ means the chosen letters)
+    //babgbag
+    //^^ ^
+    //babgbag
+    //^^    ^
+    //babgbag
+    //^    ^^
+    //babgbag
+    //  ^  ^^
+    //babgbag
+    //    ^^^
+
+    //优化动态规划6ms
+    public int numDistinct2(String s, String t) {
+        int[] dp = new int[t.length()+1];
+        dp[0] = 1;
+        for(int i=0; i < s.length(); i++) {
+            for(int j=t.length(); j > 0; j--) {
+                if(s.charAt(i) == t.charAt(j-1)) {
+                    dp[j] += dp[j-1];
+                }
+            }
+        }
+        return dp[t.length()];
     }
 
 
-    //TaskScheduler_621
-    //Given a characters array tasks, representing the tasks a CPU needs to do, where each letter represents a different task. Tasks could be done in any order. Each task is done in one unit of time. For each unit of time, the CPU could complete either one task or just be idle.
+    //动态规划14ms
+    public int numDistinct(String s, String t) {
+        int[][] dp = new int[t.length() + 1][s.length() + 1];
+        for (int j = 0; j < s.length() + 1; j++) dp[0][j] = 1;
+        for (int i = 1; i < t.length() + 1; i++) {
+            for (int j = 1; j < s.length() + 1; j++) {
+                if (t.charAt(i - 1) == s.charAt(j - 1))
+                    dp[i][j] = dp[i - 1][j - 1] + dp[i][j - 1];
+                else dp[i][j] = dp[i][j - 1];
+            }
+        }
+        return dp[t.length()][s.length()];
+    }
+
+
+
+    //DistinctSubsequencesII_940
+    //Given a string S, count the number of distinct, non-empty subsequences of S .
     //
-    //However, there is a non-negative integer n that represents the cooldown period between two same tasks (the same letter in the array), that is that there must be at least n units of time between any two same tasks.
-    //
-    //Return the least number of units of times that the CPU will take to finish all the given tasks.
+    //Since the result may be large, return the answer modulo 10^9 + 7.
     //
     // 
     //
     //Example 1:
     //
-    //Input: tasks = ["A","A","A","B","B","B"], n = 2
-    //Output: 8
-    //Explanation:
-    //A -> B -> idle -> A -> B -> idle -> A -> B
-    //There is at least 2 units of time between any two same tasks.
+    //Input: "abc"
+    //Output: 7
+    //Explanation: The 7 distinct subsequences are "a", "b", "c", "ab", "ac", "bc", and "abc".
     //Example 2:
     //
-    //Input: tasks = ["A","A","A","B","B","B"], n = 0
+    //Input: "aba"
     //Output: 6
-    //Explanation: On this case any permutation of size 6 would work since n = 0.
-    //["A","A","A","B","B","B"]
-    //["A","B","A","B","A","B"]
-    //["B","B","B","A","A","A"]
-    //...
-    //And so on.
+    //Explanation: The 6 distinct subsequences are "a", "b", "ab", "ba", "aa" and "aba".
     //Example 3:
     //
-    //Input: tasks = ["A","A","A","A","A","A","B","C","D","E","F","G"], n = 2
-    //Output: 16
-    //Explanation:
-    //One possible solution is
-    //A -> B -> C -> A -> D -> E -> A -> F -> G -> A -> idle -> idle -> A -> idle -> idle -> A
-    public int leastInterval(char[] tasks, int n) {
+    //Input: "aaa"
+    //Output: 3
+    //Explanation: The 3 distinct subsequences are "a", "aa" and "aaa".
+
+    //Note:
+    //S contains only lowercase letters.
+    //1 <= S.length <= 2000
+    public int distinctSubseqII(String S) {
         return 0;
     }
 
 
 
+
+
+    //RaceCar_818
+    //Your car starts at position 0 and speed +1 on an infinite number line.  (Your car can go into negative positions.)
+    //
+    //Your car drives automatically according to a sequence of instructions A (accelerate) and R (reverse).
+    //
+    //When you get an instruction "A", your car does the following: position += speed, speed *= 2.
+    //
+    //When you get an instruction "R", your car does the following: if your speed is positive then speed = -1 , otherwise speed = 1.  (Your position stays the same.)
+    //
+    //For example, after commands "AAR", your car goes to positions 0->1->3->3, and your speed goes to 1->2->4->-1.
+    //
+    //Now for some target position, say the length of the shortest sequence of instructions to get there.
+    //
+    //Example 1:
+    //Input:
+    //target = 3
+    //Output: 2
+    //Explanation:
+    //The shortest instruction sequence is "AA".
+    //Your position goes from 0->1->3.
+    //Example 2:
+    //Input:
+    //target = 6
+    //Output: 5
+    //Explanation:
+    //The shortest instruction sequence is "AAARA".
+    //Your position goes from 0->1->3->7->7->6.
+    // 
+    //
+    //Note:
+    //
+    //1 <= target <= 10000.
+    public int racecar(int target) {
+        return 0;
+    }
+
+
+
+
+    //256. Paint House
+    //There is a row of n houses, where each house can be painted one of three colors: red, blue, or green. The cost of painting each house with a certain color is different. You have to paint all the houses such that no two adjacent houses have the same color.
+    //The cost of painting each house with a certain color is represented by a n x 3 cost matrix. For example, costs[0][0] is the cost of painting house 0 with the color red; costs[1][2] is the cost of painting house 1 with color green, and so on... Find the minimum cost to paint all houses.
+    //
+    //
+    //
+    //Example 1:
+    //
+    //Input: costs = [[17,2,17],[16,16,5],[14,3,19]]
+    //Output: 10
+    //Explanation: Paint house 0 into blue, paint house 1 into green, paint house 2 into blue.
+    //Minimum cost: 2 + 5 + 3 = 10.
+    //
+    //Example 2:
+    //
+    //Input: costs = []
+    //Output: 0
+    //
+    //Example 3:
+    //
+    //Input: costs = [[7,6,2]]
+    //Output: 2
+    //
+    //
+    //
+    //Constraints:
+    //
+    //    costs.length == n
+    //    costs[i].length == 3
+    //    0 <= n <= 100
+    //    1 <= costs[i][j] <= 20
+    public int minCost(int[][] costs) {
+        return 0;
+    }
+
+
+    //265. Paint House II
+    //
+    //There are a row of n houses, each house can be painted with one of the k colors. The cost of painting each house with a certain color is different. You have to paint all the houses such that no two adjacent houses have the same color.
+    //
+    //The cost of painting each house with a certain color is represented by a n x k cost matrix. For example, costs[0][0] is the cost of painting house 0 with color 0; costs[1][2] is the cost of painting house 1 with color 2, and so on... Find the minimum cost to paint all houses.
+    //
+    //Note:
+    //All costs are positive integers.
+    //
+    //Example:
+    //
+    //Input: [[1,5,3],[2,9,4]]
+    //Output: 5
+    //Explanation: Paint house 0 into color 0, paint house 1 into color 2. Minimum cost: 1 + 4 = 5;
+    //             Or paint house 0 into color 2, paint house 1 into color 0. Minimum cost: 3 + 2 = 5.
+    //
+    //Follow up:
+    //Could you solve it in O(nk) runtime?
+    public int minCostII(int[][] costs) {
+        return 0;
+    }
+
+
+    //1473. Paint House III
+    //There is a row of m houses in a small city, each house must be painted with one of the n colors (labeled from 1 to n), some houses that has been painted last summer should not be painted again.
+    //
+    //A neighborhood is a maximal group of continuous houses that are painted with the same color. (For example: houses = [1,2,2,3,3,2,1,1] contains 5 neighborhoods  [{1}, {2,2}, {3,3}, {2}, {1,1}]).
+    //
+    //Given an array houses, an m * n matrix cost and an integer target where:
+    //
+    //houses[i]: is the color of the house i, 0 if the house is not painted yet.
+    //cost[i][j]: is the cost of paint the house i with the color j+1.
+    //Return the minimum cost of painting all the remaining houses in such a way that there are exactly target neighborhoods, if not possible return -1.
+    //
+    //
+    //
+    //Example 1:
+    //
+    //Input: houses = [0,0,0,0,0], cost = [[1,10],[10,1],[10,1],[1,10],[5,1]], m = 5, n = 2, target = 3
+    //Output: 9
+    //Explanation: Paint houses of this way [1,2,2,1,1]
+    //This array contains target = 3 neighborhoods, [{1}, {2,2}, {1,1}].
+    //Cost of paint all houses (1 + 1 + 1 + 1 + 5) = 9.
+    //Example 2:
+    //
+    //Input: houses = [0,2,1,2,0], cost = [[1,10],[10,1],[10,1],[1,10],[5,1]], m = 5, n = 2, target = 3
+    //Output: 11
+    //Explanation: Some houses are already painted, Paint the houses of this way [2,2,1,2,2]
+    //This array contains target = 3 neighborhoods, [{2,2}, {1}, {2,2}].
+    //Cost of paint the first and last house (10 + 1) = 11.
+    //Example 3:
+    //
+    //Input: houses = [0,0,0,0,0], cost = [[1,10],[10,1],[1,10],[10,1],[1,10]], m = 5, n = 2, target = 5
+    //Output: 5
+    //Example 4:
+    //
+    //Input: houses = [3,1,2,3], cost = [[1,1,1],[1,1,1],[1,1,1],[1,1,1]], m = 4, n = 3, target = 3
+    //Output: -1
+    //Explanation: Houses are already painted with a total of 4 neighborhoods [{3},{1},{2},{3}] different of target = 3.
+    //
+    //
+    //Constraints:
+    //
+    //m == houses.length == cost.length
+    //n == cost[i].length
+    //1 <= m <= 100
+    //1 <= n <= 20
+    //1 <= target <= m
+    //0 <= houses[i] <= n
+    //1 <= cost[i][j] <= 10^4
+    public int minCost(int[] houses, int[][] cost, int m, int n, int target) {
+        return 0;
+    }
 
 }

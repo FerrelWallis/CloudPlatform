@@ -37,57 +37,11 @@
         <div class=" mysoft-content-left whitebox" style="width: 771px;overflow-y: auto">
             <form id="BAR" method="GET" enctype="multipart/form-data" class="well form-inline" style="box-sizing: border-box!important;">
                 <div class="softpic mws-ic BAR"> </div>
-                <h3 class="tools-title">柱状图</h3>
-                <br><br>
-                <div class="form-group-p">
-                    <div class="form-group">
-                        <label for="mytaskname">任务编号：</label>
-                    </div>
-                    <div class="form-group">
-                        <input id="mytaskname" type="text" class="form-control" name="taskname" placeholder="" value="">
-                    </div>
-                </div>
-                <br><br>
-                <div>
-                    <div id="mydiv1" class="one-line">
-                        <div class="form-group-p" style="width: 450px">
-                            <div class="form-group">
-                                <label for="exampleInputName0"><em>1： </em>上传矩阵文件：</label>
-                            </div>
-                            <div class="form-group">
-                                <input type="file" class="form-control file" id="table1" name="table1" onchange="checkTable()">
-                            </div>
-                        </div>
-                        <div class="form-group-extra">
-                            <em><a href="/assets/files/bar_table.txt" target='_blank' style="margin-left: 5px;">示例文件</a></em>
-                        </div>
-                        <br>
-                        <br>
-                    </div>
-                    <div class="form-group-p">
-                        <div class="form-group">
-                            <label style="float: left;"><em>2： </em>是否分组绘图</label>
-                            <input type="checkbox" name="isgroup" id="isgroup" class="form-control" style="height: 13px;width: auto;float: left;margin-top: 9px;margin-left: 5px">
-                        </div>
-                    </div>
-                    <br>
-                    <div id="group" class="one-line" style="display: none">
-                        <div class="form-group-p" style="width: 450px">
-                            <div class="form-group">
-                                <label for="exampleInputName0">上传分组文件：</label>
-                            </div>
-                            <div class="form-group">
-                                <input type="file" class="form-control file" id="table2" name="table2" onchange="checkGroupfile()">
-                            </div>
-                        </div>
-                        <div class="form-group-extra">
-                            <em><a href="/assets/files/bar_group.txt" target='_blank' style="margin-left: 5px;">示例文件</a></em>
-                        </div>
-                        <br>
-                        <br>
-                    </div>
-                </div>
-                <br>
+                <h3 class="tools-title">柱状图</h3><br><br>
+                @units.textinput("","","任务编号：", "taskname","","")
+                @units.fileupload("1： ", "mydiv1", "上传矩阵文件：","table1","bar_table.txt")
+                @units.checkbox("2： ","","是否分组绘图","isgroup")<br>
+                @units.fileupload("","group","上传分组文件：","table2","bar_group.txt")<br>
                 <div class="panel panel-default">
                     <div class="panel-heading" data-toggle="collapse" href="#collapseOne">
                         <h4 class="panel-title">
@@ -98,29 +52,9 @@
                     </div>
                     <div id="collapseOne" class="panel-collapse collapse in">
                         <div class="panel-body">
-                            <div class="form-group-p">
-                                <div class="form-group">
-                                    <label>是否将低丰度结果合并为Other：</label>
-                                </div>
-                                <div class="form-group">
-                                    <select name="m">
-                                        <option value="TRUE">yes</option>
-                                        <option value="FALSE">no</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <br><br>
-                            <div class="form-group-p">
-                                <div class="form-group" style="position: relative">
-                                    <label style="margin-right: 10px">合并丰度低于</label>
-                                </div>
-                                <div class="form-group right" style="line-height: 39px;">
-                                    <input id="mt" name="mt" type="text" style="width: calc(100% - 100px); float: left;" value="1"/>
-                                    <label style="width: 25px;float: left;margin-left: 5px;">%</label>
-                                    <label style="width: 70px;float: left">的OTU</label>
-                                </div>
-                            </div>
                             <br>
+                            @units.selector("","","是否将低丰度结果合并为Other：","m")
+                            @units.textinput("","","合并低丰度OTU(百分比%)：", "mt", "", "1")
                         </div>
                     </div>
                 </div>
@@ -128,104 +62,7 @@
                 <input type="button" value="提&nbsp;&nbsp;交" name="submit" class="btn btn-primary" onclick="bar()">
             </form>
         </div>
-
-        <div class="handler"></div>
-        <div class="mysoft-content-right" style="width: 305px;">
-
-            <ul class="nav nav-tabs">
-                <li id="ins_tab1" class="active">
-                    <a href="###" data-target="#instruction" data-toggle="tab">使用说明</a>
-                </li>
-                <li class="" id="out_tab1">
-                    <a href="###" data-target="#example" data-toggle="tab">教学视频</a>
-                </li>
-                <li class="" id="his_tab1">
-                    <a href="#" data-target="#history" data-toggle="tab">历史任务</a>
-                </li>
-            </ul>
-            <div class="tab-content" style="box-sizing: border-box!important;">
-                <div class="tab-pane fade active in" id="instruction">
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>1.背景介绍</strong></span><br>
-                        <span style="font-weight:700;"><strong>柱状图（Histogram）</strong></span>
-                        是一种以长方形的长度为变量的表达图形的统计报告图，由一系列高度不等的纵向条纹表示数据分布的情况，用来比较两个或两个以上的价值（不同时间或者不同条件），只有一个变量，通常用于较小的数据集分析。在16S研究中，一般以堆叠柱状图来展示物种组成，不仅可以直观的看到各样本中的物种组成及比例，还可以看到样本间物种的变化情况，是一类非常实用的图表。
-                        <br>
-                    </p>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>2.操作方法</strong></span><br>
-                    </p>
-                    <img src="/assets/images/softpic/instruction/bar1.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;padding-left: 44%">操作界面</p>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        柱状图需要输入的文件包含矩阵文件和分组文件，矩阵文件可以是excel支持的xls格式，分组文件必须是以tab键分割的txt文件。
-                        <br>
-                    </p>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>2.1.矩阵文件</strong></span><br>
-                        矩阵文件必须包含表头，第一列为基因/OTU/代谢物/蛋白质/功能/KO等特征，第一行为样本名。例如，在微生物扩增子研究中，可使用为OTU分类注释表。此处以凌恩生物扩增子结题报告中纲水平的OTU分类表为例，该文件路径为
-                        <span style="font-weight:700;"><strong>01.OTU_Taxa/normalize/tax_summary_a/class.xls</strong></span>，每一格为该样本注释到对应物种的序列数，，示例文件如下：
-                        <br>
-                    </p>
-                    <img src="/assets/images/softpic/instruction/bar2.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <br><br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>2.2.分组文件</strong></span><br>
-                        分组文件格式必须为txt文件。第一列为样本名，第二列为分组名，示例文件如下：<br>
-                    </p>
-                    <img src="/assets/images/softpic/instruction/bar3.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        上传文件后，点击“提交”按键，即可开始分析<br>
-                    </p>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>2.3.查看任务</strong></span><br>
-                        提交任务后，点击界面右侧的“历史任务”模块，或者点击界面“我的任务”，都可以查看任务编号、软件名称和状态等信息，点击任务编号，即可查看分析结果。
-                        <br>
-                    </p>
-                    <img src="/assets/images/softpic/instruction/bar4.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        在任务详情界面，展示的是任务参数、结果文件列表和在线调整图片3个区域，提供结果文件下载和图片调整功能。<br>
-                    </p>
-                    <img src="/assets/images/softpic/instruction/bar5.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <br><br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>3.示例图片</strong></span><br>
-                        云平台默认的参数是图例位于图片右侧，也可以根据需求在线调整图例位置。
-                        <br>
-                    </p>
-                    <img src="/assets/images/softpic/instruction/bar6.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <br><br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>4.结果文件</strong></span><br>
-                        结果文件仅包含生成的柱状图pdf格式文件，但是该图可以通过数据布局参数、颜色参数和字体参数三个模块进行在线调整。<br>
-                        (1) 数据布局参数：包括是否使用百分比作图、图例位置、图片清晰度和图片宽高<br>
-                        (2) 颜色参数：可以自主选择配色；<br>
-                        (3) 字体参数：可以调整X轴Y轴的字体大小和颜色等内容<br>
-                    </p>
-                    <img src="/assets/images/softpic/instruction/bar7.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <br>
-                </div>
-                <div class="tab-pane fade" id="example">
-                    <div id="dplayer"></div>
-                </div>
-                <div id="history" class="form1_ins tab-pane fade">
-                    <a id="btn-refresh" class="btn_refresh mws-i-24 i-refresh-3" onclick="refresh('@abbre')">刷新状态</a>
-                    <ul id="hisul" style="margin-top: 15px">
-                        <li id="hislist" class="hislist">
-                            <div class="his_time"><span>任务编号</span></div>
-                            <div class="his_time"><span style="margin-left: -20px;">结束时间</span></div>
-                            <div class="his_name"><span style="margin-left: -23px;">状态</span></div>
-                            <hr>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+        @units.pageRight("", "","BAR")
     </div>
 
     <script type="text/javascript" src="@routes.Assets.versioned("js/toolsAdjust.js")"></script>
@@ -233,13 +70,27 @@
     <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/fileinput.min.js")" type="text/javascript"></script>
     <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/locales/zh.js")" type="text/javascript"></script>
     <script src="@routes.Assets.versioned("myjs/soft.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("myjs/redraw.js")" type="text/javascript"></script>
     <script type="text/javascript">
+
+            $("#table2").change(function () {
+                checkGroupfile();
+            });
+
+            $("#table1").change(function () {
+                checkTable();
+            });
 
             $(document).ready(function () {
                 formValidation();
                 loadHistory("@abbre");
                 getTaskName("BAR","BAR");
-                loadVideo("//13125180.s21v.faiusr.com/58/ABUIABA6GAAg_L6R_wUomKf9nwE.mp4","/assets/images/softpic/video/bar_video.png")
+                loadVideo("//13125180.s21v.faiusr.com/58/ABUIABA6GAAgqdDmggYooZiTygE.mp4","/assets/images/softpic/video/bar_video.png")
+                $("#group").hide();
+                $("#instruction").append(instruction);
+                var tf = ["TRUE","FALSE"];
+                var tfname = ["yes","no"];
+                creatSelector("m",tfname,tf,"yes");
             });
 
             var lock = true;
@@ -424,66 +275,82 @@
             }
 
             function formValidation() {
-                $('#BAR').formValidation({
-                    framework: 'bootstrap',
-                    icon: {
-                        valid: 'glyphicon glyphicon-ok',
-                        invalid: 'glyphicon glyphicon-remove',
-                        validating: 'glyphicon glyphicon-refresh'
-                    },
-                    fields: {
-                        taskname: {
-                            validators: {
-                                notEmpty: {
-                                    message: '任务编号不能为空!'
-                                },
-                                remote:{
-                                    type: 'POST',
-                                    url: '@routes.DutyController.checktaskname()',
-                                    message: "任务编号重复，请重新输入",
-                                    delay: 1000
-                                }
-                            }
-                        },
-                        table1: {
-                            validators: {
-                                notEmpty: {
-                                    message: '必须上传矩阵文件!'
-                                },
-                                file: {
-                                    // extension: 'txt',
-                                    // type: 'image/jpeg,image/png',
-                                    maxSize: 5*1024*1024,
-                                    message: '文件格式必须为txt，且不得大于5M！'
-                                }
-                            }
-                        },
-                        table2: {
-                            validators: {
-                                notEmpty: {
-                                    message: '必须上传分组文件!'
-                                },
-                                file: {
-                                    // extension: 'jpeg,jpg,png',
-                                    // type: 'image/jpeg,image/png',
-                                    maxSize: 5*1024*1024,
-                                    message: '文件不得大于5M！'
-                                }
-                            }
-                        },
-                        mt:{
-                            validators: {
-                                notEmpty: {
-                                    message: '不能为空!'
-                                },
-                                numeric: {
-                                    message: '必须为数字！'
-                                }
-                            }
-                        }
-                    }
-                });
+                let field = {};
+                let table = ["table1", "table2"];
+                FieldFile(field, table);
+                let text = ["taskname"];
+                FieldTaskname(field, text);
+                let number = ["mt"];
+                FieldNumber(field, number);
+                let excluded = [":hidden"];
+                addFormValidation("BAR", field, excluded)
             }
+
+            var instruction = "<p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                    "                        <span style=\"font-weight:700;\"><strong>1.背景介绍</strong></span><br>\n" +
+                    "                        <span style=\"font-weight:700;\"><strong>柱状图（Histogram）</strong></span>\n" +
+                    "                        是一种以长方形的长度为变量的表达图形的统计报告图，由一系列高度不等的纵向条纹表示数据分布的情况，用来比较两个或两个以上的价值（不同时间或者不同条件），只有一个变量，通常用于较小的数据集分析。在16S研究中，一般以堆叠柱状图来展示物种组成，不仅可以直观的看到各样本中的物种组成及比例，还可以看到样本间物种的变化情况，是一类非常实用的图表。\n" +
+                    "                        <br>\n" +
+                    "                    </p>\n" +
+                    "                    <br>\n" +
+                    "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                    "                        <span style=\"font-weight:700;\"><strong>2.操作方法</strong></span><br>\n" +
+                    "                    </p>\n" +
+                    "                    <img src=\"/assets/images/softpic/instruction/bar1.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                    "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;padding-left: 44%\">操作界面</p>\n" +
+                    "                    <br>\n" +
+                    "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                    "                        柱状图需要输入的文件包含矩阵文件和分组文件，矩阵文件可以是excel支持的xls格式，分组文件必须是以tab键分割的txt文件。\n" +
+                    "                        <br>\n" +
+                    "                    </p>\n" +
+                    "                    <br>\n" +
+                    "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                    "                        <span style=\"font-weight:700;\"><strong>2.1.矩阵文件</strong></span><br>\n" +
+                    "                        矩阵文件必须包含表头，第一列为基因/OTU/代谢物/蛋白质/功能/KO等特征，第一行为样本名。例如，在微生物扩增子研究中，可使用为OTU分类注释表。此处以凌恩生物扩增子结题报告中纲水平的OTU分类表为例，该文件路径为\n" +
+                    "                        <span style=\"font-weight:700;\"><strong>01.OTU_Taxa/normalize/tax_summary_a/class.xls</strong></span>，每一格为该样本注释到对应物种的序列数，，示例文件如下：\n" +
+                    "                        <br>\n" +
+                    "                    </p>\n" +
+                    "                    <img src=\"/assets/images/softpic/instruction/bar2.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                    "                    <br><br>\n" +
+                    "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                    "                        <span style=\"font-weight:700;\"><strong>2.2.分组文件</strong></span><br>\n" +
+                    "                        分组文件格式必须为txt文件。第一列为样本名，第二列为分组名，示例文件如下：<br>\n" +
+                    "                    </p>\n" +
+                    "                    <img src=\"/assets/images/softpic/instruction/bar3.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                    "                    <br>\n" +
+                    "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                    "                        上传文件后，点击“提交”按键，即可开始分析<br>\n" +
+                    "                    </p>\n" +
+                    "                    <br>\n" +
+                    "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                    "                        <span style=\"font-weight:700;\"><strong>2.3.查看任务</strong></span><br>\n" +
+                    "                        提交任务后，点击界面右侧的“历史任务”模块，或者点击界面“我的任务”，都可以查看任务编号、软件名称和状态等信息，点击任务编号，即可查看分析结果。\n" +
+                    "                        <br>\n" +
+                    "                    </p>\n" +
+                    "                    <img src=\"/assets/images/softpic/instruction/bar4.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                    "                    <br>\n" +
+                    "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                    "                        在任务详情界面，展示的是任务参数、结果文件列表和在线调整图片3个区域，提供结果文件下载和图片调整功能。<br>\n" +
+                    "                    </p>\n" +
+                    "                    <img src=\"/assets/images/softpic/instruction/bar5.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                    "                    <br><br>\n" +
+                    "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                    "                        <span style=\"font-weight:700;\"><strong>3.示例图片</strong></span><br>\n" +
+                    "                        云平台默认的参数是图例位于图片右侧，也可以根据需求在线调整图例位置。\n" +
+                    "                        <br>\n" +
+                    "                    </p>\n" +
+                    "                    <img src=\"/assets/images/softpic/instruction/bar6.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                    "                    <br><br>\n" +
+                    "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                    "                        <span style=\"font-weight:700;\"><strong>4.结果文件</strong></span><br>\n" +
+                    "                        结果文件仅包含生成的柱状图pdf格式文件，但是该图可以通过数据布局参数、颜色参数和字体参数三个模块进行在线调整。<br>\n" +
+                    "                        (1) 数据布局参数：包括是否使用百分比作图、图例位置、图片清晰度和图片宽高<br>\n" +
+                    "                        (2) 颜色参数：可以自主选择配色；<br>\n" +
+                    "                        (3) 字体参数：可以调整X轴Y轴的字体大小和颜色等内容<br>\n" +
+                    "                    </p>\n" +
+                    "                    <img src=\"/assets/images/softpic/instruction/bar7.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                    "                    <br>";
+
 
     </script>
 }

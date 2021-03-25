@@ -84,14 +84,6 @@
     <div class="container mainpadding" style="margin-top: 10px!important;">
         <div class="mws-panel grid_8">
             <div class="mws-tabs">
-@*                <div id="scroll_div" class="fl">*@
-@*                    <div id="scroll_begin">*@
-@*                        <span>1尊敬的用户，您好！感谢您的长期支持</span>*@
-@*                        <span>2尊敬的用户，您好！感谢您的长期支持，本平台目前提供的通道带积分，支持大部分银行，欢迎您的使用！</span>*@
-@*                        <span>3尊敬的用户，您好！感谢您的长期支持，本平台目前提供的通道带积分，支持大部分银行，欢迎您的使用！</span>*@
-@*                    </div>*@
-@*                    <div id="scroll_end"></div>*@
-@*                </div>*@
                 <div class="shell">
                     <div id="div1">
                         <p id="rnote1"><span class="mws-ic-16 ic-bell16"></span>
@@ -233,24 +225,24 @@
             }
 
 
-            function mover($para) {
-                if (($para).hasClass("yellow-icon")) {
-                    $para.prev().show();
-                } else {
-                    $para.removeClass('icon-star-empty');
-                    $para.addClass('icon-star');
-                    $para.prev().prev().show();
-                }
+        function mover($para) {
+            if (($para).hasClass("yellow-icon")) {
+                $para.prev().show();
+            } else {
+                $para.removeClass('fa-star-o');
+                $para.addClass('fa-star');
+                $para.prev().prev().show();
             }
+        }
 
-            function mout($para) {
-                $para.prev().hide();
-                $para.prev().prev().hide();
-                if (!$para.hasClass("yellow-icon")) {
-                    $para.addClass('icon-star-empty');
-                    $para.removeClass('icon-star');
-                }
+        function mout($para) {
+            $para.prev().hide();
+            $para.prev().prev().hide();
+            if (!$para.hasClass("yellow-icon")) {
+                $para.addClass('fa-star-o');
+                $para.removeClass('fa-star');
             }
+        }
 
             //tab
             $(".mws-tabs").tabs();

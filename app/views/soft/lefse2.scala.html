@@ -5,6 +5,8 @@
     <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("bootstrap-fileinput-master/css/fileinput.css")" media="screen" />
     <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("mycss/soft.css")" media="screen" />
 
+    <script type="text/javascript" src="@routes.Assets.versioned("DPlayer-1.26.0/dist/DPlayer.min.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.versioned("md5/md5.js")"></script>
         <!--button弹出操作-->
     <script src="@routes.Assets.versioned("layer-v3.0/layer/layer.js")" type="text/javascript"></script>
     <script type="text/javascript" src="@routes.Assets.versioned("js/myzui.min.js")"></script>
@@ -24,69 +26,14 @@
     </style>
 
     <div class="col-md-12 mysoft-content" style="width: 98%">
-        <div class="  mysoft-content-left  whitebox" style="width: 590px;">
+        <div class="mysoft-content-left  whitebox" style="width: 590px;overflow-y: auto">
             <form id="LF2" method="GET" enctype="multipart/form-data" class="well form-inline" style="box-sizing: border-box!important;">
                 <div class="softpic mws-ic @abbre"></div>
-                <h3 class="tools-title">lefse分析2.0</h3>
-                <div class="form-group">
-                    <h2>
-                    </h2>
-                </div><br><br>
-                <div class="form-group-p">
-                    <div class="form-group">
-                        <label for="mytaskname">任务编号：</label>
-                    </div>
-                    <div class="form-group">
-                        <input id="mytaskname" type="text" class="form-control" name="taskname" placeholder="" value="">
-                    </div>
-                </div>
-                <br><br>
-                <div id="myform">
-                    <div id="file1" class="one-line">
-                        <div class="form-group-p">
-                            <div class="form-group">
-                                <label for="filepath1">OTU丰度表：</label>
-                            </div>
-                            <div class="form-group">
-                                <input type="file" class="form-control file" id="table1" name="table1">
-                            </div>
-                        </div>
-                        <div class="form-group-extra">
-                            <em>
-                                <a href="/assets/files/lefse_otu_table.biom" target='_blank'>示例文件(biom)</a>
-                            </em>
-                            <em>
-                                <a href="/assets/files/lefse_otutable.txt" target='_blank' style="margin-left: 5px;">示例文件(txt)</a>
-                            </em>
-                        </div>
-                    </div>
-                </div>
-                <br>
-                <div class="one-line">
-                    <div class="form-group-p">
-                        <div class="form-group">
-                            <label for="filepath1">分组文件：</label>
-                        </div>
-                        <div id="group_part" class="form-group">
-                            <input type="file" class="form-control file" id="group" name="group" onchange="checkGroupfile()">
-                        </div>
-                    </div>
-                    <div class="form-group-extra">
-                        <em>
-                            <a href="/assets/files/lefse_map.txt" target='_blank' style="margin-left: 10px;">示例文件</a>
-                        </em>
-                    </div>
-                </div>
-                <br>
-                <div class="form-group-p form-group">
-                    <div style="float: left; display: flow-root;">
-                        <label for="format">最高分类学层级(默认6，到属水平)：</label>
-                    </div>
-                    <div style="display: flow-root;">
-                        <input type="text" name="level" id="level" value="6" class="form-control input-sm" >
-                    </div>
-                </div>
-                <br><br>
+                <h3 class="tools-title">lefse分析2.0</h3><br><br>
+                @units.textinput("","","任务编号：", "taskname","","")
+                @units.fileupload2("", "file1", "OTU丰度表：","table1","lefse_otu_table.biom","lefse_otutable.txt")<br>
+                @units.fileupload("", "", "分组文件：","group","lefse_map.txt")
+                @units.textinput("","","最高分类学层级(默认6，到属水平)：", "level", "", "6")
                 <div class="panel panel-default">
                     <div class="panel-heading" data-toggle="collapse" href="#collapseOne">
                         <h4 class="panel-title">
@@ -97,218 +44,49 @@
                     </div>
                     <div id="collapseOne" class="panel-collapse collapse in">
                         <div class="panel-body">
-                            <div class="form-group-p form-group">
-                                <div style="float: left; display: flow-root;">
-                                    <label for="format">类间因子Kruskal-Wallis秩检验的Alpha值：</label>
-                                </div>
-                                <div style="display: flow-root;">
-                                    <input type="text" name="a" id="a" value="0.5" class="form-control input-sm" >
-                                </div>
-                            </div>
-                            <br><br>
-                            <div class="form-group-p form-group">
-                                <div style="float: left; display: flow-root;">
-                                    <label for="format">子类间配对Wilcoxon秩检验的Alpha值：</label>
-                                </div>
-                                <div style="display: flow-root;">
-                                    <input type="text" name="w" id="w" value="0.5" class="form-control input-sm" >
-                                </div>
-                            </div>
-                            <br><br>
-                            <div class="form-group-p form-group">
-                                <div style="float: left; display: flow-root;">
-                                    <label for="format">差异特征LDA对数值的阈值：</label>
-                                </div>
-                                <div style="display: flow-root;">
-                                    <input type="text" name="l" id="l" value="2" class="form-control input-sm">
-                                </div>
-                            </div>
-                            <br><br>
-                            <div class="form-group-p">
-                                <div class="form-group">
-                                    <label>多组分类分析的分析策略：</label>
-                                </div>
-                                <div class="form-group">
-                                    <select name="y">
-                                        <option value="1">one-against-one</option>
-                                        <option value="0">one-against-all(约束较不严,耗时长)</option>
-                                    </select>
-                                </div>
-                            </div>
                             <br>
-                            <div class="form-group-p" style="display: none">
-                                <div class="form-group">
-                                    <label>是否仅在子类名相同的情况下，进行子类间的成对比较？</label>
-                                </div>
-                            </div>
-                            <div class="form-group-p" style="display: none">
-                                <div class="form-group" style="width: 100%">
-                                    <select name="e" style="width: 100%">
-                                        <option value="0">no</option>
-                                        <option value="1">yes</option>
-                                    </select>
-                                </div>
-                            </div>
+                            @units.textinput("","","类间因子Kruskal-Wallis秩检验的Alpha值：", "a", "", "0.5")
+                            @units.textinput("","","子类间配对Wilcoxon秩检验的Alpha值：", "w", "", "0.5")
+                            @units.textinput("","","差异特征LDA对数值的阈值：", "l", "", "2")
+                            @units.selector("","","多组分类分析的分析策略：","y")
+                            @units.selector("","ediv","是否仅在子类名相同的情况下，进行子类间的成对比较：","e")
                         </div>
                     </div>
                 </div>
                 <br>
                 <br>
-                <input type="button" value="提&nbsp;&nbsp;交" name="submit" class="btn btn-primary" onclick="dolefse()">
+                <input type="button" value="提&nbsp;&nbsp;交" name="submit" class="btn btn-primary" onclick="dolefse()"><br><br>
             </form>
         </div>
-        <div class="handler"></div>
-        <div class="mysoft-content-right" style="width: 460px;">
-            <ul class="nav nav-tabs">
-                <li class="active" id="ins_tab1">
-                    <a href="###" data-target="#instruction" data-toggle="tab">使用说明</a>
-                </li>
-                <li class="" id="out_tab1">
-                    <a href="###" data-target="#example" data-toggle="tab">教学视频</a>
-                </li>
-                <li class="" id="his_tab1">
-                    <a href="#" data-target="#history" data-toggle="tab">历史任务</a>
-                </li>
-            </ul>
-            <div class="tab-content" style="box-sizing: border-box!important;">
-                <div class="tab-pane fade active in" id="instruction">
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>1.背景介绍</strong></span><br>
-                        LEfse分析即LDA Effect Size分析，可以实现多个分组之间的比较，还进行分组比较的内部进行亚组比较分析，从而找到组间在丰度上有显著差异的物种（即biomaker），主要是通过非参数因子Kruskal-Wallis秩和检验来实现的。<br>
-                        LEfSe2.0在线工具在1.0工具基础上，增加了LDA判别分析结果文件（仅含差异显著）。增加差异特征图，以及所有结果图的重绘功能。<br>
-                    </p>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>2.操作方法</strong></span><br>
-                    </p>
-                    <img src="/assets/images/softpic/instruction/lf21.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;padding-left: 44%">操作界面</p>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">lefse分析需要输入的文件包含OTU丰度表和分组文件，OTU丰度表支持biom格式和txt格式文件，分组文件只能是tab键分隔的txt文件。</p>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>2.1.上传文件</strong></span><br>
-                        BIOM格式是微生物组领域最常用的结果保存格式，优点是可将OTU或Feature表、样本属性、物种信息等多个表保存于同一个文件中，且格式统一，体积更小巧，目前被微生物组领域几乎所有主流软件所支持。此处可以直接使用
-                        <span style="font-weight:700;"><strong>凌恩生物扩增子结题报告</strong></span>
-                        中biom格式的OTU丰度表，位于结果文件夹的
-                        <span style="font-weight:700;"><strong>01.OTU_Taxa/normalize/otu_taxa_table.biom</strong></span>
-                        ，示例文件如下：
-                        <br>
-                    </p>
-                    <img src="/assets/images/softpic/instruction/lf22.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        也可以使用<span style="font-weight:700;"><strong>凌恩生物扩增子结题报告</strong></span>
-                        中excel格式的OTU丰度表，位于结果文件夹的
-                        <span style="font-weight:700;"><strong>01.OTU_Taxa/normalize/otu_taxa_table.xls</strong></span>
-                        ，在使用前需要用excel打开，首行增加“# Constructed from biom file”，并另存为制表符分隔的txt文件，示例文件如下：<br>
-                    </p>
-                    <img src="/assets/images/softpic/instruction/lf23.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <br>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>2.2.分组文件</strong></span><br>
-                        分组示例文件如下，第一列为样本名，第二列为分组名<br>
-                    </p>
-                    <img src="/assets/images/softpic/instruction/lf24.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <br>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>2.3.选择参数</strong></span><br>
-                        (1) 类间因子Kruskal-Wallis秩检验的Alpha值：默认为0.5<br>
-                        (2) 子类间配对Wilcoxon秩检验的Alpha值：默认为0.5<br>
-                        (3) 差异特征LDA对数值的阈值：默认为2<br>
-                        (4) 多组分类分析的分析策略：一对一或一对多（一对一约束更严格，一对多运行时间更长）<br>
-                        (5) 是否仅在子类名相同的情况下，进行子类间的成对比较：yes或no<br>
-                        选择完成后，点击“提交”按键开始分析<br>
-                    </p>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>2.4.查看任务</strong></span><br>
-                        提交任务后，点击界面右侧的“历史任务”模块，或者点击界面“我的任务”，都可以查看任务编号、软件名称和状态等信息，点击任务编号，即可查看分析结果。
-                        <br>
-                    </p>
-                    <img src="/assets/images/softpic/instruction/lf25.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        在任务详情界面，展示的是任务参数、结果文件列表和在线调整图片3个区域，提供结果文件下载和图片调整功能。
-                        <br>
-                    </p>
-                    <img src="/assets/images/softpic/instruction/lf26.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <br>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>3.示例图片</strong></span><br>
-                        云平台提供进化分支图、LDA分析柱图和差异特征图，都可以根据需求在线调整。<br>
-                    </p>
-                    <img src="/assets/images/softpic/instruction/lf27.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;padding-left: 44%">进化分支图</p>
-                    <br>
-                    <img src="/assets/images/softpic/instruction/lf28.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;padding-left: 44%">LDA分析柱图</p>
-                    <br>
-                    <img src="/assets/images/softpic/instruction/lf29.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;padding-left: 44%">差异特征图</p>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>4.结果文件</strong></span><br>
-                        结果文件包括LDA分析结果、含差异显著的LDA分析结果、进化分支图、LDA分析柱图和差异特征图，图片均为pdf格式。<br>
-                        <span style="font-weight:700;"><strong>LDA分析结果</strong></span>
-                        ：第一列为物种信息，即每种微生物类群名称；第二列为每种微生物类群在各分组类别中丰度平均值中最大值的log10，如果平均丰度小于10 按照10来计算。（不过这不是原始表格中的丰度，而是标准化后的丰度，LEfSe自己有套标准化方法）；第三列为差异物种富集的组名称；第四列为LDA 值，用以评估其对观测到的组间差异的效应大小，该值越高代表该微生物类群越重要；第五列为Kruskal-Wallis秩和检验的 P 值，若显著，则将这些微生物作为解释类别之间差异的biomaker来看待；若不显著，则该列值为“-”。
-                    </p>
-                    <img src="/assets/images/softpic/instruction/lf210.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <br>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>LDA判别分析结果（仅含差异显著）</strong></span>
-                        ：第一列为物种信息，即每种微生物类群名称；第二列为每种微生物类群在各分组类别中丰度平均值中最大值的log10，如果平均丰度小于10 按照10来计算。（不过这不是原始表格中的丰度，而是标准化后的丰度，LEfSe自己有套标准化方法）；第三列为差异物种富集的组名称；第四列为LDA 值，用以评估其对观测到的组间差异的效应大小，该值越高代表该微生物类群越重要；第五列为Kruskal-Wallis秩和检验的 P 值
-                    </p>
-                    <img src="/assets/images/softpic/instruction/lf211.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <br>
-                </div>
-                <div class="tab-pane fade" id="example">
-                    <h5 style="margin-bottom: 2px">视频录制中...敬请期待！</h5>
-                </div>
-                <div id="history" class="form1_ins tab-pane fade">
-                    <a id="btn-refresh" class="btn_refresh mws-i-24 i-refresh-3" onclick="refresh('@abbre')">刷新状态</a>
-                    <ul id="hisul" style="margin-top: 15px">
-                        <li id="hislist" class="hislist">
-                            <div class="his_time"><span>任务编号</span></div>
-                            <div class="his_time"><span style="margin-left: -20px;">结束时间</span></div>
-                            <div class="his_name"><span style="margin-left: -23px;">状态</span></div>
-                            <hr>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+        @units.pageRight("", "视频录制中...敬请期待！","LF2")
     </div>
 
     <script type="text/javascript" src="@routes.Assets.versioned("js/toolsAdjust.js")"></script>
     <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/fileinput.min.js")" type="text/javascript"></script>
     <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/locales/zh.js")" type="text/javascript"></script>
     <script src="@routes.Assets.versioned("myjs/soft.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("myjs/redraw.js")" type="text/javascript"></script>
     <script type="text/javascript">
+
+            $("#group").change(function () {
+                checkGroupfile();
+            });
 
             $(function () {
                 formValidation();
                 loadHistory("@abbre");
                 getTaskName("LF2","LF2");
-            });
+                loadVideo("//13125180.s21v.faiusr.com/58/ABUIABA6GAAgn_TmggYohMq1nQE.mp4","/assets/images/softpic/video/lefse2_video.png");
+                $("#instruction").append(instruction);
+                $("#ediv").hide();
+                var yname = ["one-against-one","one-against-all(约束较不严,耗时长)"];
+                var y = ["1","0"];
+                creatSelector("y",yname,y,"one-against-one");
+                var ename = ["no","yes"];
+                var e = ["0","1"];
+                creatSelector("e",ename,e,"es");
 
-            const fileValidators = {
-                validators: {
-                    notEmpty: {
-                        message: '必须上传otu丰度表！或减少表格数量'
-                    },
-                    file: {
-                        // extension: 'jpeg,jpg,png',
-                        // type: 'image/jpeg,image/png',
-                        maxSize: 5*1024*1024,
-                        message: '文件不得大于5M！'
-                    }
-                }
-            };
+            });
 
             var sample,flagtable=true;
 
@@ -392,95 +170,111 @@
                 }
             }
 
-
             function formValidation() {
-                $('#LF2').formValidation({
-                    framework: 'bootstrap',
-                    icon: {
-                        valid: 'glyphicon glyphicon-ok',
-                        invalid: 'glyphicon glyphicon-remove',
-                        validating: 'glyphicon glyphicon-refresh'
-                    },
-                    fields: {
-                        taskname: {
-                            validators: {
-                                notEmpty: {
-                                    message: '任务编号不能为空!'
-                                },
-                                remote:{
-                                    type: 'POST',
-                                    url: '@routes.DutyController.checktaskname()',
-                                    message: "任务编号重复，请重新输入",
-                                    // delay: 1000
-                                }
-                            }
-                        },
-                        table1: {
-                            validators: {
-                                notEmpty: {
-                                    message: '必须上传otu丰度表！或减少表格数量'
-                                },
-                                file: {
-                                    maxSize: 5*1024*1024,
-                                    message: '文件不得大于5M！'
-                                }
-                            }
-                        },
-                        group: {
-                            validators: {
-                                notEmpty: {
-                                    message: '必须上传分组文件！'
-                                },
-                                file: {
-                                    maxSize: 5*1024*1024,
-                                    message: '文件不得大于5M！'
-                                }
-                            }
-                        },
-                        a: {
-                            validators: {
-                                notEmpty: {
-                                    message: '不能为空！默认值0.5'
-                                },
-                                numeric: {
-                                    message: '必须为数字！'
-                                }
-                            }
-                        },
-                        w: {
-                            validators: {
-                                notEmpty: {
-                                    message: '不能为空！默认值0.5'
-                                },
-                                numeric: {
-                                    message: '必须为数字！'
-                                }
-                            }
-                        },
-                        l: {
-                            validators: {
-                                notEmpty: {
-                                    message: '不能为空！默认值2'
-                                },
-                                numeric: {
-                                    message: '必须为数字！'
-                                }
-                            }
-                        },
-                        level: {
-                            validators: {
-                                notEmpty: {
-                                    message: '不能为空！默认值6'
-                                },
-                                numeric: {
-                                    message: '必须为数字！'
-                                }
-                            }
-                        }
-                    }
-                });
+                let field = {};
+                let table = ["table1", "group"];
+                FieldFile(field, table);
+                let text = ["taskname"];
+                FieldTaskname(field, text);
+                let number = ["a","w","l","level"];
+                FieldNumber(field, number);
+                let excluded = [":hidden"];
+                addFormValidation("LF2", field, excluded)
             }
 
+            var instruction = "<p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                    "                        <span style=\"font-weight:700;\"><strong>1.背景介绍</strong></span><br>\n" +
+                    "                        LEfse分析即LDA Effect Size分析，可以实现多个分组之间的比较，还进行分组比较的内部进行亚组比较分析，从而找到组间在丰度上有显著差异的物种（即biomaker），主要是通过非参数因子Kruskal-Wallis秩和检验来实现的。<br>\n" +
+                    "                        LEfSe2.0在线工具在1.0工具基础上，增加了LDA判别分析结果文件（仅含差异显著）。增加差异特征图，以及所有结果图的重绘功能。<br>\n" +
+                    "                    </p>\n" +
+                    "                    <br>\n" +
+                    "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                    "                        <span style=\"font-weight:700;\"><strong>2.操作方法</strong></span><br>\n" +
+                    "                    </p>\n" +
+                    "                    <img src=\"/assets/images/softpic/instruction/lf21.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                    "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;padding-left: 44%\">操作界面</p>\n" +
+                    "                    <br>\n" +
+                    "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">lefse分析需要输入的文件包含OTU丰度表和分组文件，OTU丰度表支持biom格式和txt格式文件，分组文件只能是tab键分隔的txt文件。</p>\n" +
+                    "                    <br>\n" +
+                    "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                    "                        <span style=\"font-weight:700;\"><strong>2.1.上传文件</strong></span><br>\n" +
+                    "                        BIOM格式是微生物组领域最常用的结果保存格式，优点是可将OTU或Feature表、样本属性、物种信息等多个表保存于同一个文件中，且格式统一，体积更小巧，目前被微生物组领域几乎所有主流软件所支持。此处可以直接使用\n" +
+                    "                        <span style=\"font-weight:700;\"><strong>凌恩生物扩增子结题报告</strong></span>\n" +
+                    "                        中biom格式的OTU丰度表，位于结果文件夹的\n" +
+                    "                        <span style=\"font-weight:700;\"><strong>01.OTU_Taxa/normalize/otu_taxa_table.biom</strong></span>\n" +
+                    "                        ，示例文件如下：\n" +
+                    "                        <br>\n" +
+                    "                    </p>\n" +
+                    "                    <img src=\"/assets/images/softpic/instruction/lf22.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                    "                    <br>\n" +
+                    "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                    "                        也可以使用<span style=\"font-weight:700;\"><strong>凌恩生物扩增子结题报告</strong></span>\n" +
+                    "                        中excel格式的OTU丰度表，位于结果文件夹的\n" +
+                    "                        <span style=\"font-weight:700;\"><strong>01.OTU_Taxa/normalize/otu_taxa_table.xls</strong></span>\n" +
+                    "                        ，在使用前需要用excel打开，首行增加“# Constructed from biom file”，并另存为制表符分隔的txt文件，示例文件如下：<br>\n" +
+                    "                    </p>\n" +
+                    "                    <img src=\"/assets/images/softpic/instruction/lf23.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                    "                    <br>\n" +
+                    "                    <br>\n" +
+                    "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                    "                        <span style=\"font-weight:700;\"><strong>2.2.分组文件</strong></span><br>\n" +
+                    "                        分组示例文件如下，第一列为样本名，第二列为分组名<br>\n" +
+                    "                    </p>\n" +
+                    "                    <img src=\"/assets/images/softpic/instruction/lf24.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                    "                    <br>\n" +
+                    "                    <br>\n" +
+                    "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                    "                        <span style=\"font-weight:700;\"><strong>2.3.选择参数</strong></span><br>\n" +
+                    "                        (1) 类间因子Kruskal-Wallis秩检验的Alpha值：默认为0.5<br>\n" +
+                    "                        (2) 子类间配对Wilcoxon秩检验的Alpha值：默认为0.5<br>\n" +
+                    "                        (3) 差异特征LDA对数值的阈值：默认为2<br>\n" +
+                    "                        (4) 多组分类分析的分析策略：一对一或一对多（一对一约束更严格，一对多运行时间更长）<br>\n" +
+                    "                        (5) 是否仅在子类名相同的情况下，进行子类间的成对比较：yes或no<br>\n" +
+                    "                        选择完成后，点击“提交”按键开始分析<br>\n" +
+                    "                    </p>\n" +
+                    "                    <br>\n" +
+                    "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                    "                        <span style=\"font-weight:700;\"><strong>2.4.查看任务</strong></span><br>\n" +
+                    "                        提交任务后，点击界面右侧的“历史任务”模块，或者点击界面“我的任务”，都可以查看任务编号、软件名称和状态等信息，点击任务编号，即可查看分析结果。\n" +
+                    "                        <br>\n" +
+                    "                    </p>\n" +
+                    "                    <img src=\"/assets/images/softpic/instruction/lf25.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                    "                    <br>\n" +
+                    "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                    "                        在任务详情界面，展示的是任务参数、结果文件列表和在线调整图片3个区域，提供结果文件下载和图片调整功能。\n" +
+                    "                        <br>\n" +
+                    "                    </p>\n" +
+                    "                    <img src=\"/assets/images/softpic/instruction/lf26.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                    "                    <br>\n" +
+                    "                    <br>\n" +
+                    "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                    "                        <span style=\"font-weight:700;\"><strong>3.示例图片</strong></span><br>\n" +
+                    "                        云平台提供进化分支图、LDA分析柱图和差异特征图，都可以根据需求在线调整。<br>\n" +
+                    "                    </p>\n" +
+                    "                    <img src=\"/assets/images/softpic/instruction/lf27.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                    "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;padding-left: 44%\">进化分支图</p>\n" +
+                    "                    <br>\n" +
+                    "                    <img src=\"/assets/images/softpic/instruction/lf28.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                    "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;padding-left: 44%\">LDA分析柱图</p>\n" +
+                    "                    <br>\n" +
+                    "                    <img src=\"/assets/images/softpic/instruction/lf29.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                    "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;padding-left: 44%\">差异特征图</p>\n" +
+                    "                    <br>\n" +
+                    "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                    "                        <span style=\"font-weight:700;\"><strong>4.结果文件</strong></span><br>\n" +
+                    "                        结果文件包括LDA分析结果、含差异显著的LDA分析结果、进化分支图、LDA分析柱图和差异特征图，图片均为pdf格式。<br>\n" +
+                    "                        <span style=\"font-weight:700;\"><strong>LDA分析结果</strong></span>\n" +
+                    "                        ：第一列为物种信息，即每种微生物类群名称；第二列为每种微生物类群在各分组类别中丰度平均值中最大值的log10，如果平均丰度小于10 按照10来计算。（不过这不是原始表格中的丰度，而是标准化后的丰度，LEfSe自己有套标准化方法）；第三列为差异物种富集的组名称；第四列为LDA 值，用以评估其对观测到的组间差异的效应大小，该值越高代表该微生物类群越重要；第五列为Kruskal-Wallis秩和检验的 P 值，若显著，则将这些微生物作为解释类别之间差异的biomaker来看待；若不显著，则该列值为“-”。\n" +
+                    "                    </p>\n" +
+                    "                    <img src=\"/assets/images/softpic/instruction/lf210.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                    "                    <br>\n" +
+                    "                    <br>\n" +
+                    "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                    "                        <span style=\"font-weight:700;\"><strong>LDA判别分析结果（仅含差异显著）</strong></span>\n" +
+                    "                        ：第一列为物种信息，即每种微生物类群名称；第二列为每种微生物类群在各分组类别中丰度平均值中最大值的log10，如果平均丰度小于10 按照10来计算。（不过这不是原始表格中的丰度，而是标准化后的丰度，LEfSe自己有套标准化方法）；第三列为差异物种富集的组名称；第四列为LDA 值，用以评估其对观测到的组间差异的效应大小，该值越高代表该微生物类群越重要；第五列为Kruskal-Wallis秩和检验的 P 值\n" +
+                    "                    </p>\n" +
+                    "                    <img src=\"/assets/images/softpic/instruction/lf211.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                    "                    <br>";
 
     </script>
 

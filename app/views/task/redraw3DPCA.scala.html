@@ -1,0 +1,388 @@
+@import models.Tables.DutysRow
+@(row:DutysRow)(implicit session: Session)
+@home.main("Task Preview"){
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("bootstrap-slider-master/css/bootstrap-slider.css")" media="screen" />
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("font-awesome-4.7.0/css/font-awesome.min.css")" media="screen" />
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("bootstrap-fileinput-master/css/fileinput.css")" media="screen" />
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("palette/evol-colorpicker.min.css")" media="screen" />
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("mycss/redraw.css")" media="screen" />
+
+    <script type="text/javascript" src="@routes.Assets.versioned("js/jquery-ui.js")"></script>
+    <script src="@routes.Assets.versioned("layer-v3.0/layer/layer.js")" type="text/javascript"></script>
+    <script type="text/javascript" src="@routes.Assets.versioned("palette/evol-colorpicker.min.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.versioned("bootstrap-slider-master/bootstrap-slider.js")"></script>
+
+    <style>
+            .picleft{
+                margin-top: 5px;
+                width: 130px;
+                text-align: right;
+            }
+            .picright{
+                width: calc(100% - 140px);
+            }
+            .fontleft{
+                margin-top: 5px;
+                width: 110px;
+                text-align: right;
+            }
+            .fontright{
+                width: calc(100% - 110px);
+            }
+
+            .picright select{
+                width: 100%;
+            }
+            .fontright select{
+                width: 100%;
+            }
+            .slider {
+                width: 100%!important;
+            }
+    </style>
+
+    <div class="container" style="width: 98.5%;margin: unset;max-width: unset;padding: 5px">
+        @task.preview(row)
+        <div class="mws-panel grid_8" style="background: white!important;">
+            <div class="mws-panel-body" style="border: unset">
+                <div class="mws-panel-content" style="width: 96%;padding-top: 0;padding-right: 0">
+                    <hr>
+                    <div class="redraw-head">
+                        <h3 style="display: inline-block">重新绘图：</h3>
+                        <div class="dropdown" style="display: inline-block">
+                            <button class="btn btn-dark dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false" style="padding: 7px 30px;text-shadow: unset;border-radius: 7px;">
+                                下载结果图
+                            </button>
+                            <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 35px, 0px); top: 0px; left: 0px; will-change: transform;width: 150px">
+                                <a class="dropdown-item" id="downPic" onclick="downloadpics('@row.status','@row.taskname','pca_3d','pdf')">下载 pdf</a>
+                                <a class="dropdown-item" id="downPng" onclick="downloadpics('@row.status','@row.taskname','pca_3d','png')">下载 png</a>
+                                <a class="dropdown-item" id="downTiff" onclick="downloadpics('@row.status','@row.taskname','pca_3d','tiff')">下载 tiff</a>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <form id="TPC" style="display: none" method="GET" enctype="multipart/form-data">
+                        <div style="width: 60%;float: left">
+                            <img id="redraw_pic" src="" style="width: 100%;height: auto" >
+                        </div>
+                        <div class="redraw_panel redraw-right" style="width: 40%;float: left;margin-bottom: 30px;">
+                            <ul class="nav nav-tabs" style="margin-left: 20px">
+                                <li class="active" id="ins_tab1" >
+                                    <a href="###" data-target="#picpara" data-toggle="tab">数据布局参数</a>
+                                </li>
+                                <li class="" id="col_tab1" >
+                                    <a href="###" data-target="#colopara" data-toggle="tab">颜色参数</a>
+                                </li>
+                                <li class="" id="out_tab1">
+                                    <a href="###" data-target="#fontpara" data-toggle="tab">字体参数</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content" style="box-sizing: border-box!important;padding-top: 30px">
+                                <div class="tab-pane fade active in" id="picpara">
+                                    @units.redrawUnits.selector("","选择X轴数据：","xdata")
+                                    @units.redrawUnits.selector("","选择Y轴数据：","ydata")
+                                    @units.redrawUnits.selector("","选择Z轴数据：","zdata")
+                                    @units.redrawUnits.input_text_2("","X轴范围(min-max)：","--","xlmin","xlmax","数字","数字")
+                                    @units.redrawUnits.input_text_2("","Y轴范围(min-max)：","--","ylmin","ylmax","数字","数字")
+                                    @units.redrawUnits.input_text_2("","Z轴范围(min-max)：","--","zlmin","zlmax","数字","数字")
+                                    @units.redrawUnits.input_text_1("","Y轴相对XZ轴的比例：","sy","数字")
+                                    @units.redrawUnits.selector("","是否绘制样本名：","llt")
+                                    @units.redrawUnits.selector("","样本名绘制位置：","llp")
+                                    @units.redrawUnits.selector("","图例位置：","lep")
+                                    @units.redrawUnits.input_text_1("","图例列数：","lec","数字")
+                                    @units.redrawUnits.input_text_2("","图片长宽(宽-高)：","--","width","height","数字","数字")
+                                </div>
+                                <div class="tab-pane fade" id="colopara">
+                                    <div class="one-line" >
+                                        <div style="border: 1px solid lightgrey;border-radius: 5px;padding: 10px;margin-left: 30px">
+                                            <div class="form-group-p" style="padding-left: 0">
+                                                <div style="width: 100%;margin-top: 10px">
+                                                    <label>自定义颜色(当前分组 - 颜色)：</label>
+                                                    <span id="groupname"></span>
+                                                </div>
+                                            </div>
+                                            <br><br>
+                                            <div class="form-group-p" >
+                                                <div class="form-group" style="width: calc(100% - 20px)">
+                                                    <ul id="mycolor">
+                                                    </ul>
+                                                    <input type="text" id="color" name="color" class="form-control" value="" style="display: none">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    @units.redrawUnits.colorpicker("","坐标轴颜色：","ac")
+                                    @units.redrawUnits.colorpicker("","分割线颜色：","gc")
+                                    <br>
+                                </div>
+                                <div class="tab-pane fade" id="fontpara">
+                                    @units.redrawUnits.slider("","数据点大小：","ps","0","8","0.1")
+                                    @units.redrawUnits.slider("","XY轴旋转角度：","an","0","360","5")
+                                    @units.redrawUnits.slider("","样本名字体大小：","lls","0","3","0.1")
+                                    @units.redrawUnits.slider("","坐标轴字体大小：","as","0","3","0.1")
+                                    @units.redrawUnits.slider("","坐标轴标题大小：","ls","0","3","0.1")
+                                    @units.redrawUnits.slider("","图例字体大小：","les","0","3","0.1")
+                                    @units.redrawUnits.input_text_1("","主标题：","mt","标题不可含有汉字")
+                                </div>
+                            </div>
+                            <br>
+                            <input type="button" value="绘&nbsp;&nbsp;制" name="submit" class="btn btn-primary btn-dark" onclick="DrawTPC()" style="margin-left: 30px">
+                        </div>
+                        <div class="update_panel redraw-right" style="width: 40%;float: left;margin-bottom: 30px;">
+                            <div style="padding: 20px">
+                                <h3 style="color: red">通知：</h3>
+                                <span style="color: red">软件版本已在<label class="update"></label>更新！<label class="update"></label> 前运行的 @row.sname 任务仅可下载结果文件，不支持重新绘图。</span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/fileinput.min.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/locales/zh.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("myjs/redraw.js")" type="text/javascript"></script>
+
+    <script>
+
+            const updatetime="2020-08-24";
+
+            $("#xlmin").change(function () {
+                minchange('xlmax');
+            });
+
+            $("#ylmin").change(function () {
+                minchange('ylmax');
+            });
+
+            $("#zlmin").change(function () {
+                minchange('zlmax');
+            });
+
+            $("#llt").change(function () {
+                showsample();
+            });
+
+            function showsample() {
+                if($("#llt").val() == "TRUE") $(".drawsample").show();
+                else $(".drawsample").hide();
+            }
+
+            const colorValidators = {
+                validators: {
+                    notEmpty:{
+                        message: '不能为空！'
+                    },
+                    color: {
+                        type: ['hex','keyword'],  // The default value for type
+                        message: '错误色值！支持hex或keyword色值'
+                    }
+                }
+            };
+
+            var colornum=0;
+            var color,group;
+
+            $(document).ready(function () {
+                if("@row.status"=="已完成"){
+                    var tf = ["TRUE","FALSE"];
+                    var tfname = ["yes","no"];
+                    creatSelector("llt",tfname,tf);
+                    var llpname = ["点上方","点下方","点左方","点右方"];
+                    var llp = ["3","1","2","4"];
+                    creatSelector("llp",llpname,llp);
+                    var lep = ["topleft","topright"];
+                    creatSelector("lep",lep,lep);
+
+                    checkupdate(updatetime, "@row.subtime");
+                    $("#TPC").show();
+                    $.ajax({
+                        url:"/CloudPlatform/SoftTool/getPCA3Data?taskname=@row.taskname&abbre=@row.sabbrename",
+                        type:"post",
+                        success:function (data) {
+                            $("#redraw_pic").attr("src","/CloudPlatform/pic?path="+data.pics[0]+"&num="+Math.random());
+                            var cols="";
+                            $.each(data.cols,function (i,v) {
+                                cols +="<option value='"+v+"'>"+v+"</option>";
+                            });
+                            $("#xdata").html(cols);
+                            $("#ydata").html(cols);
+                            $("#zdata").html(cols);
+                            $.each(data.elements,function (i,v) {
+                                if(i === "ac" || i === "gc") {
+                                    $("#" + i).colorpicker({color: v, defaultPalette: 'web',showOn:"button"})
+                                            .on("change.color", function(event, color){ //选择颜色事件
+                                                //formValidation重新验证颜色
+                                                $("#TPC").formValidation("revalidateField", i);
+                                            });
+                                } else if($("#"+i).attr("data-slider-id")==null) $("#"+i).val(v);
+                                else {
+                                    $("#"+i).bootstrapSlider({tooltip:'always'});
+                                    $("#" + i).bootstrapSlider('setValue', v);
+                                }
+                            });
+                            colornum=data.group.length;
+                            var colo="";
+                            $.each(data.group,function (i,v) {
+                                colo +="<li class='form-group' style='width: 100%;'><div style='float: left;width: 30%;margin-top: 5px;'><label title='" + v + "'>"+v+"</label></div><div style='float: left;width: 70%'><input id='color"+i+"'  name='color"+i+"' class='colorPicker evo-cp0'></div></li>";
+                            });
+                            $("#mycolor").html(colo);
+                            $.each(data.group,function (i,v) {
+                                $("#TPC").formValidation('addField','color'+i, colorValidators);
+                                $("#color"+i).colorpicker({color: data.color[i], defaultPalette: 'web',showOn:"button"})
+                                        .on("change.color", function(event, color){ //选择颜色事件
+                                            //formValidation重新验证颜色
+                                            $("#TPC").formValidation("revalidateField", "color"+i);
+                                        });
+                            });
+                            $(".evo-cp-wrap").css("float", "left");
+                            $(".evo-cp-wrap").css("width", "calc(100% - 34px)");
+                            showsample();
+                        }
+                    });
+                }
+            });
+
+            function DrawTPC() {
+                var form = $("#TPC");
+                var fv = form.data("formValidation");
+                fv.validate();
+                if (fv.isValid()) {
+                    if(checkXYCol()){
+                        swal({
+                            title: "请检查xyz轴数据",
+                            text: "x轴y轴z轴数据不可为同一个！",
+                            type: "warning",
+                            confirmButtonText: "确认"
+                        });
+                        return;
+                    }
+                    var element = "<div id='content'><span id='info'>绘图中，请耐心等待...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>";
+                    var index = layer.alert(element, {
+                        skin: 'layui-layer-lan',
+                        closeBtn: 0,
+                        title: "提醒",
+                        btn: []
+                    });
+                    var c=[];
+                    for(let i=0;i<colornum;i++){
+                        c.push($("#color"+i).val());
+                    }
+                    $("#color").val(c.join(":"));
+                    var form1 = new FormData($("#TPC")[0]);
+                    $.ajax({
+                        url: "/CloudPlatform/SoftTool/redrawPCA3?taskname=@row.taskname&abbre=@row.sabbrename",
+                        type: "post",
+                        processData: false,
+                        contentType: false,
+                        data: form1,
+                        success: function (data) {
+                            $("#redraw_pic").attr("src","/CloudPlatform/pic?path="+data.pics+"&num="+Math.random());
+                            layer.close(index);
+                        }
+                    });
+                }else {
+                    switchToInvalid();
+                    swal({
+                        title: "参数设置错误",
+                        text: "有参数不合法，请核实！",
+                        type: "error",
+                        confirmButtonText: "确认"
+                    });
+                }
+            }
+
+
+            function checkXYCol(){
+                if($("#xdata").val()===$("#ydata").val() || $("#xdata").val()===$("#zdata").val() || $("#zdata").val()===$("#ydata").val()) return true;
+                else return false;
+            }
+
+            function minchange(maxname) {
+                $("#TPC").formValidation("revalidateField", maxname);
+            }
+
+            function formValidation() {
+                let field = {};
+                let number = ["sy","lec","width","height"];
+                let number22 = ["xlmin", "ylmin", "zlmin"];
+                FieldNumberonly(field, number22)
+                FieldNumber(field, number);
+                let name = ["mt"];
+                FieldName(field, name);
+                let color = ["ac", "gc"];
+                FieldColor(field, color);
+                let excluded = [""];
+                field["xlmax"] = {
+                    validators: {
+                        numeric: {
+                            message: '必须为数字！'
+                        },
+                        callback:{
+                            message: '最大值必须大于最小值',
+                            callback: function (value, validator, $field) {
+                                return (value === "" && $("#xlmin").val() === "") || (parseInt(value) > parseInt($("#xlmin").val()));
+                            }
+                        }
+                    }
+                };
+                field["ylmax"] = {
+                    validators: {
+                        numeric: {
+                            message: '必须为数字！'
+                        },
+                        callback:{
+                            message: '最大值必须大于最小值',
+                            callback: function (value, validator, $field) {
+                                return (value === "" && $("#ylmin").val() === "") || (parseInt(value) > parseInt($("#ylmin").val()));
+                            }
+                        }
+                    }
+                };
+                field["zlmax"] = {
+                    validators: {
+                        numeric: {
+                            message: '必须为数字！'
+                        },
+                        callback:{
+                            message: '最大值必须大于最小值',
+                            callback: function (value, validator, $field) {
+                                return (value === "" && $("#zlmin").val() === "") || (parseInt(value) > parseInt($("#zlmin").val()));
+                            }
+                        }
+                    }
+                };
+                addFormValidation("TPC", field, excluded)
+            }
+
+
+            function switchToInvalid() {
+                $(".help-block[data-fv-result='INVALID']").each(function () {
+                    if($(this).parent().parent().attr('id')){
+                        if($(this).parent().parent().attr('id').toString().indexOf("color")>=0){
+                            $("a[data-target='#colopara']").click();
+                        }else{
+                            var parent=$(this).parent().parent().parent().attr('id');
+                            $("a[data-target='#"+parent+"']").click();
+                        }
+                    } else{
+                        var parent=$(this).parent().parent().parent().attr('id');
+                        $("a[data-target='#"+parent+"']").click();
+                    }
+                    return false;
+                });
+            }
+
+
+            // function switchToReInvalid(fv) {
+            //     let invalid = (fv.$invalidFields)[0];
+            //     let id = $(invalid).parents(".tab-pane.fade").attr("id");
+            //     $(`#${id}-tab`).click();
+            // }
+
+
+    </script>
+}

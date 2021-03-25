@@ -17,49 +17,10 @@
         <div class="mysoft-content-left whitebox" style="width: 771px;overflow-y: auto">
             <form id="WT" method="GET" novalidate="novalidate" enctype="multipart/form-data" class="well form-inline" style="box-sizing: border-box!important;">
                 <div class="softpic mws-ic @abbre"></div>
-                <h3 class="tools-title">Wilcoxon秩和检验</h3>
-                <div class="form-group">
-                    <h2></h2>
-                </div><br><br>
-                <div class="form-group-p">
-                    <div class="form-group">
-                        <label for="mytaskname">任务编号：</label>
-                    </div>
-                    <div class="form-group">
-                        <input id="mytaskname" type="text" class="form-control" name="taskname" placeholder="" value="">
-                    </div>
-                </div>
-                <br><br>
-                <div id="div1" class="one-line">
-                    <div class="form-group-p" style="width: 465px">
-                        <div class="form-group">
-                            <label for="exampleInputName2"><em>1：</em>OTU丰度表：</label>
-                        </div>
-                        <div class="form-group">
-                            <input type="file" class="form-control file" id="table1" name="table1" onchange="checkTable()">
-                        </div>
-                    </div>
-                    <div class="form-group-extra">
-                        <em><a href="/assets/files/ttest_table.txt" target='_blank'>示例文件</a></em>
-                    </div>
-                    <br>
-                    <br>
-                </div>
-                <div id="div2" class="one-line">
-                    <div class="form-group-p" style="width: 465px">
-                        <div class="form-group">
-                            <label for="exampleInputName2"><em>2：</em>分组文件(必须为两组)：</label>
-                        </div>
-                        <div class="form-group">
-                            <input type="file" class="form-control file" id="table2" name="table2" onchange="checkGroupfile()">
-                        </div>
-                    </div>
-                    <div class="form-group-extra">
-                        <em><a href="/assets/files/ttest_group.txt" target='_blank'>示例文件</a></em>
-                    </div>
-                    <br>
-                    <br>
-                </div>
+                <h3 class="tools-title">Wilcoxon秩和检验</h3><br><br>
+                @units.textinput("","","任务编号：", "taskname","","")
+                @units.fileupload("1： ", "div1", "OTU丰度表：","table1","ttest_table.txt")
+                @units.fileupload("2：", "div2", "分组文件(两组)：","table2","ttest_group.txt")
                 <div class="panel panel-default">
                     <div class="panel-heading" data-toggle="collapse" href="#collapseOne">
                         <h4 class="panel-title">
@@ -70,66 +31,12 @@
                     </div>
                     <div id="collapseOne" class="panel-collapse collapse in">
                         <div class="panel-body">
-                            <div class="form-group-p">
-                                <div class="form-group">
-                                    <label>是否要做配对T检验：</label>
-                                </div>
-                                <div class="form-group">
-                                    <select name="p">
-                                        <option value="FALSE" selected>no</option>
-                                        <option value="TRUE">yes</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <br><br>
-                            <div class="form-group-p">
-                                <div class="form-group" style="float: left; display: flow-root; position: relative;">
-                                    <label>是否在p值的正态近似中应用连续性校正：</label>
-                                </div>
-                                <div class="form-group" style="display: flow-root;">
-                                    <select name="tf" style="width: 100%">
-                                        <option value="FALSE">no</option>
-                                        <option value="TRUE" selected>yes</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <br><br>
-                            <div class="form-group-p">
-                                <div class="form-group">
-                                    <label>多重校验方法：</label>
-                                </div>
-                                <div class="form-group">
-                                    <select name="c">
-                                        <option value="fdr">fdr</option>
-                                        <option value="holm">holm</option>
-                                        <option value="hochberg">hochberg</option>
-                                        <option value="hommel">hommel</option>
-                                        <option value="bonferroni">bonferroni</option>
-                                        <option value="BH">BH</option>
-                                        <option value="BY">BY</option>
-                                        <option value="none">none</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <br><br>
-                            <div class="form-group-p form-group">
-                                <div class="form-group" style="float: left; display: flow-root;">
-                                    <label for="format">P值检验阈值(为空则不进行筛选)：</label>
-                                </div>
-                                <div class="form-group" style="display: flow-root;">
-                                    <input id="ptn" name="ptn" type="text" style="width: 100%; "/>
-                                </div>
-                            </div>
-                            <br><br>
-                            <div class="form-group-p form-group">
-                                <div class="form-group" style="float: left; display: flow-root;">
-                                    <label for="format">Q值检验阈值(为空则不进行筛选)：</label>
-                                </div>
-                                <div class="form-group" style="display: flow-root;">
-                                    <input id="qtn" name="qtn" type="text" style="width: 100%; "/>
-                                </div>
-                            </div>
                             <br>
+                            @units.selector("","","是否要做配对检验：","p")
+                            @units.selector("","","是否在p值的正态近似中应用连续性校正：","tf")
+                            @units.selector("","","多重校验方法：","c")
+                            @units.textinput("","","P值检验阈值(为空则不进行筛选)：", "ptn", "", "0.05")
+                            @units.textinput("","","Q值检验阈值(为空则不进行筛选)：", "qtn", "", "0.05")
                         </div>
                     </div>
                 </div>
@@ -181,21 +88,28 @@
     <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/fileinput.min.js")" type="text/javascript"></script>
     <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/locales/zh.js")" type="text/javascript"></script>
     <script src="@routes.Assets.versioned("myjs/soft.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("myjs/redraw.js")" type="text/javascript"></script>
     <script type="text/javascript">
 
-            function gapfocus(para) {
-                $("#"+para).show();
-            }
+            $("#table1").change(function () {
+                checkTable();
+            });
 
-            function gapblur(para) {
-                $("#"+para).hide();
-            }
+            $("#table2").change(function () {
+                checkGroupfile();
+            });
 
             $(document).ready(function () {
                 formValidation();
                 loadHistory("@abbre");
                 getTaskName("WT","WT");
                 // loadVideo("//13125180.s21v.faiusr.com/58/ABUIABA6GAAgts3S_QUo_uGeyAc.mp4","/assets/images/softpic/video/heatmap_video.png")
+                var cname = ["fdr","holm","hochberg","hommel","bonferroni","BH","BY","none"];
+                creatSelector("c",cname,cname,"fdr");
+                var tf = ["TRUE","FALSE"];
+                var tfname = ["yes","no"];
+                creatSelector("p",tfname,tf,"no");
+                creatSelector("tf",tfname,tf,"yes");
             });
 
             var sample = [];
@@ -391,84 +305,30 @@
             }
 
             function formValidation() {
-                $('#WT').formValidation({
-                    framework: 'bootstrap',
-                    icon: {
-                        valid: 'glyphicon glyphicon-ok',
-                        invalid: 'glyphicon glyphicon-remove',
-                        validating: 'glyphicon glyphicon-refresh'
-                    },
-                    fields: {
-                        taskname: {
-                            validators: {
-                                notEmpty: {
-                                    message: '任务编号不能为空!'
-                                },
-                                remote:{
-                                    type: 'POST',
-                                    url: '@routes.DutyController.checktaskname()',
-                                    message: "任务编号重复，请重新输入"
-                                }
-                            }
+                let field = {};
+                let table = ["table1", "table2"];
+                FieldFile(field, table);
+                let text = ["taskname"];
+                FieldTaskname(field, text);
+                let validator = {
+                    validators: {
+                        numeric: {
+                            message: '必须为数字！'
                         },
-                        table1: {
-                            validators: {
-                                notEmpty: {
-                                    message: '必须上传OTU表格文件!'
-                                },
-                                file: {
-                                    // extension: 'jpeg,jpg,png',
-                                    // type: 'image/jpeg,image/png',
-                                    maxSize: 5*1024*1024,
-                                    message: '文件不得大于5M！'
-                                }
-                            }
+                        greaterThan: {
+                            value: 0,
+                            message: "必须大于0！"
                         },
-                        table2: {
-                            validators: {
-                                notEmpty: {
-                                    message: '必须上传分组文件!'
-                                },
-                                file: {
-                                    // extension: 'jpeg,jpg,png',
-                                    // type: 'image/jpeg,image/png',
-                                    maxSize: 5*1024*1024,
-                                    message: '文件不得大于5M！'
-                                }
-                            }
-                        },
-                        ptn:{
-                            validators: {
-                                numeric: {
-                                    message: '必须为数字！'
-                                },
-                                greaterThan: {
-                                    value: 0,
-                                    message: "必须大于0！"
-                                },
-                                lessThan: {
-                                    value: 1,
-                                    message: "必须小于1！"
-                                }
-                            }
-                        },
-                        qtn:{
-                            validators: {
-                                numeric: {
-                                    message: '必须为数字！'
-                                },
-                                greaterThan: {
-                                    value: 0,
-                                    message: "必须大于0！"
-                                },
-                                lessThan: {
-                                    value: 1,
-                                    message: "必须小于1！"
-                                }
-                            }
+                        lessThan: {
+                            value: 1,
+                            message: "必须小于1！"
                         }
                     }
-                });
+                };
+                field["ptn"] = validator;
+                field["qtn"] = validator;
+                let excluded = [":hidden"];
+                addFormValidation("WT", field, excluded)
             }
 
 

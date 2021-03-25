@@ -139,11 +139,25 @@
                 border-bottom-color: transparent;
 
             }
+
+        #name_pa_1, #name_pa_2, #name_pa_3, #name_pa_4, #name_pa_5, #name_pa_6 {
+            width: calc(100% - 111px);
+        }
+            .btn-primary:hover, .btn-primary:focus, .btn-primary.focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
+                color: #fff;
+                background-color: #0d2648;
+                border-color: #0d2648;
+            }
+            .btn-primary {
+                color: #fff;
+                background-color: #003366;
+                border-color: #003366;
+            }
     </style>
 
     <div class="row-fluid" style="margin-top: 50px; padding-top: 5px;">
 
-        <div class="col-md-6 col-sm-6" style="width: 45%;background: white; margin-left: 10px; padding-top: 10px;">
+        <div class="col-md-6 col-sm-6" style="width: 510px;background: white; margin-left: 10px; padding-top: 10px;">
             <div class="portlet blue-soft box">
                 <div class="portlet-title">
                     <div class="caption" style="font-size: 20px">
@@ -163,7 +177,7 @@
             </div>
         </div>
 
-        <div class="col-md-6 col-sm-6" style="margin-left: 3px">
+        <div class="col-md-6 col-sm-6" style="margin-left: 3px; width: calc(100% - 583px);">
             <ul class="nav nav-tabs" style="margin: 0px;">
                 <li role="presentation" class="active">
                     <a data-toggle="tab" href="#drawpa">设置绘图参数</a>
@@ -403,7 +417,7 @@
                                             <div class="input-append">
                                                 <input style="display: none;" name="browse_upload" id="browse_upload" accept=".txt" type="file" data-url="/CloudPlatform/SoftTool/getJvennData" >
                                                 <span id="upload_and_draw" class="add-on btn btn-default" style="border-radius: 0 4px 4px 0;height: 22px">Browse  <i class="fa fa-folder-open"></i></span>
-                                                <a href="/assets/files/venn.txt" target="_blank" style="margin-left: 10px">e.g., example</a>
+                                                <a href="/assets/files/venn.txt" target="_blank">示例文件</a>
                                             </div>
                                         </div>
                                     </div>
@@ -507,7 +521,7 @@
                                                 <div class="input-append">
                                                     <input style="display: none;" name="browse_upload2" id="browse_upload2" accept=".txt" type="file" onchange="upload()">
                                                     <span id="upload_and_draw2" class="add-on btn btn-default" style="border-radius: 0 4px 4px 0;height: 22px">Browse  <i class="fa fa-folder-open"></i></span>
-                                                    <a href="/assets/files/VennChart.txt" target="_blank" style="margin-left: 10px">e.g., example</a>
+                                                    <a href="/assets/files/VennChart.txt" target="_blank">示例文件</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -524,7 +538,7 @@
                                                 <div class="input-append">
                                                     <input style="display: none;" name="browse_upload3" id="browse_upload3" accept=".txt" type="file" onchange="upload3()">
                                                     <span id="upload_and_draw3" class="add-on btn btn-default" style="border-radius: 0 4px 4px 0;height: 22px">Browse  <i class="fa fa-folder-open"></i></span>
-                                                    <a href="/assets/files/VennChartGroup.txt" target="_blank" style="margin-left: 10px">e.g., example</a>
+                                                    <a href="/assets/files/VennChartGroup.txt" target="_blank">示例文件</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -766,7 +780,6 @@
 
         </div>
     </div>
-    <hr>
 
     <script type="text/javascript" src="@routes.Assets.versioned("jvenn/js/canvas2svg.js")"></script>
     <script type="text/javascript" src="@routes.Assets.versioned("jvenn/js/jvenn.min.js")"></script>

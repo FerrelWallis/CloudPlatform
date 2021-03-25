@@ -34,17 +34,13 @@
         <div class="mysoft-content-left whitebox" style="width: 771px;overflow-y: auto">
             <form id="PMR" method="GET" novalidate="novalidate" enctype="multipart/form-data" class="well form-inline" style="box-sizing: border-box!important;">
                 <div class="softpic mws-ic @abbre"> </div>
-                <h3 class="tools-title">Emboss Eprimer3</h3>
-                <div class="form-group">
-                    <h2>
-                    </h2>
-                </div><br><br>
+                <h3 class="tools-title">Emboss Eprimer3</h3><br><br>
                 <div class="form-group-p">
                     <div class="form-group">
-                        <label for="mytaskname">任务编号：</label>
+                        <label>任务编号：</label>
                     </div>
                     <div class="form-group">
-                        <input id="mytaskname" type="text" class="form-control" name="taskname" placeholder="" value="">
+                        <input id="taskname" type="text" class="form-control" name="taskname" placeholder="" value="">
                     </div>
                 </div>
                 <br><br><br>
@@ -68,32 +64,6 @@
                             </div>
                             <div class="form-group-extra">
                                 <em><a href="/assets/files/eprimer3.txt" target='_blank'>示例文件</a></em><span class="must" style="margin-left: 10px">*</span>&nbsp;&nbsp;
-                            </div>
-                            <br><br>
-                            <div class="form-group-p">
-                                <div class="form-group">
-                                    <label>是否选择PCR引物(Pick PCR primers)：</label>
-                                </div>
-                                <div class="form-group">
-                                    <select name="primer">
-                                        <option value="Y" selected>yes</option>
-                                        <option value="N">no</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <br><br>
-                            <div class="form-group-p">
-                                <div class="form-group">
-                                    <label>选择参数(select task)：</label>
-                                </div>
-                                <div class="form-group">
-                                    <select name="task">
-                                        <option value="1:Pick PCR primers" selected="selected">选择pcr引物</option>
-                                        <option value="2:Pick forward primer only">设计正向引物</option>
-                                        <option value="3:Pick reverse primer only">设计反向引物</option>
-                                        <option value="4:No primers needed">不设计引物</option>
-                                    </select>
-                                </div>
                             </div>
                             <br><br>
                             <div class="form-group-p">
@@ -154,7 +124,7 @@
                         <div class="panel-body">
                             <div class="form-group-p">
                                 <div class="form-group">
-                                    <label for="format">返回结果数(Number of results to return):</label>
+                                    <label for="format">返回结果数(Number of results to return)：</label>
                                 </div>
                                 <div class="form-group">
                                     <input type="text" name="numreturn" id="numreturn" value="5" placeholder="数字" class="form-control input-sm">
@@ -207,7 +177,7 @@
                             </div>
                             <div class="form-group-p">
                                 <div class="form-group" style="height: 34px; width: 100%;">
-                                    <input type="text" name="forwardinput" id="forwardinput" placeholder="" class="form-control input-sm" >
+                                    <input type="text" name="forwardinput" id="forwardinput" placeholder="" class="form-control input-sm" style="width: 100%;">
                                 </div>
                             </div>
                             <br><br>
@@ -218,7 +188,7 @@
                             </div>
                             <div class="form-group-p">
                                 <div class="form-group" style="height: 34px; width: 100%;">
-                                    <input type="text" name="reverseinput" id="reverseinput" placeholder="" class="form-control input-sm" >
+                                    <input type="text" name="reverseinput" id="reverseinput" placeholder="" class="form-control input-sm" style="width: 100%;">
                                 </div>
                             </div>
                         </div>
@@ -590,7 +560,7 @@
                                 layer.close(index);
                                 var form1 = new FormData($("#PMR")[0]);
                                 $.ajax({
-                                    url: "/CloudPlatform/SoftTool/runEprimer",
+                                    url: "/CloudPlatform/SoftTool/runSoft?abbre=@abbre&sname=Emboss Eprimer3",
                                     type: "post",
                                     processData: false,
                                     contentType: false,

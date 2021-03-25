@@ -37,11 +37,10 @@ class RChartController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
     val data=TaxFunForm.bindFromRequest.get
     val id=request.session.get("userId").get
     val dutyDir=rservice.creatUserDir(id,data.taskname)
-    //在用户下创建任务文件夹和结果文件夹
     val file1=request.body.file("table1").get
     val tableFile=new File(dutyDir,file1.filename)
-    //矩阵文件读取写入任务文件下table.txt
-    file1.ref.copyTo(tableFile)
+    rservice.fileTrimMove(file1.ref, tableFile)
+//    file1.ref.copyTo(tableFile)
     val input=file1.filename
 
     //数据库加入duty（运行中）
@@ -89,14 +88,14 @@ class RChartController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
     val data=Merge2TForm.bindFromRequest.get
     val id=request.session.get("userId").get
     val dutyDir=rservice.creatUserDir(id,data.taskname)
-    //在用户下创建任务文件夹和结果文件夹
     val file1=request.body.file("table1").get
     val file2=request.body.file("table2").get
     val tableFile1=new File(dutyDir,file1.filename)
     val tableFile2=new File(dutyDir,file2.filename)
-    //矩阵文件读取写入任务文件下table.txt
-    file1.ref.copyTo(tableFile1)
-    file2.ref.copyTo(tableFile2)
+    rservice.fileTrimMove(file1.ref, tableFile1)
+    rservice.fileTrimMove(file2.ref, tableFile2)
+//    file1.ref.copyTo(tableFile1)
+//    file2.ref.copyTo(tableFile2)
     val input=file1.filename+"/"+file2.filename
 
     val param="合并参照列 (矩阵1 - 矩阵2) ：第" + data.b1 + "列 : 第" + data.b2 + "列/设置合并方式：" + data.ct +
@@ -152,7 +151,8 @@ class RChartController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rse
     val (files,input)=(1 to filenum).map{i=>
       val file=request.body.file("table"+i).get
       val tableFile=new File(dutyDir,file.filename)
-      file.ref.copyTo(tableFile)
+      rservice.fileTrimMove(file.ref, tableFile)
+//      file.ref.copyTo(tableFile)
       (tableFile.getAbsolutePath,file.filename)
     }.unzip
 

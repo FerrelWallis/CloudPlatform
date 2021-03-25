@@ -10,6 +10,7 @@ import play.api.data.Form
 import play.api.data.Forms._
 import play.api.libs.json.Json
 import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents, Headers, Result}
+import tools._
 import utils.{CompressUtil, ExecCommand, MyStringTool, Utils}
 
 import scala.concurrent.duration.Duration
@@ -34,20 +35,121 @@ class RClusterController @Inject()(cc: ControllerComponents, dutydao: dutyDao, r
 
 
   //PCA
-  case class PCA1Data(taskname:String,showname:String,showerro:String,txdata1:String,txdata2:String)
+  case class PCAData(taskname:String,showname:String,showerro:String,txdata1:String,txdata2:String, scale:String)
 
-  val PCA1Form: Form[PCA1Data] =Form(
+  val PCAForm: Form[PCAData] =Form(
     mapping (
       "taskname"->text,
       "showname"->text,
       "showerro"->text,
       "txdata1"->text,
-      "txdata2"->text
-    )(PCA1Data.apply)(PCA1Data.unapply)
+      "txdata2"->text,
+      "scale"->text
+    )(PCAData.apply)(PCAData.unapply)
   )
 
-  def doPCA(isgroup:Boolean,table:String,group:String,abbre:String)=Action(parse.multipartFormData){implicit request=>
-    val data=PCA1Form.bindFromRequest.get
+  def doPCA =Action(parse.multipartFormData){implicit request=>
+    val params = request.body.asFormUrlEncoded.map { case (key, value) => key -> value.mkString(";") }
+
+    val id=request.session.get("userId").get
+    val dutyDir=rservice.creatUserDir(id,params("taskname"))
+
+    val tableFile=new File(dutyDir,"table.txt")
+    val groupFile=new File(dutyDir,"group.txt")
+    val input=
+      if(params("tablenum")=="2") {
+        val file1=request.body.file("table1").get
+        rservice.fileTrimMove(file1.ref, tableFile)
+        if(params("isgroup") == "TRUE" && params("groupnum") == "2") file1.filename+"/"+ request.body.file("table2").get.filename
+        else file1.filename
+      } else{
+        FileUtils.writeStringToFile(tableFile, params("txdata1").trim)
+        if(params("isgroup") == "TRUE" && params("groupnum") == "2") request.body.file("table2").get.filename
+        else "无"
+      }
+
+    val (param,co)=
+      if(params("isgroup") == "TRUE")
+        ("是否归一化：" + params("scale") + "/是否显示样本名：" + params("showname") +
+          "/是否分组绘图：" + params("isgroup"), "#CD0000:#3A89CC:#769C30:#D99536:#7B0078:#BFBC3B:" +
+          "#E2609F:#00688B:#C10077:#CAAA76:#EEEE00:#458B00:#8B4513:#008B8B:#6E8B3D:#8B7D6B:#7FFF00:" +
+          "#CDBA96:#ADFF2F")
+      else ("是否归一化：" +  params("scale") + "/是否显示样本名：" + params("showname") +
+        "/是否分组绘图：" + params("isgroup"), "#48FF75")
+
+    val (xdata,ydata,sabbrename,sname) = ("PC1","PC2","PCA","主成分分析（PCA）")
+
+    //是否有group文件
+    val groupdata=
+      if(params("isgroup") == "TRUE"){
+        if(!request.body.file("table2").isEmpty){
+          val file = request.body.file("table2").get
+          val groupdatas = FileUtils.readFileToString(file.ref.file).trim
+          FileUtils.writeStringToFile(groupFile, "#SampleID\tGroup\n"+groupdatas)
+        }else{
+          FileUtils.writeStringToFile(groupFile, "#SampleID\tGroup\n"+ params("txdata2").trim)
+        }
+        " -g "+groupFile.getAbsolutePath
+      }else ""
+
+    val name=if(params("showname").equals("TRUE") && groupFile.exists()){
+      val f=FileUtils.readLines(groupFile).asScala
+      val n=f.map{_.split('\t').last}.distinct.drop(1).mkString(",")
+      " -b " + n
+    }else if(params("showname").equals("TRUE") && !groupFile.exists()){
+      " -sl TRUE"
+    } else ""
+
+    val elements= Json.obj("xdata"->xdata,"ydata"->ydata,"width"->"15","length"->"12",
+      "showname"->params("showname"), "showerro"->params("showerro"),"color"->co,"resolution"->"300",
+      "xts"->"15","yts"->"15","xls"->"17","yls"->"17", "lts"->"14","lms"->"15","lmtext"->"",
+      "ms"->"17","mstext"->"","c"->"FALSE","big"->"no", "xdamin"->"","xdamax"->"","ydamin"->"",
+      "ydamax"->"").toString()
+
+    //数据库加入duty（运行中）
+    val start=dutyController.insertDuty(params("taskname"),id,sabbrename,sname,input,param,elements)
+
+    Future{
+      val command1 = "Rscript " + Utils.path + "R/pca/pca_data.R" + " -i " + tableFile.getAbsolutePath +
+        " -o " + dutyDir + "/out -sca " + params("scale")
+      val command2 = "Rscript " + Utils.path + "R/pca/pca_plot.R -i " + dutyDir+"/out/pca.x.xls" +
+        " -si " + dutyDir + "/out/pca.sdev.xls" + groupdata + " -o " +dutyDir+"/out" + name +
+        " -if pdf -ss " + params("showerro") + " -sl " + params("showname")
+
+      FileUtils.writeStringToFile(new File(s"$dutyDir/temp/run.sh"),command1+" && \n"+command2)
+      val execCommand = new ExecCommand
+      execCommand.exect(s"sh $dutyDir/temp/run.sh",dutyDir+"/temp")
+
+      if (execCommand.isSuccess) {
+        Utils.pdf2Png(dutyDir+"/out/pca.pdf",dutyDir+"/out/pca.png")
+        val finish=dutyController.updateFini(id,params("taskname"))
+        Utils.pdf2Png(dutyDir+"/out/pca.pdf",dutyDir+"/out/pca.tiff")
+        FileUtils.writeStringToFile(new File(dutyDir,"log.txt"),"Start Time:"+start+"\n\nFinish Time:"+finish+"\n\n运行成功！")
+        rservice.creatZip(dutyDir)
+      } else {
+        dutydao.updateFailed(id,params("taskname"))
+        FileUtils.writeStringToFile(new File(dutyDir,"log.txt"),"Start Time:"+start+"\n\n错误信息：\n"+execCommand.getErrStr+"\n\n"+execCommand.getErrStr+"\n\n运行失败！")
+      }
+    }
+    Ok(Json.obj("valid" -> "运行中！"))
+  }
+
+  //PCOA
+  case class PCOAData(taskname:String,showname:String,showerro:String,txdata1:String,txdata2:String, m:String)
+
+  val PCOAForm: Form[PCOAData] =Form(
+    mapping (
+      "taskname"->text,
+      "showname"->text,
+      "showerro"->text,
+      "txdata1"->text,
+      "txdata2"->text,
+      "m"->text
+    )(PCOAData.apply)(PCOAData.unapply)
+  )
+
+  def doPCOA(isgroup:Boolean,table:String,group:String)=Action(parse.multipartFormData){implicit request=>
+    val data=PCOAForm.bindFromRequest.get
     val id=request.session.get("userId").get
     val dutyDir=rservice.creatUserDir(id,data.taskname)
     //在用户下创建任务文件夹和结果文件夹
@@ -57,34 +159,35 @@ class RClusterController @Inject()(cc: ControllerComponents, dutydao: dutyDao, r
       if(table=="2") {
         val file1=request.body.file("table1").get
         //矩阵文件读取写入任务文件下table.txt
-        file1.ref.moveTo(tableFile)
+        rservice.fileTrimMove(file1.ref, tableFile)
+//        file1.ref.moveTo(tableFile)
         if(isgroup && group=="2") file1.filename+"/"+ request.body.file("table2").get.filename
         else file1.filename
       } else{
-        FileUtils.writeStringToFile(tableFile, data.txdata1)
+        FileUtils.writeStringToFile(tableFile, data.txdata1.trim)
         if(isgroup && group=="2") request.body.file("table2").get.filename
         else "无"
       }
 
     val (param,co)=
-      if(isgroup) ("是否显示样本名：" + data.showname + "/是否分组绘图：" +
+      if(isgroup) ("计算距离方法：" + data.m + "/是否显示样本名：" + data.showname + "/是否分组绘图：" +
         isgroup,
         "#CD0000:#3A89CC:#769C30:#D99536:#7B0078:#BFBC3B:#E2609F:#00688B:#C10077:#CAAA76" +
           ":#EEEE00:#458B00:#8B4513:#008B8B:#6E8B3D:#8B7D6B:#7FFF00:#CDBA96:#ADFF2F")
-      else ("是否显示样本名：" + data.showname + "/是否分组绘图：" + isgroup,"#48FF75")
+      else ("计算距离方法：" + data.m + "/是否显示样本名：" + data.showname + "/是否分组绘图：" + isgroup,"#48FF75")
 
-    val (xdata,ydata,sabbrename,sname)=if(abbre=="PCA") ("PC1","PC2","PCA","主成分分析（PCA）") else ("PCOA1","PCOA2","PCO","PCoA")
+    val (xdata,ydata,sabbrename,sname)=("PCOA1","PCOA2","PCO","PCoA")
 
     //是否有group文件
     val groupdata=
       if(isgroup){
         if(!request.body.file("table2").isEmpty){
           val file = request.body.file("table2").get
-          val groupdatas = FileUtils.readFileToString(file.ref.file)
+          val groupdatas = FileUtils.readFileToString(file.ref.file).trim
           FileUtils.writeStringToFile(groupFile, "#SampleID\tGroup\n"+groupdatas)
           //        request.body.file("table2").get.ref.moveTo(groupFile)
         }else{
-          FileUtils.writeStringToFile(groupFile, "#SampleID\tGroup\n"+data.txdata2)
+          FileUtils.writeStringToFile(groupFile, "#SampleID\tGroup\n"+data.txdata2.trim)
         }
         " -g "+groupFile.getAbsolutePath
       }else ""
@@ -107,30 +210,20 @@ class RClusterController @Inject()(cc: ControllerComponents, dutydao: dutyDao, r
     val start=dutyController.insertDuty(data.taskname,id,sabbrename,sname,input,param,elements)
 
     Future{
-      val datascript=if(abbre=="PCA") "R/pca/pca_data.R" else "R/pcoa/pcoa-data.R"
-      val command1 = "Rscript " + Utils.path + datascript + " -i " + tableFile.getAbsolutePath +
-        " -o " + dutyDir + "/out" + " -sca TRUE"
+      val command =
+        "biom convert -i " + tableFile.getAbsolutePath + " -o " + dutyDir + "/temp.biom --table-type=\"OTU table\" --to-json && \n" +
+          "beta_diversity.py -i " +  dutyDir + "/temp.biom -o " + dutyDir + "/out -m " + data.m + " && \n" +
+          "Rscript " + Utils.path + "R/pcoa/pcoa-data.R -i " + dutyDir + "/out/" + data.m + "_temp.txt -o " + dutyDir + "/out && \n" +
+          "Rscript " + Utils.path + "R/pcoa/pcoa-plot.R -i " + dutyDir+"/out/PCOA.x.xls" + " -si " + dutyDir +
+          "/out/PCOA.sdev.xls" + groupdata + " -o " +dutyDir+"/out" + name + " -if pdf -ss " + data.showerro +
+          " -sl " + data.showname
 
-      println(command1)
+      println(command)
+      FileUtils.writeStringToFile(new File(s"$dutyDir/temp/run.sh"),command)
+      val execCommand = new ExecCommand
+      execCommand.exect(s"sh $dutyDir/temp/run.sh",dutyDir+"/temp")
 
-      val execCommand1 = new ExecCommand
-      //exec需要指定结果输出路径的时候，不指定默认本地任务路径
-      execCommand1.exect(command1,dutyDir+"/temp")
-
-      val plotscript=
-        if(abbre=="PCA") "R/pca/pca_plot.R -i " + dutyDir+"/out/pca.x.xls" + " -si " + dutyDir + "/out/pca.sdev.xls"
-        else "R/pcoa/pcoa-plot.R -i " + dutyDir+"/out/PCOA.x.xls" + " -si " + dutyDir + "/out/PCOA.sdev.xls"
-
-      val command2 = "Rscript " + Utils.path + plotscript + groupdata + " -o " +dutyDir+"/out" + name +
-        " -if pdf -ss " + data.showerro + " -sl " + data.showname
-      println(command2)
-
-      val execCommand2 = new ExecCommand
-      execCommand2.exect(command2,dutyDir+"/temp")
-
-      FileUtils.writeStringToFile(new File(s"$dutyDir/temp/run.sh"),command1+" && \n"+command2)
-
-      if (execCommand1.isSuccess && execCommand2.isSuccess) {
+      if (execCommand.isSuccess) {
         Utils.pdf2Png(dutyDir+"/out/pca.pdf",dutyDir+"/out/pca.png")
         val finish=dutyController.updateFini(id,data.taskname)
         Utils.pdf2Png(dutyDir+"/out/pca.pdf",dutyDir+"/out/pca.tiff")
@@ -138,12 +231,14 @@ class RClusterController @Inject()(cc: ControllerComponents, dutydao: dutyDao, r
         rservice.creatZip(dutyDir)
       } else {
         dutydao.updateFailed(id,data.taskname)
-        FileUtils.writeStringToFile(new File(dutyDir,"log.txt"),"Start Time:"+start+"\n\n错误信息：\n"+execCommand1.getErrStr+"\n\n"+execCommand2.getErrStr+"\n\n运行失败！")
+        FileUtils.writeStringToFile(new File(dutyDir,"log.txt"),"Start Time:"+start+"\n\n错误信息：\n"+execCommand.getErrStr+"\n\n"+execCommand.getErrStr+"\n\n运行失败！")
       }
     }
     Ok(Json.obj("valid" -> "运行中！"))
   }
 
+
+  //pca & pcoa
   def readPCAData(taskname:String,abbre:String): Action[AnyContent] =Action{ implicit request=>
     val id=request.session.get("userId").get
     val path=Utils.path+"/users/"+id+"/"+taskname
@@ -157,7 +252,7 @@ class RClusterController @Inject()(cc: ControllerComponents, dutydao: dutyDao, r
     val group=
       if(new File(path+"/group.txt").exists()) {
         val f=FileUtils.readLines(new File(path+"/group.txt")).asScala
-        val g=f.map{_.split('\t').last}.distinct.drop(1)
+        val g=f.map{_.split('\t').last}.distinct.drop(1).sorted
         //检查group的数量与矩阵head是否一样，小于则+nogroup，相等则不变
         if(f.map{_.split('\t').head}.drop(1).length<gnum) g.append("nogroup")
         g.toArray
@@ -218,9 +313,6 @@ class RClusterController @Inject()(cc: ControllerComponents, dutydao: dutyDao, r
     val id=request.session.get("userId").get
     val dutyDir=Utils.path+"users/"+id+"/"+taskname
     val groupFile=new File(dutyDir,"group.txt")
-
-    //    val ele=jsonToMap(Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf).head.elements)
-    //    val groupdata=ele("groupdata")
     val groupdata=if(groupFile.exists()) " -g " + groupFile.getAbsolutePath else ""
 
     val elements= Json.obj("xdata"->data.xdata,"ydata"->data.ydata,"width"->"15","length"->"12",
@@ -229,21 +321,11 @@ class RClusterController @Inject()(cc: ControllerComponents, dutydao: dutyDao, r
       "lmtext"->data.lmtext,"ms"->data.ms,"mstext"->data.mstext,"c"->data.c,"big"->data2.big,
       "xdamin"->data2.xdamin,"xdamax"->data2.xdamax,"ydamin"->data2.ydamin,
       "ydamax"->data2.ydamax).toString()
-
     Await.result(dutydao.updateElements(id,taskname,elements),Duration.Inf)
 
-    //    val log=FileUtils.readFileToString(new File(dutyDir+"/log.txt"))
     val c=
       if(!groupFile.exists()) " -oc \""+data.color+"\""
       else " -cs \""+ data.color+"\""
-
-    //    val name=if(data.showname.equals("TRUE") && groupFile.exists()){
-    //      val f=FileUtils.readLines(groupFile).asScala
-    //      val n=f.map{_.split('\t').last}.distinct.drop(1).mkString(",")
-    //      " -b " + n
-    //    }else if(data.showname.equals("TRUE") && !groupFile.exists()){
-    //      " -sl TRUE"
-    //    } else ""
 
     val name=if(data.showname.equals("TRUE") && groupFile.exists()){
       val f=FileUtils.readLines(groupFile).asScala
@@ -258,8 +340,6 @@ class RClusterController @Inject()(cc: ControllerComponents, dutydao: dutyDao, r
     else if(data2.big=="x")
       " -da x:"+data2.xdamin+","+data2.xdamax
     else " -da y:"+data2.ydamin+","+data2.ydamax
-
-    println(data.ydata)
 
     val lms=if(!data.lmtext.equals("")) " -lms sans:bold.italic:" + data.lms + ":\"" + data.lmtext+"\"" else ""
     val ms=if(!data.mstext.equals("")) " -ms sans:plain:" + data.ms + ":\"" + data.mstext+"\"" else ""
@@ -290,9 +370,7 @@ class RClusterController @Inject()(cc: ControllerComponents, dutydao: dutyDao, r
       Utils.pdf2Png(dutyDir+"/out/pca.pdf",dutyDir+"/out/pca.tiff") //替换图片
       rservice.creatZip(dutyDir) //替换压缩文件包
       val pics=dutyDir+"/out/pca.png"
-      val pdfs=dutyDir+"/out/pca.pdf"
-      val tiffs=dutyDir+"/out/pca.tiff"
-      Ok(Json.obj("valid"->"true","pics"->pics,"downpics"->pdfs,"downtiffs"->tiffs))
+      Ok(Json.obj("valid"->"true","pics"->pics))
     } else {
       Ok(Json.obj("valid"->"false"))
     }
@@ -338,8 +416,10 @@ class RClusterController @Inject()(cc: ControllerComponents, dutydao: dutyDao, r
         "xls"->"18","yls"->"18","lts"->"15","lms"->"19","ms"->"12","mstext"->"").toString()
 
     val start=dutyController.insertDuty(data.taskname,id,"CCA","CCA/RDA",input,param,elements)
-    file1.ref.moveTo(otuFile)
-    file2.ref.moveTo(enviFile)
+    rservice.fileTrimMove(file1.ref, otuFile)
+    rservice.fileTrimMove(file2.ref, enviFile)
+//    file1.ref.moveTo(otuFile)
+//    file2.ref.moveTo(enviFile)
 
     Future{
       val command1 = "Rscript "+Utils.path+"R/cca/rda_cca_data.R -pi "+ otuFile.getAbsolutePath +
@@ -350,7 +430,8 @@ class RClusterController @Inject()(cc: ControllerComponents, dutydao: dutyDao, r
       val group=
         if(isgroup){
           val file3 = request.body.file("table3").get
-          file3.ref.moveTo(groupFile)
+          rservice.fileTrimMove(file3.ref, groupFile)
+//          file3.ref.moveTo(groupFile)
           " -g "+groupFile.getAbsolutePath
         }else ""
 
@@ -523,12 +604,12 @@ class RClusterController @Inject()(cc: ControllerComponents, dutydao: dutyDao, r
 
 
   //nmds
-  case class nmdsData(taskname:String,dim:String)
+  case class nmdsData(taskname:String, m:String)
 
   val nmdsForm: Form[nmdsData] =Form(
     mapping (
       "taskname"->text,
-      "dim"->text
+      "m"->text
     )(nmdsData.apply)(nmdsData.unapply)
   )
 
@@ -540,20 +621,22 @@ class RClusterController @Inject()(cc: ControllerComponents, dutydao: dutyDao, r
     val tableFile=new File(dutyDir,"table.txt")
     val groupFile=new File(dutyDir,"group.txt")
     val file1 = request.body.file("table1").get
-    file1.ref.moveTo(tableFile)
+    rservice.fileTrimMove(file1.ref, tableFile)
+//    file1.ref.moveTo(tableFile)
     val file2 = request.body.file("table2")
     val (group,filepara)=if(isgroup) {
-      file2.get.ref.moveTo(groupFile)
-      (" -g " + groupFile.getAbsolutePath,file1.filename+"/"+file2.get.filename)
+      rservice.fileTrimMove(file2.get.ref, groupFile)
+//      file2.get.ref.moveTo(groupFile)
+      (" -g " + groupFile.getAbsolutePath,file1.filename + "/" + file2.get.filename)
     } else ("",file1.filename)
 
-    val param = "NMDS空间维度：" + data.dim
+    val param = "计算距离方法：" + data.m
     val co = if(isgroup)
       "#CD0000:#3A89CC:#769C30:#D99536:#7B0078:#BFBC3B:#E2609F:#00688B:#C10077:#CAAA76:#EEEE00:#458B00:#8B4513:#008B8B:#6E8B3D:#8B7D6B:#7FFF00:#CDBA96:#ADFF2F"
       else "#48FF75"
 
     val elements= Json.obj("width"->"15","length"->"12","showname"->"FALSE",
-      "showerro"->"FALSE","color"->co,"resolution"->"300","xts"->"15","yts"->"15","xls"->"17","yls"->"17",
+      "showerro"->"TRUE","color"->co,"resolution"->"300","xts"->"15","yts"->"15","xls"->"17","yls"->"17",
       "lts"->"14","lms"->"15","lmtext"->"","ms"->"17","mstext"->"","c"->"FALSE","big"->"no",
       "xdamin"->"","xdamax"->"","ydamin"->"","ydamax"->"").toString()
 
@@ -561,9 +644,12 @@ class RClusterController @Inject()(cc: ControllerComponents, dutydao: dutyDao, r
     val start=dutyController.insertDuty(data.taskname,id,"NMD","NMDS",filepara,param,elements)
 
     Future{
-      val command = "Rscript " + Utils.path + "R/nmds/nmds.R -i " + tableFile.getAbsolutePath +
-        " -o " + dutyDir + "/out -dim " + data.dim + " && \n Rscript " + Utils.path + "R/pcoa/pcoa-plot.R -i " + dutyDir + "/out/nmds_sites.xls" + group +
-        " -o " +dutyDir+"/out" + " -if pdf -in nmds -pxy MDS1:MDS2"
+      val command =
+        "biom convert -i " + tableFile.getAbsolutePath + " -o " + dutyDir + "/temp.biom --table-type=\"OTU table\" --to-json && \n" +
+          "beta_diversity.py -i " +  dutyDir + "/temp.biom -o " + dutyDir + "/out -m " + data.m + " && \n" +
+          "Rscript " + Utils.path + "R/nmds/nmds.R -i " + dutyDir + "/out/" + data.m + "_temp.txt -o " + dutyDir + "/out && \n" +
+          "Rscript " + Utils.path + "R/pcoa/pcoa-plot.R -i " + dutyDir + "/out/nmds_sites.xls" + group +
+          " -o " +dutyDir+"/out" + " -if pdf -in nmds -pxy MDS1:MDS2"
       println(command)
 
       FileUtils.writeStringToFile(new File(s"$dutyDir/temp/run.sh"),command)
@@ -702,5 +788,304 @@ class RClusterController @Inject()(cc: ControllerComponents, dutydao: dutyDao, r
 
 
 
+  //3D PCA
+  def do3DPCA(isgroup:Boolean)=Action(parse.multipartFormData) { implicit request =>
+    val data = TaxFunForm.bindFromRequest.get
+    val id=request.session.get("userId").get
+    val dutyDir=rservice.creatUserDir(id,data.taskname)
+    //在用户下创建任务文件夹和结果文件夹
+    val tableFile=new File(dutyDir,"table.txt")
+    val groupFile=new File(dutyDir,"group.txt")
+    val file1 = request.body.file("table1").get
+    rservice.fileTrimMove(file1.ref, tableFile)
+//    file1.ref.moveTo(tableFile)
+    val file2 = request.body.file("table2")
+    val (group,filepara)=if(isgroup) {
+      rservice.fileTrimMove(file2.get.ref, groupFile)
+//      file2.get.ref.moveTo(groupFile)
+      (" -g " + groupFile.getAbsolutePath,file1.filename+"/"+file2.get.filename)
+    } else ("",file1.filename)
+
+    val elements=Json.obj("color"->"#CD0000:#3A89CC:#769C30:#D99536:#7B0078:#BFBC3B:#E2609F:#00688B:#C10077:#CAAA76:#EEEE00:#458B00:#8B4513:#008B8B:#6E8B3D:#8B7D6B:#7FFF00:#CDBA96:#ADFF2F",
+      "ac"->"black", "gc"->"lightgrey", "xdata"->"PC1", "ydata"->"PC2", "zdata"->"PC3", "ps"->"2", "an"->"30",
+      "as"->"1.1", "ls"->"1.5", "les"->"1.2", "lec"->"1", "mt"->"", "sy"->"1", "xlmin"->"", "xlmax"->"",
+      "ylmin"->"","ylmax"->"", "zlmin"->"", "zlmax"->"", "width"->"12", "height"->"12", "lep" -> "topleft",
+      "llt"->"FALSE", "lls"->"0.7", "llp"->"3").toString()
+
+    //数据库加入duty（运行中）
+    val start=dutyController.insertDuty(data.taskname,id,"TPC","三维PCA",filepara,"/",elements)
+    //矩阵文件读取写入任务文件下table.txt
+
+    Future{
+      val command = "Rscript " + Utils.path + "R/pca/pca_data.R -i " + tableFile.getAbsolutePath +
+        " -o " + dutyDir + "/out" + " -sca TRUE && \n Rscript " + Utils.path + "R/3dpca/pca_3d_plot.R -pc " + dutyDir+"/out/pca.x.xls -sd " +
+        dutyDir + "/out/pca.sdev.xls" + group + " -o " + dutyDir + "/out"
+
+      FileUtils.writeStringToFile(new File(s"$dutyDir/temp/run.sh"), command)
+      val execCommand = new ExecCommand
+      execCommand.exect(s"sh $dutyDir/temp/run.sh",dutyDir+"/temp")
+
+      if (execCommand.isSuccess) {
+        Utils.pdf2Png(dutyDir+"/out/pca_3d.pdf",dutyDir+"/out/pca_3d.png")
+        val finish=dutyController.updateFini(id,data.taskname)
+        Utils.pdf2Png(dutyDir+"/out/pca_3d.pdf",dutyDir+"/out/pca_3d.tiff")
+        FileUtils.writeStringToFile(new File(dutyDir,"log.txt"),"Start Time:"+start+"\n\nFinish Time:"+finish+"\n\n运行成功！")
+        rservice.creatZip(dutyDir)
+      } else {
+        dutydao.updateFailed(id,data.taskname)
+        FileUtils.writeStringToFile(new File(dutyDir,"log.txt"),"Start Time:"+start+"\n\n错误信息：\n"+execCommand.getErrStr+"\n\n运行失败！")
+      }
+    }
+    Ok(Json.obj("valid" -> "运行中！"))
+  }
+
+  def read3DPCAData(taskname:String): Action[AnyContent] =Action{ implicit request=>
+    val id=request.session.get("userId").get
+    val path=Utils.path+"/users/"+id+"/"+taskname
+
+    val elements=rservice.jsonToMap(Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf).head.elements)
+    val color=elements("color").split(":")
+
+    val head=FileUtils.readFileToString(new File(path+"/table.txt")).trim.split("\n")
+    val gnum=head(0).trim.split("\t").drop(1).length
+    //获取分组
+    val group=
+      if(new File(path+"/group.txt").exists()) {
+        val f=FileUtils.readLines(new File(path+"/group.txt")).asScala
+        f.map{_.split('\t').last}.distinct.toArray
+      }else Array("nogroup")
+
+    //获取x,y轴数据
+    val col=FileUtils.readLines(new File(path+"/out/pca.x.xls")).get(0).split("\"").filter(_.trim!="").map(_.trim)
+    //获取图片
+    val pics=rservice.getReDrawPics(path)
+    Ok(Json.obj("group"->group,"cols"->col,"pics"->pics,"elements"->elements,"color"->color))
+  }
+
+  case class Re3DPCAData(xdata:String,ydata:String,zdata:String,ac:String,gc:String,color:String,
+                         ps:String, an:String,as:String,ls:String,les:String, lec:String,mt:String,
+                         sy:String,xlmin:String,xlmax:String,ylmin:String, ylmax:String,zlmin:String,
+                         zlmax:String)
+
+  val Re3DPCAForm: Form[Re3DPCAData] =Form(
+    mapping (
+      "xdata"->text,
+      "ydata"->text,
+      "zdata"->text,
+      "ac"->text,
+      "gc"->text,
+      "color"->text,
+      "ps"->text,
+      "an"->text,
+      "as"->text,
+      "ls"->text,
+      "les"->text,
+      "lec"->text,
+      "mt"->text,
+      "sy"->text,
+      "xlmin"->text,
+      "xlmax"->text,
+      "ylmin"->text,
+      "ylmax"->text,
+      "zlmin"->text,
+      "zlmax"->text
+    )(Re3DPCAData.apply)(Re3DPCAData.unapply)
+  )
+
+  case class Re3DPCAData2(width:String,height:String, lep:String, llt:String, lls:String, llp:String)
+  val Re3DPCAForm2: Form[Re3DPCAData2] =Form(
+    mapping (
+      "width"->text,
+      "height"->text,
+      "lep"->text,
+      "llt"->text,
+      "lls"->text,
+      "llp"->text
+    )(Re3DPCAData2.apply)(Re3DPCAData2.unapply)
+  )
+
+  def redraw3DPCA(taskname:String)=Action(parse.multipartFormData) { implicit request =>
+    val data=Re3DPCAForm.bindFromRequest.get
+    val data2=Re3DPCAForm2.bindFromRequest.get
+    val id=request.session.get("userId").get
+    val dutyDir=Utils.path+"users/"+id+"/"+taskname
+    val groupFile=new File(dutyDir,"group.txt")
+
+    val group=if(groupFile.exists()) " -g " + groupFile.getAbsolutePath else ""
+
+    val elements=Json.obj("color"->data.color, "ac"->data.ac, "gc"->data.gc, "xdata"->data.xdata,
+      "ydata"->data.ydata, "zdata"->data.zdata, "ps"->data.ps, "an"->data.an, "as"->data.as, "ls"->data.ls,
+      "les"->data.les, "lec"->data.lec, "mt"->data.mt, "sy"->data.sy, "xlmin"->data.xlmin, "xlmax"->data.xlmax,
+      "ylmin"->data.ylmin,"ylmax"->data.ylmax, "zlmin"->data.zlmin, "zlmax"->data.zlmax, "width"->data2.width,
+      "height"->data2.height, "lep" -> data2.lep, "llt"->data2.llt, "lls"->data2.lls, "llp"->data2.llp).toString()
+
+    Await.result(dutydao.updateElements(id,taskname,elements),Duration.Inf)
+
+    val xlim = if(data.xlmin == "") "" else " -xl " + data.xlmin + ":" + data.xlmax
+    val ylim = if(data.ylmin == "") "" else " -yl " + data.ylmin + ":" + data.ylmax
+    val zlim = if(data.zlmin == "") "" else " -zl " + data.zlmin + ":" + data.zlmax
+
+    val command = "Rscript " + Utils.path + "R/3dpca/pca_3d_plot.R -pc " + dutyDir+"/out/pca.x.xls -sd " +
+      dutyDir + "/out/pca.sdev.xls" + group + " -o " + dutyDir + "/out -cs \"" + data.color + "\" -ac \"" + data.ac +
+      "\" -gc \"" + data.gc + "\" -xyz " + data.xdata + ":" + data.ydata + ":" + data.zdata + " -ps " + data.ps +
+      " -an " + data.an + " -as " + data.as + " -ls " + data.ls + " -les " + data.les + " -lec " + data.lec +
+      " -mt \"" + data.mt + "\" -sy " + data.sy + xlim + ylim + zlim + " -is " + data2.height + ":" + data2.width +
+      " -lep " + data2.lep + " -llt " + data2.llt + " -lls " + data2.lls + " -llp " + data2.llp
+
+    FileUtils.writeStringToFile(new File(s"$dutyDir/temp/run.sh"),command)
+    val execCommand = new ExecCommand
+    execCommand.exect(s"sh $dutyDir/temp/run.sh",dutyDir+"/temp")
+
+    println(command)
+
+    if (execCommand.isSuccess) {
+      Utils.pdf2Png(dutyDir+"/out/pca_3d.pdf",dutyDir+"/out/pca_3d.png") //替换图片
+      Utils.pdf2Png(dutyDir+"/out/pca_3d.pdf",dutyDir+"/out/pca_3d.tiff") //替换图片
+      rservice.creatZip(dutyDir) //替换压缩文件包
+      val pics=dutyDir+"/out/pca_3d.png"
+      Ok(Json.obj("valid"->"true","pics"->pics))
+    } else {
+      Ok(Json.obj("valid"->"false"))
+    }
+
+  }
+
+
+
+  //random forest
+  def doRF=Action(parse.multipartFormData) { implicit request =>
+    val data = TaxFunForm.bindFromRequest.get
+    val id=request.session.get("userId").get
+    val dutyDir=rservice.creatUserDir(id,data.taskname)
+    //在用户下创建任务文件夹和结果文件夹
+    val tableFile=new File(dutyDir,"table.txt")
+    val groupFile=new File(dutyDir,"group.txt")
+    val file1 = request.body.file("table1").get
+    rservice.fileTrimMove(file1.ref, tableFile)
+//    file1.ref.moveTo(tableFile)
+    val file2 = request.body.file("table2").get
+    val filepara = file1.filename+"/"+file2.filename
+    rservice.fileTrimMove(file2.ref, groupFile)
+//    file2.ref.moveTo(groupFile)
+
+    val elements=Json.obj("td"->"15", "color"->"#E41A1C:#9B445D:#526E9F:#3C8A9B:#469F6C:#54A453:#747B78:#94539E:#BD6066:#E97422:#FF990A:#FFCF20:#FAF632:#D4AE2D:#AF6729:#BF6357",
+      "dl"->"20", "xts"->"12", "yts"->"12", "xls"->"18", "yls"->"18", "ms"->"22",
+      "xtext"->"Metabolite", "ytext"->"VarImp", "mstext"->"", "dpi"->"300",
+      "width"->"15", "height"->"15").toString()
+
+    val start=dutyController.insertDuty(data.taskname,id,"RF","随机森林",filepara,"/",elements)
+
+    Future{
+      val command = "Rscript " + Utils.path + "R/randomForest/random.R -i " + tableFile.getAbsolutePath +
+        " -g " + groupFile.getAbsolutePath + " -o " + dutyDir + "/out" + " && \n" +
+        "Rscript " + Utils.path + "R/randomForest/random_plot.R -i " + dutyDir + "/out/VarImp.xls" +
+        " -o " + dutyDir + "/out"
+
+      println(command)
+
+      FileUtils.writeStringToFile(new File(s"$dutyDir/temp/run.sh"), command)
+      val execCommand = new ExecCommand
+      execCommand.exect(s"sh $dutyDir/temp/run.sh",dutyDir+"/temp")
+
+      if (execCommand.isSuccess) {
+        Utils.pdf2Png(dutyDir+"/out/randomForest.pdf",dutyDir+"/out/randomForest.png")
+        val finish=dutyController.updateFini(id,data.taskname)
+        Utils.pdf2Png(dutyDir+"/out/randomForest.pdf",dutyDir+"/out/randomForest.tiff")
+        FileUtils.writeStringToFile(new File(dutyDir,"log.txt"),"Start Time:"+start+"\n\nFinish Time:"+finish+"\n\n运行成功！")
+        rservice.creatZip(dutyDir)
+      } else {
+        dutydao.updateFailed(id,data.taskname)
+        FileUtils.writeStringToFile(new File(dutyDir,"log.txt"),"Start Time:"+start+"\n\n错误信息：\n"+execCommand.getErrStr+"\n\n运行失败！")
+      }
+    }
+    Ok(Json.obj("valid" -> "运行中！"))
+  }
+
+  def readRFData(taskname:String): Action[AnyContent] =Action{ implicit request=>
+    val id=request.session.get("userId").get
+    val path=Utils.path+"/users/"+id+"/"+taskname
+
+    val elements=rservice.jsonToMap(Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf).head.elements)
+    val color=elements("color").split(":")
+
+    val file=FileUtils.readLines(new File(path + "/out/VarImp.xls")).asScala.drop(1)
+    val gnum = if(elements("td").toInt > file.length) file.length else elements("td").toInt
+    val group = file.take(gnum).map{_.split('\t').head}.toArray.reverse
+
+    //获取图片
+    val pics=rservice.getReDrawPics(path)
+    Ok(Json.obj("group"->group,"pics"->pics,"elements"->elements,"color"->color))
+  }
+
+  case class ReRFData(td:String,dl:String,dpi:String,width:String,height:String,color:String,
+                      xts:String, xls:String,yts:String,yls:String,ms:String, xtext:String,
+                      ytext:String,mstext:String)
+
+  val ReRFForm: Form[ReRFData] =Form(
+    mapping (
+      "td"->text,
+      "dl"->text,
+      "dpi"->text,
+      "width"->text,
+      "height"->text,
+      "color"->text,
+      "xts"->text,
+      "xls"->text,
+      "yts"->text,
+      "yls"->text,
+      "ms"->text,
+      "xtext"->text,
+      "ytext"->text,
+      "mstext"->text
+    )(ReRFData.apply)(ReRFData.unapply)
+  )
+
+  def redrawRF(taskname:String)=Action(parse.multipartFormData) { implicit request =>
+    val data=ReRFForm.bindFromRequest.get
+    val id=request.session.get("userId").get
+    val dutyDir=Utils.path+"users/"+id+"/"+taskname
+    val tableFile=new File(dutyDir + "/out","VarImp.xls")
+
+    val color = data.color + ":#E41A1C:#9B445D:#526E9F:#3C8A9B:#469F6C:#54A453:#747B78:#94539E:#BD6066:#E97422:#FF990A:#FFCF20:#FAF632:#D4AE2D:#AF6729:#BF6357"
+
+    val elements=Json.obj("td"->data.td, "color"->color, "dl"->data.dl, "xts"->data.xts,
+      "yts"->data.yts, "xls"->data.xls, "yls"->data.yls, "ms"->data.ms, "xtext"->data.xtext,
+      "ytext"->data.ytext, "mstext"->data.mstext, "dpi"->data.dpi, "width"->data.width,
+      "height"->data.height).toString()
+
+    Await.result(dutydao.updateElements(id,taskname,elements),Duration.Inf)
+
+    val mstext = if(data.mstext == "") " " else data.mstext
+
+    val command = "Rscript " + Utils.path + "R/randomForest/random_plot.R -i " + dutyDir + "/out/VarImp.xls" +
+      " -o " + dutyDir + "/out -td " + data.td + " -dl " + data.dl + " -cs \"" + color +
+      "\" -xts sans:bold.italic:" + data.xts + " -yts sans:bold.italic:" + data.yts +
+      " -xls \"sans:bold.italic:" + data.xls + ":" + data.xtext + "\" -yls \"sans:bold.italic:" +
+      data.yls + ":" + data.ytext + "\" -ms \"sans:bold.italic:" + data.ms + ":" + mstext +
+      "\" -dpi " + data.dpi + " -is " + data.width + ":" + data.height
+
+    FileUtils.writeStringToFile(new File(s"$dutyDir/temp/run.sh"),command)
+    val execCommand = new ExecCommand
+    execCommand.exect(s"sh $dutyDir/temp/run.sh",dutyDir+"/temp")
+
+    println(command)
+
+    if (execCommand.isSuccess) {
+      Utils.pdf2Png(dutyDir+"/out/randomForest.pdf",dutyDir+"/out/randomForest.png") //替换图片
+      Utils.pdf2Png(dutyDir+"/out/randomForest.pdf",dutyDir+"/out/randomForest.tiff") //替换图片
+      rservice.creatZip(dutyDir) //替换压缩文件包
+      val pics=dutyDir+"/out/randomForest.png"
+
+      val file=FileUtils.readLines(new File(dutyDir + "/out/VarImp.xls")).asScala.drop(1)
+      val gnum = if(data.td.toInt > file.length) file.length else data.td.toInt
+      val group = file.take(gnum).map{_.split('\t').head}.toArray.reverse
+      val cc=color.split(":")
+
+      Ok(Json.obj("valid"->"true","pics"->pics,"color"->cc,"group"->group))
+    } else {
+      Ok(Json.obj("valid"->"false"))
+    }
+
+  }
 
 }

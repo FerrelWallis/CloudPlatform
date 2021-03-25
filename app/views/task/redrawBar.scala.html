@@ -13,7 +13,6 @@
     <script type="text/javascript" src="@routes.Assets.versioned("palette/evol-colorpicker.min.js")"></script>
     <script type="text/javascript" src="@routes.Assets.versioned("bootstrap-slider-master/bootstrap-slider.js")"></script>
 
-
     <style>
         .fontleft{
             margin-top: 5px;
@@ -22,16 +21,6 @@
         }
         .fontright{
             width: 230px;
-        }
-        .use-flex{
-            display:flex;
-            width: calc(100% - 30px);
-        }
-        .use-flex>div:first-child{
-            flex:none;
-        }
-        .use-flex>div:last-child{
-            flex:1;
         }
     </style>
 
@@ -48,9 +37,9 @@
                                 下载结果图
                             </button>
                             <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 35px, 0px); top: 0px; left: 0px; will-change: transform;width: 150px">
-                                <a class="dropdown-item" id="downPic" onclick="downloadpics('bar_group','pdf')">下载 pdf</a>
-                                <a class="dropdown-item" id="downPng" onclick="downloadpics('bar_group','png')">下载 png</a>
-                                <a class="dropdown-item" id="downTiff" onclick="downloadpics('bar_group','tiff')">下载 tiff</a>
+                                <a class="dropdown-item" id="downPic" onclick="downloadpics('@row.status','@row.taskname','bar_group','pdf')">下载 pdf</a>
+                                <a class="dropdown-item" id="downPng" onclick="downloadpics('@row.status','@row.taskname','bar_group','png')">下载 png</a>
+                                <a class="dropdown-item" id="downTiff" onclick="downloadpics('@row.status','@row.taskname','bar_group','tiff')">下载 tiff</a>
                             </div>
                         </div>
                     </div>
@@ -73,93 +62,14 @@
                             </ul>
                             <div class="tab-content" style="box-sizing: border-box!important;padding-top: 30px">
                                 <div class="tab-pane fade active in" id="picpara">
-                                    <div class="form-group-p use-flex">
-                                        <div class="form-group">
-                                            <label>自定义X轴样本顺序：</label>
-                                        </div>
-                                        <div class="form-group right">
-                                            <input id="xo" name="xo" type="text" style="width: calc(100% - 10px); float: left; margin-left: 10px;"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group-p use-flex">
-                                        <div class="form-group">
-                                            <label>是否将低丰度结果合并为Other：</label>
-                                        </div>
-                                        <div class="form-group right">
-                                            <select id="m" name="m" style="width: calc(100% - 10px);">
-                                                <option value="TRUE">yes</option>
-                                                <option value="FALSE">no</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group-p use-flex">
-                                        <div class="form-group">
-                                            <label style="margin-right: 10px;">合并丰度低于</label>
-                                        </div>
-                                        <div class="form-group right">
-                                            <input id="mt" name="mt" type="text" style="width: calc(100% - 100px); float: left;" value="1"/>
-                                            <label style="width: 25px;float: left;margin-left: 5px;">%</label>
-                                            <label style="width: 70px;float: left">的OTU</label>
-                                        </div>
-                                    </div>
-                                    <div class="form-group-p use-flex">
-                                        <div class="form-group">
-                                            <label>是否使用百分比作图：</label>
-                                        </div>
-                                        <div class="form-group right">
-                                            <select id="pe" name="pe" style="width: calc(100% - 10px);">
-                                                <option value="TRUE">yes</option>
-                                                <option value="FALSE">no</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group-p use-flex">
-                                        <div class="form-group">
-                                            <label>图例信息位置：</label>
-                                        </div>
-                                        <div class="form-group right">
-                                            <select id="lp" name="lp" style="width: calc(100% - 10px);">
-                                                <option value="left">left</option>
-                                                <option value="right">right</option>
-                                                <option value="top">top</option>
-                                                <option value="bottom">bottom</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group-p use-flex">
-                                        <div class="form-group">
-                                            <label>图例信息排序：</label>
-                                        </div>
-                                        <div class="form-group right">
-                                            <select id="lo" name="lo" style="width: calc(100% - 10px);">
-                                                <option value="0">按照字母顺序排序</option>
-                                                <option value="1">按照丰度大小排序</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group-p use-flex">
-                                        <div class="form-group">
-                                            <label>图片清晰度：</label>
-                                        </div>
-                                        <div class="form-group right">
-                                            <select id="dpi" name="dpi" style="width: calc(100% - 10px);">
-                                                <option value="72">72</option>
-                                                <option value="96">96</option>
-                                                <option value="300">300</option>
-                                                <option value="600">600</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group-p use-flex">
-                                        <div class="form-group" style="margin-top: 5px;">
-                                            <label for="">图片宽高：</label>
-                                        </div>
-                                        <div class="form-group">
-                                            <input type="text" id="width" name="width" class="form-control" placeholder="数字" value="20" style="width: 50px;float: left;margin-right: 5px;margin-top: 5px">
-                                            <label style="float: left;margin-top: 12px;">X</label>
-                                            <input type="text" id="height" name="height" class="form-control" placeholder="数字" value="20" style="width: 50px;  margin-left: 5px;float: left;margin-top: 5px;margin-right: 20px">
-                                        </div>
-                                    </div>
+                                    @units.redrawUnits.input_text_1("divxo","自定义X轴样本顺序：","xo","")
+                                    @units.redrawUnits.selector("divm","是否将低丰度结果合并为Other：","m")
+                                    @units.redrawUnits.input_text_1("divmt","合并低丰度OTU(百分比%)：","mt","")
+                                    @units.redrawUnits.selector("divpe","是否使用百分比作图：","pe")
+                                    @units.redrawUnits.selector("divlp","图例信息位置：","lp")
+                                    @units.redrawUnits.selector("divlo","图例信息排序：","lo")
+                                    @units.redrawUnits.selector("divdpi","图片清晰度：","dpi")
+                                    @units.redrawUnits.input_text_2("divwh","图片宽高：","X","width","height","数字","数字")
                                 </div>
                                 <div class="tab-pane fade" id="colopara">
                                     <div id="inputcolor" class="one-line">
@@ -173,7 +83,7 @@
                                             </div>
                                             <br><br>
                                             <div class="form-group-p" >
-                                                <div class="form-group" style="width: 85%">
+                                                <div class="form-group" style="width: calc(100% - 20px)">
                                                     <ul id="mycolor">
                                                     </ul>
                                                     <input type="text" id="designcolor" name="designcolor" class="form-control" value="" style="display: none">
@@ -188,110 +98,22 @@
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="fontpara">
-                                    <div class="form-group-p">
-                                        <div class="form-group fontleft" style="margin-top: 5px;">
-                                            <label for="">柱宽大小：</label>
-                                        </div>
-                                        <div class="form-group fontright" style="line-height: 39px;">
-                                            <input id="bw" name="bw" data-slider-id='sbw' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.05" data-slider-value="0.9"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group-p">
-                                        <div class="form-group fontleft" style="margin-top: 5px;">
-                                            <label for="">X轴字体大小：</label>
-                                        </div>
-                                        <div class="form-group fontright" style="line-height: 39px;">
-                                            <input id="xts" name="xts" data-slider-id='sxts' type="text" data-slider-min="0" data-slider-max="50" data-slider-step="1" data-slider-value="18"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group-p">
-                                        <div class="form-group fontleft" style="margin-top: 5px;">
-                                            <label for="">X轴标题大小：</label>
-                                        </div>
-                                        <div class="form-group fontright" style="line-height: 39px;">
-                                            <input id="xls" name="xls" data-slider-id='sxls' type="text" data-slider-min="0" data-slider-max="50" data-slider-step="1" data-slider-value="18"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group-p">
-                                        <div class="form-group fontleft" style="margin-top: 5px;">
-                                            <label for="">Y轴字体大小：</label>
-                                        </div>
-                                        <div class="form-group fontright" style="line-height: 39px;">
-                                            <input id="yts" name="yts" data-slider-id='syts' type="text" data-slider-min="0" data-slider-max="50" data-slider-step="1" data-slider-value="16"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group-p">
-                                        <div class="form-group fontleft" style="margin-top: 5px;">
-                                            <label for="">Y轴标题大小：</label>
-                                        </div>
-                                        <div class="form-group fontright" style="line-height: 39px;">
-                                            <input id="yls" name="yls" data-slider-id='syls' type="text" data-slider-min="0" data-slider-max="50" data-slider-step="1" data-slider-value="16"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group-p">
-                                        <div class="form-group fontleft" style="margin-top: 5px;">
-                                            <label for="">说明字体大小：</label>
-                                        </div>
-                                        <div class="form-group fontright" style="line-height: 39px;">
-                                            <input id="lts" name="lts" data-slider-id='slts' type="text" data-slider-min="0" data-slider-max="50" data-slider-step="1" data-slider-value="15"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group-p">
-                                        <div class="form-group fontleft" style="margin-top: 5px;">
-                                            <label for="">说明标题大小：</label>
-                                        </div>
-                                        <div class="form-group fontright" style="line-height: 39px;">
-                                            <input id="lms" name="lms" data-slider-id='slms' type="text" data-slider-min="0" data-slider-max="50" data-slider-step="1" data-slider-value="15"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group-p">
-                                        <div class="form-group fontleft" style="margin-top: 5px;">
-                                            <label for="">颜色方块大小：</label>
-                                        </div>
-                                        <div class="form-group fontright" style="line-height: 39px;">
-                                            <input id="ls" name="ls" data-slider-id='sls' type="text" data-slider-min="0" data-slider-max="50" data-slider-step="1" data-slider-value="15"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group-p">
-                                        <div class="form-group fontleft" style="margin-top: 5px;">
-                                            <label for="">主标题大小：</label>
-                                        </div>
-                                        <div class="form-group fontright" style="line-height: 39px;">
-                                            <input id="ms" name="ms" data-slider-id='sms' type="text" data-slider-min="0" data-slider-max="50" data-slider-step="1" data-slider-value="15"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group-p">
-                                        <div class="form-group fontleft" style="margin-top: 5px;">
-                                            <label for="">X轴标题：</label>
-                                        </div>
-                                        <div class="form-group fontright">
-                                            <input type="text" id="xtext" name="xtext" class="form-control" placeholder="标题不可含有汉字" value="" style="width: 100%;float: left;margin-right: 5px;margin-top: 5px">
-                                        </div>
-                                    </div>
-                                    <div class="form-group-p">
-                                        <div class="form-group fontleft" style="margin-top: 5px;">
-                                            <label for="">Y轴标题：</label>
-                                        </div>
-                                        <div class="form-group fontright">
-                                            <input type="text" id="ytext" name="ytext" class="form-control" placeholder="标题不可含有汉字" value="" style="width: 100%; float: left;margin-top: 5px;margin-right: 20px">
-                                        </div>
-                                    </div>
-                                    <div class="form-group-p">
-                                        <div class="form-group fontleft" style="margin-top: 5px;">
-                                            <label for="">说明标题：</label>
-                                        </div>
-                                        <div class="form-group fontright">
-                                            <input type="text" id="lmtext" name="lmtext" class="form-control" placeholder="标题不可含有汉字" value="" style="width: 100%; float: left;margin-top: 5px;margin-right: 20px">
-                                        </div>
-                                    </div>
-                                    <div class="form-group-p">
-                                        <div class="form-group fontleft" style="margin-top: 5px;">
-                                            <label for="">主标题：</label>
-                                        </div>
-                                        <div class="form-group fontright">
-                                            <input type="text" id="mstext" name="mstext" class="form-control" placeholder="标题不可含有汉字" value="" style="width: 100%; float: left;margin-top: 5px;margin-right: 20px">
-                                        </div>
-                                    </div>
+                                    @units.redrawUnits.slider("divbw","柱宽大小：","bw","0","1","0.05")
+                                    @units.redrawUnits.slider("divxta","X轴字体旋转角度：","xta","0","360","5")
+                                    @units.redrawUnits.slider("divxangle","X轴标题旋转角度：","xangle","0","360","5")
+                                    @units.redrawUnits.slider("divyangle","Y轴标题旋转角度：","yangle","0","360","5")
+                                    @units.redrawUnits.slider("divxts","X轴字体大小：","xts","0","50","1")
+                                    @units.redrawUnits.slider("divxls","X轴标题大小：","xls","0","50","1")
+                                    @units.redrawUnits.slider("divyts","Y轴字体大小：","yts","0","50","1")
+                                    @units.redrawUnits.slider("divyls","Y轴标题大小：","yls","0","50","1")
+                                    @units.redrawUnits.slider("divlts","说明字体大小：","lts","0","50","1")
+                                    @units.redrawUnits.slider("divlms","说明标题大小：","lms","0","50","1")
+                                    @units.redrawUnits.slider("divls","颜色方块大小：","ls","0","50","1")
+                                    @units.redrawUnits.slider("divms","主标题大小：","ms","0","50","1")
+                                    @units.redrawUnits.input_text_1("divxtext","X轴标题：","xtext","标题不可含有汉字")
+                                    @units.redrawUnits.input_text_1("divytext","Y轴标题：","ytext","标题不可含有汉字")
+                                    @units.redrawUnits.input_text_1("divlmtext","说明标题：","lmtext","标题不可含有汉字")
+                                    @units.redrawUnits.input_text_1("divmstext","主标题：","mstext","标题不可含有汉字")
                                 </div>
                             </div>
                             <br>
@@ -309,42 +131,19 @@
         </div>
     </div>
 
+    <script src="@routes.Assets.versioned("myjs/redraw.js")" type="text/javascript"></script>
     <script>
 
-            const updatetime="2020-12-30";
-
-            function checkupdate(){
-                $(".update").text(updatetime);
-                if("@row.subtime".split(" ")[0]<=updatetime) {
-                    $(".update_panel").show();
-                    $(".redraw_panel").hide();
-                } else {
-                    $(".redraw_panel").show();
-                    $(".update_panel").hide();
-                }
-            }
-
-            function downloadpics(picname,suffix){
-                if("@row.status"!=="已完成"){
-                    swal({
-                        title: "无法下载",
-                        text: "任务未完成，无法下载！",
-                        type: "warning",
-                        confirmButtonText: "确认"
-                    });
-                }else{
-                    window.location.href = "/CloudPlatform/SoftTool/download?taskname=@row.taskname&picname="+picname+"&suffix="+suffix+"&num="+Math.random();
-                }
-            }
+            const updatetime="2021-03-11";
 
             const colorValidators = {
                 validators: {
                     notEmpty:{
-                        message: '不能为空!'
+                        message: '不能为空！'
                     },
-                    regexp: {
-                        regexp: /^#([0-9a-fA-F]{6})$/,
-                        message: "色值不合法！色值必须以#开头，色值需为6位"
+                    color: {
+                        type: ['hex','keyword'],  // The default value for type
+                        message: '错误色值！支持hex或keyword色值'
                     }
                 }
             };
@@ -354,136 +153,64 @@
             var sample = [];
 
             function formValidation() {
-                $('#BAR').formValidation({
-                    framework: 'bootstrap',
-                    excluded: [':disabled'], //默认excluded: [':disabled', ':hidden', ':not(:visible)'] 现在需要hidden的元素也检查
-                    icon: {
-                        valid: 'glyphicon glyphicon-ok',
-                        invalid: 'glyphicon glyphicon-remove',
-                        validating: 'glyphicon glyphicon-refresh'
-                    },
-                    fields: {
-                        width: {
-                            validators: {
-                                notEmpty: {
-                                    message: '不能为空!'
-                                },
-                                numeric: {
-                                    message: '必须为数字！'
-                                },
-                                greaterThan: {
-                                    value: 1,
-                                    message: "必须大于1！"
-                                }
-                            }
-                        },
-                        height: {
-                            validators: {
-                                notEmpty: {
-                                    message: '不能为空!'
-                                },
-                                numeric: {
-                                    message: '必须为数字！'
-                                },
-                                greaterThan: {
-                                    value: 1,
-                                    message: "必须大于1！"
-                                }
-                            }
-                        },
-                        xtext:{
-                            validators:{
-                                callback:{
-                                    message: '标题不能有汉字!',
-                                    callback: function (value, validator, $field) {
-                                        return chechtitle("xtext");
+                let field = {};
+                let number = ["width","height","mt"];
+                FieldNumber(field, number);
+                let name = ["xtext","ytext","lmtext","mstext"];
+                FieldName(field, name);
+                let excluded = [""];
+                field["xo"] = {
+                    validators: {
+                        callback:{
+                            callback: function (value, validator, $field) {
+                                if(value != "") {
+                                    var split = value.split(",");
+                                    var name = [];
+                                    if(split.length != sample.length)
+                                        return {
+                                            valid: false,
+                                            message: '样本数量不一致！当前输入样本数为：' + split.length
+                                        };
+                                    for(var i in split) {
+                                        if(sample.indexOf(split[i]) < 0)
+                                            return {
+                                                valid: false,
+                                                message: '样本名 "' + split[i] + '" 不存在！请核实'
+                                            };
+                                        if(name.indexOf(split[i]) < 0) name.push(split[i]);
+                                        else return {
+                                            valid: false,
+                                            message: '样本名 "' + split[i] + '"重复输入，请核实！'
+                                        };
                                     }
-                                }
-                            }
-                        },
-                        ytext:{
-                            validators:{
-                                callback:{
-                                    message: '标题不能有汉字!',
-                                    callback: function (value, validator, $field) {
-                                        return chechtitle("ytext");
-                                    }
-                                }
-                            }
-                        },
-                        lmtext:{
-                            validators:{
-                                callback:{
-                                    message: '标题不能有汉字!',
-                                    callback: function (value, validator, $field) {
-                                        return chechtitle("lmtext");
-                                    }
-                                }
-                            }
-                        },
-                        mstext:{
-                            validators:{
-                                callback:{
-                                    message: '标题不能有汉字!',
-                                    callback: function (value, validator, $field) {
-                                        return chechtitle("mstext");
-                                    }
-                                }
-                            }
-                        },
-                        mt:{
-                            validators: {
-                                notEmpty: {
-                                    message: '不能为空!'
-                                },
-                                numeric: {
-                                    message: '必须为数字！'
-                                }
-                            }
-                        },
-                        xo:{
-                            validators: {
-                                callback:{
-                                    callback: function (value, validator, $field) {
-                                        if(value != "") {
-                                            var split = value.split(",");
-                                            var name = [];
-                                            if(split.length != sample.length)
-                                                return {
-                                                    valid: false,
-                                                    message: '样本数量不一致！当前输入样本数为：' + split.length
-                                                };
-                                            for(var i in split) {
-                                                if(sample.indexOf(split[i]) < 0)
-                                                    return {
-                                                        valid: false,
-                                                        message: '样本名 "' + split[i] + '" 不存在！请核实'
-                                                    };
-                                                if(name.indexOf(split[i]) < 0) name.push(split[i]);
-                                                else return {
-                                                        valid: false,
-                                                        message: '样本名 "' + split[i] + '"重复输入，请核实！'
-                                                    };
-                                            }
-                                            return true;
-                                        } else return true;
-                                    }
-                                }
+                                    return true;
+                                } else return true;
                             }
                         }
                     }
-                });
-            }
-
-            function chechtitle(param){
-                var val = $("#"+param).val();
-                var rule = /[\u4e00-\u9fa5]+/;
-                return !(rule.test(val));
+                };
+                addFormValidation("BAR", field, excluded)
             }
 
             $(document).ready(function () {
                 if("@row.status"=="已完成"){
-                    checkupdate();
+                    checkupdate(updatetime, "@row.subtime");
+
+                    var tf = ["TRUE","FALSE"];
+                    var tfname = ["yes","no"];
+                    creatSelector("m",tfname,tf);
+                    creatSelector("pe",tfname,tf);
+
+                    var pos = ["left","right","top","bottom"];
+                    creatSelector("lp",pos,pos);
+
+                    var lo = ["0","1"];
+                    var loname = ["按照字母顺序排序","按照丰度大小排序"];
+                    creatSelector("lo",loname,lo);
+
+                    var dpi = ["72","96","300","600"];
+                    creatSelector("dpi",dpi,dpi);
+
                     $("#BAR").show();
                     $.ajax({
                         url:"/CloudPlatform/SoftTool/getBarGroupData?taskname=@row.taskname",
@@ -526,7 +253,7 @@
                             });
                 });
                 $("#inputcolor .evo-cp-wrap").css("float", "left");
-                $("#inputcolor .evo-cp-wrap").css("width", "200px");
+                $("#inputcolor .evo-cp-wrap").css("width", "calc(100% - 34px)");
             }
 
             function addcolor() {
@@ -547,7 +274,7 @@
                         $("#BAR").formValidation("revalidateField",coloid);
                     });
                     $("#inputcolor .evo-cp-wrap").css("float", "left");
-                    $("#inputcolor .evo-cp-wrap").css("width", "200px");
+                    $("#inputcolor .evo-cp-wrap").css("width", "calc(100% - 34px)");
                     colornum=colornum+1;
                 }
             }
@@ -621,6 +348,7 @@
             function switchToInvalid() {
                 $(".help-block[data-fv-result='INVALID']").each(function () {
                     if($(this).parent().parent().attr('id')){
+                        console.log()
                         if($(this).parent().parent().attr('id').toString().indexOf("color")>=0){
                             $("a[data-target='#colopara']").click();
                         }else{

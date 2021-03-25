@@ -135,8 +135,8 @@
                             readfile="'/CloudPlatform/Utils/previewFile?taskname=@row.taskname&filename="+data.name[i]+"&filetype=txt'";
                         }
                         // html += "<tr class='"+ colo +"'><td>" + data.name[i] + "</td><td>" + data.ins[i] + "</td><td><a onclick='downloadFile(\""+data.name[i]+"\")' class='fa fa-download'></a></td></tr>";
-                        if(data.name[i].indexOf("zip")>=0) html += "<tr class='"+ colo +"'><td>" + data.name[i] + "</td><td>" + data.ins[i] + "</td><td style='padding: 8px 0px 8px 16px;width: 60px;'><a onclick='downloadFile(\""+data.name[i]+"\")' class='fa fa-download'></a></td></tr>";
-                        else html += "<tr class='"+ colo +"'><td>" + data.name[i] + "</td><td>" + data.ins[i] + "</td><td style='padding: 8px 0px 8px 16px;width: 60px;'><a onclick='downloadFile(\""+data.name[i]+"\")' class='fa fa-download'></a><a href=" + readfile + " class='fa fa-eye' target='_blank' style='margin-left: 10px;'></a></td></tr>";
+                        if(data.name[i].indexOf("zip")>=0) html += "<tr class='"+ colo +"'><td>" + data.name[i] + "</td><td>" + data.ins[i] + "</td><td style='padding: 8px 0px 8px 16px;width: 60px;'><a onclick='downloadFile(\""+data.name[i]+"\")' class='fa fa-download' target='_blank'></a></td></tr>";
+                        else html += "<tr class='"+ colo +"'><td>" + data.name[i] + "</td><td>" + data.ins[i] + "</td><td style='padding: 8px 0px 8px 16px;width: 60px;'><a onclick='downloadFile(\""+data.name[i]+"\")' class='fa fa-download' target='_blank'></a><a href=" + readfile + " class='fa fa-eye' target='_blank' style='margin-left: 10px;'></a></td></tr>";
                     });
                     $("#filesUrl").html(html);
                 }
@@ -162,9 +162,12 @@
                     confirmButtonText: "确认"
                 });
             }else{
-                window.location.href = "/CloudPlatform/SoftTool/downloadFile?taskname=@row.taskname&filename=" + filename + "&num="+ Math.random();
+                @*$("#temp_down").attr("href","/CloudPlatform/SoftTool/downloadFile?taskname=@row.taskname&filename=" + filename + "&num="+ Math.random());*@
+                @*$("#temp_down")[0].click();*@
+                window.open("/CloudPlatform/SoftTool/downloadFile?taskname=@row.taskname&filename=" + filename + "&num="+ Math.random());
             }
         }
+
 
             function downloadZip(){
                 if("@row.status"!=="已完成"){
@@ -175,7 +178,9 @@
                         confirmButtonText: "确认"
                     });
                 }else{
-                    window.location.href = "/CloudPlatform/SoftTool/downloadZip?taskname=@row.taskname&num="+Math.random();
+                    @*$("#temp_down").attr("href","/CloudPlatform/SoftTool/downloadZip?taskname=@row.taskname&num="+Math.random());*@
+                    @*$("#temp_down")[0].click();*@
+                    window.open("/CloudPlatform/SoftTool/downloadZip?taskname=@row.taskname&num="+Math.random());
                 }
             }
 

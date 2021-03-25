@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 
 import controllers.Assets.Asset
-import dao.{feedbackDao, runningDao, softDao, usersDao, utilsDao}
+import dao.{feedbackDao, mailDao, runningDao, softDao, usersDao, utilsDao}
 import models.Tables._
 import services.onStart
 import javax.inject.Inject
@@ -20,7 +20,7 @@ import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, ExecutionContext, Future, blocking}
 import scala.collection.JavaConverters._
 
-class UtilsController @Inject()(cc: ControllerComponents,onstart:onStart,utilsdao:utilsDao,usersdao:usersDao,feedbackDao:feedbackDao,runningDao:runningDao, softDao:softDao)(implicit exec: ExecutionContext) extends AbstractController(cc) {
+class UtilsController @Inject()(cc: ControllerComponents,onstart:onStart,maildao:mailDao,utilsdao:utilsDao,usersdao:usersDao,feedbackDao:feedbackDao,runningDao:runningDao, softDao:softDao)(implicit exec: ExecutionContext) extends AbstractController(cc) {
 
 
   //发送短信
@@ -73,11 +73,12 @@ class UtilsController @Inject()(cc: ControllerComponents,onstart:onStart,utilsda
 
 
   //问题反馈模块
-  case class FeedData(title:String,txdata:String)
+  case class FeedData(title:String, taskname:String, txdata:String)
 
   val FeedForm: Form[FeedData] =Form(
     mapping (
       "title"->text,
+      "taskname"->text,
       "txdata"->text
     )(FeedData.apply)(FeedData.unapply)
   )
@@ -86,7 +87,7 @@ class UtilsController @Inject()(cc: ControllerComponents,onstart:onStart,utilsda
     val data=FeedForm.bindFromRequest.get
     val uid=request.session.get("userId").get
     val time=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())
-    val row=FeedbackRow(0,uid.toInt,time,data.title,data.txdata,1,"未读")
+    val row=FeedbackRow(0,uid.toInt,time,data.title,Option(data.taskname),data.txdata,1,"未读")
     Await.result(feedbackDao.addFeedback(row),Duration.Inf)
     Ok(Json.obj("valid"->"true"))
   }
@@ -100,8 +101,9 @@ class UtilsController @Inject()(cc: ControllerComponents,onstart:onStart,utilsda
     val tmpX = orderX.slice(page.offset, page.offset + page.limit)
     val row = tmpX.asInstanceOf[Seq[FeedbackRow]].map{x=>
       val fid=x.fid
-      val content=s"<a onclick='openFeedpage($fid)' style='color: #2a6496;'>查看详情</a>"
-      Json.obj("subtime" -> x.subtime,"title"-> x.title,"content" -> content)
+      val content = s"<a onclick='openHisFeedpage($fid)' style='color: #2a6496;'>查看详情</a>"
+      val taskname = if(x.taskname.isEmpty) "无" else x.taskname.get
+      Json.obj("subtime" -> x.subtime,"title"-> x.title,"taskname" -> taskname,"content" -> content)
     }
     Ok(Json.obj("rows" -> row, "total" -> total))
   }
@@ -110,7 +112,8 @@ class UtilsController @Inject()(cc: ControllerComponents,onstart:onStart,utilsda
     val auth=request.session.get("uAuthority").get
     if(adpage && auth=="admin") Await.result(feedbackDao.updateProcess(fid,"已读"),Duration.Inf)
     val row=Await.result(feedbackDao.getFeedsByFid(fid),Duration.Inf)
-    Ok(Json.obj("title"->row.title,"subtime"->row.subtime,"content"->row.content))
+    val taskname = if(row.taskname.isEmpty) "无" else row.taskname.get
+    Ok(Json.obj("title"->row.title,"taskname"->taskname,"subtime"->row.subtime,"content"->row.content))
   }
 
   def deleteFeeds(ids:String)=Action{implicit request=>
@@ -143,17 +146,82 @@ class UtilsController @Inject()(cc: ControllerComponents,onstart:onStart,utilsda
     val orderX = TableUtils.dealDataByPage(x, page)
     val total = orderX.size
     val tmpX = orderX.slice(page.offset, page.offset + page.limit)
-    val row = tmpX.asInstanceOf[Seq[(Int,String,String,String,String,String)]].map{x=>
+    val row = tmpX.asInstanceOf[Seq[(Int,String,String,String,String,String,Option[String])]].map{x=>
       val fid = x._1
-      val control = "<a onclick='openFeedpage("+fid+",\""+x._5+"\",\""+x._6+"\")' style='color: #2a6496;'>查看详情</a>"
+      val control = "<a onclick='openFeedpage("+fid+",\"auth\",-1)' style='color: #2a6496; margin-right: 10px;'>查看详情</a>" +
+        "<a onclick='openReply("+fid+",\"auth\",-1)' style='color: #2a6496;'>回复</a>"
       val process = if(x._4=="已读") "<p style='color: cadetblue; margin: 0px;'>"+x._4+"</p>"
       else "<p style='color: #bf4064; margin: 0px;'>"+x._4+"</p>"
-      Json.obj("subtime" -> x._2,"title" -> x._3,"process"->process,"control"->control,"name"->x._5,"phone"->x._6)
+      val taskname = if(x._7.isEmpty) "无" else x._7.get
+      Json.obj("subtime" -> x._2,"title" -> x._3,"taskname"->taskname,"process"->process,"control"->control,"name"->x._5,"phone"->x._6)
     }
     Ok(Json.obj("rows" -> row, "total" -> total))
   }
 
+  def checkUnreadFeed=Action{implicit request=>
+    val row=Await.result(feedbackDao.getFeedUnread,Duration.Inf)
+    Ok(Json.obj("feednum"->row.length))
+  }
 
+  //站内信
+  def getFeedsMailbyFid(fid:String, mid:Int) = Action { implicit request =>
+    if(mid != -1) Await.result(maildao.updateStatus(mid),Duration.Inf)
+    else Await.result(feedbackDao.updateProcess(fid,"已读"),Duration.Inf)
+    val feed = Await.result(feedbackDao.getFeedsByFid(fid),Duration.Inf)
+    val taskname = if(feed.taskname.isEmpty) "无" else feed.taskname.get
+    val feedobj = Json.obj("mailFid"->feed.fid, "mailUid"->feed.uid, "mailt"->"反馈标题：",
+      "mailTitle"->feed.title, "maild"->"反馈日期：", "mailTime"->feed.subtime, "mailHead"->feed.title,
+      "mailTaskname"->taskname, "mailSubtime"->feed.subtime, "mailContent"->feed.content)
+    var i = -1;
+    val mail = Await.result(maildao.getMailsByFid(fid),Duration.Inf).map{row =>
+      i = i + 1
+      val (sender,mailcolor) = if(row.sender == "auth") ("回复：","success") else ("提问：","")
+      Json.obj("mailt"+i->sender, "mailTitle"+i->"", "maild"+i->"发送日期：", "mailTime"+i->row.sendtime,
+        "mailContent"+i->row.content, "mailcolor"->mailcolor)
+    }
+    Ok(Json.obj("feed"->feedobj, "mail"->mail))
+  }
+
+  case class mailData(mailtxdata:String)
+
+  val mailForm: Form[mailData] =Form(
+    mapping (
+      "mailtxdata"->text
+    )(mailData.apply)(mailData.unapply)
+  )
+
+  def addMailbox(fid:Int, uid:Int, user:String)=Action(parse.multipartFormData) {implicit request=>
+    val data=mailForm.bindFromRequest.get
+    val time=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())
+    val status = if(user == "auth") 1 else 0;
+    val row=MailboxRow(0, uid, fid, user, time, data.mailtxdata, status)
+    Await.result(maildao.addMail(row),Duration.Inf)
+    if(user == "user") Await.result(feedbackDao.updateProcessTime(fid),Duration.Inf)
+    Ok(Json.obj("valid"->"true"))
+  }
+
+  def getMailsByUID = Action { implicit request =>
+    val uid=request.session.get("userId").get
+    val page = pageForm.bindFromRequest.get
+    val x = Await.result(maildao.getMailsByUid(uid),Duration.Inf)
+    val orderX = TableUtils.dealDataByPage(x, page)
+    val total = orderX.size
+    val tmpX = orderX.slice(page.offset, page.offset + page.limit)
+    val row = tmpX.asInstanceOf[Seq[(Int,Int,Int,String,String,String,Int,String)]].map{x=>
+      val title = "回复反馈：" + x._8
+      val control = "<a onclick='openFeedpage("+x._3+",\"user\","+x._1+")' style='color: #2a6496; margin-right: 10px;'>查看详情</a>"
+      val status = if(x._7 == 0) "<p style='color: cadetblue; margin: 0px;'>已读</p>"
+      else "<p style='color: #bf4064; margin: 0px;'>未读</p>"
+      Json.obj("title" -> title,"sendtime" -> x._5,"status"->status,"control"->control)
+    }
+    Ok(Json.obj("rows" -> row, "total" -> total))
+  }
+
+  def checkUnreadMails=Action{implicit request=>
+    val id=request.session.get("userId").get
+    val row=Await.result(maildao.getMailsUnread(id),Duration.Inf)
+    Ok(Json.obj("mailnum"->row.length))
+  }
 
 
   //公告模块

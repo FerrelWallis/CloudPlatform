@@ -142,7 +142,7 @@
 
             .control-icon {
                 padding-left: 32px;
-                background-position: 12px center;
+                background-position: center;
             }
 
             #auth a:active {
@@ -176,11 +176,12 @@
                 <div class="col-md-2" style="height: 100%">
                     <div style="width: 100%; float: left">
                         <ul class="manager_ul">
-                            <li><a href="#notice">发布公告</a></li>
-                            <li><a href="#auth">用户列表</a></li>
-                            <li><a href="#feed">反馈列表</a></li>
-                            <li><a href="#runningnote" style="padding: 8px 3em 9px 3em">滚动通知栏设置</a></li>
-                            <li><a href="#softfreq" style="padding: 8px 3em 9px 3em">模块使用频率</a></li>
+                            <li><a href="#notice" style="width: 100%; text-align: center; padding: 8px 0px;">发布公告</a></li>
+                            <li><a href="#auth" style="width: 100%; text-align: center; padding: 8px 0px;">用户列表</a></li>
+                            <li><a href="#feed" style="width: 100%; text-align: center; padding: 8px 0px;">反馈列表<span class="badge feed_badge" style="margin-left: 10px;"></span></a></li>
+                            <li><a href="#runningnote" style="width: 100%; text-align: center; padding: 8px 0px;">滚动通知栏设置</a></li>
+                            <li><a href="#softfreq" style="width: 100%; text-align: center; padding: 8px 0px;">模块使用频率</a></li>
+                            <li><a href="#dutyfile" style="width: 100%; text-align: center; padding: 8px 0px;">获取任务文件</a></li>
                         </ul>
                     </div>
                 </div>
@@ -374,7 +375,22 @@
                             <h3 style="margin-top: 0">模块使用频率</h3>
                             <hr style="margin-top: 0; margin-bottom: 30px;">
                             <div id="container" style="min-width:400px; height:400px">
-
+                            </div>
+                        </form>
+                    </div>
+                    <div id="dutyfile" class="manager_panel" style="padding-top: 0px; width: 96%; padding-right: 0px;">
+                        <form>
+                            <h3 style="margin-top: 0">下载任务文件</h3>
+                            <hr style="margin-top: 0; margin-bottom: 30px;">
+                            <div class="container" style="width: 98%; margin: unset; max-width: unset; background: white">
+                                    <!--data-toolbar：设置装按钮的容器为id为toolbar的。-->
+                                <div id="toolbar3">&nbsp;搜索：</div>
+                                <div id="action3" >
+                                    <input type="button" value="列表刷新" class="btn btn-primary btn-dark" onclick="refresh2()" style="float: right;margin-top: 10px;margin-right: 10px;">
+                                </div>
+                                <table class="display table table-bordered" style="width: 99.9%" id="table3" data-pagination="true" data-search="true"
+                                data-toolbar="#toolbar3" data-page-list="[10,25,50,100,all]" data-search-align="left" data-multiple-search="true">
+                                </table>
                             </div>
                         </form>
                     </div>
@@ -382,6 +398,53 @@
             </div>
         </div>
     </div>
+
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">新增</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="txt_departmentname">部门名称</label>
+                        <input type="text" name="txt_departmentname" class="form-control" id="txt_departmentname" placeholder="部门名称">
+                    </div>
+                    <div class="form-group">
+                        <label for="txt_parentdepartment">上级部门</label>
+                        <input type="text" name="txt_parentdepartment" class="form-control" id="txt_parentdepartment" placeholder="上级部门">
+                    </div>
+                    <div class="form-group">
+                        <label for="txt_departmentlevel">部门级别</label>
+                        <input type="text" name="txt_departmentlevel" class="form-control" id="txt_departmentlevel" placeholder="部门级别">
+                    </div>
+                    <div class="form-group">
+                        <label for="txt_statu">描述</label>
+                        <input type="text" name="txt_statu" class="form-control" id="txt_statu" placeholder="状态">
+                    </div>
+                    <div class="form-group">
+                        <label for="txt_statu">描述</label>
+                        <input type="text" name="txt_statu" class="form-control" id="txt_statu" placeholder="状态">
+                    </div>
+                    <div class="form-group">
+                        <label for="txt_statu">描述</label>
+                        <input type="text" name="txt_statu" class="form-control" id="txt_statu" placeholder="状态">
+                    </div>
+                    <div class="form-group">
+                        <label for="txt_statu">描述</label>
+                        <input type="text" name="txt_statu" class="form-control" id="txt_statu" placeholder="状态">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>关闭</button>
+                    <button type="button" id="btn_submit" class="btn btn-primary" data-dismiss="modal"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <script>
 
@@ -408,8 +471,13 @@
                 loading2();
                 loadRunning();
                 loadFreq();
+                loading3();
             });
 
+            function pop() {
+                console.log(111);
+                $("#myModal").modal();
+            }
 
             function loadFreq() {
                 $.ajax({
@@ -521,26 +589,25 @@
                     columns: [{
                         title: '提交日期',
                         field: 'subtime',
-                        sortable: 'true'
-                    },{
-                        title: '用户名',
-                        field: 'name',
-                        sortable: 'true'
-                    },{
-                        title: '手机号',
-                        field: 'phone',
-                        sortable: 'true'
                     }, {
                         title: '标题',
                         field: 'title',
-                        sortable: 'true'
+                    }, {
+                        title: '任务编号',
+                        field: 'taskname',
+                    },{
+                        title: '用户名',
+                        field: 'name',
+                    },{
+                        title: '手机号',
+                        field: 'phone',
                     }, {
                         title: '浏览状态',
                         field: 'process',
-                        sortable: 'true'
                     }, {
                         title: '操作',
-                        field: 'control'
+                        field: 'control',
+                        width: '120px',
                     }],
                     onClickCell: function (field, value, row, $element) {
                         if(field==="control") {
@@ -560,20 +627,65 @@
                 loading2();
             }
 
-            function openFeedpage(fid,name,phone) {
+            function loading3() {
+                $('#table3').bootstrapTable({
+                    method: 'post',
+                    url: "/CloudPlatform/MyTasks/getDuties",
+                    sidePagination: "server",
+                    pageNumber: 1,
+                    pagination: true,
+                    pageList: [10, 25, 50, 100],
+                    contentType: "application/x-www-form-urlencoded",
+                    clickToSelect: true,//点击行选中
+                    columns: [{
+                        title: '提交日期',
+                        field: 'subtime',
+                    }, {
+                        title: '任务编号',
+                        field: 'taskname',
+                    }, {
+                        title: '功能模块',
+                        field: 'sname',
+                    }, {
+                        title: '用户名',
+                        field: 'username',
+                    }, {
+                        title: '任务状态',
+                        field: 'status',
+                    }, {
+                        title: '操作',
+                        field: 'control',
+                    }]
+                });
+            }
+
+            function refresh2() {
+                $('#table3').bootstrapTable('destroy');
+                loading3();
+            }
+
+            function showlog(taskname,uid) {
                 $.ajax({
-                    url: "/CloudPlatform/Utils/getFeedsByFid?fid="+fid+"&adpage=true",
+                    url: "/CloudPlatform/MyTasks/showlogByUid?taskname=" + taskname + "&uid=" + uid,
                     type: "post",
                     success: function (data) {
-                        $("#feedHead").text(data.title);
-                        $("#feedName").text(name);
-                        $("#feedPhone").text(phone);
-                        $("#feedSubtime").text(data.subtime);
-                        $("#feedContent").html("");
-                        $("#feedContent").append(data.content);
-                        $("#liFeedback").click();
+                        if(data.canmanage==0) {
+                            swal({
+                                title: "运行日志为空",
+                                text: "运行日志为空！",
+                                type: "warning",
+                                confirmButtonText: "确认"
+                            });
+                        }else {
+                            $("#logContent").text(data.content);
+                            $("#liLog").click();
+                        }
                     }
                 });
+            }
+
+            function downduty(taskname,uid) {
+                window.location.href = "/CloudPlatform/SoftTool/creatDownDuty?taskname="+taskname+"&uid="+uid+"&num="+Math.random();
             }
 
             var E = window.wangEditor;

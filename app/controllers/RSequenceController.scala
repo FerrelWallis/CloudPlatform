@@ -54,7 +54,8 @@ class RSequenceController @Inject()(cc: ControllerComponents, dutydao: dutyDao, 
     val seqFile=new File(dutyDir,"seq.txt")
     val file = request.body.file("table1").get
     val input=file.filename
-    file.ref.moveTo(seqFile)
+    rservice.fileTrimMove(file.ref, seqFile)
+//    file.ref.moveTo(seqFile)
     seqFile.setExecutable(true,false)
     seqFile.setReadable(true,false)
     seqFile.setWritable(true,false)

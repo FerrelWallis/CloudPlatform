@@ -4,9 +4,10 @@
     <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("css/test/mysoft.css")" media="screen" />
     <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("bootstrap-fileinput-master/css/fileinput.css")" media="screen" />
     <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("mycss/soft.css")" media="screen" />
-    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("video-js/video-js.min.css")" media="screen" />
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("DPlayer-1.26.0/mycss/myvideo.css")" media="screen" />
 
-    <script type="text/javascript" src="@routes.Assets.versioned("video-js/video.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.versioned("DPlayer-1.26.0/dist/DPlayer.min.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.versioned("md5/md5.js")"></script>
         <!--button弹出操作-->
     <script src="@routes.Assets.versioned("layer-v3.0/layer/layer.js")" type="text/javascript"></script>
     <script type="text/javascript" src="@routes.Assets.versioned("js/myzui.min.js")"></script>
@@ -29,160 +30,28 @@
         <div class="  mysoft-content-left  whitebox" style="width: 590px;">
             <form id="FAPROTAX" method="GET" enctype="multipart/form-data" class="well form-inline" style="box-sizing: border-box!important;">
                 <div class="softpic mws-ic FAP"></div>
-                <h3 class="tools-title">FAPROTAX功能预测</h3>
-                <div class="form-group">
-                    <h2>
-                    </h2>
-                </div><br><br>
-                <div class="form-group-p">
-                    <div class="form-group">
-                        <label for="mytaskname">任务编号：</label>
-                    </div>
-                    <div class="form-group">
-                        <input id="mytaskname" type="text" class="form-control" name="taskname" placeholder="" value="">
-                    </div>
-                </div>
-                <br><br>
-                <div id="myform">
-                    <div id="div1" class="one-line">
-                        <div class="form-group-p" style="width: 100%;">
-                            <div class="form-group">
-                                <label for="filepath1">上传OTU丰度表：</label>
-                            </div>
-                            <div class="form-group" style="width: 60%">
-                                <input type="file" class="form-control file" id="table" name="table">
-                            </div>
-                        </div>
-                        <div class="form-group-extra">
-                            <em>
-                                <a href='/assets/files/otu_table.biom' target='_blank'>示例文件(biom)</a>
-                            </em>
-                            <em>
-                                <a href='/assets/files/otu_table.txt' target='_blank' style="margin-left: 20px;">示例文件(txt)</a>
-                            </em>
-                        </div>
-                        <br>
-                        <br>
-                    </div>
-                </div>
-                <br>
-                <br>
+                <h3 class="tools-title">FAPROTAX功能预测</h3><br><br>
+                @units.textinput("","","任务编号：", "taskname","","")
+                @units.fileupload2("","myform","上传OTU丰度表：","table","otu_table.biom","otu_table.txt")<br><br>
                 <input type="button" value="提&nbsp;&nbsp;交" name="submit" class="btn btn-primary" onclick="fap()">
             </form>
         </div>
-        <div class="handler"></div>
-        <div class="mysoft-content-right" style="width: 460px;">
-            <ul class="nav nav-tabs">
-                <li class="active" id="ins_tab1">
-                    <a href="###" data-target="#instruction" data-toggle="tab">使用说明</a>
-                </li>
-                <li class="" id="out_tab1">
-                    <a href="###" data-target="#example" data-toggle="tab">教学视频</a>
-                </li>
-                <li class="" id="his_tab1">
-                    <a href="#" data-target="#history" data-toggle="tab">历史任务</a>
-                </li>
-            </ul>
-            <div class="tab-content" style="box-sizing: border-box!important;">
-                <div class="tab-pane fade active in" id="instruction">
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>1.背景介绍</strong></span><br>
-                        功能预测是基于扩增子测序数据开展微生物群落功能研究的重要内容，FAPROTAX是功能预测软件中的一枝独秀，其应用灵活，不受数据库局限（Greengene、silva和RDP都可），较适用于对环境样本（如海洋、湖泊等）的生物地球化学循环过程（特别是碳、氢、氮、磷、硫等元素循环）进行功能注释预测。原理是基于已发表验证的可培养菌文献，预测准确度较好，但相比于PICRUSt和Tax4Fun来说预测的覆盖度可能会降低。
-                        <br>
-                    </p>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>2.操作界面</strong></span><br>
-                    </p>
-                    <img src="/assets/images/softpic/instruction/fap1.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;padding-left: 44%">操作界面</p>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        FAPROTAX分析需要输入的文件包含OTU丰度表，文件格式支持biom格式和txt两种格式的。
-                        <br>
-                    </p>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>2.1.OTU丰度表</strong></span><br>
-                        BIOM格式是微生物组领域最常用的结果保存格式，优点是可将OTU或Feature表、样本属性、物种信息等多个表保存于同一个文件中，且格式统一，体积更小巧，目前被微生物组领域几乎所有主流软件所支持。此处可以直接使用
-                        <span style="font-weight:700;"><strong>凌恩生物扩增子结题报告</strong></span>中biom格式的OTU丰度表，位于结果文件夹的
-                        <span style="font-weight:700;"><strong>01.OTU_Taxa/ normalize/otu_taxa_table.biom</strong></span>，示例文件如下：
-                        <br>
-                    </p>
-                    <img src="/assets/images/softpic/instruction/fap2.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        也可以使用
-                        <span style="font-weight:700;"><strong>凌恩生物扩增子结题报告</strong></span>中excel格式的OTU丰度表，位于结果文件夹的
-                        <span style="font-weight:700;"><strong>01.OTU_Taxa/ normalize/otu_taxa_table.xls</strong></span>，在使用前需要用excel打开，首行增加“# Constructed from biom file”，并另存为制表符分隔的txt文件，示例文件如下：
-                        <br>
-                    </p>
-                    <img src="/assets/images/softpic/instruction/fap3.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        上传文件后，点击“提交”按键，即可开始分析
-                        <br>
-                    </p>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>2.2.查看任务</strong></span><br>
-                        提交任务后，点击界面右侧的“历史任务”模块，或者点击界面“我的任务”，都可以查看任务编号、软件名称和状态等信息，点击任务编号，即可查看分析结果。
-                        <br>
-                    </p>
-                    <img src="/assets/images/softpic/instruction/fap4.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        在任务详情界面，展示的是任务参数和结果文件列表2个区域，提供结果文件下载功能。<br>
-                    </p>
-                    <img src="/assets/images/softpic/instruction/fap5.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <br><br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>3.结果文件</strong></span><br>
-                        结果文件包含功能丰度表、biom格式的功能丰度表、每个功能相关的OTU的丰度表压缩包和与功能相关的总的OTU列表。
-                        <br>
-                        功能丰度表（functional_table.xls）：第一列为预测的功能列表，其后为样本列，数值表示相对丰度。(functional_table.biom为biom格式的功能丰度表。)
-                        <br>
-                    </p>
-                    <img src="/assets/images/softpic/instruction/fap6.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        功能相关的总OTU列表（functional_otu.xls）：第一列为预测的功能列表，其后该功能类别包含的OTU编号。
-                        <br>
-                    </p>
-                    <img src="/assets/images/softpic/instruction/fap7.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        每个功能相关的OTU丰度表压缩包（otuTables.zip）：每个功能为一个单独的文件，记录每个样本中对应该功能的OTU丰度信息。<br>
-                    </p>
-                </div>
-                <div class="tab-pane fade" id="example">
-                    <h5 style="margin-bottom: 2px">视频录制中...敬请期待！</h5>
-                </div>
-                <div id="history" class="form1_ins tab-pane fade">
-                    <a id="btn-refresh" class="btn_refresh mws-i-24 i-refresh-3" onclick="refresh('@abbre')">刷新状态</a>
-                    <ul id="hisul" style="margin-top: 15px">
-                        <li id="hislist" class="hislist">
-                            <div class="his_time"><span>任务编号</span></div>
-                            <div class="his_time"><span style="margin-left: -20px;">结束时间</span></div>
-                            <div class="his_name"><span style="margin-left: -23px;">状态</span></div>
-                            <hr>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+        @units.pageRight("", "","FAP")
     </div>
 
     <script type="text/javascript" src="@routes.Assets.versioned("js/toolsAdjust.js")"></script>
     <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/fileinput.min.js")" type="text/javascript"></script>
     <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/locales/zh.js")" type="text/javascript"></script>
     <script src="@routes.Assets.versioned("myjs/soft.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("myjs/redraw.js")" type="text/javascript"></script>
     <script type="text/javascript">
 
             $(function () {
                 formValidation();
                 loadHistory("@abbre");
                 getTaskName("FAPROTAX","FAP");
+                loadVideo("//13125180.s21v.faiusr.com/58/2/ABUIABA6GAAg2PjjgAYow_aruQQ.mp4","/assets/images/softpic/video/faprotax_video.png")
+                $("#instruction").append(instruction);
             });
 
             var lock = true;
@@ -206,7 +75,7 @@
                                 layer.close(index);
                                 var form1 = new FormData($("#FAPROTAX")[0]);
                                 $.ajax({
-                                    url: "/CloudPlatform/SoftTool/runFAPROTAX",
+                                    url: "/CloudPlatform/SoftTool/runSoft?abbre=@abbre&sname=FAPROTAX功能预测",
                                     type: "post",
                                     processData: false,
                                     contentType: false,
@@ -231,43 +100,85 @@
             }
 
             function formValidation() {
-                $('#FAPROTAX').formValidation({
-                    framework: 'bootstrap',
-                    icon: {
-                        valid: 'glyphicon glyphicon-ok',
-                        invalid: 'glyphicon glyphicon-remove',
-                        validating: 'glyphicon glyphicon-refresh'
-                    },
-                    fields: {
-                        taskname: {
-                            validators: {
-                                notEmpty: {
-                                    message: '任务编号不能为空!'
-                                },
-                                remote:{
-                                    type: 'POST',
-                                    url: '@routes.DutyController.checktaskname()',
-                                    message: "任务编号重复，请重新输入",
-                                    // delay: 1000
-                                }
-                            }
-                        },
-                        table: {
-                            validators: {
-                                notEmpty: {
-                                    message: '必须上传otu文件!'
-                                },
-                                file: {
-                                    // extension: 'jpeg,jpg,png',
-                                    // type: 'image/jpeg,image/png',
-                                    maxSize: 5*1024*1024,
-                                    message: '文件不得大于5M！'
-                                }
-                            }
-                        }
-                    }
-                });
+                let field = {};
+                let table = ["table"];
+                FieldFile(field, table);
+                let text = ["taskname"];
+                FieldTaskname(field, text);
+                let excluded = [":hidden"];
+                addFormValidation("FAPROTAX", field, excluded)
             }
+
+            var instruction = "<p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                    "                        <span style=\"font-weight:700;\"><strong>1.背景介绍</strong></span><br>\n" +
+                    "                        功能预测是基于扩增子测序数据开展微生物群落功能研究的重要内容，FAPROTAX是功能预测软件中的一枝独秀，其应用灵活，不受数据库局限（Greengene、silva和RDP都可），较适用于对环境样本（如海洋、湖泊等）的生物地球化学循环过程（特别是碳、氢、氮、磷、硫等元素循环）进行功能注释预测。原理是基于已发表验证的可培养菌文献，预测准确度较好，但相比于PICRUSt和Tax4Fun来说预测的覆盖度可能会降低。\n" +
+                    "                        <br>\n" +
+                    "                    </p>\n" +
+                    "                    <br>\n" +
+                    "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                    "                        <span style=\"font-weight:700;\"><strong>2.操作界面</strong></span><br>\n" +
+                    "                    </p>\n" +
+                    "                    <img src=\"/assets/images/softpic/instruction/fap1.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                    "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;padding-left: 44%\">操作界面</p>\n" +
+                    "                    <br>\n" +
+                    "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                    "                        FAPROTAX分析需要输入的文件包含OTU丰度表，文件格式支持biom格式和txt两种格式的。\n" +
+                    "                        <br>\n" +
+                    "                    </p>\n" +
+                    "                    <br>\n" +
+                    "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                    "                        <span style=\"font-weight:700;\"><strong>2.1.OTU丰度表</strong></span><br>\n" +
+                    "                        BIOM格式是微生物组领域最常用的结果保存格式，优点是可将OTU或Feature表、样本属性、物种信息等多个表保存于同一个文件中，且格式统一，体积更小巧，目前被微生物组领域几乎所有主流软件所支持。此处可以直接使用\n" +
+                    "                        <span style=\"font-weight:700;\"><strong>凌恩生物扩增子结题报告</strong></span>中biom格式的OTU丰度表，位于结果文件夹的\n" +
+                    "                        <span style=\"font-weight:700;\"><strong>01.OTU_Taxa/ normalize/otu_taxa_table.biom</strong></span>，示例文件如下：\n" +
+                    "                        <br>\n" +
+                    "                    </p>\n" +
+                    "                    <img src=\"/assets/images/softpic/instruction/fap2.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                    "                    <br>\n" +
+                    "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                    "                        也可以使用\n" +
+                    "                        <span style=\"font-weight:700;\"><strong>凌恩生物扩增子结题报告</strong></span>中excel格式的OTU丰度表，位于结果文件夹的\n" +
+                    "                        <span style=\"font-weight:700;\"><strong>01.OTU_Taxa/ normalize/otu_taxa_table.xls</strong></span>，在使用前需要用excel打开，首行增加“# Constructed from biom file”，并另存为制表符分隔的txt文件，示例文件如下：\n" +
+                    "                        <br>\n" +
+                    "                    </p>\n" +
+                    "                    <img src=\"/assets/images/softpic/instruction/fap3.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                    "                    <br>\n" +
+                    "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                    "                        上传文件后，点击“提交”按键，即可开始分析\n" +
+                    "                        <br>\n" +
+                    "                    </p>\n" +
+                    "                    <br>\n" +
+                    "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                    "                        <span style=\"font-weight:700;\"><strong>2.2.查看任务</strong></span><br>\n" +
+                    "                        提交任务后，点击界面右侧的“历史任务”模块，或者点击界面“我的任务”，都可以查看任务编号、软件名称和状态等信息，点击任务编号，即可查看分析结果。\n" +
+                    "                        <br>\n" +
+                    "                    </p>\n" +
+                    "                    <img src=\"/assets/images/softpic/instruction/fap4.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                    "                    <br>\n" +
+                    "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                    "                        在任务详情界面，展示的是任务参数和结果文件列表2个区域，提供结果文件下载功能。<br>\n" +
+                    "                    </p>\n" +
+                    "                    <img src=\"/assets/images/softpic/instruction/fap5.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                    "                    <br><br>\n" +
+                    "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                    "                        <span style=\"font-weight:700;\"><strong>3.结果文件</strong></span><br>\n" +
+                    "                        结果文件包含功能丰度表、biom格式的功能丰度表、每个功能相关的OTU的丰度表压缩包和与功能相关的总的OTU列表。\n" +
+                    "                        <br>\n" +
+                    "                        功能丰度表（functional_table.xls）：第一列为预测的功能列表，其后为样本列，数值表示相对丰度。(functional_table.biom为biom格式的功能丰度表。)\n" +
+                    "                        <br>\n" +
+                    "                    </p>\n" +
+                    "                    <img src=\"/assets/images/softpic/instruction/fap6.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                    "                    <br>\n" +
+                    "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                    "                        功能相关的总OTU列表（functional_otu.xls）：第一列为预测的功能列表，其后该功能类别包含的OTU编号。\n" +
+                    "                        <br>\n" +
+                    "                    </p>\n" +
+                    "                    <img src=\"/assets/images/softpic/instruction/fap7.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                    "                    <br>\n" +
+                    "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                    "                        每个功能相关的OTU丰度表压缩包（otuTables.zip）：每个功能为一个单独的文件，记录每个样本中对应该功能的OTU丰度信息。<br>\n" +
+                    "                    </p>" +
+                    "                    <br>";
 
     </script>
 }

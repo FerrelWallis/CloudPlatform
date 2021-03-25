@@ -31,3 +31,6 @@ libraryDependencies ++= Seq(
   "com.aliyun" % "aliyun-java-sdk-core" % "3.7.1",
   "com.aliyun" % "aliyun-java-sdk-dysmsapi" % "1.1.0"  //短信服务
 )
+
+// https://mvnrepository.com/artifact/org.apache.tika/tika-core
+libraryDependencies += "org.apache.tika" % "tika-core" % "2.0.0-ALPHA"

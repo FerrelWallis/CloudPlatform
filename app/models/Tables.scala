@@ -16,7 +16,7 @@ trait Tables {
   import slick.jdbc.{GetResult => GR}
 
   /** DDL for all tables. Call .create to execute. */
-  lazy val schema: profile.SchemaDescription = Array(Ak.schema, Dutys.schema, Feedback.schema, Notice.schema, Running.schema, Soft.schema, Users.schema).reduceLeft(_ ++ _)
+  lazy val schema: profile.SchemaDescription = Array(Ak.schema, Downfiles.schema, Dutys.schema, Feedback.schema, Mailbox.schema, Notice.schema, Running.schema, Soft.schema, Users.schema).reduceLeft(_ ++ _)
   @deprecated("Use .schema instead of .ddl", "3.0")
   def ddl = schema
 
@@ -42,6 +42,35 @@ trait Tables {
   }
   /** Collection-like TableQuery object for table Ak */
   lazy val Ak = new TableQuery(tag => new Ak(tag))
+
+  /** Entity class storing rows of table Downfiles
+   *  @param did Database column did SqlType(INT), AutoInc, PrimaryKey
+   *  @param abbre Database column abbre SqlType(TEXT)
+   *  @param file Database column file SqlType(TEXT)
+   *  @param fileins Database column fileins SqlType(TEXT) */
+  case class DownfilesRow(did: Int, abbre: String, file: String, fileins: String)
+  /** GetResult implicit for fetching DownfilesRow objects using plain SQL queries */
+  implicit def GetResultDownfilesRow(implicit e0: GR[Int], e1: GR[String]): GR[DownfilesRow] = GR{
+    prs => import prs._
+    DownfilesRow.tupled((<<[Int], <<[String], <<[String], <<[String]))
+  }
+  /** Table description of table downfiles. Objects of this class serve as prototypes for rows in queries. */
+  class Downfiles(_tableTag: Tag) extends profile.api.Table[DownfilesRow](_tableTag, Some("cloudbak"), "downfiles") {
+    def * = (did, abbre, file, fileins) <> (DownfilesRow.tupled, DownfilesRow.unapply)
+    /** Maps whole row to an option. Useful for outer joins. */
+    def ? = ((Rep.Some(did), Rep.Some(abbre), Rep.Some(file), Rep.Some(fileins))).shaped.<>({r=>import r._; _1.map(_=> DownfilesRow.tupled((_1.get, _2.get, _3.get, _4.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+
+    /** Database column did SqlType(INT), AutoInc, PrimaryKey */
+    val did: Rep[Int] = column[Int]("did", O.AutoInc, O.PrimaryKey)
+    /** Database column abbre SqlType(TEXT) */
+    val abbre: Rep[String] = column[String]("abbre")
+    /** Database column file SqlType(TEXT) */
+    val file: Rep[String] = column[String]("file")
+    /** Database column fileins SqlType(TEXT) */
+    val fileins: Rep[String] = column[String]("fileins")
+  }
+  /** Collection-like TableQuery object for table Downfiles */
+  lazy val Downfiles = new TableQuery(tag => new Downfiles(tag))
 
   /** Entity class storing rows of table Dutys
    *  @param id Database column id SqlType(INT), AutoInc, PrimaryKey
@@ -98,20 +127,21 @@ trait Tables {
    *  @param uid Database column uid SqlType(INT)
    *  @param subtime Database column subtime SqlType(TEXT)
    *  @param title Database column title SqlType(TEXT)
+   *  @param taskname Database column taskname SqlType(TEXT), Default(None)
    *  @param content Database column content SqlType(LONGTEXT), Length(2147483647,true)
    *  @param status Database column status SqlType(INT)
    *  @param process Database column process SqlType(TEXT) */
-  case class FeedbackRow(fid: Int, uid: Int, subtime: String, title: String, content: String, status: Int, process: String)
+  case class FeedbackRow(fid: Int, uid: Int, subtime: String, title: String, taskname: Option[String] = None, content: String, status: Int, process: String)
   /** GetResult implicit for fetching FeedbackRow objects using plain SQL queries */
-  implicit def GetResultFeedbackRow(implicit e0: GR[Int], e1: GR[String]): GR[FeedbackRow] = GR{
+  implicit def GetResultFeedbackRow(implicit e0: GR[Int], e1: GR[String], e2: GR[Option[String]]): GR[FeedbackRow] = GR{
     prs => import prs._
-    FeedbackRow.tupled((<<[Int], <<[Int], <<[String], <<[String], <<[String], <<[Int], <<[String]))
+    FeedbackRow.tupled((<<[Int], <<[Int], <<[String], <<[String], <<?[String], <<[String], <<[Int], <<[String]))
   }
   /** Table description of table feedback. Objects of this class serve as prototypes for rows in queries. */
   class Feedback(_tableTag: Tag) extends profile.api.Table[FeedbackRow](_tableTag, Some("cloudbak"), "feedback") {
-    def * = (fid, uid, subtime, title, content, status, process) <> (FeedbackRow.tupled, FeedbackRow.unapply)
+    def * = (fid, uid, subtime, title, taskname, content, status, process) <> (FeedbackRow.tupled, FeedbackRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = ((Rep.Some(fid), Rep.Some(uid), Rep.Some(subtime), Rep.Some(title), Rep.Some(content), Rep.Some(status), Rep.Some(process))).shaped.<>({r=>import r._; _1.map(_=> FeedbackRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = ((Rep.Some(fid), Rep.Some(uid), Rep.Some(subtime), Rep.Some(title), taskname, Rep.Some(content), Rep.Some(status), Rep.Some(process))).shaped.<>({r=>import r._; _1.map(_=> FeedbackRow.tupled((_1.get, _2.get, _3.get, _4.get, _5, _6.get, _7.get, _8.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column fid SqlType(INT), AutoInc, PrimaryKey */
     val fid: Rep[Int] = column[Int]("fid", O.AutoInc, O.PrimaryKey)
@@ -121,6 +151,8 @@ trait Tables {
     val subtime: Rep[String] = column[String]("subtime")
     /** Database column title SqlType(TEXT) */
     val title: Rep[String] = column[String]("title")
+    /** Database column taskname SqlType(TEXT), Default(None) */
+    val taskname: Rep[Option[String]] = column[Option[String]]("taskname", O.Default(None))
     /** Database column content SqlType(LONGTEXT), Length(2147483647,true) */
     val content: Rep[String] = column[String]("content", O.Length(2147483647,varying=true))
     /** Database column status SqlType(INT) */
@@ -130,6 +162,44 @@ trait Tables {
   }
   /** Collection-like TableQuery object for table Feedback */
   lazy val Feedback = new TableQuery(tag => new Feedback(tag))
+
+  /** Entity class storing rows of table Mailbox
+   *  @param mid Database column mid SqlType(INT), AutoInc, PrimaryKey
+   *  @param uid Database column uid SqlType(INT)
+   *  @param fid Database column fid SqlType(INT)
+   *  @param sender Database column sender SqlType(TEXT)
+   *  @param sendtime Database column sendtime SqlType(TEXT)
+   *  @param content Database column content SqlType(LONGTEXT), Length(2147483647,true)
+   *  @param status Database column status SqlType(INT) */
+  case class MailboxRow(mid: Int, uid: Int, fid: Int, sender: String, sendtime: String, content: String, status: Int)
+  /** GetResult implicit for fetching MailboxRow objects using plain SQL queries */
+  implicit def GetResultMailboxRow(implicit e0: GR[Int], e1: GR[String]): GR[MailboxRow] = GR{
+    prs => import prs._
+    MailboxRow.tupled((<<[Int], <<[Int], <<[Int], <<[String], <<[String], <<[String], <<[Int]))
+  }
+  /** Table description of table mailbox. Objects of this class serve as prototypes for rows in queries. */
+  class Mailbox(_tableTag: Tag) extends profile.api.Table[MailboxRow](_tableTag, Some("cloudbak"), "mailbox") {
+    def * = (mid, uid, fid, sender, sendtime, content, status) <> (MailboxRow.tupled, MailboxRow.unapply)
+    /** Maps whole row to an option. Useful for outer joins. */
+    def ? = ((Rep.Some(mid), Rep.Some(uid), Rep.Some(fid), Rep.Some(sender), Rep.Some(sendtime), Rep.Some(content), Rep.Some(status))).shaped.<>({r=>import r._; _1.map(_=> MailboxRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+
+    /** Database column mid SqlType(INT), AutoInc, PrimaryKey */
+    val mid: Rep[Int] = column[Int]("mid", O.AutoInc, O.PrimaryKey)
+    /** Database column uid SqlType(INT) */
+    val uid: Rep[Int] = column[Int]("uid")
+    /** Database column fid SqlType(INT) */
+    val fid: Rep[Int] = column[Int]("fid")
+    /** Database column sender SqlType(TEXT) */
+    val sender: Rep[String] = column[String]("sender")
+    /** Database column sendtime SqlType(TEXT) */
+    val sendtime: Rep[String] = column[String]("sendtime")
+    /** Database column content SqlType(LONGTEXT), Length(2147483647,true) */
+    val content: Rep[String] = column[String]("content", O.Length(2147483647,varying=true))
+    /** Database column status SqlType(INT) */
+    val status: Rep[Int] = column[Int]("status")
+  }
+  /** Collection-like TableQuery object for table Mailbox */
+  lazy val Mailbox = new TableQuery(tag => new Mailbox(tag))
 
   /** Entity class storing rows of table Notice
    *  @param id Database column id SqlType(INT), AutoInc, PrimaryKey

@@ -38,9 +38,9 @@
                                 下载结果图
                             </button>
                             <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 35px, 0px); top: 0px; left: 0px; will-change: transform;width: 150px">
-                                <a class="dropdown-item" id="downPic" onclick="downloadpics('ternary','pdf')">下载 pdf</a>
-                                <a class="dropdown-item" id="downPng" onclick="downloadpics('ternary','png')">下载 png</a>
-                                <a class="dropdown-item" id="downTiff" onclick="downloadpics('ternary','tiff')">下载 tiff</a>
+                                <a class="dropdown-item" id="downPic" onclick="downloadpics('@row.status','@row.taskname','ternary','pdf')">下载 pdf</a>
+                                <a class="dropdown-item" id="downPng" onclick="downloadpics('@row.status','@row.taskname','ternary','png')">下载 png</a>
+                                <a class="dropdown-item" id="downTiff" onclick="downloadpics('@row.status','@row.taskname','ternary','tiff')">下载 tiff</a>
                             </div>
                         </div>
                     </div>
@@ -63,41 +63,9 @@
                             </ul>
                             <div class="tab-content" style="box-sizing: border-box!important;padding-top: 30px">
                                 <div class="tab-pane fade active in" id="picpara">
-                                    <div class="form-group-p">
-                                        <div class="form-group">
-                                            <label>点大小转换：</label>
-                                        </div>
-                                        <div class="form-group right">
-                                            <select id="psz" name="psz" style="width: 45%;">
-                                                <option value="0">none</option>
-                                                <option value="1">log2</option>
-                                                <option value="2">log10</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group-p">
-                                        <div class="form-group">
-                                            <label>图片清晰度：</label>
-                                        </div>
-                                        <div class="form-group right">
-                                            <select id="dpi" name="dpi" style="width: 45%;">
-                                                <option value="72">72</option>
-                                                <option value="96">96</option>
-                                                <option value="300">300</option>
-                                                <option value="600">600</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group-p">
-                                        <div class="form-group" style="margin-top: 5px;">
-                                            <label for="">图片宽高：</label>
-                                        </div>
-                                        <div class="form-group">
-                                            <input type="text" id="width" name="width" class="form-control" placeholder="数字" value="20" style="width: 50px;float: left;margin-right: 5px;margin-top: 5px;margin-left: 10px;">
-                                            <label style="float: left;margin-top: 12px;">X</label>
-                                            <input type="text" id="height" name="height" class="form-control" placeholder="数字" value="20" style="width: 50px;  margin-left: 5px;float: left;margin-top: 5px;margin-right: 20px">
-                                        </div>
-                                    </div>
+                                    @units.redrawUnits.selector("","点大小转换：","psz")
+                                    @units.redrawUnits.selector("","图片清晰度：","dpi")
+                                    @units.redrawUnits.input_text_2("","图片宽高：","X","width","height","数字","数字")
                                 </div>
                                 <div class="tab-pane fade" id="colopara">
                                     <div class="one-line" >
@@ -110,7 +78,7 @@
                                             </div>
                                             <br><br>
                                             <div class="form-group-p" >
-                                                <div class="form-group" style="width: 85%">
+                                                <div class="form-group" style="width: calc(100% - 20px)">
                                                     <ul id="mycolor">
                                                     </ul>
                                                     <input type="text" id="color" name="color" class="form-control" value="" style="display: none">
@@ -121,58 +89,12 @@
                                     <br>
                                 </div>
                                 <div class="tab-pane fade" id="fontpara">
-                                    <div class="form-group-p">
-                                        <div class="form-group fontleft">
-                                            <label>主标题位置：</label>
-                                        </div>
-                                        <div class="form-group fontright">
-                                            <select id="mlpos" name="mlpos" style="width: 45%;">
-                                                <option value="0.1">左</option>
-                                                <option value="0.5">中</option>
-                                                <option value="0.9">右</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group-p" id="ytextpart">
-                                        <div class="form-group fontleft" style="margin-top: 5px;">
-                                            <label for="">主标题：</label>
-                                        </div>
-                                        <div class="form-group fontright">
-                                            <input type="text" id="ml" name="ml" class="form-control" placeholder="标题不可含有汉字" value="" style="margin-left: 10px;">
-                                        </div>
-                                    </div>
-                                    <div class="form-group-p" id="ytextpart">
-                                        <div class="form-group fontleft" style="margin-top: 5px;">
-                                            <label for="">X轴标题：</label>
-                                        </div>
-                                        <div class="form-group fontright">
-                                            <input type="text" id="xl" name="xl" class="form-control" placeholder="标题不可含有汉字" value="" style="margin-left: 10px;">
-                                        </div>
-                                    </div>
-                                    <div class="form-group-p" id="ytextpart">
-                                        <div class="form-group fontleft" style="margin-top: 5px;">
-                                            <label for="">Y轴标题：</label>
-                                        </div>
-                                        <div class="form-group fontright">
-                                            <input type="text" id="yl" name="yl" class="form-control" placeholder="标题不可含有汉字" value="" style="margin-left: 10px;">
-                                        </div>
-                                    </div>
-                                    <div class="form-group-p" id="ytextpart">
-                                        <div class="form-group fontleft" style="margin-top: 5px;">
-                                            <label for="">Z轴标题：</label>
-                                        </div>
-                                        <div class="form-group fontright">
-                                            <input type="text" id="zl" name="zl" class="form-control" placeholder="标题不可含有汉字" value="" style="margin-left: 10px;">
-                                        </div>
-                                    </div>
-                                    <div class="form-group-p" id="ytextpart">
-                                        <div class="form-group fontleft" style="margin-top: 5px;">
-                                            <label for="">图例标题：</label>
-                                        </div>
-                                        <div class="form-group fontright">
-                                            <input type="text" id="ll" name="ll" class="form-control" placeholder="标题不可含有汉字" value="" style="margin-left: 10px;">
-                                        </div>
-                                    </div>
+                                    @units.redrawUnits.selector("","主标题位置：","mlpos")
+                                    @units.redrawUnits.input_text_1("","主标题：","ml","标题不可含有汉字")
+                                    @units.redrawUnits.input_text_1("","X轴标题：","xl","标题不可含有汉字")
+                                    @units.redrawUnits.input_text_1("","Y轴标题：","yl","标题不可含有汉字")
+                                    @units.redrawUnits.input_text_1("","Z轴标题：","zl","标题不可含有汉字")
+                                    @units.redrawUnits.input_text_1("","图例标题：","ll","标题不可含有汉字")
                                 </div>
                             </div>
                             <br>
@@ -190,33 +112,10 @@
         </div>
     </div>
 
+    <script src="@routes.Assets.versioned("myjs/redraw.js")" type="text/javascript"></script>
     <script>
 
             const updatetime="2020-11-26";
-
-            function checkupdate(){
-                $(".update").text(updatetime);
-                if("@row.subtime".split(" ")[0]<=updatetime) {
-                    $(".update_panel").show();
-                    $(".redraw_panel").hide();
-                } else {
-                    $(".redraw_panel").show();
-                    $(".update_panel").hide();
-                }
-            }
-
-            function downloadpics(picname,suffix){
-                if("@row.status"!=="已完成"){
-                    swal({
-                        title: "无法下载",
-                        text: "任务未完成，无法下载！",
-                        type: "warning",
-                        confirmButtonText: "确认"
-                    });
-                }else{
-                    window.location.href = "/CloudPlatform/SoftTool/download?taskname=@row.taskname&picname="+picname+"&suffix="+suffix+"&num="+Math.random();
-                }
-            }
 
             const colorValidators = {
                 validators: {
@@ -224,8 +123,8 @@
                         message: '不能为空！'
                     },
                     color: {
-                        type: ['hex'],  // The default value for type
-                        message: '错误色值！必须为hex色值'
+                        type: ['hex','keyword'],  // The default value for type
+                        message: '错误色值！支持hex或keyword色值'
                     }
                 }
             };
@@ -332,7 +231,16 @@
 
             $(document).ready(function () {
                 if("@row.status"=="已完成"){
-                    checkupdate();
+                    var pszname = ["none","log2","log10"];
+                    var psz = ["0","1","2"];
+                    creatSelector("psz",pszname,psz);
+                    var dpi = ["72","96","300","600"];
+                    creatSelector("dpi",dpi,dpi);
+                    var mlposname = ["左","中","右"];
+                    var mlpos = ["0.1","0.5","0.9"];
+                    creatSelector("mlpos",mlposname,mlpos);
+
+                    checkupdate(updatetime, "@row.subtime");
                     $("#TRY").show();
                     $.ajax({
                         url:"/CloudPlatform/SoftTool/getTernaryData?taskname=@row.taskname",
@@ -350,7 +258,7 @@
                             colornum=data.group.length;
                             var colo="";
                             $.each(data.group,function (i,v) {
-                                colo +="<li class='form-group' style='width: 100%;'><div style='float: left;width: 30%;margin-top: 5px;'><label>"+v+"</label></div><div style='float: left;width: 70%'><input id='color"+i+"'  name='color"+i+"' class='colorPicker evo-cp0'></div></li>";
+                                colo +="<li class='form-group' style='width: 100%;'><div style='float: left;width: 30%;margin-top: 5px;'><label title='"+v+"'>"+v+"</label></div><div style='float: left;width: 70%'><input id='color"+i+"'  name='color"+i+"' class='colorPicker evo-cp0'></div></li>";
                             });
                             $("#mycolor").html(colo);
                             $.each(data.group,function (i,v) {
@@ -361,8 +269,10 @@
                                             $("#TRY").formValidation("revalidateField", "color"+i);
                                         });
                             });
+                            // $(".evo-cp-wrap").css("float", "left");
+                            // $(".evo-cp-wrap").css("width", "180px");
                             $(".evo-cp-wrap").css("float", "left");
-                            $(".evo-cp-wrap").css("width", "180px");
+                            $(".evo-cp-wrap").css("width", "calc(100% - 34px)");
                         }
                     });
                 }

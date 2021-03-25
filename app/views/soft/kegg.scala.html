@@ -27,21 +27,8 @@
             <div class="whitebox mysoft-content-left" style="width: 730px;">
                 <form id="KEGG" method="GET" enctype="multipart/form-data" class="well form-inline" style="box-sizing: border-box!important;">
                     <div class="softpic mws-ic KEGG"></div>
-                    <h3 class="tools-title">KEGG富集分析</h3>
-                    <div class="form-group">
-                        <h2>
-                        </h2>
-                    </div><br><br>
-                    <div class="form-group-p">
-                        <div class="form-group">
-                            <label for="mytaskname">任务编号：</label>
-                        </div>
-                        <div class="form-group">
-                            <input id="mytaskname" type="text" class="form-control" name="taskname" placeholder="" value="">
-                        </div>
-                    </div>
-
-                    <br><br>
+                    <h3 class="tools-title">KEGG富集分析</h3><br><br>
+                    @units.textinput("","","任务编号：", "taskname","","")
                     <div class="form-group-p" style="width: 100%">
                         <label for="exampleInputName2">
                             <em>1：</em><label><span>上传基因数据文件：</span></label>
@@ -101,229 +88,20 @@
                         </div>
                     </div>
                     <br>
-                    <br>
-                    <div class="form-group-p">
-                        <div class="form-group">
-                            <label style="float: left;"><em>2： </em>使用已有参考</label>
-                            <input type="checkbox" name="refer" value="A" id="refer" class="form-control" style="height: 13px;width: auto;float: left;margin-top: 9px;margin-left: 5px">
-                        </div>
-                    </div>
-                    <div id="para" style="display: none">
-                        <div class="form-group-p">
-                            <div class="form-group">
-                                <label for="exampleInputName2">选择物种：</label>
-                            </div>
-                            <div class="form-group">
-                                <select name="species" id="species">
-                                    <option value="Agaricus_bisporus" selected="selected">Agaricus_bisporus</option>
-                                    <option value="Arabidopsis_thaliana">Arabidopsis_thaliana</option>
-                                    <option value="Beet">Beet</option>
-                                    <option value="Candida_albicans">Candida_albicans</option>
-                                    <option value="Chicken">Chicken</option>
-                                    <option value="Cow">Cow</option>
-                                    <option value="Goat">Goat</option>
-                                    <option value="Human_HG19">Human_HG19</option>
-                                    <option value="Human_HG38">Human_HG38</option>
-                                    <option value="Mouse">Mouse</option>
-                                    <option value="Rat">Rat</option>
-                                    <option value="Rice">Rice</option>
-                                    <option value="Sheep">Sheep</option>
-                                    <option value="Solanum_lycopersicum">Solanum_lycopersicum</option>
-                                    <option value="Solanum_tuberosum">Solanum_tuberosum</option>
-                                    <option value="Soybean">Soybean</option>
-                                    <option value="watermelon">watermelon</option>
-                                    <option value="White_pear">White_pear</option>
-                                    <option value="Zebrafish">Zebrafish</option>
-                                </select>
-                            </div>
-                        </div>
-                        <br>
-                    </div>
-                    <br>
-                    <br>
-                    <br>
-                    <div id="para2">
-                        <div class="form-group-p" style="width: 100%">
-                            <label for="exampleInputName2">
-                                <em>3：</em><label><span>背景基因文件：</span></label>
-                            </label>
-                            <div class="one-line">
-                                <div class="form-group" style="width: 400px;">
-                                    <input type="file" class="form-control file" id="table2" name="table2" >
-                                </div>
-                                <div class="form-group-extra" style="margin-left: 20px">
-                                    <em><a href="/assets/files/kolist.txt" target='_blank'>示例文件</a></em>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <br>
-                    <br>
+                    @units.checkbox("2： ","","使用已有参考","refer")
+                    @units.selector("","para","选择物种：","species")<br><br>
+                    @units.fileupload("3：","para2","背景基因文件：","table2","kolist.txt")<br>
                     <input type="button" value="提&nbsp;&nbsp;交" name="submit" class="btn btn-primary" onclick="kegg()">
                 </form>
-
             </div>
-
-            <div class="handler"></div>
-            <div class="mysoft-content-right" style="width: 320px;">
-                <ul class="nav nav-tabs nav-tabs-right">
-                    <li class="active" id="ins_tab1">
-                        <a href="###" data-target="#instruction" data-toggle="tab">使用说明</a>
-                    </li>
-                    <li class="" id="out_tab1">
-                        <a href="###" data-target="#example" data-toggle="tab">示例结果</a>
-                    </li>
-                    <li class="" id="his_tab1">
-                        <a href="#" data-target="#history" data-toggle="tab">历史任务</a>
-                    </li>
-                </ul>
-                <div class="tab-content" style="box-sizing: border-box!important;">
-                    <div class="tab-pane fade active in" id="instruction">
-                        <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                            <span style="font-weight:700;"><strong>1.背景介绍</strong></span><br>
-                            KEGG是了解高级功能和生物系统（如细胞、 生物和生态系统），从分子水平信息，尤其是大型分子数据集生成的基因组测序和其他高通量实验技术的实用程序数据库资源， 由日本京都大学生物信息学中心的Kanehisa实验室于1995年建立。是国际最常用的生物信息数据库之一，以“理解生物系统的高级功能和实用程序资源库”著称。KEGG包括代谢通路(PATHWAY)、药物（DRUG）、疾病(DISEASE)、基因序列（GENES）及基因组（GENOME）等数据。
-                            <br>
-                        </p>
-                        <br>
-                        <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                            <span style="font-weight:700;"><strong>2.操作方法</strong></span>
-                        </p>
-                        <img src="/assets/images/softpic/instruction/kegg1.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                        <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
-                        <br>
-                        <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;padding-left: 44%">
-                            操作界面
-                        </p>
-                        <br>
-                        <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                            <span style="font-weight:700;"><strong>2.1.上传基因数据文件</strong></span><br>
-                            可以选择输入文件或手动输入两种上传数据的方式，云平台支持的格式为基因表达差异分析结果，输入文件必须为txt格式文件，示例文件如下。
-                            <br>
-                        </p>
-                        <img src="/assets/images/softpic/instruction/kegg2.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                        <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
-                        <br>
-                        <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                            基因差异表达分析结果（geneid列输入富集的geneid，logFC列为差异倍数取log2，大于0表示基因上调，小于0表示基因下调）
-                        </p>
-                        <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                            将准备好的差异基因表达文件上传到“1：上传基因数据文件”
-                            <br>
-                        </p>
-                        <br>
-                        <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                            <span style="font-weight:700;"><strong>2.2.选择背景基因文件</strong></span><br>
-                            背景基因文件可以分为有参考基因组和无参考基因组两种情况。
-                            <br>
-                        </p>
-                        <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                            <span style="font-weight:700;">2.2.1.有参考基因组</span><br>
-                            选择“2：使用已有参考”条目，下拉菜单中提供的物种有水稻、拟南芥、小鼠、大鼠、斑马鱼、鸡、秀丽线虫、果蝇、人等模式物种。选择完成后点击提交即可。
-                            <br>
-                        </p>
-                        <img src="/assets/images/softpic/instruction/kegg3.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                        <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
-                        <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                            <span style="font-weight:700;">2.2.2.无参考基因组</span><br>
-                            非模式物种没有参考基因组可以选择，需要自备KEGG背景基因文件，文件格式必须为txt，示例文件如下，第一列为基因id，第二列为该基因对应的KO号。
-                            <br>
-                        </p>
-                        <img src="/assets/images/softpic/instruction/kegg4.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                        <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
-                        <br>
-                        <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                            将文件上传到“3:背景基因文件”中，点击“提交”即可
-                            <br>
-                        </p>
-                        <img src="/assets/images/softpic/instruction/kegg5.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                        <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
-                        <br>
-                        <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                            <span style="font-weight:700;"><strong>2.3.查看任务</strong></span><br>
-                            提交任务后，点击界面右侧的“KEGG历史任务”模块，可以看到任务编号、提交时间、结束时间和状态。
-                            <br>
-                        </p>
-                        <img src="/assets/images/softpic/instruction/kegg6.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                        <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
-                        <br>
-                        <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                            通过点击界面“我的任务”可以查看任务编号、软件名称和状态等信息，点击任务编号，即可查看分析结果。
-                            <br>
-                        </p>
-                        <img src="/assets/images/softpic/instruction/kegg7.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                        <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
-                        <br>
-                        <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                            在任务详情界面，展示的是任务参数、结果文件列表和在线调整图片3个区域，提供结果文件下载和图片调整功能。
-                            <br>
-                        </p>
-                        <img src="/assets/images/softpic/instruction/kegg8.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                        <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
-                        <br>
-                        <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                            <span style="font-weight:700;"><strong>3.结果调整</strong></span><br>
-                            云平台提供在线调整图片功能，可以通过调整是否按基因上下调绘制图片、显示数据行数、条形宽度、图片大小、添加自定义颜色等参数，调整KEGG富集分析柱状图图片展示效果，调整完成后点击“绘制”，即可生成新图片，新图片可以在下载区域进行下载。
-                            <br>
-                        </p>
-                        <img src="/assets/images/softpic/instruction/kegg9.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                        <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
-                        <br>
-                        <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                            <span style="font-weight:700;"><strong>4.结果解读</strong></span><br>
-                            <span style="font-weight:700;"><strong>4.1.KEGG富集分析柱状图</strong></span><br>
-                            纵坐标为KEGG pathway，横坐标为注释到该pathway下的差异基因个数，同一pathway分别按上调和下调基因绘制，图例展示了上下调基因分类的颜色。
-                            <br>
-                        </p>
-                        <img src="/assets/images/softpic/instruction/kegg10.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                        <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
-                        <br>
-                        <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                            <span style="font-weight:700;"><strong>4.2.KEGG富集分析结果图</strong></span><br>
-                            KEGG富集程度通过Rich factor、pvalue和富集到此pathway上的基因个数来衡量。其中Rich factor指差异表达的基因中位于该pathway条目的基因数目与所有有注释基因中位于该pathway条目的基因总数的比值。pvalue的取值范围为[0-1]，越接近于零，表示富集越显著。
-                            <br>
-                            横轴表示富集因子，即富集到某个 KEGG 通路的差异基因个数占测序得到的背景基因个数的比值;纵坐标表示该 KEGG通路行使的功能;圆圈越大代表富集到此通路的差异基因个数相对越多;从蓝色到红色的色谱代表未修正的 p-value 值。
-                        </p>
-                        <img src="/assets/images/softpic/instruction/kegg11.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                        <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
-                        <br>
-
-                        <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                            <span style="font-weight:700;"><strong>4.3.KEGG富集分析结果</strong></span><br>
-                            (1) layer1-layer3:KEGG一至三级分类<br>
-                            (2) ID：KEGG 数据库中通路唯一的编号信息<br>
-                            (3) Input number:该通路下差异基因的个数。<br>
-                            (4) Background number:该通路下注释基因的个数。<br>
-                            (5) P-value:富集分析统计学显著水平。<br>
-                            (6) FDR：fdr方法校正后的统计学显著水平该term的具体网络链接。<br>
-                            (7) Input:该通路下具体的上下调基因<br>
-                            (8) Hyperlink:该通路的具体网络链接<br>
-                        </p>
-                        <img src="/assets/images/softpic/instruction/kegg12.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                        <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
-                        <br>
-                    </div>
-                    <div class="tab-pane fade" id="example">
-                        <div id="dplayer"></div>
-                    </div>
-                    <div id="history" class="form1_ins tab-pane fade">
-                        <a id="btn-refresh" class="btn_refresh mws-i-24 i-refresh-3" onclick="refresh('@abbre')">刷新状态</a>
-                        <ul id="hisul" style="margin-top: 15px">
-                            <li id="hislist" class="hislist">
-                                <div class="his_time"><span>任务编号</span></div>
-                                <div class="his_time"><span style="margin-left: -20px;">结束时间</span></div>
-                                <div class="his_name"><span style="margin-left: -23px;">状态</span></div>
-                                <hr>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+            @units.pageRight("", "","KEGG")
         </div>
 
         <script type="text/javascript" src="@routes.Assets.versioned("js/toolsAdjust.js")"></script>
         <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/fileinput.min.js")" type="text/javascript"></script>
         <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/locales/zh.js")" type="text/javascript"></script>
         <script src="@routes.Assets.versioned("myjs/soft.js")" type="text/javascript"></script>
+        <script src="@routes.Assets.versioned("myjs/redraw.js")" type="text/javascript"></script>
         <script type="text/javascript">
 
 
@@ -332,6 +110,13 @@
                     loadHistory("@abbre");
                     getTaskName("KEGG","KEG");
                     loadVideo("//13125180.s21v.faiusr.com/58/ABUIABA6GAAg_MzS_QUojPnWPA.mp4","/assets/images/softpic/video/kegg_video.png")
+
+                    $("#para").hide();
+                    $("#instruction").append(instruction);
+                    var speciesname = ["Agaricus_bisporus","Arabidopsis_thaliana","Beet","Candida_albicans","Chicken","Cow","Goat","Human_HG19","Human_HG38","Mouse","Rat","Rice","Sheep","Solanum_lycopersicum","Solanum_tuberosum","Soybean","watermelon","White_pear","Zebrafish"];
+                    var species = ["Agaricus_bisporus","Arabidopsis_thaliana","Beet","Candida_albicans","Chicken","Cow","Goat","Human_HG19","Human_HG38","Mouse","Rat","Rice","Sheep","Solanum_lycopersicum","Solanum_tuberosum","Soybean","watermelon","White_pear","Zebrafish"];
+                    creatSelector("species",speciesname,species,"Agaricus_bisporus");
+
                 });
 
                 var flagtable=true;
@@ -489,19 +274,6 @@
                     }
                 });
 
-                // function openrefer() {
-                //     var isSelected = this.checked;
-                //     if (isSelected === true) {
-                //         $("#para").show();
-                //         $("#para2").hide();
-                //         ref="TRUE";
-                //     } else {
-                //         $("#para").hide();
-                //         $("#para2").show();
-                //         ref="FALSE";
-                //     }
-                // }
-
                 function showexample(type,param) {
                     if(type=="table"){
                         if(table==1) {
@@ -517,56 +289,15 @@
                 }
 
                 function formValidation() {
-                    $('#KEGG').formValidation({
-                        framework: 'bootstrap',
-                        icon: {
-                            valid: 'glyphicon glyphicon-ok',
-                            invalid: 'glyphicon glyphicon-remove',
-                            validating: 'glyphicon glyphicon-refresh'
-                        },
-                        fields: {
-                            taskname: {
-                                validators: {
-                                    notEmpty: {
-                                        message: '任务编号不能为空!'
-                                    },
-                                    remote:{
-                                        type: 'POST',
-                                        url: '@routes.DutyController.checktaskname()',
-                                        message: "任务编号重复，请重新输入",
-                                        delay: 1000
-                                    }
-                                }
-                            },
-                            table1: {
-                                validators: {
-                                    notEmpty: {
-                                        message: '必须上传矩阵表格文件!'
-                                    },
-                                    file: {
-                                        // extension: 'jpeg,jpg,png',
-                                        // type: 'image/jpeg,image/png',
-                                        maxSize: 5*1024*1024,
-                                        message: '文件不得大于5M！'
-                                    }
-                                }
-                            },
-                            txdata1: {
-                                validators: {
-                                    notEmpty: {
-                                        message: '必须输入矩阵表格文件!'
-                                    }
-                                }
-                            },
-                            table2: {
-                                validators: {
-                                    notEmpty: {
-                                        message: '必须上传背景基因文件!'
-                                    }
-                                }
-                            }
-                        }
-                    });
+                    let field = {};
+                    let table = ["table1", "table2"];
+                    FieldFile(field, table);
+                    let text = ["taskname"];
+                    FieldTaskname(field, text);
+                    let text2 = ["txdata1"];
+                    FieldText(field, text2);
+                    let excluded = [":hidden"];
+                    addFormValidation("KEGG", field, excluded)
                 }
 
                 var ta1="Geneid\n" +
@@ -1447,6 +1178,130 @@
                         "Glyma.03G264300\tK00454\n" +
                         "Glyma.03G264400\tK14288\n" +
                         "Glyma.03G264600\tK15191\n" ;
+
+
+                var instruction = "<p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                        "                            <span style=\"font-weight:700;\"><strong>1.背景介绍</strong></span><br>\n" +
+                        "                            KEGG是了解高级功能和生物系统（如细胞、 生物和生态系统），从分子水平信息，尤其是大型分子数据集生成的基因组测序和其他高通量实验技术的实用程序数据库资源， 由日本京都大学生物信息学中心的Kanehisa实验室于1995年建立。是国际最常用的生物信息数据库之一，以“理解生物系统的高级功能和实用程序资源库”著称。KEGG包括代谢通路(PATHWAY)、药物（DRUG）、疾病(DISEASE)、基因序列（GENES）及基因组（GENOME）等数据。\n" +
+                        "                            <br>\n" +
+                        "                        </p>\n" +
+                        "                        <br>\n" +
+                        "                        <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                        "                            <span style=\"font-weight:700;\"><strong>2.操作方法</strong></span>\n" +
+                        "                        </p>\n" +
+                        "                        <img src=\"/assets/images/softpic/instruction/kegg1.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                        "                        <span style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\"></span>\n" +
+                        "                        <br>\n" +
+                        "                        <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;padding-left: 44%\">\n" +
+                        "                            操作界面\n" +
+                        "                        </p>\n" +
+                        "                        <br>\n" +
+                        "                        <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                        "                            <span style=\"font-weight:700;\"><strong>2.1.上传基因数据文件</strong></span><br>\n" +
+                        "                            可以选择输入文件或手动输入两种上传数据的方式，云平台支持的格式为基因表达差异分析结果，输入文件必须为txt格式文件，示例文件如下。\n" +
+                        "                            <br>\n" +
+                        "                        </p>\n" +
+                        "                        <img src=\"/assets/images/softpic/instruction/kegg2.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                        "                        <span style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\"></span>\n" +
+                        "                        <br>\n" +
+                        "                        <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                        "                            基因差异表达分析结果（geneid列输入富集的geneid，logFC列为差异倍数取log2，大于0表示基因上调，小于0表示基因下调）\n" +
+                        "                        </p>\n" +
+                        "                        <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                        "                            将准备好的差异基因表达文件上传到“1：上传基因数据文件”\n" +
+                        "                            <br>\n" +
+                        "                        </p>\n" +
+                        "                        <br>\n" +
+                        "                        <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                        "                            <span style=\"font-weight:700;\"><strong>2.2.选择背景基因文件</strong></span><br>\n" +
+                        "                            背景基因文件可以分为有参考基因组和无参考基因组两种情况。\n" +
+                        "                            <br>\n" +
+                        "                        </p>\n" +
+                        "                        <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                        "                            <span style=\"font-weight:700;\">2.2.1.有参考基因组</span><br>\n" +
+                        "                            选择“2：使用已有参考”条目，下拉菜单中提供的物种有水稻、拟南芥、小鼠、大鼠、斑马鱼、鸡、秀丽线虫、果蝇、人等模式物种。选择完成后点击提交即可。\n" +
+                        "                            <br>\n" +
+                        "                        </p>\n" +
+                        "                        <img src=\"/assets/images/softpic/instruction/kegg3.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                        "                        <span style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\"></span>\n" +
+                        "                        <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                        "                            <span style=\"font-weight:700;\">2.2.2.无参考基因组</span><br>\n" +
+                        "                            非模式物种没有参考基因组可以选择，需要自备KEGG背景基因文件，文件格式必须为txt，示例文件如下，第一列为基因id，第二列为该基因对应的KO号。\n" +
+                        "                            <br>\n" +
+                        "                        </p>\n" +
+                        "                        <img src=\"/assets/images/softpic/instruction/kegg4.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                        "                        <span style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\"></span>\n" +
+                        "                        <br>\n" +
+                        "                        <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                        "                            将文件上传到“3:背景基因文件”中，点击“提交”即可\n" +
+                        "                            <br>\n" +
+                        "                        </p>\n" +
+                        "                        <img src=\"/assets/images/softpic/instruction/kegg5.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                        "                        <span style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\"></span>\n" +
+                        "                        <br>\n" +
+                        "                        <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                        "                            <span style=\"font-weight:700;\"><strong>2.3.查看任务</strong></span><br>\n" +
+                        "                            提交任务后，点击界面右侧的“KEGG历史任务”模块，可以看到任务编号、提交时间、结束时间和状态。\n" +
+                        "                            <br>\n" +
+                        "                        </p>\n" +
+                        "                        <img src=\"/assets/images/softpic/instruction/kegg6.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                        "                        <span style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\"></span>\n" +
+                        "                        <br>\n" +
+                        "                        <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                        "                            通过点击界面“我的任务”可以查看任务编号、软件名称和状态等信息，点击任务编号，即可查看分析结果。\n" +
+                        "                            <br>\n" +
+                        "                        </p>\n" +
+                        "                        <img src=\"/assets/images/softpic/instruction/kegg7.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                        "                        <span style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\"></span>\n" +
+                        "                        <br>\n" +
+                        "                        <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                        "                            在任务详情界面，展示的是任务参数、结果文件列表和在线调整图片3个区域，提供结果文件下载和图片调整功能。\n" +
+                        "                            <br>\n" +
+                        "                        </p>\n" +
+                        "                        <img src=\"/assets/images/softpic/instruction/kegg8.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                        "                        <span style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\"></span>\n" +
+                        "                        <br>\n" +
+                        "                        <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                        "                            <span style=\"font-weight:700;\"><strong>3.结果调整</strong></span><br>\n" +
+                        "                            云平台提供在线调整图片功能，可以通过调整是否按基因上下调绘制图片、显示数据行数、条形宽度、图片大小、添加自定义颜色等参数，调整KEGG富集分析柱状图图片展示效果，调整完成后点击“绘制”，即可生成新图片，新图片可以在下载区域进行下载。\n" +
+                        "                            <br>\n" +
+                        "                        </p>\n" +
+                        "                        <img src=\"/assets/images/softpic/instruction/kegg9.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                        "                        <span style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\"></span>\n" +
+                        "                        <br>\n" +
+                        "                        <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                        "                            <span style=\"font-weight:700;\"><strong>4.结果解读</strong></span><br>\n" +
+                        "                            <span style=\"font-weight:700;\"><strong>4.1.KEGG富集分析柱状图</strong></span><br>\n" +
+                        "                            纵坐标为KEGG pathway，横坐标为注释到该pathway下的差异基因个数，同一pathway分别按上调和下调基因绘制，图例展示了上下调基因分类的颜色。\n" +
+                        "                            <br>\n" +
+                        "                        </p>\n" +
+                        "                        <img src=\"/assets/images/softpic/instruction/kegg10.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                        "                        <span style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\"></span>\n" +
+                        "                        <br>\n" +
+                        "                        <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                        "                            <span style=\"font-weight:700;\"><strong>4.2.KEGG富集分析结果图</strong></span><br>\n" +
+                        "                            KEGG富集程度通过Rich factor、pvalue和富集到此pathway上的基因个数来衡量。其中Rich factor指差异表达的基因中位于该pathway条目的基因数目与所有有注释基因中位于该pathway条目的基因总数的比值。pvalue的取值范围为[0-1]，越接近于零，表示富集越显著。\n" +
+                        "                            <br>\n" +
+                        "                            横轴表示富集因子，即富集到某个 KEGG 通路的差异基因个数占测序得到的背景基因个数的比值;纵坐标表示该 KEGG通路行使的功能;圆圈越大代表富集到此通路的差异基因个数相对越多;从蓝色到红色的色谱代表未修正的 p-value 值。\n" +
+                        "                        </p>\n" +
+                        "                        <img src=\"/assets/images/softpic/instruction/kegg11.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                        "                        <span style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\"></span>\n" +
+                        "                        <br>\n" +
+                        "\n" +
+                        "                        <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                        "                            <span style=\"font-weight:700;\"><strong>4.3.KEGG富集分析结果</strong></span><br>\n" +
+                        "                            (1) layer1-layer3:KEGG一至三级分类<br>\n" +
+                        "                            (2) ID：KEGG 数据库中通路唯一的编号信息<br>\n" +
+                        "                            (3) Input number:该通路下差异基因的个数。<br>\n" +
+                        "                            (4) Background number:该通路下注释基因的个数。<br>\n" +
+                        "                            (5) P-value:富集分析统计学显著水平。<br>\n" +
+                        "                            (6) FDR：fdr方法校正后的统计学显著水平该term的具体网络链接。<br>\n" +
+                        "                            (7) Input:该通路下具体的上下调基因<br>\n" +
+                        "                            (8) Hyperlink:该通路的具体网络链接<br>\n" +
+                        "                        </p>\n" +
+                        "                        <img src=\"/assets/images/softpic/instruction/kegg12.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                        "                        <span style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\"></span>\n" +
+                        "                        <br>";
 
         </script>
 

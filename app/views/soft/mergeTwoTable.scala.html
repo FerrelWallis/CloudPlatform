@@ -30,176 +30,53 @@
         <div class="  mysoft-content-left  whitebox" style="width: 590px;">
             <form id="MTT" method="GET" enctype="multipart/form-data" class="well form-inline" style="box-sizing: border-box!important;">
                 <div class="softpic mws-ic MTT"></div>
-                <h3 class="tools-title">两表格合并</h3>
-                <div class="form-group">
-                    <h2>
-                    </h2>
-                </div><br><br>
-                <div class="form-group-p">
-                    <div class="form-group">
-                        <label for="mytaskname">任务编号：</label>
-                    </div>
-                    <div class="form-group">
-                        <input id="mytaskname" type="text" class="form-control" name="taskname" placeholder="" value="Box">
-                    </div>
-                </div>
-
-                <br><br>
-                <div id="myform">
-                    <div id="div1" class="one-line">
-                        <div class="form-group-p">
-                            <div class="form-group">
-                                <label for="filepath1"><em>1：</em>上传矩阵文件1：</label>
-                            </div>
-                            <div class="form-group">
-                                <input type="file" class="form-control file" id="table1" name="table1" onchange="checkTable('table1')">
-                            </div>
-                        </div>
-                        <div class="form-group-extra">
-                            <em>
-                                <a href='/assets/files/merge2t_1.xls' target='_blank'>示例文件(xls)</a>
-                                <a href='/assets/files/merge2t_1.txt' target='_blank' style="margin-left: 10px;">示例文件(txt)</a>
-                            </em>
-                        </div>
-                        <br>
-                        <br>
-                    </div>
-                    <div id="div1" class="one-line">
-                        <div class="form-group-p">
-                            <div class="form-group">
-                                <label for="filepath1"><em>2：</em>上传矩阵文件2：</label>
-                            </div>
-                            <div class="form-group">
-                                <input type="file" class="form-control file" id="table2" name="table2" onchange="checkTable('table2')">
-                            </div>
-                        </div>
-                        <div class="form-group-extra">
-                            <em>
-                                <a href='/assets/files/merge2t_2.xls' target='_blank'>示例文件(xls)</a>
-                                <a href='/assets/files/merge2t_2.txt' target='_blank' style="margin-left: 10px;">示例文件(txt)</a>
-                            </em>
-                        </div>
-                        <br>
-                        <br>
-                    </div>
-                </div>
-                <div class="form-group-p" style="width: 100%;">
-                    <div class="form-group">
-                        <label for=""><em>3：</em>合并参照列 (矩阵1 - 矩阵2) ：</label>
-                    </div>
-                    <div class="form-group">
-                        <label style="width:50px;">
-                            第
-                            <input type="text" name="b1" class="form-control" placeholder="数字" value="1" style="width: 60px">
-                            列
-                        </label>
-                        <label>-</label>
-                        <label style="width:50px;">
-                            第
-                            <input type="text" name="b2" class="form-control" placeholder="数字" value="1" style="width: 60px">
-                            列
-                        </label>
-                    </div>
-                </div>
-                <br>
-                <br>
-                <div class="form-group-p">
-                    <div class="form-group">
-                        <label><em>4：</em>设置合并方式：</label>
-                    </div>
-                    <div class="form-group">
-                        <select name="ct" id="ct">
-                            <option value="in">输出两表都含有的行(交集)--内连接</option>
-                            <option value="left">输出表1含有的行--左连接</option>
-                            <option value="right">输出表2含有的行--右连接</option>
-                            <option value="all" selected="selected">输出两表所有的行(并集)--全连接</option>
-                        </select>
-                    </div>
-                </div>
-                <br>
-                <br>
-                <div class="form-group-p">
-                    <div class="form-group">
-                        <label><em>5：</em>缺省值设置：</label>
-                    </div>
-                    <div class="form-group">
-                        <select name="sn" id="sn">
-                            <option value="--">--</option>
-                            <option value="X">X</option>
-                            <option value="NULL">NULL</option>
-                            <option value="N/A" selected>N/A</option>
-                            <option value="default">自定义</option>
-                        </select>
-                    </div>
-                </div>
-                <br>
-                <br>
-                <div id="default" class="form-group-p" style="display: none">
-                    <div class="form-group">
-                        <label for="">
-                            自定义缺省值：</label>
-                    </div>
-                    <div class="form-group">
-                        <label style="width:50px;">
-                            <input type="text" name="mysn" class="form-control" placeholder="自定义缺省值" value="" style="width: 100px">
-                        </label>
-                    </div>
-                    <br>
-                    <br>
-                </div>
+                <h3 class="tools-title">两表格合并</h3><br><br>
+                @units.textinput("","","任务编号：", "taskname","","")
+                @units.fileupload2("1： ", "div1", "上传矩阵文件1：","table1","merge2t_1.txt","merge2t_1.xls")<br>
+                @units.fileupload2("2： ", "div2", "上传矩阵文件2：","table2","merge2t_2.txt","merge2t_2.xls")<br>
+                @units.textinput2("3：","","合并参照列 (矩阵1 - 矩阵2) ：","-","b1","b2","数字","数字","1","1")
+                @units.selector("4：","","设置合并方式：","ct")
+                @units.selector("5：","","缺省值设置：","sn")
+                @units.textinput("","default","自定义缺省值：","mysn","自定义缺省值","")
                 <br>
                 <br>
                 <input type="button" value="提&nbsp;&nbsp;交" name="submit" class="btn btn-primary" onclick="merge()">
             </form>
         </div>
-        <div class="handler"></div>
-        <div class="mysoft-content-right" style="width: 460px;">
-            <ul class="nav nav-tabs">
-                <li class="active" id="ins_tab1">
-                    <a href="###" data-target="#instruction" data-toggle="tab">使用说明</a>
-                </li>
-                <li class="" id="out_tab1">
-                    <a href="###" data-target="#example" data-toggle="tab">教学视频</a>
-                </li>
-                <li class="" id="his_tab1">
-                    <a href="#" data-target="#history" data-toggle="tab">历史任务</a>
-                </li>
-            </ul>
-            <div class="tab-content" style="box-sizing: border-box!important;">
-                <div class="tab-pane fade active in" id="instruction">
-                    <p style="margin-bottom: 2px;color: red">支持上传excel文件和制表符分隔的txt文件</p>
-                    <h5 style="margin-bottom: 2px">更详细使用说明编写中...敬请期待！</h5>
-                </div>
-                <div class="tab-pane fade" id="example">
-                    <h5 style="margin-bottom: 2px">视频录制中...敬请期待！</h5>
-                    <div id="dplayer"></div>
-                </div>
-                <div id="history" class="form1_ins tab-pane fade">
-                    <a id="btn-refresh" class="btn_refresh mws-i-24 i-refresh-3" onclick="refresh('@abbre')">刷新状态</a>
-                    <ul id="hisul" style="margin-top: 15px">
-                        <li id="hislist" class="hislist">
-                            <div class="his_time"><span>任务编号</span></div>
-                            <div class="his_time"><span style="margin-left: -20px;">结束时间</span></div>
-                            <div class="his_name"><span style="margin-left: -23px;">状态</span></div>
-                            <hr>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+        @units.pageRight("更详细使用说明编写中...敬请期待！", "视频录制中...敬请期待！","MTT")
     </div>
 
     <script type="text/javascript" src="@routes.Assets.versioned("js/toolsAdjust.js")"></script>
     <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/fileinput.min.js")" type="text/javascript"></script>
     <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/locales/zh.js")" type="text/javascript"></script>
     <script src="@routes.Assets.versioned("myjs/soft.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("myjs/redraw.js")" type="text/javascript"></script>
     <script type="text/javascript">
+
+            $("#table1").change(function () {
+                checkTable('table1');
+            });
+
+            $("#table2").change(function () {
+                checkTable('table2');
+            });
 
             $(function () {
                 formValidation();
                 loadHistory("@abbre");
                 getTaskName("MTT","MTT");
                 // loadVideo("//13125180.s21v.faiusr.com/58/ABUIABA6GAAgjp_K_QUorqPq9gU.mp4","/assets/images/softpic/video/box_video.png")
+
+                $("#default").hide();
+
+                var ctname = ["输出两表都含有的行(交集)--内连接","输出表1含有的行--左连接","输出表2含有的行--右连接","输出两表所有的行(并集)--全连接"];
+                var ct = ["in","left","right","all"];
+                creatSelector("ct",ctname,ct,"输出两表所有的行(并集)--全连接");
+
+                var snname = ["--","X","NULL","N/A","自定义"];
+                var sn = ["--","X","NULL","N/A","default"];
+                creatSelector("sn",snname,sn,"N/A");
+
             });
 
             $("#sn").change(function () {
@@ -299,82 +176,17 @@
             }
 
             function formValidation() {
-                $('#MTT').formValidation({
-                    framework: 'bootstrap',
-                    icon: {
-                        valid: 'glyphicon glyphicon-ok',
-                        invalid: 'glyphicon glyphicon-remove',
-                        validating: 'glyphicon glyphicon-refresh'
-                    },
-                    fields: {
-                        taskname: {
-                            validators: {
-                                notEmpty: {
-                                    message: '任务编号不能为空!'
-                                },
-                                remote:{
-                                    type: 'POST',
-                                    url: '@routes.DutyController.checktaskname()',
-                                    message: "任务编号重复，请重新输入",
-                                    // delay: 1000
-                                }
-                            }
-                        },
-                        table1: {
-                            validators: {
-                                notEmpty: {
-                                    message: '必须上传矩阵表格1文件!'
-                                },
-                                file: {
-                                    // extension: 'jpeg,jpg,png',
-                                    // type: 'application/vnd.ms-excel',
-                                    maxSize: 5*1024*1024,
-                                    message: '文件不得大于5M！'
-                                }
-                            }
-                        },
-                        table2: {
-                            validators: {
-                                notEmpty: {
-                                    message: '必须上传矩阵表格2文件!'
-                                },
-                                file: {
-                                    // extension: 'jpeg,jpg,png',
-                                    // type: 'application/vnd.ms-excel',
-                                    maxSize: 5*1024*1024,
-                                    message: '文件不得大于5M！'
-                                }
-                            }
-                        },
-                        b1: {
-                            validators: {
-                                notEmpty:{
-                                    message: '不能为空'
-                                },
-                                numeric: {
-                                    message: '必须为数字！'
-                                }
-                            }
-                        },
-                        b2: {
-                            validators: {
-                                notEmpty:{
-                                    message: '不能为空'
-                                },
-                                numeric: {
-                                    message: '必须为数字！'
-                                }
-                            }
-                        },
-                        mysn: {
-                            validators: {
-                                notEmpty:{
-                                    message: '自定义缺省值不能为空！或选择指定缺省值。'
-                                }
-                            }
-                        }
-                    }
-                });
+                let field = {};
+                let table = ["table1", "table2"];
+                FieldFile(field, table);
+                let text = ["taskname"];
+                FieldTaskname(field, text);
+                let number = ["b1","b2"];
+                FieldNumber(field, number);
+                let text2 = ["mysn"];
+                FieldText(field,text2);
+                let excluded = [":hidden"];
+                addFormValidation("MTT", field, excluded)
             }
 
     </script>

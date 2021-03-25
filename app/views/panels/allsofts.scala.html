@@ -223,8 +223,8 @@
                 if (($para).hasClass("yellow-icon")) {
                     $para.prev().show();
                 } else {
-                    $para.removeClass('icon-star-empty');
-                    $para.addClass('icon-star');
+                    $para.removeClass('fa-star-o');
+                    $para.addClass('fa-star');
                     $para.prev().prev().show();
                 }
             }
@@ -233,10 +233,9 @@
                 $para.prev().hide();
                 $para.prev().prev().hide();
                 if (!$para.hasClass("yellow-icon")) {
-                    $para.addClass('icon-star-empty');
-                    $para.removeClass('icon-star');
+                    $para.addClass('fa-star-o');
+                    $para.removeClass('fa-star');
                 }
-
             }
 
 

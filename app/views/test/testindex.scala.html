@@ -1,14 +1,12 @@
+<link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("mycss/toolsAdjust.css")" media="screen" />
 
-    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("wangeditor/wangEditor.css")" media="screen" />
-    <script type="text/javascript" src="@routes.Assets.versioned("wangeditor/test/wangEditor.js")"></script>
 
-    <div id="editor" style="background: white">
 
+    <div id="ta_root">
+        <div id="ta_left">左边部分</div>
+        <div id="ta_right">右边部分</div>
+            <!-- 分隔条 -->
+        <div id="ta_line"></div>
     </div>
 
-    <script type="text/javascript">
-            var E = window.wangEditor;
-            var editor = new E('#editor');
-            // 或者 var editor = new E( document.getElementById('editor') )
-            editor.create();
-    </script>
+<script src = "@routes.Assets.versioned("myjs/mytoolAdjust.js")" type = "text/javascript" ></script>

@@ -58,99 +58,15 @@
                         <div class="redraw_panel redraw-right" style="width: 35%;float: left;margin-bottom: 30px;display: none">
                             <div class="tab-content" style="box-sizing: border-box!important;">
                                 <h4 style="padding-left: 30px; margin-top: 0px; font-size: 15px; margin-bottom: 20px;">绘图参数：</h4>
-                                <div class="form-group-p">
-                                    <div class="form-group">
-                                        <label for="format">一个窗口显示 </label>
-                                    </div>
-                                    <div class="form-group" style="width: 60px;display: inline-block">
-                                        <input type="text" name="window" id="window" value="40" placeholder="数字" class="form-control input-sm" style="width:60px;">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="format">个碱基</label>
-                                    </div>
-                                </div>
-                                <div class="form-group-p">
-                                    <div class="form-group">
-                                        <label for="format">绘制第 </label>
-                                    </div>
-                                    <div class="form-group" style="width: 60px;display: inline-block">
-                                        <input type="text" name="startbase" id="startbase" value="0" placeholder="数字" class="form-control input-sm" style="width:60px;">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="format">-</label>
-                                    </div>
-                                    <div class="form-group" style="width: 60px">
-                                        <input type="text" name="endbase" id="endbase" value="0" placeholder="数字" class="form-control input-sm" style="width:60px;">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="format">个碱基 (0-0 默认全部)</label>
-                                    </div>
-                                </div>
-                                <div class="form-group-p">
-                                    <div class="form-group">
-                                        <label for="format">绘制迹线的碱基：</label>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" name="bases" id="bases" value="GATC" placeholder="/[GATC]+/" class="form-control input-sm" style="width:188px;">
-                                    </div>
-                                </div>
-                                <div class="form-group-p">
-                                    <div class="form-group">
-                                        <label>是否分开绘制不同碱基的迹线：</label>
-                                    </div>
-                                    <div class="form-group">
-                                        <select id="separate" name="separate" style="width: 100px;">
-                                            <option value="Y">yes</option>
-                                            <option value="N" selected>no</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group-p">
-                                    <div class="form-group">
-                                        <label>是否将序列显示在图片上：</label>
-                                    </div>
-                                    <div class="form-group">
-                                        <select id="sequence" name="sequence" style="width: 125px;">
-                                            <option value="Y" selected>yes</option>
-                                            <option value="N">no</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group-p">
-                                    <div class="form-group">
-                                        <label>是否绘制Y轴刻度：</label>
-                                    </div>
-                                    <div class="form-group">
-                                        <select id="yticks" name="yticks" style="width: 170px;">
-                                            <option value="Y">yes</option>
-                                            <option value="N" selected>no</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group-p">
-                                    <div class="form-group">
-                                        <label for="format">图片标题：</label>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" name="gtitle" id="gtitle" value="" placeholder="请输入英文，中文默认不显示" class="form-control input-sm" style="width: 223px;">
-                                    </div>
-                                </div>
-                                <div class="form-group-p">
-                                    <div class="form-group">
-                                        <label for="format">图片副标题：</label>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" name="gsubtitle" id="gsubtitle" value="" placeholder="请输入英文，中文默认不显示" class="form-control input-sm" style="width: 210px;">
-                                    </div>
-                                </div>
-                                <div class="form-group-p">
-                                    <div class="form-group">
-                                        <label for="format">X轴标题：</label>
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" name="gxtitle" id="gxtitle" value="" placeholder="请输入英文，中文默认不显示" class="form-control input-sm" style="width: 227px;">
-                                    </div>
-                                </div>
+                                @units.redrawUnits.input_text_1("","一个窗口显示碱基个数：","window","数字")
+                                @units.redrawUnits.input_text_2("","绘制碱基范围(0-0 绘制全部)：","-","startbase","endbase","数字","数字")
+                                @units.redrawUnits.input_text_1("","绘制迹线的碱基：","bases","/[GATC]+/")
+                                @units.redrawUnits.selector("","是否分开绘制不同碱基的迹线：","separate")
+                                @units.redrawUnits.selector("","是否将序列显示在图片上：","sequence")
+                                @units.redrawUnits.selector("","是否绘制Y轴刻度：","yticks")
+                                @units.redrawUnits.input_text_1("","图片标题：","gtitle","请输入英文，中文默认不显示")
+                                @units.redrawUnits.input_text_1("","图片副标题：","gsubtitle","请输入英文，中文默认不显示")
+                                @units.redrawUnits.input_text_1("","X轴标题：","gxtitle","请输入英文，中文默认不显示")
                             </div>
                             <br>
                             <input type="button" value="绘&nbsp;&nbsp;制" name="submit" class="btn btn-primary btn-dark" onclick="DrawAbiview()" style="margin-left: 30px">
@@ -170,27 +86,21 @@
 
     <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/fileinput.min.js")" type="text/javascript"></script>
     <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/locales/zh.js")" type="text/javascript"></script>
-
+    <script src="@routes.Assets.versioned("myjs/redraw.js")" type="text/javascript"></script>
     <script>
 
             const updatetime="2020-07-29";
-
-            function checkupdate(){
-                $(".update").text(updatetime);
-                if("@row.subtime".split(" ")[0]<=updatetime) {
-                    $(".update_panel").show();
-                    $(".redraw_panel").hide();
-                } else {
-                    $(".redraw_panel").show();
-                    $(".update_panel").hide();
-                }
-            }
 
             var pdfurl="";
 
             $(document).ready(function () {
                 if("@row.status"=="已完成"){
-                    checkupdate();
+                    var tf = ["Y","N"];
+                    var tfname = ["yes","no"];
+                    creatSelector("separate",tfname,tf);
+                    creatSelector("sequence",tfname,tf);
+                    creatSelector("yticks",tfname,tf);
+                    checkupdate(updatetime, "@row.subtime");
                     $("#ABI").show();
                     $.ajax({
                         url:"/CloudPlatform/SoftTool/getAbiData?taskname=@row.taskname",
@@ -240,92 +150,16 @@
                 }
             }
 
-
             function formValidation() {
-                $('#ABI').formValidation({
-                    framework: 'bootstrap',
-                    icon: {
-                        valid: 'glyphicon glyphicon-ok',
-                        invalid: 'glyphicon glyphicon-remove',
-                        validating: 'glyphicon glyphicon-refresh'
-                    },
-                    excluded: [':disabled'],
-                    fields: {
-                        window: {
-                            validators: {
-                                notEmpty: {
-                                    message: '不能为空!'
-                                },
-                                numeric: {
-                                    message: '必须为数字！'
-                                }
-                            }
-                        },
-                        startbase: {
-                            validators: {
-                                notEmpty: {
-                                    message: '不能为空!'
-                                },
-                                numeric: {
-                                    message: '必须为数字！'
-                                }
-                            }
-                        },
-                        endbase: {
-                            validators: {
-                                notEmpty: {
-                                    message: '不能为空!'
-                                },
-                                numeric: {
-                                    message: '必须为数字！'
-                                }
-                            }
-                        },
-                        bases: {
-                            validators: {
-                                notEmpty: {
-                                    message: '不能为空!/[GATC]+/'
-                                }
-                            }
-                        },
-                        gtitle:{
-                            validators:{
-                                callback:{
-                                    message: '标题不可包含汉字!',
-                                    callback: function (value, validator, $field) {
-                                        return chechtitle("gtitle");
-                                    }
-                                }
-                            }
-                        },
-                        gsubtitle:{
-                            validators:{
-                                callback:{
-                                    message: '副标题不可包含汉字!',
-                                    callback: function (value, validator, $field) {
-                                        return chechtitle("gsubtitle");
-                                    }
-                                }
-                            }
-                        },
-                        gxtitle:{
-                            validators:{
-                                callback:{
-                                    message: 'X轴标题不可包含汉字!',
-                                    callback: function (value, validator, $field) {
-                                        return chechtitle("gxtitle");
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
-            }
-
-            function chechtitle(param){
-                var val = $("#"+param).val();
-                var rule = /[\u4e00-\u9fa5]+/;
-                return !(rule.test(val));
+                let field = {};
+                let text = ["bases"];
+                FieldText(field, text);
+                let number = ["window","startbase","endbase","height"];
+                FieldNumber(field, number);
+                let name = ["gtitle","gsubtitle","gxtitle"];
+                FieldName(field, name);
+                let excluded = [""];
+                addFormValidation("ABI", field, excluded)
             }
 
     </script>

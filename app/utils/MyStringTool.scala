@@ -14,6 +14,16 @@ trait MyStringTool {
 
   implicit class MyString(v: String) {
 
+    def reformFile = {
+      v.split("\n").map{line =>
+        line.trim.split("\t").mkString("\t")
+      }.mkString("\n")
+    }
+
+    def jsonToMap : Map[String, String] = {
+      scala.util.parsing.json.JSON.parseFull(v).get.asInstanceOf[Map[String, String]]
+    }
+
     def isWindows = {
       System.getProperty("os.name") match {
         case x if x.contains("Windows") => true
@@ -94,6 +104,5 @@ trait MyStringTool {
     }
 
   }
-
 
 }

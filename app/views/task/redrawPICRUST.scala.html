@@ -170,7 +170,7 @@
                         confirmButtonText: "确认"
                     });
                 }else{
-                    window.location.href = "/CloudPlatform/SoftTool/downloadFile?taskname=@row.taskname&filename=" + filename + "&num="+ Math.random();
+                    window.open("/CloudPlatform/SoftTool/downloadFile?taskname=@row.taskname&filename=" + filename + "&num="+ Math.random());
                 }
             }
 
@@ -183,7 +183,7 @@
                         confirmButtonText: "确认"
                     });
                 }else{
-                    window.location.href = "/CloudPlatform/SoftTool/downloadZip?taskname=@row.taskname&num="+Math.random();
+                    window.open("/CloudPlatform/SoftTool/downloadZip?taskname=@row.taskname&num="+Math.random());
                 }
             }
     </script>

@@ -65,16 +65,16 @@
                                 下载当前节点、边详细信息
                             </button>
                             <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 35px, 0px); top: 0px; left: 0px; will-change: transform;">
-                                <a class="dropdown-item" style="width: auto;" onclick="downloadDrawFile('Network_Edges.xls')">边信息(包含对应r，p，-ln(p)等数据)</a>
-                                <a class="dropdown-item" style="width: auto;" onclick="downloadDrawFile('Network_Nodes.xls')">节点信息文件(包含点度中心性、紧密度中间性等)</a>
+                                <a class="dropdown-item" style="width: auto;" onclick="downloadpics('@row.status','@row.taskname','Network_Edges','xls')">边信息(包含对应r，p，-ln(p)等数据)</a>
+                                <a class="dropdown-item" style="width: auto;" onclick="downloadpics('@row.status','@row.taskname','Network_Nodes','xls')">节点信息文件(包含点度中心性、紧密度中间性等)</a>
                             </div>
                         </div>
                         <span style="margin-right: 10px; color: gray; float: right; margin-top: 30px;">提示：点击连线或结点，可查看对应的p值和c值</span>
                     </div>
                     <br>
                     <form id="Net" style="display: none" method="GET" enctype="multipart/form-data">
-                        <div id="cy" style="height: 600px;border:1px solid #8b8b8b9c;margin: 10px 0px 10px 0px;width: 67%;float: left;"></div>
-                        <div class="redraw_panel" style="width: 30%;margin-left: 25px;display: inline-block">
+                        <div id="cy" style="height: 600px;border:1px solid #8b8b8b9c;margin: 10px 0px 10px 0px;width: 62%;float: left;"></div>
+                        <div class="redraw_panel" style="width: calc(38% - 30px);margin-left: 25px;display: inline-block">
                             <ul class="nav nav-tabs" style="margin-top: 10px">
                                 <li class="active" id="ins_tab1" >
                                     <a href="###" data-target="#picpara" data-toggle="tab">数据布局</a>
@@ -89,207 +89,35 @@
 
                             <div class="tab-content" style="box-sizing: border-box!important;padding-top: 30px">
                                 <div class="tab-pane fade active in" id="picpara">
-                                    <div class="form-group-p">
-                                        <div class="form-group">
-                                            <label>显示数据保留小数点位数：</label>
-                                        </div>
-                                        <div class="form-group">
-                                            <input type="text" id="dot" name="dot" class="form-control" placeholder="数字" value="3" style="width: 65px;float: left;margin-right: 5px;margin-left: 10px;">
-                                        </div>
-                                    </div>
-                                    <div class="form-group-p">
-                                        <div class="form-group">
-                                            <label>p值检验阈值：</label>
-                                        </div>
-                                        <div class="form-group">
-                                            <input type="text" id="pthres" name="pthres" class="form-control" placeholder="数字" value="0.1" style="width: 65px;float: left;margin-right: 5px;margin-left: 10px;">
-                                        </div>
-                                    </div>
-                                    <div class="form-group-p">
-                                        <div class="form-group">
-                                            <label>c值(绝对值)检验阈值：</label>
-                                        </div>
-                                        <div class="form-group">
-                                            <input type="text" id="cthres" name="cthres" class="form-control" placeholder="数字" value="0.5" style="width: 65px;float: left;margin-right: 5px;margin-left: 10px;">
-                                        </div>
+                                    @units.redrawUnits.input_text_1("","显示小数点位数：","dot","数字")
+                                    @units.redrawUnits.input_text_1("","p值检验阈值(0-1)：","pthres","数字")
+                                    @units.redrawUnits.input_text_1("","c值(绝对值)检验阈值(0-1)：","cthres","数字")
+                                    <hr>
+                                    @units.redrawUnits.selector("","基因节点形状：","gshape")
+                                    <div style="margin-top: 15px">
+                                        @units.redrawUnits.slider("","基因节点大小：","gsize","0","10","1")
                                     </div>
                                     <hr>
-                                    <div class="form-group-p">
-                                        <div class="form-group">
-                                            <label for="">基因节点形状：</label>
-                                        </div>
-                                        <div class="form-group">
-                                            <select name="gshape" id="gshape" style="width: 100%;">
-                                                <option value="ellipse">圆形</option>
-                                                <option value="triangle">三角形</option>
-                                                <option value="round-triangle">圆角三角形</option>
-                                                <option value="rectangle">矩形</option>
-                                                <option value="round-rectangle">圆角矩形</option>
-                                                <option value="bottom-round-rectangle">底部圆角矩形</option>
-                                                <option value="cut-rectangle">切角矩形</option>
-                                                <option value="barrel">桶形</option>
-                                                <option value="rhomboid">长斜方形</option>
-                                                <option value="diamond">菱形</option>
-                                                <option value="round-diamond">圆角菱形</option>
-                                                <option value="pentagon">五角形</option>
-                                                <option value="round-pentagon">圆角五角形</option>
-                                                <option value="hexagon">六边形</option>
-                                                <option value="round-hexagon">圆角六边形</option>
-                                                <option value="concave-hexagon">凹面六边形</option>
-                                                <option value="heptagon">七边形</option>
-                                                <option value="round-heptagon">圆角七边形</option>
-                                                <option value="octagon">八边形</option>
-                                                <option value="round-octagon">圆角八边形</option>
-                                                <option value="star">星形</option>
-                                                <option value="tag">标签</option>
-                                                <option value="round-tag">圆角标签</option>
-                                                <option value="vee">V型</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group-p">
-                                        <div class="form-group">
-                                            <label>基因节点大小：</label>
-                                        </div>
-                                        <div class="form-group">
-                                            <input id="gsize" name="gsize" data-slider-id='sesize' type="text" data-slider-min="0" data-slider-max="10" data-slider-step="1" data-slider-value="5"/>
-@*                                            <input type="text" id="gsize" name="gsize" class="form-control" placeholder="数字" value="5" style="width: 65px;float: left;margin-right: 5px;margin-left: 10px;">*@
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <div class="form-group-p">
-                                        <div class="form-group">
-                                            <label for="">环境因子节点形状：</label>
-                                        </div>
-                                        <div class="form-group">
-                                            <select name="eshape" id="eshape" style="width: 100%">
-                                                <option value="diamond">菱形</option>
-                                                <option value="ellipse">圆形</option>
-                                                <option value="triangle">三角形</option>
-                                                <option value="round-triangle">圆角三角形</option>
-                                                <option value="rectangle">矩形</option>
-                                                <option value="round-rectangle">圆角矩形</option>
-                                                <option value="bottom-round-rectangle">底部圆角矩形</option>
-                                                <option value="cut-rectangle">切角矩形</option>
-                                                <option value="barrel">桶形</option>
-                                                <option value="rhomboid">长斜方形</option>
-                                                <option value="round-diamond">圆角菱形</option>
-                                                <option value="pentagon">五角形</option>
-                                                <option value="round-pentagon">圆角五角形</option>
-                                                <option value="hexagon">六边形</option>
-                                                <option value="round-hexagon">圆角六边形</option>
-                                                <option value="concave-hexagon">凹面六边形</option>
-                                                <option value="heptagon">七边形</option>
-                                                <option value="round-heptagon">圆角七边形</option>
-                                                <option value="octagon">八边形</option>
-                                                <option value="round-octagon">圆角八边形</option>
-                                                <option value="star">星形</option>
-                                                <option value="tag">标签</option>
-                                                <option value="round-tag">圆角标签</option>
-                                                <option value="vee">V型</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group-p">
-                                        <div class="form-group">
-                                            <label>环境因子节点大小：</label>
-                                        </div>
-                                        <div class="form-group">
-                                            <input id="esize" name="esize" data-slider-id='sesize' type="text" data-slider-min="0" data-slider-max="10" data-slider-step="1" data-slider-value="10"/>
-@*                                            <input type="text" id="esize" name="esize" class="form-control" placeholder="数字" value="10" style="width: 65px;float: left;margin-right: 5px;margin-left: 10px;">*@
-                                        </div>
+                                    @units.redrawUnits.selector("","环境因子节点形状：","eshape")
+                                    <div style="margin-top: 15px">
+                                        @units.redrawUnits.slider("","环境因子节点大小：","esize","0","10","1")
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="colopara">
-                                    <div class="form-group-p">
-                                        <div style="float: left">
-                                            <label>基因名颜色：</label>
-                                        </div>
-                                        <div class="form-group">
-                                            <input id="color2"  name="color2" value="" class="colorPicker evo-cp0">
-                                        </div>
-                                    </div>
-                                    <div class="form-group-p" id="borcolor">
-                                        <div style="float: left">
-                                            <label>基因节点颜色：</label>
-                                        </div>
-                                        <div class="form-group">
-                                            <input id="color1"  name="color1" value="" class="colorPicker evo-cp0">
-                                        </div>
-                                    </div>
-                                    <div class="form-group-p">
-                                        <div class="form-group">
-                                            <label>基因节点透明度：</label>
-                                        </div>
-                                        <div class="form-group">
-                                            <input id="gopa" name="gopa" data-slider-id='sgopa' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.1" data-slider-value="1"/>
-                                            @*                                            <input type="text" id="gopa" name="gopa" class="form-control" placeholder="数字" value="1" style="width: 65px;float: left;margin-right: 5px;margin-left: 10px;">*@
-                                        </div>
-                                    </div>
+                                    @units.redrawUnits.colorpicker("","基因名颜色：","color2")
+                                    @units.redrawUnits.colorpicker("","基因节点颜色：","color1")
+                                    @units.redrawUnits.slider("","环境因子节点大小：","gopa","0","1","0.1")
                                     <hr>
-                                    <div class="form-group-p">
-                                        <div style="float: left">
-                                            <label>环境因子名颜色：</label>
-                                        </div>
-                                        <div class="form-group">
-                                            <input id="color4"  name="color4" value="" class="colorPicker evo-cp0">
-                                        </div>
-                                    </div>
-                                    <div class="form-group-p" id="borcolor">
-                                        <div style="float: left">
-                                            <label>环境因子节点颜色：</label>
-                                        </div>
-                                        <div class="form-group">
-                                            <input id="color3"  name="color3" value="" class="colorPicker evo-cp0">
-                                        </div>
-                                    </div>
-                                    <div class="form-group-p">
-                                        <div class="form-group">
-                                            <label>环境因子节点透明度：</label>
-                                        </div>
-                                        <div class="form-group">
-                                            <input id="eopa" name="eopa" data-slider-id='seopa' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.1" data-slider-value="1"/>
-@*                                            <input type="text" id="eopa" name="eopa" class="form-control" placeholder="数字" value="1" style="width: 65px;float: left;margin-right: 5px;margin-left: 10px;">*@
-                                        </div>
-                                    </div>
+                                    @units.redrawUnits.colorpicker("","环境因子名颜色：","color4")
+                                    @units.redrawUnits.colorpicker("","环境因子节点颜色：","color3")
+                                    @units.redrawUnits.slider("","环境因子节点透明度：","eopa","0","1","0.1")
                                     <hr>
-                                    <div class="form-group-p" id="borcolor">
-                                        <div style="float: left;">
-                                            <label>连线颜色：</label>
-                                        </div>
-                                        <div class="form-group">
-                                            <input id="color5"  name="color5" value="" class="colorPicker evo-cp0">
-                                        </div>
-                                    </div>
-                                    <div class="form-group-p">
-                                        <div class="form-group">
-                                            <label>连线透明度：</label>
-                                        </div>
-                                        <div class="form-group">
-                                            <input id="opacity" name="opacity" data-slider-id='sopacity' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.1" data-slider-value="0.4"/>
-@*                                            <input type="text" id="opacity" name="opacity" class="form-control" placeholder="数字" value="0.4" style="width: 65px;float: left;margin-right: 5px;margin-left: 10px;">*@
-                                        </div>
-                                    </div>
+                                    @units.redrawUnits.colorpicker("","连线颜色：","color5")
+                                    @units.redrawUnits.slider("","连线透明度：","opacity","0","1","0.1")
                                 </div>
                                 <div class="tab-pane fade" id="fontpara">
-                                    <div class="form-group-p">
-                                        <div class="form-group">
-                                            <label>基因名大小：</label>
-                                        </div>
-                                        <div class="form-group">
-                                            <input id="gfont" name="gfont" data-slider-id='sgfont' type="text" data-slider-min="0" data-slider-max="50" data-slider-step="1" data-slider-value="12"/>
-@*                                            <input type="text" id="gfont" name="gfont" class="form-control" placeholder="数字" value="12" style="width: 65px;float: left;margin-right: 5px;margin-left: 10px;">*@
-                                        </div>
-                                    </div>
-                                    <div class="form-group-p">
-                                        <div class="form-group">
-                                            <label>环境因子名大小：</label>
-                                        </div>
-                                        <div class="form-group">
-                                            <input id="efont" name="efont" data-slider-id='sefont' type="text" data-slider-min="0" data-slider-max="50" data-slider-step="1" data-slider-value="12"/>
-@*                                            <input type="text" id="efont" name="efont" class="form-control" placeholder="数字" value="12" style="width: 60px;float: left;margin-right: 5px;margin-left: 10px;">*@
-                                        </div>
-                                    </div>
+                                    @units.redrawUnits.slider("","基因名大小：","gfont","0","50","1")
+                                    @units.redrawUnits.slider("","环境因子名大小：","efont","0","50","1")
                                 </div>
                             </div>
                             <input type="button" value="绘&nbsp;&nbsp;制" name="submit" class="btn btn-primary btn-dark" onclick="saveNet()" style="margin-left: 30px">
@@ -306,166 +134,31 @@
         </div>
     </div>
 
+    <script src="@routes.Assets.versioned("myjs/redraw.js")" type="text/javascript"></script>
     <script>
 
-            const updatetime="2020-12-24";
-
-            function checkupdate(){
-                $(".update").text(updatetime);
-                if("@row.subtime".split(" ")[0]<=updatetime) {
-                    $(".update_panel").show();
-                    $(".redraw_panel").hide();
-                } else {
-                    $(".redraw_panel").show();
-                    $(".update_panel").hide();
-                }
-            }
+            const updatetime="2021-01-26";
 
             const colorValidators = {
                 validators: {
                     notEmpty:{
-                        message: '不能为空!'
+                        message: '不能为空！'
                     },
-                    regexp: {
-                        regexp: /^#([0-9a-fA-F]{6})$/,
-                        message: "色值不合法！色值必须以#开头，色值需为6位"
+                    color: {
+                        type: ['hex'],  // The default value for type
+                        message: '错误色值！必须为hex色值'
                     }
                 }
             };
 
             function formValidation() {
-                $('#Net').formValidation({
-                    framework: 'bootstrap',
-                    icon: {
-                        valid: 'glyphicon glyphicon-ok',
-                        invalid: 'glyphicon glyphicon-remove',
-                        validating: 'glyphicon glyphicon-refresh'
-                    },
-                    excluded: [':disabled'],
-                    fields: {
-                        dot: {
-                            validators: {
-                                notEmpty: {
-                                    message: '不能为空!'
-                                },
-                                numeric: {
-                                    message: '必须为数字！'
-                                }
-                            }
-                        },
-                        pthres: {
-                            validators: {
-                                notEmpty: {
-                                    message: '不能为空!'
-                                },
-                                numeric: {
-                                    message: '必须为数字！'
-                                }
-                            }
-                        },
-                        cthres: {
-                            validators: {
-                                notEmpty: {
-                                    message: '不能为空!'
-                                },
-                                numeric: {
-                                    message: '必须为数字！'
-                                }
-                            }
-                        },
-                        gopa: {
-                            validators: {
-                                notEmpty: {
-                                    message: '不能为空!'
-                                },
-                                numeric: {
-                                    message: '必须为数字！'
-                                }
-                            }
-                        },
-                        gsize: {
-                            validators: {
-                                notEmpty: {
-                                    message: '不能为空!'
-                                },
-                                numeric: {
-                                    message: '必须为数字！'
-                                },
-                                greaterThan: {
-                                    value: 0,
-                                    message: "必须大于等于0！"
-                                },
-                                lessThan: {
-                                    value: 10,
-                                    message: "必须小于等于10！"
-                                }
-                            }
-                        },
-                        gfont: {
-                            validators: {
-                                notEmpty: {
-                                    message: '不能为空!'
-                                },
-                                numeric: {
-                                    message: '必须为数字！'
-                                }
-                            }
-                        },
-                        eopa: {
-                            validators: {
-                                notEmpty: {
-                                    message: '不能为空!'
-                                },
-                                numeric: {
-                                    message: '必须为数字！'
-                                }
-                            }
-                        },
-                        esize: {
-                            validators: {
-                                notEmpty: {
-                                    message: '不能为空!'
-                                },
-                                numeric: {
-                                    message: '必须为数字！'
-                                },
-                                greaterThan: {
-                                    value: 0,
-                                    message: "必须大于等于0！"
-                                },
-                                lessThan: {
-                                    value: 10,
-                                    message: "必须小于等于10！"
-                                }
-                            }
-                        },
-                        efont: {
-                            validators: {
-                                notEmpty: {
-                                    message: '不能为空!'
-                                },
-                                numeric: {
-                                    message: '必须为数字！'
-                                }
-                            }
-                        },
-                        opacity: {
-                            validators: {
-                                notEmpty: {
-                                    message: '不能为空!'
-                                },
-                                numeric: {
-                                    message: '必须为数字！'
-                                }
-                            }
-                        },
-                        color1:colorValidators,
-                        color2:colorValidators,
-                        color3:colorValidators,
-                        color4:colorValidators,
-                        color5:colorValidators
-                    }
-                });
+                let field = {};
+                let number = ["dot","pthres","cthres"];
+                FieldNumber(field, number);
+                let color = ["color1","color2","color3","color4","color5"];
+                FieldColor(field, color);
+                let excluded = [""];
+                addFormValidation("Net", field, excluded)
             }
 
             function down(param) {
@@ -489,10 +182,6 @@
                 ele.click();
                 document.body.removeChild(ele);
                 console.log(JSON.stringify(cy.json()));
-            }
-
-            function downloadDrawFile(filename){
-                window.location.href = "/CloudPlatform/SoftTool/downloadFile?taskname=@row.taskname&filename=" + filename + "&num="+ Math.random();
             }
 
             var cy;
@@ -563,18 +252,22 @@
                                 // $("#" + i).val(v);
                             }
                         });
-                        $(".evo-cp-wrap").css("width", "120px");
+                        // $(".evo-cp-wrap").css("width", "120px");
+                        // $(".evo-cp-wrap").css("float", "left");
                         $(".evo-cp-wrap").css("float", "left");
+                        $(".evo-cp-wrap").css("width", "calc(100% - 34px)");
                     }
                 });
             }
 
-
-
-
             $(document).ready(function () {
                 if("@row.status"=="已完成"){
-                    checkupdate();
+                    var shapename = ["圆形","三角形","圆角三角形","矩形","圆角矩形","底部圆角矩形","切角矩形","桶形","长斜方形","菱形","圆角菱形","五角形","圆角五角形","六边形","圆角六边形","凹面六边形","七边形","圆角七边形","八边形","圆角八边形","星形","标签","圆角标签","V型"];
+                    var shape = ["ellipse","triangle","round-triangle","rectangle","round-rectangle","bottom-round-rectangle", "cut-rectangle","barrel","rhomboid","diamond","round-diamond","pentagon","round-pentagon","hexagon", "round-hexagon","concave-hexagon","heptagon","round-heptagon","octagon","round-octagon","star","tag", "round-tag","vee"];
+                    creatSelector("gshape",shapename,shape);
+                    creatSelector("eshape",shapename,shape);
+
+                    checkupdate(updatetime, "@row.subtime");
                     $("#Net").show();
                     loading();
                 }

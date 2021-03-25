@@ -234,11 +234,50 @@
     background-size: contain;
 }
 
-
-/*.Scaplot{*/
-/*    background: url(../images/softpic/temp/Jvenn.png) 50% center no-repeat;*/
-/*    background-size: contain;*/
-/*}*/
+.SPO{
+    background: url(../images/softpic/temp/spo.png) 50% center no-repeat;
+    background-size: contain;
+}
+.DS2{
+    background: url(../images/softpic/temp/ds2.png) 50% center no-repeat;
+    background-size: contain;
+}
+.EDR{
+    background: url(../images/softpic/temp/edr.png) 50% center no-repeat;
+    background-size: contain;
+}
+.EFA{
+    background: url(../images/softpic/temp/efa.png) 50% center no-repeat;
+    background-size: contain;
+}
+.LIN{
+    background: url(../images/softpic/temp/lin.png) 50% center no-repeat;
+    background-size: contain;
+}
+.MLN{
+    background: url(../images/softpic/temp/lin.png) 50% center no-repeat;
+    background-size: contain;
+}
+.NMD{
+    background: url(../images/softpic/temp/nmd.png) 50% center no-repeat;
+    background-size: contain;
+}
+.SEQ{
+    background: url(../images/softpic/temp/seq.png) 50% center no-repeat;
+    background-size: contain;
+}
+.RF{
+    background: url(../images/softpic/temp/rf.png) 50% center no-repeat;
+    background-size: contain;
+}
+.SCA{
+    background: url(../images/softpic/temp/spo.png) 50% center no-repeat;
+    background-size: contain;
+}
+.ADB{
+    background: url(../images/softpic/temp/adb.png) 50% center no-repeat;
+    background-size: contain;
+}
 
 
 
@@ -844,7 +883,7 @@
 }
 
 [class^=icon-], [class*=" icon-"] {
-    font-family: ZenIcon;
+    font-family: FontAwesome;
     font-size: 21px!important;
     font-style: normal;
     font-weight: 400;
@@ -1015,4 +1054,68 @@
 
 /*.mainpadding{*/
 /*    padding-top: 47px;*/
+/*}*/
+
+/*! | Font Awesome 3.2.1 | License: | - The Font Awesome font is licensed under SIL OFL 1.1 - | - Font Awesome CSS, LESS, and SASS files are licensed under MIT License - | - Font Awesome documentation licensed under CC BY 3.0 - | "Font Awesome by Dave Gandy - http://fontawesome.io"
+*/
+/*@font-face {*/
+/*    font-family: ZenIcon;*/
+/*    font-style: normal;*/
+/*    font-weight: 400;*/
+/*    src: url(../fonts/zenicon.eot?v=2.1.0);*/
+/*    src: url(../fonts/zenicon.eot?#iefix&v=2.1.0) format('embedded-opentype'), url(../fonts/zenicon.woff?v=2.1.0) format('woff'), url(../fonts/zenicon.ttf?v=2.1.0) format('truetype'), url(../fonts/zenicon.svg#regular?v=2.1.0) format('svg')*/
+/*}*/
+
+/*@font-face {*/
+/*    font-family: 'FontAwesome';*/
+/*    src: url('../fonts/fontawesome-webfont.eot?v=4.7.0');*/
+/*    src: url('../fonts/fontawesome-webfont.eot?#iefix&v=4.7.0') format('embedded-opentype'), url('../fonts/fontawesome-webfont.woff2?v=4.7.0') format('woff2'), url('../fonts/fontawesome-webfont.woff?v=4.7.0') format('woff'), url('../fonts/fontawesome-webfont.ttf?v=4.7.0') format('truetype'), url('../fonts/fontawesome-webfont.svg?v=4.7.0#fontawesomeregular') format('svg');*/
+/*    font-weight: normal;*/
+/*    font-style: normal;*/
+/*}*/
+
+/*!*[class^=icon-], [class*=" icon-"] {*!*/
+/*!*    !*font-family: ZenIcon;*!*!*/
+/*!*    font-family: FontAwesome;*!*/
+/*!*    font-size: 14px;*!*/
+/*!*    font-style: normal;*!*/
+/*!*    font-weight: 400;*!*/
+/*!*    font-variant: normal;*!*/
+/*!*    line-height: 1;*!*/
+/*!*    text-transform: none;*!*/
+/*!*    speak: none;*!*/
+/*!*    -webkit-font-smoothing: antialiased;*!*/
+/*!*    -moz-osx-font-smoothing: grayscale*!*/
+/*!*}*!*/
+
+/*.icon-lg:before, .icon-large:before {*/
+/*    font-size: 1.33333333em;*/
+/*    vertical-align: -10%*/
+/*}*/
+
+/*a [class^=icon-], a [class*=" icon-"] {*/
+/*    display: inline*/
+/*}*/
+
+/*.icon-2x {*/
+/*    font-size: 28px*/
+/*}*/
+
+/*.icon-3x {*/
+/*    font-size: 42px*/
+/*}*/
+
+/*.icon-4x {*/
+/*    font-size: 56px*/
+/*}*/
+
+/*.icon-5x {*/
+/*    font-size: 70px*/
+/*}*/
+
+/*.icon-star-empty:before {*/
+/*    content: '\e607'*/
+/*}*/
+/*.icon-star:before {*/
+/*    content: '\e606'*/
 /*}*/

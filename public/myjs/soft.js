@@ -42,16 +42,16 @@ function getTaskName(formid,prename) {
     let m = date.getMinutes();
     let s = date.getSeconds();
     let name = prename+month + day + h + m + s ;
-    $("#mytaskname").val(name);
+    $("#taskname").val(name);
     $("#"+formid).formValidation("revalidateField", "taskname");
 }
 
-$("#mytaskname").keyup(function () {
+$("#taskname").keyup(function () {
     checktaskname();
 });
 
 function checktaskname() {
-    var val = $("#mytaskname").val();
+    var val = $("#taskname").val();
     var rule = /[()（）@@#$%^&*~`!|\/\\?;,.，。:"]/;
     if (rule.test(val)) {
         alert('任务编号里不能有特殊字符，请重新填写!');

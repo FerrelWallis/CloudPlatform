@@ -146,7 +146,7 @@ input[type="text"], textarea {
 }
 .control-icon{
     padding-left: 32px;
-    background-position: 12px center;
+    background-position: center;
 }
 h2 {
     font-family: "Helvetica Neue", Helvetica, 'Microsoft Yahei', 'Hiragino Sans GB', 'WenQuanYi Micro Hei', Tahoma, Arial, sans-serif;

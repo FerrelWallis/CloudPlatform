@@ -24,7 +24,7 @@ import utils.FilesUtils.test
 
 
 case class PageData(limit: Int, offset: Int, order: String, search: Option[String], sort: Option[String])
-class DutyController @Inject()(cc: ControllerComponents,dutydao:dutyDao)(implicit exec: ExecutionContext) extends AbstractController(cc) {
+class DutyController @Inject()(cc: ControllerComponents, dutydao:dutyDao)(implicit exec: ExecutionContext) extends AbstractController(cc) {
 
   def insertDuty(taskname:String,uid:String,sabbrename:String,sname:String,input:String,param:String,elements:String) ={
 //    val date=Calendar.getInstance(Locale.CHINA).getTime
@@ -41,6 +41,16 @@ class DutyController @Inject()(cc: ControllerComponents,dutydao:dutyDao)(implici
     finitime
   }
 
+  def updateFinish(uid:String,taskname:String,state:Int,sname:String,input:String,param:String,elements:String) ={
+    val finitime=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())
+    if(state == 2) {
+      Await.result(dutydao.updateFailure(uid,taskname,sname,input,param,elements),Duration.Inf)
+    } else {
+      Await.result(dutydao.updateFinish(uid,taskname,finitime,sname,input,param,elements),Duration.Inf)
+    }
+    finitime
+  }
+
   def getDutyByType(sabbrename:String)=Action{implicit request=>
     val uid=request.session.get("userId").get
     var running=false;
@@ -51,11 +61,10 @@ class DutyController @Inject()(cc: ControllerComponents,dutydao:dutyDao)(implici
           s"<span>运行中<img class='runningImage' src='/assets/images/timg.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></span>"
         }else if(x.status=="已完成") s"<span class='success'>已完成</span>"
         else s"<span class='failed'>运行失败</span>"
-      val taskname = s"<a id='taskname' href='/CloudPlatform/Mytask/teskPreview/"+sabbrename+"?taskname="+x.taskname+"' target='_blank'>" + x.taskname + "</a>"
+      val taskname = s"<a id='taskname' href='/CloudPlatform/Mytask/taskPreview/"+sabbrename+"?abbre="+sabbrename+"&taskname="+x.taskname+"' target='_blank'>" + x.taskname + "</a>"
 
       Json.obj("taskname"->taskname,"finitime"->x.finitime,"status"->status)
     }
-
     Ok(Json.obj("rows"->rows,"run"->running))
   }
 
@@ -64,7 +73,7 @@ class DutyController @Inject()(cc: ControllerComponents,dutydao:dutyDao)(implici
     val uid=request.session.get("userId").get
     val table=Await.result(dutydao.getAllDutyById(uid),Duration.Inf)
     val row = table.map{x=>
-      val taskname = s"<a id='taskname' href='/CloudPlatform/Mytask/teskPreview/"+x.sabbrename+"?taskname="+x.taskname+"' target='_blank'>" + x.taskname + "</a>"
+      val taskname = s"<a id='taskname' href='/CloudPlatform/Mytask/taskPreview/"+x.sabbrename+"?abbre="+x.sabbrename+"&taskname="+x.taskname+"' target='_blank'>" + x.taskname + "</a>"
       val sname=s"<a href='/CloudPlatform/SoftPage/"+x.sabbrename+"' target='_blank'>" + x.sname + "</a>"
       val color=if(x.status=="已完成") "success"
       else if(x.status=="运行失败") "failed"
@@ -94,7 +103,7 @@ class DutyController @Inject()(cc: ControllerComponents,dutydao:dutyDao)(implici
     val total = orderX.size
     val tmpX = orderX.slice(page.offset, page.offset + page.limit)
     val row = tmpX.asInstanceOf[Seq[DutysRow]].map{x=>
-      val taskname = s"<a id='taskname' href='/CloudPlatform/Mytask/teskPreview/"+x.sabbrename+"?taskname="+x.taskname+"' target='_blank'>" + x.taskname + "</a>"
+      val taskname = s"<a id='taskname' href='/CloudPlatform/Mytask/taskPreview/"+x.sabbrename+"?taskname="+x.taskname+"' target='_blank'>" + x.taskname + "</a>"
       val sname=s"<a href='/CloudPlatform/SoftPage/"+x.sabbrename+"' target='_blank'>" + x.sname + "</a>"
       val color=if(x.status=="已完成") "success"
       else if(x.status=="运行失败") "failed"
@@ -109,17 +118,23 @@ class DutyController @Inject()(cc: ControllerComponents,dutydao:dutyDao)(implici
   }
 
 
-
-
-//  def taskPreview(taskname:String) = Action.async { implicit request =>
-//    val id=request.session.get("userId").get
-//    dutydao.getSingleDuty(id,taskname).map { x =>
-//      x.sabbrename match {
-//        case "PCA"=>Ok(views.html.task.RedrawPCA(x))
-//        case "Boxplot"=>Ok(views.html.task.RedrawPCA(x))
-//      }
-//    }
-//  }
+  def getDuties = Action { implicit request =>
+    val page = pageForm.bindFromRequest.get
+    val x = Await.result(dutydao.getDuties,Duration.Inf)
+    val orderX = TableUtils.dealDataByPage(x, page)
+    val total = orderX.size
+    val tmpX = orderX.slice(page.offset, page.offset + page.limit)
+    val row = tmpX.asInstanceOf[Seq[(String,String,String,String,String,Int)]].map{x=>
+      val color=if(x._5=="已完成") "success"
+      else if(x._5=="运行失败") "failed"
+      else if(x._5=="运行中") "running"
+      val status=s"<p id='status' style='margin: 0;' class='"+color+"'>"+x._5+"</p>"
+      val manage=if(new File(Utils.path+"users/"+x._6+"/"+x._3+"/log.txt").length()==0) "ic-logfile-unable" else "ic-logfile"
+      val control=s"<a class='control-icon mws-ic-16 ic-cloud-download-1' onclick=downduty('"+ x._3 +"','"+ x._6 +"')></a><a class='control-icon mws-ic-16 "+manage+"' onclick=showlog('"+ x._3 +"'," + x._6 + ")></a>"
+      Json.obj("subtime" -> x._1,"taskname" -> x._3,"sname"-> x._4,"username"->x._2,"status"->status,"control"->control)
+    }
+    Ok(Json.obj("rows" -> row, "total" -> total))
+  }
 
 
   case class taskData(taskname:String)
@@ -140,20 +155,6 @@ class DutyController @Inject()(cc: ControllerComponents,dutydao:dutyDao)(implici
   }
 
 
-//  def checkSoftBySname(sid:String): String ={
-//    sid match {
-//      case "1" => "/CloudPlatform/SoftPage/GO"
-//      case "2" => "/CloudPlatform/SoftPage/KEGG"
-//      case "3" => "/CloudPlatform/SoftPage/PCA"
-//      case "4" => "/CloudPlatform/SoftPage/CCA"
-//      case "5" => "/CloudPlatform/SoftPage/Heatmap"
-//      case "6" => "/CloudPlatform/SoftPage/Boxplot"
-//      case "7" => "/CloudPlatform/SoftPage/NetWeight"
-//      case "8" => "/CloudPlatform/SoftPage/NetDirected"
-//    }
-//  }
-
-
   val userDutyDir=Utils.path+"users/"
 
   def deleteDuty(taskname:String)=Action{implicit request=>
@@ -170,6 +171,17 @@ class DutyController @Inject()(cc: ControllerComponents,dutydao:dutyDao)(implici
   def showLog(taskname:String)=Action{implicit request=>
     val uid=request.session.get("userId").get
     try{
+      val file=new File(userDutyDir+uid+"/"+taskname+"/log.txt")
+      val (canmanage,content)=if(file.length()==0) (0,"") else (1,FileUtils.readFileToString(file))
+      Ok(Json.obj("content" -> content,"canmanage"->canmanage))
+    }catch {
+      case e : Exception => Ok(Json.obj("valid" ->"false","message" -> e.getMessage))
+    }
+  }
+
+  def showLogByUid(taskname:String, uid:String)=Action{implicit request=>
+    try{
+//      println(userDutyDir+uid+"/"+taskname+"/log.txt")
       val file=new File(userDutyDir+uid+"/"+taskname+"/log.txt")
       val (canmanage,content)=if(file.length()==0) (0,"") else (1,FileUtils.readFileToString(file))
       Ok(Json.obj("content" -> content,"canmanage"->canmanage))

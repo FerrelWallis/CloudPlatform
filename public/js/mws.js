@@ -1,5 +1,4 @@
 $(document).ready(function() {
-	/* Core JS Functions */
 
 	/* Side dropdown menu */
 	$("div#mws-navigation ul li a, div#mws-navigation ul li span")

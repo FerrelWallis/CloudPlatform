@@ -1,0 +1,16 @@
+@(em:String,divname:String,title:String,seperate:String,name1:String,name2:String,placeholder1:String,placeholder2:String,value1:String,value2:String)
+<div class="form-group-p">
+    <div class="form-group">
+        <label><em>@em</em>@title</label>
+    </div>
+    <div class="form-group" style="margin-left: 10px">
+        <div class="form-group" style="width: calc(48% - 5px);float: left;margin-right: 5px">
+            <input type="text" id="@name1" name="@name1" class="form-control" placeholder="@placeholder1" value="@value1" >
+        </div>
+        <label style="float: left; width: 4%; text-align: center;">@seperate</label>
+        <div class="form-group" style="width: calc(48% - 5px);margin-left: 5px;float: left">
+            <input type="text" id="@name2" name="@name2" class="form-control" placeholder="@placeholder2" value="@value2">
+        </div>
+    </div>
+    <br>
+</div>

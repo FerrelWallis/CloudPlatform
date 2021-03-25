@@ -1,0 +1,28 @@
+#ta_root {
+    position: relative;
+    width: 100%;
+}
+#ta_left {
+    width: 500px;
+    /*background: #ffdd40;*/
+    position: absolute;
+    top: 0;
+    bottom: 0;
+}
+#ta_right {
+    margin-left: 517px;
+    /*background: pink;*/
+    height: 100%;
+}
+#ta_line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 500px;
+    width: 10px;
+    cursor: w-resize;
+    background: url(../images/handler3.png) no-repeat;
+    background-size: 100%;
+    background-color: #ddd;
+    background-position: center;
+}

@@ -1,3 +1,4 @@
+SampleID	Group
 B17-12-1	B
 B17-12-2	B
 B17-12-3	B

@@ -137,7 +137,7 @@
 
             .control-icon {
                 padding-left: 32px;
-                background-position: 12px center;
+                background-position: center;
             }
 
             #auth a:active {
@@ -171,29 +171,33 @@
                 <div class="col-md-2" style="height: 100%">
                     <div style="width: 100%; float: left">
                         <ul class="manager_ul">
-                            <li><a href="#notice">意见反馈</a></li>
-                            <li><a id="tofeed" href="#auth">反馈历史</a></li>
+                            <li><a href="#notice" style="width: 100%; text-align: center; padding: 8px 0px;">意见反馈</a></li>
+                            <li><a id="tofeed" href="#auth" style="width: 100%; text-align: center; padding: 8px 0px;">反馈历史</a></li>
+                            <li><a id="feedmail" href="#auth2" style="width: 100%; text-align: center; padding: 8px 0px;">站内信<span class="badge mail_badge" style="margin-left: 10px;"></span></a></li>
                         </ul>
                     </div>
                 </div>
                 <div class="col-md-9" style="height: 100%; width: 83%;">
-                    <div id="notice" class="manager_panel" style="padding-top: 0px;
-                        width: 96%;
-                        padding-right: 0px;">
-                        <form id="feedpage" method="GET" enctype="multipart/form-data" class="form-inline" style="box-sizing: border-box !important;
-                            margin-top: 10px">
+                    <div id="notice" class="manager_panel" style="padding-top: 0px;  width: 96%;  padding-right: 0px;">
+                        <form id="feedpage" method="GET" enctype="multipart/form-data" class="form-inline" style="box-sizing: border-box !important;  margin-top: 10px">
                             <h3 style="margin-top: 0">意见反馈</h3>
                             <hr style="margin-top: 0; margin-bottom: 30px;">
-                            <div>
-                                <div style="width: 50%; display: inline-block">
-                                    <div class="form-group-p">
-                                        <div class="form-group">
-                                            <label>标题：</label>
-                                        </div>
-                                        <div class="form-group">
-                                            <input id="title" type="text" class="form-control" name="title" placeholder="标题" style="width: 260px;">
-                                        </div>
-                                    </div>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label>标题：</label>
+                                </div>
+                                <div class="form-group">
+                                    <input id="title" type="text" class="form-control" name="title" placeholder="标题" style="width: 400px;">
+                                </div>
+                            </div>
+                            <br>
+                            <br>
+                            <div class="form-group-p">
+                                <div class="form-group">
+                                    <label>任务编号：</label>
+                                </div>
+                                <div class="form-group">
+                                    <input id="taskname" type="text" class="form-control" name="taskname" placeholder="任务编号" style="width: 370px;">
                                 </div>
                             </div>
                             <br>
@@ -204,28 +208,12 @@
                                 </div>
                                 <textarea id="txdata" name="txdata" style="display: none;"></textarea>
                             </div>
-                            @*                            <br>*@
-                            @*                            <br>*@
-                            @*                            <div>*@
-                            @*                                <div class="form-group-p" style="display: inline-block">*@
-                            @*                                    <div class="form-group">*@
-                            @*                                        <label>添加附件：</label>*@
-                            @*                                    </div>*@
-                            @*                                </div>*@
-                            @*                                <div class="form-group-p" style="display: inline-block">*@
-                            @*                                    <div id="group_part" class="form-group" style="width: 450px">*@
-                            @*                                        <input type="file" class="form-control file" id="table1" name="table1">*@
-                            @*                                    </div>*@
-                            @*                                </div>*@
-                            @*                            </div>*@
-                            @*                            <label style="color: #a09f9f;margin-top: 10px;">如有多个文件，请放入压缩包一起上传!</label>*@
                             <br>
                             <br>
                             <input type="button" value="提&nbsp;&nbsp;交" name="submit" class="btn btn-primary submit" onclick="submitFeed()">
                         </form>
                     </div>
-                    <div id="auth" class="manager_panel" style="width: 96%;
-                        padding-right: 0px;">
+                    <div id="auth" class="manager_panel" style="width: 96%; padding-right: 0px;">
                         <form>
                             <h3 style="margin-top: 0">反馈历史记录</h3>
                             <hr style="margin-top: 0; margin-bottom: 30px;">
@@ -237,6 +225,20 @@
                                 </div>
                                 <table class="display table table-bordered" style="width: 99.9%" id="table" data-pagination="true" data-search="true"
                                 data-toolbar="#toolbar" data-page-list="[10,25,50,100,all]" data-search-align="left" data-multiple-search="true">
+                                </table>
+                            </div>
+                        </form>
+                    </div>
+                    <div id="auth2" class="manager_panel" style="width: 96%; padding-right: 0px;">
+                        <form>
+                            <h3 style="margin-top: 0">站内信</h3>
+                            <hr style="margin-top: 0; margin-bottom: 30px;">
+                            <div class="container" style="width: 98%; margin: unset; max-width: unset; background: white">
+                                    <!--data-toolbar：设置装按钮的容器为id为toolbar的。-->
+                                <div id="toolbar2">&nbsp;搜索：</div>
+                                <div id="action2"></div>
+                                <table class="display table table-bordered" style="width: 99.9%" id="table2" data-pagination="true" data-search="true"
+                                data-toolbar="#toolbar2" data-page-list="[10,25,50,100,all]" data-search-align="left" data-multiple-search="true">
                                 </table>
                             </div>
                         </form>
@@ -256,6 +258,7 @@
             $(document).ready(function () {
                 formValidation();
                 loading();
+                loading2();
                 $("#remove").on("click", function () {
                     if ($("input:checked")[0] == null) {
                         alert("请选择需要删除的消息");
@@ -324,13 +327,54 @@
                         field: 'title',
                         sortable: 'true'
                     }, {
+                        title: '任务编号',
+                        field: 'taskname',
+                        sortable: 'true'
+                    }, {
                         title: '操作',
                         field: 'content'
                     }]
                 });
             }
 
-            var E = window.wangEditor;
+        function loading2() {
+            $('#table2').bootstrapTable({
+                method: 'post',
+                url: "/CloudPlatform/Utils/getMailsByUid",
+                sidePagination: "server",
+                pageNumber: 1,
+                pagination: true,
+                pageList: [10, 25, 50, 100],
+                contentType: "application/x-www-form-urlencoded",
+                clickToSelect: true,//点击行选中
+                columns: [{
+                    title: '标题',
+                    field: 'title',
+                }, {
+                    title: '发送时间',
+                    field: 'sendtime',
+                },{
+                    title: '状态',
+                    field: 'status',
+                }, {
+                    title: '操作',
+                    field: 'control'
+                }],
+                onClickCell: function (field, value, row, $element) {
+                    if(field==="control") {
+                        var index=$element.parent().data('index');
+                        row.status="<p style='color: cadetblue; margin: 0px;'>已读</p>";
+                        $('#table2').bootstrapTable('updateRow', {
+                            index: index,
+                            row: row
+                        });
+                    }
+                }
+            });
+        }
+
+
+        var E = window.wangEditor;
             var editor = new E('#editor');
             //自定义菜单配置
             editor.customConfig.menus = [
@@ -368,18 +412,19 @@
             //tab
             $(".mws-tabs").tabs();
 
-            function openFeedpage(fid) {
+            function openHisFeedpage(fid) {
                 $.ajax({
                     url: "/CloudPlatform/Utils/getFeedsByFid?fid="+fid+"&adpage=false",
                     type: "post",
                     success: function (data) {
                         $("#feedHead").text(data.title);
+                        $("#feedTaskname").text(data.taskname);
                         $("#feedName").text('@session.get("userName")');
                         $("#feedPhone").text('@session.get("userPhone")');
                         $("#feedSubtime").text(data.subtime);
                         $("#feedContent").html("");
                         $("#feedContent").append(data.content);
-                        $("#liFeedback").click();
+                        $("#feedbackPage").modal();
                     }
                 });
             }

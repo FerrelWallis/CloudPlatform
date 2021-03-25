@@ -356,11 +356,12 @@ div#mws-wrapper
 div#mws-sidebar
 {
 	width:200px;
-	padding-right:6px;
 	padding-top:103px;
 	float:left;
 	z-index:1;
 	position:fixed;
+	height: 100%;
+	background: #003366;
 }
 
 div#mws-sidebar-stitch, 
@@ -449,8 +450,7 @@ div#mws-navigation ul li
 	border-bottom:1px solid #18191d;
 }
 
-div#mws-navigation ul li a, 
-div#mws-navigation ul li span
+div#mws-navigation ul li a
 {
 	color:#ffffff;
 	outline:none;
@@ -459,7 +459,7 @@ div#mws-navigation ul li span
 	margin-left:10px;
 	margin-right:16px;
 	position:relative;
-	padding:11px 48px 11px 40px;
+	padding:11px 0px 11px 40px;
 	line-height:20px;
 	font-size: 15px;
 }

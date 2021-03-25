@@ -9,6 +9,7 @@ import slick.ast.JoinType.Zip
 import scala.collection.mutable
 import scala.io.Source
 import scala.reflect.io.ZipArchive
+import scala.util.parsing.json
 //允许java代码
 import scala.collection.JavaConverters._
 
@@ -16,11 +17,110 @@ object FilesUtils {
 
   def main(args: Array[String]): Unit = {
 
-    val test = (1 to 7).mkString(",")
+    var array = Array("test")
+    println(array.toBuffer)
+    array = array :+ "test2"
+    println(array.toBuffer)
 
-    println(test)
+//    val elements=Json.obj("S.obs"->Json.obj("spot"->"TRUE","ymin"->"","ymax"->"","lp"->"right:top",
+//      "boxwidth"->"0.7","alp"->"0.8","add"->"1","color"->"#E41A1C:#1E90FF:#FF8C00:#4DAF4A:#984EA3:#40E0D0:#F4AAC4:#DC414B:#957624:#43B43C",
+//      "width"->"12","length"->"10","dpi"->"300","xts"->"15","xls"->"12","xtext"->"","yts"->"15",
+//      "yls"->"12","ytext"->"","lts"->"14","lls"->"15","lltext"->"","ms"->"12","mstext"->"",
+//      "flip"->"TRUE").toString,
+//      "S.chao1"->Json.obj("spot"->"TRUE","ymin"->"","ymax"->"","lp"->"right:top",
+//        "boxwidth"->"0.7","alp"->"0.8","add"->"1","color"->"#E41A1C:#1E90FF:#FF8C00:#4DAF4A:#984EA3:#40E0D0:#F4AAC4:#DC414B:#957624:#43B43C",
+//        "width"->"12","length"->"10","dpi"->"300","xts"->"15","xls"->"12","xtext"->"","yts"->"15",
+//        "yls"->"12","ytext"->"","lts"->"14","lls"->"15","lltext"->"","ms"->"12","mstext"->"",
+//        "flip"->"TRUE").toString,
+//      "se.chao1"->Json.obj("spot"->"TRUE","ymin"->"","ymax"->"","lp"->"right:top",
+//        "boxwidth"->"0.7","alp"->"0.8","add"->"1","color"->"#E41A1C:#1E90FF:#FF8C00:#4DAF4A:#984EA3:#40E0D0:#F4AAC4:#DC414B:#957624:#43B43C",
+//        "width"->"12","length"->"10","dpi"->"300","xts"->"15","xls"->"12","xtext"->"","yts"->"15",
+//        "yls"->"12","ytext"->"","lts"->"14","lls"->"15","lltext"->"","ms"->"12","mstext"->"",
+//        "flip"->"TRUE").toString,
+//      "S.ACE"->Json.obj("spot"->"TRUE","ymin"->"","ymax"->"","lp"->"right:top",
+//        "boxwidth"->"0.7","alp"->"0.8","add"->"1","color"->"#E41A1C:#1E90FF:#FF8C00:#4DAF4A:#984EA3:#40E0D0:#F4AAC4:#DC414B:#957624:#43B43C",
+//        "width"->"12","length"->"10","dpi"->"300","xts"->"15","xls"->"12","xtext"->"","yts"->"15",
+//        "yls"->"12","ytext"->"","lts"->"14","lls"->"15","lltext"->"","ms"->"12","mstext"->"",
+//        "flip"->"TRUE").toString,
+//      "se.ACE"->Json.obj("spot"->"TRUE","ymin"->"","ymax"->"","lp"->"right:top",
+//        "boxwidth"->"0.7","alp"->"0.8","add"->"1","color"->"#E41A1C:#1E90FF:#FF8C00:#4DAF4A:#984EA3:#40E0D0:#F4AAC4:#DC414B:#957624:#43B43C",
+//        "width"->"12","length"->"10","dpi"->"300","xts"->"15","xls"->"12","xtext"->"","yts"->"15",
+//        "yls"->"12","ytext"->"","lts"->"14","lls"->"15","lltext"->"","ms"->"12","mstext"->"",
+//        "flip"->"TRUE").toString,
+//      "Shannon"->Json.obj("spot"->"TRUE","ymin"->"","ymax"->"","lp"->"right:top",
+//        "boxwidth"->"0.7","alp"->"0.8","add"->"1","color"->"#E41A1C:#1E90FF:#FF8C00:#4DAF4A:#984EA3:#40E0D0:#F4AAC4:#DC414B:#957624:#43B43C",
+//        "width"->"12","length"->"10","dpi"->"300","xts"->"15","xls"->"12","xtext"->"","yts"->"15",
+//        "yls"->"12","ytext"->"","lts"->"14","lls"->"15","lltext"->"","ms"->"12","mstext"->"",
+//        "flip"->"TRUE").toString,
+//      "Simpson"->Json.obj("spot"->"TRUE","ymin"->"","ymax"->"","lp"->"right:top",
+//        "boxwidth"->"0.7","alp"->"0.8","add"->"1","color"->"#E41A1C:#1E90FF:#FF8C00:#4DAF4A:#984EA3:#40E0D0:#F4AAC4:#DC414B:#957624:#43B43C",
+//        "width"->"12","length"->"10","dpi"->"300","xts"->"15","xls"->"12","xtext"->"","yts"->"15",
+//        "yls"->"12","ytext"->"","lts"->"14","lls"->"15","lltext"->"","ms"->"12","mstext"->"",
+//        "flip"->"TRUE").toString,
+//      "Pielou"->Json.obj("spot"->"TRUE","ymin"->"","ymax"->"","lp"->"right:top",
+//        "boxwidth"->"0.7","alp"->"0.8","add"->"1","color"->"#E41A1C:#1E90FF:#FF8C00:#4DAF4A:#984EA3:#40E0D0:#F4AAC4:#DC414B:#957624:#43B43C",
+//        "width"->"12","length"->"10","dpi"->"300","xts"->"15","xls"->"12","xtext"->"","yts"->"15",
+//        "yls"->"12","ytext"->"","lts"->"14","lls"->"15","lltext"->"","ms"->"12","mstext"->"",
+//        "flip"->"TRUE").toString,
+//      "goods_coverage"->Json.obj("spot"->"TRUE","ymin"->"","ymax"->"","lp"->"right:top",
+//        "boxwidth"->"0.7","alp"->"0.8","add"->"1","color"->"#E41A1C:#1E90FF:#FF8C00:#4DAF4A:#984EA3:#40E0D0:#F4AAC4:#DC414B:#957624:#43B43C",
+//        "width"->"12","length"->"10","dpi"->"300","xts"->"15","xls"->"12","xtext"->"","yts"->"15",
+//        "yls"->"12","ytext"->"","lts"->"14","lls"->"15","lltext"->"","ms"->"12","mstext"->"",
+//        "flip"->"TRUE").toString,
+//    ).toString
+//
+//    println(elements)
+//
+//    var map1 = jsonToMap(elements)
+//    map1 = map1.-("goods_coverage")
+//    println(map1)
+//    map1 = map1.+(("goods_coverage","test"))
+//    println(map1)
+//
+//    println(map1.get("goods_coverage").get)
+//
+//    val map = jsonToMap(elements).get("Simpson").get
+//    println(jsonToMap(map).get("lp").get)
 
-//    val (names,colors) = FileUtils.readLines(new File("F:\\CloudPlatform\\R\\circos_species\\input\\colors.xls")).asScala.map{x=>
+
+
+
+//    println(elements.-("goods_coverage"))
+//
+//    println(elements.+("goods_coverage",Json.obj("test"->"test")))
+
+
+
+//    val content = FileUtils.readLines(new File("F:\\CloudPlatform\\R\\bar\\input\\table.txt")).asScala.
+//      filter(!_.trim.isEmpty).map{ line =>
+//      line.trim.split("\\s+").mkString("\t")
+//    }.mkString("\n")
+//    println(content)
+//    FileUtils.writeStringToFile(new File("F:\\CloudPlatform\\R\\bar\\input\\table2.txt"),content)
+
+//    val result=FileUtils.readLines(new File("F:\\CloudPlatform\\R\\net\\test\\result.xls")).asScala
+//    var resultFilter = Array("")
+//    result.drop(1).foreach{ x=>
+//      val ei = x.split("\t").filter(_.trim!="")
+//      if(ei(3) != "NA" && ei(4) != "NA") {
+//        val w=ei(3).trim.split("\t").last.toDouble
+//        val c=ei(3).trim.split("\t").head.toDouble
+//        if(w < 0.1 && Math.abs(c) < 1) {
+//          resultFilter=resultFilter:+x
+//        }
+//      }
+//    }
+//
+//    val (outedge, outnode) = resultFilter.drop(1).map{x =>
+//      val e = x.split("\t").filter(_.trim!="")
+//      (e(1) + "\t" + e(2) + "\t" + e(3) + "\t" + e(4),List(e(1), e(2)))
+//    }.unzip
+//
+//    println("Node1\tNode2\tr\tP\n" + outedge.mkString("\n"))
+//    println("Node\n" + outnode.flatten.distinct.mkString("\n"))
+
+
+    //    val (names,colors) = FileUtils.readLines(new File("F:\\CloudPlatform\\R\\circos_species\\input\\colors.xls")).asScala.map{x=>
 //      val temp = x.replaceAll("\"","").split("\t")
 //      (temp.head,temp.last)
 //    }.unzip
@@ -47,330 +147,12 @@ object FilesUtils {
 //      println(x)
 //    }
 
-
-
-
-//    val sample=buffer(0).split("\t").tail
-//    val char = Array("A", "B", "C", "D", "E", "F")
-//
-//    val result=buffer.tail.map{x=>
-//      val body=x.trim.split("\t").tail
-//      val gene=x.trim.split("\t")(0).trim
-//      val key=head.map{y=>
-//        val test = y.trim.split(",").map{z=>
-//          val index=sample.indexOf(z.trim)
-//          if(body(index)!="0") z.trim else ""
-//        }
-//        if(!test.contains("")) char(head.indexOf(y)) else ""
-//      }.mkString
-//      (key,gene)
-//    }.filter(r=>r._1!="")
-//
-//    val data = result.groupBy(_._1).map(x => x._1 -> x._2.map(_._2))
-//    val name = head.zipWithIndex.map(x => char(x._2) -> x._1).toMap
-//    val values = result.groupBy(_._1).map(x => x._1 -> x._2.map(_._2).length)
-//
-//    println(data.toBuffer)
-//    println(name.toBuffer)
-//    println(values.toBuffer)
-
-
-//    val buffer = FileUtils.readLines(new File("F:\\CloudPlatform\\files\\examples\\venn.txt")).asScala
-//
-//    val matrix = buffer.map(_.split("[\t|;|,]"))
-//
-//    val head = matrix.head //head=sample
-//    val char = Array("A", "B", "C", "D", "E", "F")
-//
-//    val body = (0 to matrix.head.length-1).map { x =>
-//      matrix.map { y =>
-//        if (x<=y.length) y(x) else ""
-//      }.distinct.tail.filterNot(_=="") //init 去掉数组最后一个元素,tail去掉第一个元素
-//    }.toBuffer
-//    //body=array(每一列数据为一行array,,,)
-//    //      println(body.toList)
-//
-//    val result = body.flatMap { x =>
-//      val test=x.map { y =>
-//        val key = body.filter(_.contains(y)).map(z => char(body.indexOf(z))).mkString
-//        (key, y)
-//      }.distinct
-//      test
-//    }.distinct
-//
-//    println(result)
-//
-//    //result=>array((headers,gene),(),(),())  headers 是该元素的sample对应ABCD
-//    //      println(result.toList)
-//
-//    val data = result.groupBy(_._1).map(x => x._1 -> x._2.map(_._2))
-//    val name = head.zipWithIndex.map(x => char(x._2) -> x._1).toMap
-//    val values = result.groupBy(_._1).map(x => x._1 -> x._2.map(_._2).length)
-//
-//    println(data.toBuffer)
-//    println(name.toBuffer)
-//    println(values.toBuffer)
-
-//    val tableFile1=new File("F:\\CloudPlatform\\users\\6\\IGC8510520\\table1.txt")
-//    val g = FileUtils.readLines(tableFile1).asScala.head.trim.split("\t")
-//    val e = g
-//
-//    val list=e.drop(1)++g.drop(1).distinct
-//
-//
-//    val result=FileUtils.readLines(new File("F:\\CloudPlatform\\users\\6\\IGC8510520\\out\\pandv.xls")).asScala
-//    var eid=0;
-//
-//    var soutar:List[List[String]]=List(List(""))
-//    var resultFilter = Array("")
-//    result.drop(1).foreach{x=>
-//      val ei = x.split("\"").filter(_.trim!="")
-//      val source=ei(1)
-//      val target=ei(2)
-//      if(!soutar.contains(List(source,target)) || !soutar.contains(List(target,source))) {
-//        soutar=soutar:+List(source,target):+List(target,source)
-//        resultFilter=resultFilter:+x
-//      }
-//    }
-//
-//    println(resultFilter.drop(1).toList)
-
-
-//    println(edges)
-
-
-
-
-
-//    val buffer=FileUtils.readLines(new File("F:\\CloudPlatform\\files\\examples\\VennChart.txt")).asScala
-//    val sample=buffer(0).split("\t")
-//    val gene=buffer.map{x=>
-//      x.split("\t")(0)
-//    }.drop(1)
-////    println(gene.toList)
-////    println(sample.toList)
-//    val head=FileUtils.readLines(new File("F:\\CloudPlatform\\files\\examples\\VennChartGroup.txt")).asScala
-//    println(head.toList)
-//
-//    val char = Array("A", "B", "C", "D", "E", "F")
-//
-//    val result=buffer.map{x=>
-//      val body=x.split("\t")
-//      val gene=x.split("\t")(0)
-//      val key=head.map{y=>
-//        val test = y.split(",").map{z=>
-//          val index=sample.indexOf(z)
-//          println("z="+z)
-//          println("index="+index)
-//          println("body="+body(index))
-//          if(body(index)!="0") z else ""
-//        }
-//        println(test.toList)
-//        println()
-//        if(!test.contains("")) char(head.indexOf(y)) else ""
-//      }.mkString
-//      (key,gene)
-//    }.filter(r=>r._1!="")
-//
-//    val data = result.groupBy(_._1).map(x => x._1 -> x._2.map(_._2))
-//    val name = head.zipWithIndex.map(x => char(x._2) -> x._1).toMap
-//    val values = result.groupBy(_._1).map(x => x._1 -> x._2.map(_._2).length)
-//
-//    println(result)
-
-//    val test=head.map(_.split(",").map(sample.indexOf(_))).filter(!_.contains(-1))
-//
-//    println(test)
-//
-//    test.foreach(x=>println(x.toList))
-
-//    head.map(_.split(",").map(sample.indexOf(_)))
-
-//    buffer.map(_.split("[\t|;|,]").length).distinct
-
-//        val body=head.map{x=>
-//          println(x)
-//          val col=x.split("&").map{y=>
-//            val index=sample.indexOf(y) //sample下标
-//            val line=buffer.drop(1).map{z=>
-//              val data=z.split("\t")(index+1)
-//              val name=z.split("\t")(0)
-//              if(data !="0" ) name else ""
-//            }
-//            line.filter(_!="")
-//          }
-//          println()
-//          println((x+:col.flatten).toList)
-//          println()
-//          x+:col.flatten
-//        }
-//
-//        println(body.toList)
-
-//    val result=gene.map{g=>
-//      val key=body.filter(_.contains(g)).map(z=> char(body.indexOf(z))).mkString
-//      (key,g)
-//    }
-//
-//    println(result)
-
-
-
-
-
-
-//    val body=head.map{x=>
-//      println(x)
-//      val col=x.split("&").map{y=>
-//        val index=sample.indexOf(y) //sample下标
-//        val line=buffer.drop(1).map{z=>
-//          val data=z.split("\t")(index+1)
-//          val name=z.split("\t")(0)
-//          if(data !="0" ) name else ""
-//        }
-//        line.filter(_!="")
-//      }
-//      println()
-//      println((x+:col.flatten).toList)
-//      println()
-//      x+:col.flatten
-//    }
-//
-//    println(body.toList)
-
-
-
-
-    //    val e=evi.map{line=>
-    //      line.trim.split("\t").head
-    //    }
-
-
-//    val(valid,code,responsecode)=Utils.sendMessage("12345678911")
-//    println(valid)
-//    println(code)
-//    println(responsecode)
-//    val verify: mutable.HashMap[String, String] = mutable.HashMap()
-//    System.out.println(verify.get("13774463227"))
-
-
-//    val files = new File("F:\\CloudPlatform\\users\\1\\PCA624165229\\out").listFiles().map(_.getAbsolutePath)
-//    val name=new File("F:\\CloudPlatform\\users\\1\\PCA624165229\\out").listFiles().map(_.getName)
-//    println(files.toList)
-//    println(name.toList)
-
-//    val genus=FileUtils.readLines(new File("F:\\CloudPlatform\\R\\net\\data\\net_genus.txt")).asScala
-//    val g=genus.map{line=>
-//      line.trim.split("\t").head
-//    }
-//    println(g.length)
-//
-//    val evi=FileUtils.readLines(new File("F:\\CloudPlatform\\R\\net\\data\\net_env.txt")).asScala
-//    val e=evi.map{line=>
-//      line.trim.split("\t").head
-//    }
-//
-//    val list=e.drop(1)++g.drop(1)
-//    var count=0;
-//    val nodes=list.map{x=>
-//      count=count+1
-//      val id=list.indexOf(x).toString
-//      val xy=Json.obj("x"->Math.random()*500,"y"->Math.random()*500)
-//      val (group,score)=
-//        if(count<=e.drop(1).length) ("evi",0.006769776522008331) //环境node
-//        else ("gene",0.0022841757103715943) //基因node
-//      val data=Json.obj("id"->id,"name"->x,"score"->score,"group"->group)
-//      Json.obj("data"->data,"position"->xy,"group"->"nodes")
-//    }
-//
-//    val result=FileUtils.readLines(new File("F:\\CloudPlatform\\R\\net\\test\\result.xls")).asScala
-//    val edges=result.drop(1).map{x=>
-//      val e = x.split("\"").filter(_.trim!="")
-//      val source=list.indexOf(e(1))
-//      val target=list.indexOf(e(2))
-//      val weight=e(3).trim.split("\t").last.toDouble
-//      val data=Json.obj("source"->source,"target"->target,"weight"->weight)
-//      Json.obj("data"->data,"group"->"edges")
-//    }
-//
-//    val row=nodes++edges
-//
-//
-//
-//    println(Json.obj("rows"->row).toString())
-
-
-//    val dutyDir="F:/CloudPlatform/users/1/gokegg"
-
-//    Utils.pdf2Png(dutyDir+"/out/gokegg.Go.enrich.pdf",dutyDir+"/temp/gokegg.Go.enrich.png")
-//    Utils.pdf2Png(dutyDir+"/out/gokegg.Ko.enrich.pdf",dutyDir+"/temp/gokegg.Ko.enrich.png")
-//    Utils.pdf2Png(dutyDir+"/out/ko_stack.pdf",dutyDir+"/temp/ko_stack.png")
-//    Utils.pdf2Png(dutyDir+"/out/ko_dodge.pdf",dutyDir+"/temp/ko_dodge.png")
-//    Utils.pdf2Png(dutyDir+"/out/go_stack.pdf",dutyDir+"/temp/go_stack.png")
-//    Utils.pdf2Png(dutyDir+"/out/go_dodge.pdf",dutyDir+"/temp/go_dodge.png")
-
-//    new File("F:\\CloudPlatform\\R\\pca\\test\\test_out\\table.zip").createNewFile()
-//    CompressUtil.zip("F:\\CloudPlatform\\R\\pca\\test\\test_out\\temp","F:\\CloudPlatform\\R\\pca\\test\\test_out\\table.zip")
-
-//    Utils.pdf2Png("F:\\CloudPlatform\\R\\pca\\test\\test_out\\pca.pdf","F:\\CloudPlatform\\R\\pca\\test\\test_out\\pca.png")
-
-//    val t=" -b A,C,D -c tt"
-//    System.out.println(t.substring(4,t.indexOf("-c")))
-
-//    val genus=FileUtils.readLines(new File("F:\\CloudPlatform\\R\\net\\data\\genus.txt")).asScala
-//    val g=genus.map{line=>
-//      line.trim.split("\t").head
-//    }
-//
-//    val evi=FileUtils.readLines(new File("F:\\CloudPlatform\\R\\net\\data\\env.txt")).asScala
-//    val e=evi.map{line=>
-//      line.trim.split("\t").head
-//    }
-//
-//    val list=e.drop(1)++g.drop(1)
-//    var count=0;
-//    val nodes=list.map{x=>
-//      count=count+1
-//      val evi= if(count<=e.drop(1).length) "Environment" else "GeneId"
-//      Json.obj("name"->x,"value"->1,"category"->evi)
-//    }
-//
-//    val data=FileUtils.readLines(new File("F:\\CloudPlatform\\R\\net\\test\\result.xls")).asScala
-//    val links=data.map{x=>
-//      val e = x.split("\"").filter(_.trim!="")
-//      val source=list.indexOf(e(1))
-//      val target=list.indexOf(e(2))
-//      Json.obj("source"->source,"target"->target)
-//    }
-//
-//    val cat=(Json.obj("name"->"GeneId","base"->"GeneId"),Json.obj("name"->"Environment","base"->"Environment"))
-//
-//    val rows=Json.obj("type"->"force","categories"->cat,"nodes"->nodes,"links"->links)
-//    println(rows)
-
-//    val ge=FileUtils.readLines(new File("F:\\CloudPlatform\\R\\net\\data\\cytoscape-TF.txt")).asScala
-//    val source=ge.map{line=>
-//      line.trim.split("\t").filter(_.trim!="").head.trim
-//    }.drop(1).distinct
-//    val c=ge.map{line=>
-//      line.trim.split("\t").filter(_.trim!="")(1).trim
-//    }.drop(1).distinct
-//    val target=ge.map{line=>
-//      line.trim.split("\t").filter(_.trim!="").last
-//    }.drop(1).distinct
-//    val list2=(source++target).distinct
-//
-//    println(c)
-
-
-
-//    val head=FileUtils.readFileToString(new File("F:\\CloudPlatform\\R\\heatmap\\cluster.txt")).trim.split("\n")
-//    println("row="+(head.length-1))
-//    println("col="+(head(1).split("\t").length-1))
   }
 
 
-
+  def jsonToMap(json:String): Map[String, String] = {
+    scala.util.parsing.json.JSON.parseFull(json).get.asInstanceOf[Map[String, String]]
+  }
 
 
 

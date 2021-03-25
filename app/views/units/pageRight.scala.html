@@ -1,0 +1,35 @@
+@(instruction:String,video:String,abbre:String)
+<div class="handler"></div>
+<div class="mysoft-content-right" style="width: 305px;">
+    <ul class="nav nav-tabs">
+        <li id="ins_tab1" class="active">
+            <a href="###" data-target="#instruction" data-toggle="tab">使用说明</a>
+        </li>
+        <li class="" id="out_tab1">
+            <a href="###" data-target="#example" data-toggle="tab">教学视频</a>
+        </li>
+        <li class="" id="his_tab1">
+            <a href="#" data-target="#history" data-toggle="tab">历史任务</a>
+        </li>
+    </ul>
+    <div class="tab-content" style="box-sizing: border-box!important;">
+        <div class="tab-pane fade active in" id="instruction">
+            <h5 style="margin-bottom: 2px">@instruction</h5>
+        </div>
+        <div class="tab-pane fade" id="example">
+            <h5 style="margin-bottom: 2px">@video</h5>
+            <div id="dplayer"></div>
+        </div>
+        <div id="history" class="form1_ins tab-pane fade">
+            <a id="btn-refresh" class="btn_refresh mws-i-24 i-refresh-3" onclick="refresh('@abbre')">刷新状态</a>
+            <ul id="hisul" style="margin-top: 15px">
+                <li id="hislist" class="hislist">
+                    <div class="his_time"><span>任务编号</span></div>
+                    <div class="his_time"><span style="margin-left: -20px;">结束时间</span></div>
+                    <div class="his_name"><span style="margin-left: -23px;">状态</span></div>
+                    <hr>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

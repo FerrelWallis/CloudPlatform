@@ -1,0 +1,16 @@
+@(em:String,divname:String,title:String,name:String,example:String)
+<div id="@divname" class="one-line">
+    <div class="form-group-p" style="width: 450px">
+        <div class="form-group">
+            <label><em>@em</em>@title</label>
+        </div>
+        <div class="form-group">
+            <input type="file" class="form-control file" id="@name" name="@name">
+        </div>
+    </div>
+    <div class="form-group-extra">
+        <em><a href="/assets/files/@example" target='_blank'>示例文件</a></em>
+    </div>
+    <br>
+    <br>
+</div>

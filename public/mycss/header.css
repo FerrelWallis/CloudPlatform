@@ -171,6 +171,7 @@ textarea:focus {
     cursor: pointer;
 }
 a{
+    outline: none!important;
     text-decoration: none!important;
     -webkit-transition: unset!important;
     -o-transition: unset!important;

@@ -1,0 +1,21 @@
+@(divname:String,title:String,name:String,tipid:String,tip:String)
+<div class="form-group-p use-flex" id="@divname">
+    <div class="form-group" style="position: relative">
+        <label for="">@title</label>
+        <div style="float:right; position: absolute; right: 11px; top: 1px;">
+            <div id='@tipid' style="display: none">
+                <div class='tooltip fade top in' style='width: 200px; bottom: 20px; right: -89px; display: block;'>
+                    <div class='tooltip-arrow'></div>
+                    <div class='tooltip-inner'>@tip</div>
+                </div>
+            </div>
+            <i class="mws-ic-16 ic-question1" onmouseover="gapfocus('@tipid')" onmouseout="gapblur('@tipid')" style="padding-left: 22px; background-position: center; padding-top: 2px;"></i>
+        </div>
+        <label style="padding-left: 15px;">：</label>
+    </div>
+    <div class="form-group">
+        <select id="@name" name="@name" style="width: 100%;">
+        </select>
+    </div>
+    <br>
+</div>

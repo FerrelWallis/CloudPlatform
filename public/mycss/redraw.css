@@ -136,20 +136,26 @@ input[type="text"], textarea {
 }
 .form-group-p{
     display: inline-block;
-    width: 100%;
+    width: calc(100% - 30px);
 }
 input,select{
     line-height: 32px;
     height: 32px;
     width: 60%;
     border-radius: 5px;
-    margin-left: 10px;
 }
+.evo-cp-wrap input {
+    width: 70%;
+}
+
 label {
     display: inline-block;
     margin-bottom: 5px;
     margin-top: 5px;
     font-weight: 700;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
 }
 .form-group input:not([type="radio"]):not([type="checkbox"]),.form-group select,.form-group .form-control[readonly] {
     border-radius: 5px;
@@ -331,6 +337,8 @@ a, a:visited {
 
 .update{
     color: red;
+    margin: 0;
+    overflow: unset;
 }
 .label-overflow{
     text-overflow: ellipsis;
@@ -340,4 +348,25 @@ a, a:visited {
     display: block;
     word-break: break-all;
     word-wrap: break-word;
+}
+.well {
+    min-height: 20px;
+    padding: 5px;
+    margin-bottom: 20px;
+    background-color: white;
+    border: unset;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
+}
+
+.use-flex{
+    display:flex;
+    width: calc(100% - 30px);
+}
+.use-flex>div:first-child{
+    flex:none;
+}
+.use-flex>div:last-child{
+    flex:1;
 }

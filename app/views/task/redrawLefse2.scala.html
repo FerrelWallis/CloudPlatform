@@ -13,11 +13,7 @@
     <script type="text/javascript" src="@routes.Assets.versioned("bootstrap-slider-master/bootstrap-slider.js")"></script>
 
     <style>
-            .form-group-p {
-                display: inline-block;
-                width: 100%;
-                margin: 0px 0 0px 0;
-            }
+
             .evo-pointer {
                 cursor: pointer;
                 margin-top: unset;
@@ -72,9 +68,7 @@
                                         下载结果图
                                     </button>
                                     <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 35px, 0px); top: 0px; left: 0px; will-change: transform;width: 150px">
-                                        <a class="dropdown-item" id="downPic1" onclick="downloadpics('lefse_LDA','pdf')">下载 pdf</a>
-@*                                        <a class="dropdown-item" id="downPng1" onclick="downloadpics('lefse_LDA','png')">下载 png</a>*@
-@*                                        <a class="dropdown-item" id="downTiff1" onclick="downloadpics('lefse_LDA','tiff')">下载 tiff</a>*@
+                                        <a class="dropdown-item" id="downPic1" onclick="downloadpics('@row.status','@row.taskname','lefse_LDA','pdf')">下载 pdf</a>
                                     </div>
                                 </div>
                             </div>
@@ -103,7 +97,7 @@
                                                 <div id='gaptip1' style="display: none">
                                                     <div class='tooltip fade top in' style='width: 200px; bottom: 20px; right: -89px; display: block;'>
                                                         <div class='tooltip-arrow'></div>
-                                                        <div class='tooltip-inner'>要绘制的标签级别数, -1 表示绘制所有, 1 为默认值</div>
+                                                        <div class='tooltip-inner'>要绘制的标签级别数, -1 表示绘制所有, 1 为默认值。</div>
                                                     </div>
                                                 </div>
                                                 <i class="mws-ic-16 ic-question1" onmouseover="gapfocus('gaptip1')" onmouseout="gapblur('gaptip1')" style="padding-left: 22px; background-position: center; padding-top: 2px;"></i>
@@ -129,7 +123,7 @@
                                             <label for="format">主标题：</label>
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" name="restitle" id="restitle" value="" placeholder="请输入英文，中文默认不显示" class="form-control input-sm">
+                                            <input type="text" name="restitle" id="restitle" value="" placeholder="请输入英文，中文默认不显示" class="form-control input-sm" style="width: 100%;">
                                         </div>
                                     </div>
                                     <br>
@@ -188,10 +182,14 @@
                                             </div>
                                             <label style="padding-left: 15px;">：</label>
                                         </div>
-                                        <div class="form-group">
-                                            <input type="text" id="reswidth" name="reswidth" class="form-control" placeholder="数字" value="15" style="width: calc(47.5% - 5px);float: left;margin-right: 5px">
-                                            <label style="float: left; width: 5%;">--</label>
-                                            <input type="text" id="resheight" name="resheight" class="form-control" placeholder="数字" value="12" style="width: calc(47.5% - 5px);  margin-left: 5px;float: left">
+                                        <div style="float: left">
+                                            <div class="form-group" style="width: calc(48% - 5px);float: left;margin-right: 5px">
+                                                <input type="text" id="reswidth" name="reswidth" class="form-control" placeholder="数字">
+                                            </div>
+                                            <label style="float: left; width: 4%; text-align: center;">--</label>
+                                            <div class="form-group" style="width: calc(48% - 5px);float: left;margin-left: 5px">
+                                                <input type="text" id="resheight" name="resheight" class="form-control" placeholder="数字">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -205,7 +203,7 @@
                                 </div>
                             </div>
                         </form>
-                        <form id="cla" method="GET" enctype="multipart/form-data" class="form2 well form-inline tab-pane fade" style="box-sizing: border-box!important;">
+                        <form id="cla" method="GET" enctype="multipart/form-data" class="form2 tab-pane fade" style="box-sizing: border-box!important;">
                             <div class="redraw-head" style="margin-bottom: 10px;margin-top: 10px;">
                                 <h3 style="display: inline-block">显示结果图：</h3>
                                 <div class="dropdown" style="display: inline-block">
@@ -213,7 +211,7 @@
                                         下载结果图
                                     </button>
                                     <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 35px, 0px); top: 0px; left: 0px; will-change: transform;width: 150px">
-                                        <a class="dropdown-item" id="downPic2" onclick="downloadpics('lefse_LDA.cladogram','pdf')">下载 pdf</a>
+                                        <a class="dropdown-item" id="downPic2" onclick="downloadpics('@row.status','@row.taskname','lefse_LDA.cladogram','pdf')">下载 pdf</a>
 @*                                        <a class="dropdown-item" id="downPng2" onclick="downloadpics('lefse_LDA.cladogram','png')">下载 png</a>*@
 @*                                        <a class="dropdown-item" id="downTiff2" onclick="downloadpics('lefse_LDA.cladogram','tiff')">下载 tiff</a>*@
                                     </div>
@@ -251,7 +249,6 @@
                                                 <input type="text" id="clasc" name="clasc" class="form-control" style="float: left; margin-right: 5px">
                                             </div>
                                         </div>
-                                        <br>
                                         <div class="form-group-p use-flex">
                                             <div class="form-group" style="position: relative;">
                                                 <label for="format">是否展开非叶节点的分类学级别</label>
@@ -273,7 +270,6 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <br>
                                         <div class="form-group-p use-flex">
                                             <div class="form-group" style="position: relative;">
                                                 <label for="">最大分类学级别数</label>
@@ -292,7 +288,6 @@
                                                 <input type="text" id="claml" name="claml" class="form-control" placeholder="数字" value="15">
                                             </div>
                                         </div>
-                                        <br>
                                         <div class="form-group-p use-flex">
                                             <div class="form-group" style="position: relative;">
                                                 <label for="format">是否绘制左边分类图例：</label>
@@ -304,7 +299,6 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <br>
                                         <div class="form-group-p use-flex">
                                             <div class="form-group" style="position: relative;">
                                                 <label for="">较低级别分类群之间的间隔</label>
@@ -312,7 +306,7 @@
                                                     <div id='gaptip5' style="display: none">
                                                         <div class='tooltip fade top in' style='width: 200px; bottom: 20px; right: -89px; display: block;'>
                                                             <div class='tooltip-arrow'></div>
-                                                            <div class='tooltip-inner'>设置属于不同父分类群的较低级别分类群之间的间隔。根据该级别叶子节点密度，该参数会自动调节</div>
+                                                            <div class='tooltip-inner'>设置属于不同父分类群的较低级别分类群之间的间隔。根据该级别叶子节点密度，该参数会自动调节。</div>
                                                         </div>
                                                     </div>
                                                     <i class="mws-ic-16 ic-question1" onmouseover="gapfocus('gaptip5')" onmouseout="gapblur('gaptip5')" style="padding-left: 22px; background-position: center; padding-top: 2px;"></i>
@@ -323,7 +317,6 @@
                                                 <input type="text" id="clacs" name="clacs" class="form-control" placeholder="数字" value="15">
                                             </div>
                                         </div>
-                                        <br>
                                         <div class="form-group-p use-flex">
                                             <div class="form-group">
                                                 <label for="">径向上外部级别的数量：</label>
@@ -332,7 +325,6 @@
                                                 <input type="text" id="clarsl" name="clarsl" class="form-control" placeholder="数字" value="15">
                                             </div>
                                         </div>
-                                        <br>
                                         <div class="form-group-p use-flex">
                                             <div class="form-group" style="position: relative;">
                                                 <label for="">绘制标签的分类学级别范围</label>
@@ -348,13 +340,16 @@
                                                 <label style="padding-left: 15px;">：</label>
                                             </div>
                                             <br>
-                                            <div class="form-group">
-                                                <input type="text" id="clalstartl" name="clalstartl" class="form-control" placeholder="数字" value="15" style="width: calc(47.5% - 5px);float: left;margin-right: 5px">
-                                                <label style="float: left; width: 5%; text-align: center;">-</label>
-                                                <input type="text" id="clalstopl" name="clalstopl" class="form-control" placeholder="数字" value="12" style="width: calc(47.5% - 5px);  margin-left: 5px;float: left">
+                                            <div style="float: left;">
+                                                <div class="form-group" style="width: calc(48% - 5px);float: left;margin-right: 5px">
+                                                    <input type="text" id="clalstartl" name="clalstartl" class="form-control" placeholder="数字">
+                                                </div>
+                                                <label style="float: left; width: 4%; text-align: center;">-</label>
+                                                <div class="form-group" style="width: calc(48% - 5px);float: left;margin-left: 5px">
+                                                    <input type="text" id="clalstopl" name="clalstopl" class="form-control" placeholder="数字">
+                                                </div>
                                             </div>
                                         </div>
-                                        <br>
                                         <div class="form-group-p use-flex">
                                             <div class="form-group" style="position: relative;">
                                                 <label for="">标签缩写的分类学级别范围</label>
@@ -370,32 +365,38 @@
                                                 <label style="padding-left: 15px;">：</label>
                                             </div>
                                             <br>
-                                            <div class="form-group">
-                                                <input type="text" id="claastartl" name="claastartl" class="form-control" placeholder="数字" value="15" style="width: calc(47.5% - 5px);float: left;margin-right: 5px">
-                                                <label style="float: left; width: 5%; text-align: center;">-</label>
-                                                <input type="text" id="claastopl" name="claastopl" class="form-control" placeholder="数字" value="12" style="width: calc(47.5% - 5px);  margin-left: 5px;float: left">
+                                            <div style="float: left;">
+                                                <div class="form-group" style="width: calc(48% - 5px);float: left;margin-right: 5px">
+                                                    <input type="text" id="claastartl" name="claastartl" class="form-control" placeholder="数字">
+                                                </div>
+                                                <label style="float: left; width: 4%; text-align: center;">-</label>
+                                                <div class="form-group" style="width: calc(48% - 5px);float: left;margin-left: 5px">
+                                                    <input type="text" id="claastopl" name="claastopl" class="form-control" placeholder="数字">
+                                                </div>
                                             </div>
                                         </div>
-                                        <br>
                                         <div class="form-group-p use-flex">
                                             <div class="form-group">
                                                 <label for="">分类群节点大小范围(最小--最大)：</label>
                                             </div>
-                                            <div class="form-group">
-                                                <input type="text" id="claminps" name="claminps" class="form-control" placeholder="数字" value="15" style="width: calc(47.5% - 5px);float: left;margin-right: 5px">
-                                                <label style="float: left; width: 5%; text-align: center;">-</label>
-                                                <input type="text" id="clamaxps" name="clamaxps" class="form-control" placeholder="数字" value="12" style="width: calc(47.5% - 5px);  margin-left: 5px;float: left">
+                                            <div style="float: left;">
+                                                <div class="form-group" style="width: calc(48% - 5px);float: left;margin-right: 5px">
+                                                    <input type="text" id="claminps" name="claminps" class="form-control" placeholder="数字">
+                                                </div>
+                                                <label style="float: left; width: 4%; text-align: center;">-</label>
+                                                <div class="form-group" style="width: calc(48% - 5px);float: left;margin-left: 5px">
+                                                    <input type="text" id="clamaxps" name="clamaxps" class="form-control" placeholder="数字">
+                                                </div>
                                             </div>
                                         </div>
-                                        <br>
-                                        <div class="form-group-p use-flex" style="margin: 0 0 10px 0;">
+                                        <div class="form-group-p use-flex">
                                             <div class="form-group" style="position: relative;">
                                                 <label for="">给右侧的水平空间比例</label>
                                                 <div style="float:right; position: absolute; right: 11px; top: 5px;">
                                                     <div id='gaptip8' style="display: none">
                                                         <div class='tooltip fade top in' style='width: 200px; bottom: 20px; right: -89px; display: block;'>
                                                             <div class='tooltip-arrow'></div>
-                                                            <div class='tooltip-inner'>以防标签名太长而导致标签图例需要更多空间，可以通过这个参数扩大右边标签图例占比</div>
+                                                            <div class='tooltip-inner'>以防标签名太长而导致标签图例需要更多空间，可以通过这个参数扩大右边标签图例占比。</div>
                                                         </div>
                                                     </div>
                                                     <i class="mws-ic-16 ic-question1" onmouseover="gapfocus('gaptip8')" onmouseout="gapblur('gaptip8')" style="padding-left: 22px; background-position: center; padding-top: 2px;"></i>
@@ -406,7 +407,6 @@
                                                 <input type="text" id="clarsp" name="clarsp" class="form-control" placeholder="数字" value="15">
                                             </div>
                                         </div>
-                                        <br>
                                         <div class="form-group-p use-flex">
                                             <div class="form-group">
                                                 <label for="format">清晰度：</label>
@@ -430,7 +430,6 @@
                                                 <input id="claalpha" name="claalpha" data-slider-id='sclaalpha' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.1"/>
                                             </div>
                                         </div>
-                                        <br>
                                         <div class="form-group-p use-flex">
                                             <div class="form-group">
                                                 <label for="">分类群节点边缘线宽度：</label>
@@ -439,7 +438,6 @@
                                                 <input id="clapew" name="clapew" data-slider-id='sclapew' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.05"/>
                                             </div>
                                         </div>
-                                        <br>
                                         <div class="form-group-p use-flex">
                                             <div class="form-group">
                                                 <label for="">兄弟节点连接线宽度：</label>
@@ -448,7 +446,6 @@
                                                 <input id="clascw" name="clascw" data-slider-id='sclascw' type="text" data-slider-min="0" data-slider-max="5" data-slider-step="0.1"/>
                                             </div>
                                         </div>
-                                        <br>
                                         <div class="form-group-p use-flex">
                                             <div class="form-group">
                                                 <label for="">父节点连接线宽度：</label>
@@ -457,16 +454,14 @@
                                                 <input id="clapcw" name="clapcw" data-slider-id='sclapcw' type="text" data-slider-min="0" data-slider-max="4" data-slider-step="0.05"/>
                                             </div>
                                         </div>
-                                        <br>
                                         <div class="form-group-p use-flex" style="margin: 0 0 10px 0;">
                                             <div class="form-group">
                                                 <label for="">主标题：</label>
                                             </div>
                                             <div class="form-group">
-                                                <input type="text" id="clatitle" name="clatitle" class="form-control" placeholder="请输入英文，中文默认不显示" value="15">
+                                                <input type="text" id="clatitle" name="clatitle" class="form-control" placeholder="请输入英文，中文默认不显示" style="width: 100%;">
                                             </div>
                                         </div>
-                                        <br>
                                         <div class="form-group-p use-flex">
                                             <div class="form-group">
                                                 <label for="format">标题文字大小：</label>
@@ -475,7 +470,6 @@
                                                 <input id="clatfs" name="clatfs" data-slider-id='sclatfs' type="text" data-slider-min="0" data-slider-max="30" data-slider-step="1"/>
                                             </div>
                                         </div>
-                                        <br>
                                         <div class="form-group-p use-flex">
                                             <div class="form-group">
                                                 <label for="format">标签和标签图例文字大小：</label>
@@ -484,7 +478,6 @@
                                                 <input id="clalfs" name="clalfs" data-slider-id='sclalfs' type="text" data-slider-min="0" data-slider-max="20" data-slider-step="1"/>
                                             </div>
                                         </div>
-                                        <br>
                                         <div class="form-group-p use-flex">
                                             <div class="form-group">
                                                 <label for="format">分类图例文字大小：</label>
@@ -513,7 +506,7 @@
                                         下载结果图
                                     </button>
                                     <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 35px, 0px); top: 0px; left: 0px; will-change: transform;width: 150px">
-                                        <a class="dropdown-item" id="downPic2" onclick="downloadpics('lefse_LDA.features','pdf')">下载 pdf</a>
+                                        <a class="dropdown-item" id="downPic2" onclick="downloadpics('@row.status','@row.taskname','lefse_LDA.features','pdf')">下载 pdf</a>
 @*                                        <a class="dropdown-item" id="downPng2" onclick="downloadpics('lefse_LDA.cladogram','png')">下载 png</a>*@
 @*                                        <a class="dropdown-item" id="downTiff2" onclick="downloadpics('lefse_LDA.cladogram','tiff')">下载 tiff</a>*@
                                     </div>
@@ -614,7 +607,7 @@
                                             <label style="padding-left: 15px;">：</label>
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" id="feabot" name="feabot" class="form-control" placeholder="数字" value="15">
+                                            <input type="text" id="feabot" name="feabot" class="form-control" placeholder="数字" style="width: 100%;">
                                         </div>
                                     </div>
                                     <br>
@@ -633,7 +626,7 @@
                                             <label style="padding-left: 15px;">：</label>
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" id="featop" name="featop" class="form-control" placeholder="数字" value="12">
+                                            <input type="text" id="featop" name="featop" class="form-control" placeholder="数字" style="width: 100%;">
                                         </div>
                                     </div>
                                     <br>
@@ -682,10 +675,14 @@
                                         <div class="form-group picleft">
                                             <label for="">图片长宽 (宽度--高度)：</label>
                                         </div>
-                                        <div class="form-group picright">
-                                            <input type="text" id="feawidth" name="feawidth" class="form-control" placeholder="数字" value="12" style="width: calc(47.5% - 5px); float: left; margin-right: 5px">
-                                            <label style="float: left; width: 5%;">--</label>
-                                            <input type="text" id="feaheight" name="feaheight" class="form-control" placeholder="数字" value="10" style="width: calc(47.5% - 5px); margin-left: 5px; float: left">
+                                        <div style="float: left;">
+                                            <div class="form-group" style="width: calc(48% - 5px);float: left;margin-right: 5px">
+                                                <input type="text" id="feawidth" name="feawidth" class="form-control" placeholder="数字">
+                                            </div>
+                                            <label style="float: left; width: 4%; text-align: center;">--</label>
+                                            <div class="form-group" style="width: calc(48% - 5px);float: left;margin-left: 5px">
+                                                <input type="text" id="feaheight" name="feaheight" class="form-control" placeholder="数字">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -709,33 +706,10 @@
 
     <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/fileinput.min.js")" type="text/javascript"></script>
     <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/locales/zh.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("myjs/redraw.js")" type="text/javascript"></script>
 
     <script>
             const updatetime="2020-11-26";
-
-            function checkupdate(){
-                $(".update").text(updatetime);
-                if("@row.subtime".split(" ")[0]<updatetime) {
-                    $(".update_panel").show();
-                    $(".redraw_panel").hide();
-                } else {
-                    $(".redraw_panel").show();
-                    $(".update_panel").hide();
-                }
-            }
-
-            function downloadpics(picname,suffix){
-                if("@row.status"!=="已完成"){
-                    swal({
-                        title: "无法下载",
-                        text: "任务未完成，无法下载！",
-                        type: "warning",
-                        confirmButtonText: "确认"
-                    });
-                }else{
-                    window.location.href = "/CloudPlatform/SoftTool/download?taskname=@row.taskname&picname="+picname+"&suffix="+suffix+"&num="+Math.random();
-                }
-            }
 
             function gapfocus(para) {
                 $("#"+para).show();
@@ -754,7 +728,7 @@
 
             $(document).ready(function ()  {
                 if("@row.status"=="已完成"){
-                    checkupdate();
+                    checkupdate(updatetime, "@row.subtime");
                     $("#GO").show();
                     $.ajax({
                         url:"/CloudPlatform/SoftTool/getLefse2?taskname=@row.taskname",

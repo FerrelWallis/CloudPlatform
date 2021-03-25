@@ -16,130 +16,17 @@
 
     <div class="col-md-12 mysoft-content" style="width: 98%;">
         <div class="mysoft-content-left whitebox" style="width: 771px;overflow-y: auto">
-                    <form id="BB" method="GET" novalidate="novalidate" enctype="multipart/form-data" class="well form-inline" style="box-sizing: border-box!important;">
-                <div class="softpic mws-ic @abbre"> </div>
-                <h3 class="tools-title">气泡图</h3>
-                <div class="form-group">
-                    <h2>
-                    </h2>
-                </div><br><br>
-                <div class="form-group-p">
-                    <div class="form-group">
-                        <label for="mytaskname">任务编号：</label>
-                    </div>
-                    <div class="form-group">
-                        <input id="mytaskname" type="text" class="form-control" name="taskname" placeholder="" value="">
-                    </div>
-                </div>
-                <br><br>
-                <div id="div1" class="one-line">
-                    <div class="form-group-p" style="width: 465px">
-                        <div class="form-group">
-                            <label for="exampleInputName2"><em>1：</em>上传文件：</label>
-                        </div>
-                        <div class="form-group" style="width: 350px">
-                            <input type="file" class="form-control file" id="table1" name="table1" onchange="checkTable()">
-                        </div>
-                    </div>
-                    <div class="form-group-extra">
-                        <em><a href="/assets/files/bubble.txt" target='_blank'>示例文件</a></em><span class="must" style="margin-left: 10px">*</span>&nbsp;&nbsp;
-                    </div>
-                    <br>
-                    <br>
-                </div>
-                <br>
-                <br>
-                <br>
+            <form id="BB" method="GET" novalidate="novalidate" enctype="multipart/form-data" class="well form-inline" style="box-sizing: border-box!important;">
+                <div class="softpic mws-ic @abbre"></div>
+                <h3 class="tools-title">气泡图</h3><br><br>
+                @units.textinput("","","任务编号：", "taskname","","")
+                @units.fileupload3("1：", "div1", "上传文件：","table1","bubble.txt","bubble.Go.enrich.xls","bubble.Ko.enrich.xls","示例文件(标准)","示例文件(GO)","示例文件(KEGG)")<br>
+                @units.selector("2：","","文件类型：","filetype")
+                @units.textinput("3：","","用于做图的行数：", "top","数字","30")<br><br>
                 <input type="button" value="提&nbsp;&nbsp;交" name="submit" class="btn btn-primary" onclick="runBB()" style="margin-bottom: 20px">
             </form>
-
         </div>
-
-        <div class="handler"></div>
-
-        <div class="mysoft-content-right" style="width: 279px;box-sizing: border-box!important;">
-            <ul class="nav nav-tabs">
-                <li class="active" id="ins_tab1">
-                    <a href="###" data-target="#instruction" data-toggle="tab">使用说明</a>
-                </li>
-                <li class="" id="out_tab1">
-                    <a href="###" data-target="#example" data-toggle="tab">教学视频</a>
-                </li>
-                <li class="" id="his_tab1">
-                    <a href="#" data-target="#history" data-toggle="tab">历史任务</a>
-                </li>
-            </ul>
-            <div class="tab-content" style="box-sizing: border-box!important;">
-                <div class="tab-pane fade active in" id="instruction">
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>1.背景介绍</strong></span><br>
-                        气泡图通常用于多维数据的展示，例如将差异基因注释通路的富集情况进行可视化展示等。<br>
-                    </p>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>2.操作方法</strong></span><br>
-                    </p>
-                    <img src="/assets/images/softpic/instruction/bb1.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;padding-left: 44%">操作界面</p>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>2.1.上传文件</strong></span><br>
-                        气泡图需要使用的文件是table键分隔的txt格式GO/KEGG富集文件，以GO富集为例，第一列为GO term名称，第二列为GO大类（BP、MF和CC），第三列为富集到该term的基因数，示例文件如下：
-                        <br>
-                    </p>
-                    <img src="/assets/images/softpic/instruction/bb2.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        上传文件并选择参数后，点击“提交”按键，即可开始分析<br>
-                    </p>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>2.2.查看任务</strong></span><br>
-                        提交任务后，点击界面右侧的“历史任务”模块，或者点击界面“我的任务”，都可以查看任务编号、软件名称和状态等信息，点击任务编号，即可查看分析结果。
-                        <br>
-                    </p>
-                    <img src="/assets/images/softpic/instruction/bb3.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        在任务详情界面，展示的是任务参数、结果文件列表和在线调整图片3个区域，提供结果文件下载和图片调整功能。<br>
-                    </p>
-                    <img src="/assets/images/softpic/instruction/bb4.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <br>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>3.示例图片</strong></span><br>
-                        通过数据布局参数、颜色参数和字体参数三个模块在线调整图片。<br>
-                        (1) 数据布局参数包括：图片清晰度和图片宽高；<br>
-                        (2) 颜色参数部分可以自主选择配色；<br>
-                        (3) 字体参数：字体大小、旋转角度、标题内容及大小；<br>
-                    </p>
-                    <img src="/assets/images/softpic/instruction/bb5.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <br>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>4.结果文件</strong></span><br>
-                        结果文件仅包含绘制的气泡图pdf格式文件，气泡代表丰度大小。<br>
-                    </p>
-                    <img src="/assets/images/softpic/instruction/bb6.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <br>
-                </div>
-                <div class="tab-pane fade" id="example">
-                    <h5 style="margin-bottom: 2px">视频录制中...敬请期待！</h5>
-                    <div id="dplayer"></div>
-                </div>
-                <div id="history" class="form1_ins tab-pane fade">
-                    <a id="btn-refresh" class="btn_refresh mws-i-24 i-refresh-3" onclick="refresh('@abbre')">刷新状态</a>
-                    <ul id="hisul" style="margin-top: 15px">
-                        <li id="hislist" class="hislist">
-                            <div class="his_time"><span>任务编号</span></div>
-                            <div class="his_time"><span style="margin-left: -20px;">结束时间</span></div>
-                            <div class="his_name"><span style="margin-left: -23px;">状态</span></div>
-                            <hr>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+        @units.pageRight("", "视频录制中...敬请期待！","BB")
     </div>
 
     <script type="text/javascript" src="@routes.Assets.versioned("js/toolsAdjust.js")"></script>
@@ -147,12 +34,21 @@
     <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/fileinput.min.js")" type="text/javascript"></script>
     <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/locales/zh.js")" type="text/javascript"></script>
     <script src="@routes.Assets.versioned("myjs/soft.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("myjs/redraw.js")" type="text/javascript"></script>
     <script type="text/javascript">
+
+            $("#table1").change(function () {
+                checkTable();
+            });
 
             $(document).ready(function () {
                 formValidation();
                 loadHistory("@abbre");
                 getTaskName("BB","BB");
+                $("#instruction").append(instruction);
+                var filetypename = ["标准格式","GO文件","KEGG文件"];
+                var filetype = ["standard","go","kegg"];
+                creatSelector("filetype", filetypename, filetype, "标准格式");
                 // loadVideo("//13125180.s21v.faiusr.com/58/ABUIABA6GAAgts3S_QUo_uGeyAc.mp4","/assets/images/softpic/video/heatmap_video.png")
             });
 
@@ -217,6 +113,16 @@
                         let line=text.trim().split('\n');
                         var sample=line[0].trim().split('\t');
                         var length=sample.length;
+                        if(line.length<=parseInt($("#top").val())){
+                            flagtable=flagtable&&false;
+                            swal({
+                                title: "文件错误",
+                                text: "输入文件去除header，总数据量 < 用于做图的行！请核实",
+                                type: "warning",
+                                confirmButtonText: "确认"
+                            });
+                            resolve(false);
+                        }
                         for(let i in line){
                             var r=parseInt(i)+1;
                             let row=line[i].trim().split('\t');
@@ -247,42 +153,68 @@
             }
 
             function formValidation() {
-                $('#BB').formValidation({
-                    framework: 'bootstrap',
-                    icon: {
-                        valid: 'glyphicon glyphicon-ok',
-                        invalid: 'glyphicon glyphicon-remove',
-                        validating: 'glyphicon glyphicon-refresh'
-                    },
-                    fields: {
-                        taskname: {
-                            validators: {
-                                notEmpty: {
-                                    message: '任务编号不能为空!'
-                                },
-                                remote:{
-                                    type: 'POST',
-                                    url: '@routes.DutyController.checktaskname()',
-                                    message: "任务编号重复，请重新输入"
-                                }
-                            }
-                        },
-                        table1: {
-                            validators: {
-                                notEmpty: {
-                                    message: '必须上传矩阵表格文件!'
-                                },
-                                file: {
-                                    // extension: 'jpeg,jpg,png',
-                                    // type: 'image/jpeg,image/png',
-                                    maxSize: 5*1024*1024,
-                                    message: '文件不得大于5M！'
-                                }
-                            }
-                        }
-                    }
-                });
+                let field = {};
+                let table = ["table1"];
+                FieldFile(field, table);
+                let text = ["taskname"];
+                FieldTaskname(field, text);
+                let number = ["top"];
+                FieldNumber(field, number);
+                let excluded = [":hidden"];
+                addFormValidation("BB", field, excluded)
             }
+
+        var instruction = "<p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                "                        <span style=\"font-weight:700;\"><strong>1.背景介绍</strong></span><br>\n" +
+                "                        气泡图通常用于多维数据的展示，例如将差异基因注释通路的富集情况进行可视化展示等。<br>\n" +
+                "                    </p>\n" +
+                "                    <br>\n" +
+                "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                "                        <span style=\"font-weight:700;\"><strong>2.操作方法</strong></span><br>\n" +
+                "                    </p>\n" +
+                "                    <img src=\"/assets/images/softpic/instruction/bb1.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;padding-left: 44%\">操作界面</p>\n" +
+                "                    <br>\n" +
+                "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                "                        <span style=\"font-weight:700;\"><strong>2.1.上传文件</strong></span><br>\n" +
+                "                        气泡图需要使用的文件是table键分隔的txt格式GO/KEGG富集文件，以GO富集为例，第一列为GO term名称，第二列为GO大类（BP、MF和CC），第三列为富集到该term的基因数，示例文件如下：\n" +
+                "                        <br>\n" +
+                "                    </p>\n" +
+                "                    <img src=\"/assets/images/softpic/instruction/bb2.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                "                    <br>\n" +
+                "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                "                        上传文件并选择参数后，点击“提交”按键，即可开始分析<br>\n" +
+                "                    </p>\n" +
+                "                    <br>\n" +
+                "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                "                        <span style=\"font-weight:700;\"><strong>2.2.查看任务</strong></span><br>\n" +
+                "                        提交任务后，点击界面右侧的“历史任务”模块，或者点击界面“我的任务”，都可以查看任务编号、软件名称和状态等信息，点击任务编号，即可查看分析结果。\n" +
+                "                        <br>\n" +
+                "                    </p>\n" +
+                "                    <img src=\"/assets/images/softpic/instruction/bb3.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                "                    <br>\n" +
+                "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                "                        在任务详情界面，展示的是任务参数、结果文件列表和在线调整图片3个区域，提供结果文件下载和图片调整功能。<br>\n" +
+                "                    </p>\n" +
+                "                    <img src=\"/assets/images/softpic/instruction/bb4.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                "                    <br>\n" +
+                "                    <br>\n" +
+                "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                "                        <span style=\"font-weight:700;\"><strong>3.示例图片</strong></span><br>\n" +
+                "                        通过数据布局参数、颜色参数和字体参数三个模块在线调整图片。<br>\n" +
+                "                        (1) 数据布局参数包括：图片清晰度和图片宽高；<br>\n" +
+                "                        (2) 颜色参数部分可以自主选择配色；<br>\n" +
+                "                        (3) 字体参数：字体大小、旋转角度、标题内容及大小；<br>\n" +
+                "                    </p>\n" +
+                "                    <img src=\"/assets/images/softpic/instruction/bb5.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                "                    <br>\n" +
+                "                    <br>\n" +
+                "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                "                        <span style=\"font-weight:700;\"><strong>4.结果文件</strong></span><br>\n" +
+                "                        结果文件仅包含绘制的气泡图pdf格式文件，气泡代表丰度大小。<br>\n" +
+                "                    </p>\n" +
+                "                    <img src=\"/assets/images/softpic/instruction/bb6.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                "                    <br>";
 
 
     </script>

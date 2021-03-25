@@ -5,7 +5,9 @@ import java.nio.file.{Files, Path}
 
 import dao.dutyDao
 import javax.inject.Inject
+import jdk.nashorn.internal.objects.Global
 import org.apache.commons.io.FileUtils
+import org.json.JSONObject
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.libs.json.Json
@@ -19,6 +21,9 @@ import utils.Implicits._
 
 import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
+import scala.util.parsing.json
+import scala.util.parsing.json.JSONObject
+
 
 class RFunctionController @Inject()(cc: ControllerComponents, dutydao: dutyDao, rservice: RService, dutyController: DutyController)(implicit exec: ExecutionContext) extends AbstractController(cc) with MyStringTool {
 
@@ -54,12 +59,14 @@ class RFunctionController @Inject()(cc: ControllerComponents, dutydao: dutyDao, 
     val input=
       if(table=="2"){
         val file1=request.body.file("table1").get
-        file1.ref.moveTo(tableFile)
+        rservice.fileTrimMove(file1.ref, tableFile)
+//        file1.ref.moveTo(tableFile)
         if(refer=="TRUE"){
           file1.filename
         }else{
           val file2=request.body.file("table2").get
-          file2.ref.moveTo(koFile)
+          rservice.fileTrimMove(file2.ref, koFile)
+//          file2.ref.moveTo(koFile)
           file1.filename+"/"+file2.filename
         }
       } else {
@@ -68,7 +75,8 @@ class RFunctionController @Inject()(cc: ControllerComponents, dutydao: dutyDao, 
           "无"
         }else{
           val file3=request.body.file("table2").get
-          file3.ref.moveTo(koFile)
+          rservice.fileTrimMove(file3.ref, koFile)
+//          file3.ref.moveTo(koFile)
           file3.filename
         }
       }
@@ -221,7 +229,8 @@ class RFunctionController @Inject()(cc: ControllerComponents, dutydao: dutyDao, 
     val otuFile=new File(dutyDir,"otu_taxa_table.biom")
     val file1 = request.body.file("table1").get
     input=input+file1.filename+"/"
-    file1.ref.copyTo(tableFile)
+    rservice.fileTrimMove(file1.ref, tableFile)
+//    file1.ref.copyTo(tableFile)
     tableFile.setExecutable(true,false)
     tableFile.setReadable(true,false)
     tableFile.setWritable(true,false)
@@ -229,7 +238,8 @@ class RFunctionController @Inject()(cc: ControllerComponents, dutydao: dutyDao, 
     val groupFile=new File(dutyDir,"map.txt")
     val file2 = request.body.file("group").get
     input+=file2.filename
-    file2.ref.moveTo(groupFile)
+    rservice.fileTrimMove(file2.ref, groupFile)
+//    file2.ref.moveTo(groupFile)
     groupFile.setExecutable(true,false)
     groupFile.setReadable(true,false)
     groupFile.setWritable(true,false)
@@ -238,7 +248,8 @@ class RFunctionController @Inject()(cc: ControllerComponents, dutydao: dutyDao, 
 
     Future{
       val command0 = if(file1.filename.contains("biom")) {
-        file1.ref.copyTo(otuFile)
+        rservice.fileTrimMove(file1.ref, otuFile)
+//        file1.ref.copyTo(otuFile)
         ""
       } else
         "biom convert -i " + tableFile.getAbsolutePath + " -o " + otuFile.getAbsolutePath + " --table-type=\"OTU table\" --to-json --process-obs-metadata taxonomy && \n"
@@ -314,7 +325,8 @@ class RFunctionController @Inject()(cc: ControllerComponents, dutydao: dutyDao, 
     val otuFile=new File(dutyDir,"otu_taxa_table.biom")
     val file1 = request.body.file("table1").get
     input=input+file1.filename+"/"
-    file1.ref.copyTo(tableFile)
+    rservice.fileTrimMove(file1.ref, tableFile)
+//    file1.ref.copyTo(tableFile)
     tableFile.setExecutable(true,false)
     tableFile.setReadable(true,false)
     tableFile.setWritable(true,false)
@@ -322,7 +334,8 @@ class RFunctionController @Inject()(cc: ControllerComponents, dutydao: dutyDao, 
     val groupFile=new File(dutyDir,"map.txt")
     val file2 = request.body.file("group").get
     input+=file2.filename
-    file2.ref.moveTo(groupFile)
+    rservice.fileTrimMove(file2.ref, groupFile)
+//    file2.ref.moveTo(groupFile)
     groupFile.setExecutable(true,false)
     groupFile.setReadable(true,false)
     groupFile.setWritable(true,false)
@@ -342,14 +355,14 @@ class RFunctionController @Inject()(cc: ControllerComponents, dutydao: dutyDao, 
     val y = if(data.y == "1") "一对一（限制较多）" else "一对多（限制较少）"
     val e = if(data.e == "0") "no" else "yes"
     val param = "类间因子Kruskal-Wallis秩检验的Alpha值：" + data.a + "/子类间配对Wilcoxon秩检验的Alpha值：" +
-      data.w + "/差异特征LDA对数值的阈值：" + data.l + "/多组分类分析的分析策略：" + y +
-      "/是否仅在子类名相同的情况下，进行子类间的成对比较？" + e
+      data.w + "/差异特征LDA对数值的阈值：" + data.l + "/多组分类分析的分析策略：" + y
 
     val start=dutyController.insertDuty(data.taskname,id,"LF2","lefse分析2.0",input,param,elements)
 
     Future{
       val command0 = if(file1.filename.contains("biom")) {
-        file1.ref.copyTo(otuFile)
+        rservice.fileTrimMove(file1.ref, otuFile)
+//        file1.ref.copyTo(otuFile)
         ""
       } else "biom convert -i " + tableFile.getAbsolutePath + " -o " + otuFile.getAbsolutePath + " --table-type=\"OTU table\" --to-json --process-obs-metadata taxonomy && \n"
 
@@ -620,15 +633,13 @@ class RFunctionController @Inject()(cc: ControllerComponents, dutydao: dutyDao, 
 
 
   //Tax4Fun
-  case class TaxFunData2(taskname:String, r:String, fct:String, ref:String, srm:String)
+  case class TaxFunData2(taskname:String, r:String, ref:String)
 
   val TaxFunForm2: Form[TaxFunData2] =Form(
     mapping (
       "taskname"->text,
       "r"->text,
-      "fct"->text,
-      "ref"->text,
-      "srm"->text,
+      "ref"->text
     )(TaxFunData2.apply)(TaxFunData2.unapply)
   )
 
@@ -636,14 +647,16 @@ class RFunctionController @Inject()(cc: ControllerComponents, dutydao: dutyDao, 
     val data = TaxFunForm2.bindFromRequest.get
     val id=request.session.get("userId").get
     val dutyDir=rservice.creatUserDir(id,data.taskname)
+
     //在用户下创建任务文件夹和结果文件夹
     val tableFile=new File(dutyDir,"table.txt")
     val otuFile=new File(dutyDir,"otu_taxa_table.format.txt")
 
     val file1 = request.body.file("table1").get
-    file1.ref.copyTo(tableFile)
+    rservice.fileTrimMove(file1.ref, tableFile)
+//    file1.ref.copyTo(tableFile)
 
-    val param= "/选择SILVA数据库：" + data.r + "/是否使用预计算的KEGG正相关参考谱计算：" + data.fct + "/预计算方法：" + data.ref + "/是否基于100 bp的读数计算：" + data.srm
+    val param= "/选择SILVA数据库：" + data.r + "/预计算方法：" + data.ref
 
     //数据库加入duty（运行中）
     val start=dutyController.insertDuty(data.taskname,id,"TAX","Tax4Fun功能预测",file1.filename,param,"")
@@ -652,7 +665,7 @@ class RFunctionController @Inject()(cc: ControllerComponents, dutydao: dutyDao, 
     Future{
       val command =if(file1.filename.contains("biom")) {
         "perl " + Utils.path + "R/tax4fun/perl/tax4fun.step1.pl " + tableFile.getAbsolutePath + " " + dutyDir +" && \n" +
-          "Rscript " + Utils.path + "R/tax4fun/Tax4Fun.R -rp " + Utils.path + "R/tax4fun/db -i " + otuFile.getAbsolutePath + " -o " + dutyDir + "/out -r " + data.r + " -fct " + data.fct + " -ref " + data.ref + " -srm " + data.srm + " && \n" +
+          "Rscript " + Utils.path + "R/tax4fun/Tax4Fun.R -rp " + Utils.path + "R/tax4fun/db -i " + otuFile.getAbsolutePath + " -o " + dutyDir + "/out -r " + data.r + " -ref " + data.ref + " && \n" +
           "perl " + Utils.path + "R/tax4fun/perl/K2pathway.pl " + dutyDir + "/out/KO_table.txt" + " " + dutyDir + "/out && \n" +
           "Rscript " + Utils.path + "R/tax4fun/rs/tax4fun-boxplot.R -i " + dutyDir + "/out/kegg_L1.txt -o " + dutyDir + "/out -in kegg_L1 && \n" +
           "Rscript " + Utils.path + "R/tax4fun/rs/tax4fun-boxplot.R -i " + dutyDir + "/out/kegg_L2.txt -o " + dutyDir + "/out -in kegg_L2 && \n" +
@@ -663,7 +676,7 @@ class RFunctionController @Inject()(cc: ControllerComponents, dutydao: dutyDao, 
       }else {
         "biom convert -i " + tableFile.getAbsolutePath + " -o " + dutyDir + "/temp.biom --table-type=\"OTU table\" --to-json --process-obs-metadata taxonomy && \n"+
           "perl " + Utils.path + "R/tax4fun/perl/tax4fun.step1.pl " + dutyDir + "/temp.biom " + dutyDir +" && \n" +
-          "Rscript " + Utils.path + "R/tax4fun/Tax4Fun.R -rp " + Utils.path + "R/tax4fun/db -i " + otuFile.getAbsolutePath + " -o " + dutyDir + "/out -r " + data.r + " -fct " + data.fct + " -ref " + data.ref + " -srm " + data.srm + " && \n" +
+          "Rscript " + Utils.path + "R/tax4fun/Tax4Fun.R -rp " + Utils.path + "R/tax4fun/db -i " + otuFile.getAbsolutePath + " -o " + dutyDir + "/out -r " + data.r + " -ref " + data.ref + " && \n" +
           "perl " + Utils.path + "R/tax4fun/perl/K2pathway.pl " + dutyDir + "/out/KO_table.txt" + " " + dutyDir + "/out && \n" +
           "Rscript " + Utils.path + "R/tax4fun/rs/tax4fun-boxplot.R -i " + dutyDir + "/out/kegg_L1.txt -o " + dutyDir + "/out -in kegg_L1 && \n" +
           "Rscript " + Utils.path + "R/tax4fun/rs/tax4fun-boxplot.R -i " + dutyDir + "/out/kegg_L2.txt -o " + dutyDir + "/out -in kegg_L2 && \n" +
@@ -711,372 +724,67 @@ class RFunctionController @Inject()(cc: ControllerComponents, dutydao: dutyDao, 
 
 
   //FAPROTAX
-  def doFAPROTAX=Action(parse.multipartFormData) { implicit request =>
-    val data = TaxFunForm.bindFromRequest.get
-    val id=request.session.get("userId").get
-    val dutyDir=rservice.creatUserDir(id,data.taskname)
-    //在用户下创建任务文件夹和结果文件夹
-    val tableFile=new File(dutyDir,"table.txt")
-    val otuFile=new File(dutyDir,"otu.biom")
-    val file1 = request.body.file("table").get
-    file1.ref.copyTo(tableFile)
-
-    //数据库加入duty（运行中）
-    val start=dutyController.insertDuty(data.taskname,id,"FAP","FAPROTAX功能预测",file1.filename,"/","")
-    //矩阵文件读取写入任务文件下table.txt
-
-    Future{
-      val command =if(file1.filename.contains("biom")) {
-        file1.ref.copyTo(otuFile)
-        "python3 " + Utils.path + "R/FAPROTAX/FAPROTAX_1.2.4/collapse_table.py -i " + otuFile.getAbsolutePath + " -o " + dutyDir + "/out/functional_table.biom -g " + Utils.path + "R/FAPROTAX/FAPROTAX_1.2.4/FAPROTAX.txt --collapse_by_metadata 'taxonomy' -s " + dutyDir + "/out/out && \n" +
-        "biom convert -i " + dutyDir + "/out/functional_table.biom -o " + dutyDir + "/out/functional_table.txt --to-tsv --table-type \"Function table\" && \n" +
-        "perl " + Utils.path + "R/FAPROTAX/format_txttoXls.pl " + dutyDir + "/out/functional_table.txt " + dutyDir + "/out/functional_table.xls && \n" +
-        "rm " + dutyDir + "/out/functional_table.txt && \n" +
-        "cd " + dutyDir + "/out/out && \n" +
-        "find *biom > function.list && \n" +
-        "perl " + Utils.path + "R/FAPROTAX/format_mult-Biomtotxt.pl function.list ./ && \n" +
-        "find *txt > function_txt.list && \n" +
-        "perl " + Utils.path + "R/FAPROTAX/combine.function.pl function_txt.list ../functional_otu.txt"
-      }else {
-        "biom convert -i " + tableFile.getAbsolutePath + " -o " + otuFile.getAbsolutePath + " --table-type=\"OTU table\" --to-json --process-obs-metadata taxonomy && \n"+
-          "python3 " + Utils.path + "R/FAPROTAX/FAPROTAX_1.2.4/collapse_table.py -i " + otuFile.getAbsolutePath + " -o " + dutyDir + "/out/functional_table.biom -g " + Utils.path + "R/FAPROTAX/FAPROTAX_1.2.4/FAPROTAX.txt --collapse_by_metadata 'taxonomy' -s " + dutyDir + "/out/out && \n" +
-          "biom convert -i " + dutyDir + "/out/functional_table.biom -o " + dutyDir + "/out/functional_table.txt --to-tsv --table-type \"Function table\" && \n" +
-          "perl " + Utils.path + "R/FAPROTAX/format_txttoXls.pl " + dutyDir + "/out/functional_table.txt " + dutyDir + "/out/functional_table.xls && \n" +
-          "rm " + dutyDir + "/out/functional_table.txt && \n" +
-          "cd " + dutyDir + "/out/out && \n" +
-          "find *biom > function.list && \n" +
-          "perl " + Utils.path + "R/FAPROTAX/format_mult-Biomtotxt.pl function.list ./ && \n" +
-          "find *txt > function_txt.list && \n" +
-          "perl " + Utils.path + "R/FAPROTAX/combine.function.pl function_txt.list ../functional_otu.txt"
-      }
-
-      println(command)
-
-      FileUtils.writeStringToFile(new File(s"$dutyDir/temp/run.sh"),command)
-      val execCommand = new ExecCommand
-      execCommand.exect(s"sh $dutyDir/temp/run.sh",dutyDir+"/temp")
-
-      if (execCommand.isSuccess) {
-        val finish=dutyController.updateFini(id,data.taskname)
-        val target=dutyDir+"/out/outTables.zip"
-        new File(target).createNewFile()
-        CompressUtil.zip(dutyDir+"/out/out",target)
-        FileUtils.writeStringToFile(new File(dutyDir,"log.txt"),"Start Time:"+start+"\n\nFinish Time:"+finish+"\n\n运行成功！")
-        rservice.creatZip(dutyDir)
-      } else {
-        dutydao.updateFailed(id,data.taskname)
-        FileUtils.writeStringToFile(new File(dutyDir,"log.txt"),"Start Time:"+start+"\n\n错误信息：\n"+execCommand.getErrStr+"\n\n运行失败！")
-      }
-    }
-    Ok(Json.obj("valid" -> "运行中！"))
-  }
-
-
-  //Picrust
-  case class PicrustData(taskname:String,in_traits:String,stratified:String)
-
-  val PicrustForm: Form[PicrustData] =Form(
-    mapping (
-      "taskname"->text,
-      "in_traits"->text,
-      "stratified"->text
-    )(PicrustData.apply)(PicrustData.unapply)
-  )
-
-  def doPICRUST=Action(parse.multipartFormData) { implicit request =>
-    val data = PicrustForm.bindFromRequest.get
-    val id=request.session.get("userId").get
-    new File(userDutyDir+id+"/"+data.taskname).mkdir()
-    new File(userDutyDir+id+"/"+data.taskname+"/temp").mkdir()
-    val dutyDir=userDutyDir+id+"/"+data.taskname
-    //在用户下创建任务文件夹和结果文件夹
-    val tableFile=new File(dutyDir,"table.txt")
-    val otuFile=new File(dutyDir,"otu.biom")
-    val seqFile=new File(dutyDir,"seq.fasta")
-    val file1 = request.body.file("table1").get
-    val file2 = request.body.file("table2").get
-    file1.ref.copyTo(tableFile)
-    file2.ref.moveTo(seqFile)
-    tableFile.setExecutable(true,false)
-    tableFile.setReadable(true,false)
-    tableFile.setWritable(true,false)
-    otuFile.setExecutable(true,false)
-    otuFile.setReadable(true,false)
-    otuFile.setWritable(true,false)
-    seqFile.setExecutable(true,false)
-    seqFile.setReadable(true,false)
-    seqFile.setWritable(true,false)
-
-    val param="选择数据基因家族:"+data.in_traits+"/是否在各层级产生分层:"+data.stratified
-
-    //数据库加入duty（运行中）
-    val start=dutyController.insertDuty(data.taskname,id,"PIC","PICRUST2功能预测",file1.filename+"/"+file2.filename,param,"")
-    //矩阵文件读取写入任务文件下table.txt
-
-    Future{
-      val stratified=if(data.stratified=="yes") " --stratified " else ""
-
-      val command0=if(file1.filename.contains("biom")) {
-        file1.ref.copyTo(otuFile)
-        ""
-      } else
-        "biom convert -i " + tableFile.getAbsolutePath + " -o " + otuFile.getAbsolutePath + " --table-type=\"OTU table\" --to-json && \n"
-
-      val command1 = "picrust2_pipeline.py -i " + otuFile.getAbsolutePath +
-        " -s " + seqFile.getAbsolutePath + " -o " + dutyDir + "/out" + " --processes 20 " + stratified +
-        " --in_traits " + data.in_traits
-      val command=command0 +
-        "cd /root/miniconda3/bin && \n" +
-        ". ./activate && \n"+
-        "conda activate picrust2 && \n"+
-        command1+ " && \n"+
-        "conda deactivate"
-
-      //先放入sh，在运行
-      FileUtils.writeStringToFile(new File(s"$dutyDir/temp/run.sh"),command)
-      val execCommand = new ExecCommand
-      execCommand.exect(s"sh $dutyDir/temp/run.sh",dutyDir+"/temp")
-
-      if (execCommand.isSuccess) {
-        new File(dutyDir+"/out/intermediate").delete()
-        new File(Utils.path+"/users/"+id+"/"+data.taskname+"/out").listFiles().filter(_.isDirectory).foreach{x=>
-          val dname=x.getName
-          rservice.creatZip(dutyDir+"/out/"+dname+".zip",x.getAbsolutePath)
-        }
-        rservice.creatZip(dutyDir)
-        val finish=dutyController.updateFini(id,data.taskname)
-        FileUtils.writeStringToFile(new File(dutyDir,"log.txt"),"Start Time:"+start+"\n\nFinish Time:"+finish+"\n\n运行成功！")
-      } else {
-        dutydao.updateFailed(id,data.taskname)
-        FileUtils.writeStringToFile(new File(dutyDir,"log.txt"),"Start Time:"+start+"\n\n错误信息：\n"+execCommand.getErrStr+"\n\n运行失败！")
-      }
-    }
-    Ok(Json.obj("valid" -> "运行中！"))
-  }
-
-
-
-  //Getorf
-  case class GetorfData(taskname:String,osformat:String,table:String,minsize:String,maxsize:String,
-                        find:String,methionine:String,circular:String,reverse:String,flanking:String)
-
-  val GetorfForm: Form[GetorfData] =Form(
-    mapping (
-      "taskname"->text,
-      "osformat"->text,
-      "table"->text,
-      "minsize"->text,
-      "maxsize"->text,
-      "find"->text,
-      "methionine"->text,
-      "circular"->text,
-      "reverse"->text,
-      "flanking"->text
-    )(GetorfData.apply)(GetorfData.unapply)
-  )
-
-  def doGetorf=Action(parse.multipartFormData) { implicit request =>
-    val data = GetorfForm.bindFromRequest.get
-    val id=request.session.get("userId").get
-    val dutyDir=rservice.creatUserDir(id,data.taskname)
-
-    val seqFile=new File(dutyDir,"seq.txt")
-    val file = request.body.file("table1").get
-    val input=file.filename
-    file.ref.moveTo(seqFile)
-    seqFile.setExecutable(true,false)
-    seqFile.setReadable(true,false)
-    seqFile.setWritable(true,false)
-
-    val table=data.table.split(":")
-    val find=data.find.split(":")
-
-    val param="输出序列格式：" + data.osformat + "/选择使用参考：" + table(1) +
-      "/ORF显示的最小核苷酸大小：" + data.minsize + "/ORF显示的最大核苷酸大小：" + data.maxsize +
-      "/输出类型：" + find(1) + "/是否将初始START密码子更改为蛋氨酸：" + data.methionine +
-      "/序列是否为循环的：" + data.circular + "/是否以相反的顺序找到ORF：" + data.reverse +
-      "/报告侧翼核苷酸的数量：" + data.flanking
-
-    val start=dutyController.insertDuty(data.taskname,id,"GTF","Emboss Getorf",input,param,"")
-
-    Future{
-      val command = Utils.path+"R/EMBOSS/EMBOSS-6.6.0/emboss/getorf -sequence "+ seqFile.getAbsolutePath +
-        " -outseq " + dutyDir + "/out/sequence." + data.osformat + " -osformat2 " +  data.osformat +
-        " -table " + table(0) + " -minsize " + data.minsize + " -maxsize " + data.maxsize + " -find " +
-        find(0) + " -methionine " + data.methionine + " -circular " + data.circular + " -reverse " +
-        data.reverse + " -flanking " + data.flanking
-
-      println(command)
-
-      FileUtils.writeStringToFile(new File(s"$dutyDir/temp/run.sh"),command)
-      val execCommand = new ExecCommand
-      execCommand.exec(command)
-
-      if (execCommand.isSuccess) {
-        val finish=dutyController.updateFini(id,data.taskname)
-        FileUtils.writeStringToFile(new File(dutyDir,"log.txt"),"Start Time:"+start+"\n\nFinish Time:"+finish+"\n\n运行成功！")
-        rservice.creatZip(dutyDir)
-      } else {
-        dutydao.updateFailed(id,data.taskname)
-        FileUtils.writeStringToFile(new File(dutyDir,"log.txt"),"Start Time:"+start+"\n\n错误信息：\n"+execCommand.getErrStr+"\n\n运行失败！")
-      }
-    }
-    Ok(Json.obj("valid" -> "运行中！"))
-  }
-
-
-
-
-  //Eprimer
-  case class EprimerData(taskname:String,primer:String,task:String,hybridprobe:String,numreturn:String,
-                         includedregion:String,targetregion:String,excludedregion:String,
-                         forwardinput:String,reverseinput:String,gcclamp:String,optsize:String,
-                         minsize:String,maxsize:String,opttm:String,mintm:String,maxtm:String,
-                         maxdifftm:String,ogcpercent:String,mingc:String,maxgc:String,saltconc:String)
-
-  val EprimerForm: Form[EprimerData] =Form(
-    mapping (
-      "taskname"->text,
-      "primer"->text,
-      "task"->text,
-      "hybridprobe"->text,
-      "numreturn"->text,
-      "includedregion"->text,
-      "targetregion"->text,
-      "excludedregion"->text,
-      "forwardinput"->text,
-      "reverseinput"->text,
-      "gcclamp"->text,
-      "optsize"->text,
-      "minsize"->text,
-      "maxsize"->text,
-      "opttm"->text,
-      "mintm"->text,
-      "maxtm"->text,
-      "maxdifftm"->text,
-      "ogcpercent"->text,
-      "mingc"->text,
-      "maxgc"->text,
-      "saltconc"->text
-    )(EprimerData.apply)(EprimerData.unapply)
-  )
-
-  case class EprimerData2(dnaconc:String,maxpolyx:String,psizeopt:String,prange:String,ptmopt:String,
-                          ptmmin:String,ptmmax:String)
-
-  val EprimerForm2: Form[EprimerData2] =Form(
-    mapping (
-      "dnaconc"->text,
-      "maxpolyx"->text,
-      "psizeopt"->text,
-      "prange"->text,
-      "ptmopt"->text,
-      "ptmmin"->text,
-      "ptmmax"->text
-    )(EprimerData2.apply)(EprimerData2.unapply)
-  )
-
-  def doEprimer=Action(parse.multipartFormData) { implicit request =>
-    val data = EprimerForm.bindFromRequest.get
-    val data2 = EprimerForm2.bindFromRequest.get
-    val id=request.session.get("userId").get
-    val dutyDir=rservice.creatUserDir(id,data.taskname)
-
-    val seqFile=new File(dutyDir,"seq.txt")
-    val mishybFile=new File(dutyDir,"mishyb.txt")
-    val mispriFile=new File(dutyDir,"mispri.txt")
-
-    val file = request.body.file("table1").get
-    file.ref.moveTo(seqFile)
-    val (input,mishyblibraryfile,mispriminglibraryfile)=
-      if(request.body.file("table2").isEmpty && request.body.file("table3").isEmpty)
-        (file.filename,"","")
-      else if(request.body.file("table2").isEmpty) {
-        request.body.file("table3").get.ref.moveTo(mispriFile)
-        (file.filename+"/"+request.body.file("table3").get.filename,""," -mispriminglibraryfile "+mispriFile.getAbsolutePath)
-      } else if(request.body.file("table3").isEmpty) {
-        request.body.file("table2").get.ref.moveTo(mishybFile)
-        (file.filename+"/"+request.body.file("table2").get.filename," -mishyblibraryfile "+mishybFile.getAbsolutePath,"")
-      } else {
-        request.body.file("table3").get.ref.moveTo(mispriFile)
-        request.body.file("table2").get.ref.moveTo(mishybFile)
-        (file.filename+"/"+request.body.file("table2").get.filename+"/"+request.body.file("table3").get.filename," -mishyblibraryfile "+mishybFile.getAbsolutePath," -mispriminglibraryfile "+mispriFile.getAbsolutePath)
-      }
-
-    seqFile.setExecutable(true,false)
-    seqFile.setReadable(true,false)
-    seqFile.setWritable(true,false)
-    mishybFile.setExecutable(true,false)
-    mishybFile.setReadable(true,false)
-    mishybFile.setWritable(true,false)
-    mispriFile.setExecutable(true,false)
-    mispriFile.setReadable(true,false)
-    mispriFile.setWritable(true,false)
-
-    val task=data.task.split(":")
-    val includedregion=if(data.includedregion=="") "" else "/Included region(s)：" + data.includedregion
-    val targetregion=if(data.targetregion=="") "" else "/Target region(s)：" + data.targetregion
-    val excludedregion=if(data.excludedregion=="") "" else "/Excluded region(s)：" + data.excludedregion
-    val forwardinput=if(data.forwardinput=="") "" else "/Forward input primer sequence to check：" + data.forwardinput
-    val reverseinput=if(data.reverseinput=="") "" else "/Reverse input primer sequence to check：" + data.reverseinput
-
-    val param="Pick PCR primer(s)：" + data.primer + "/Select task：" + task(1) +
-      "/Pick hybridization probe：" + data.hybridprobe + "/Number of results to return：" +
-      data.numreturn + includedregion + targetregion + excludedregion + forwardinput +
-      reverseinput + "/GC clamp：" + data.gcclamp + "/Primer optimum size：" + data.optsize +
-      "/Primer minimum size：" + data.minsize + "/Primer maximum size：" + data.maxsize +
-      "/Primer optimum Tm：" + data.opttm + "/Primer minimum Tm：" + data.mintm +
-      "/Primer maximum Tm：" + data.maxtm + "/Maximum difference in Tm of primers：" + data.maxdifftm +
-      "/Primer optimum GC percent：" + data.ogcpercent + "/Primer minimum GC percent：" + data.mingc +
-      "/Primer maximum GC percent：" + data.maxgc + "/Salt concentration (mM)：" + data.saltconc +
-      "/DNA concentration (nM)：" + data2.dnaconc + "/Maximum polynucleotide repeat：" + data2.maxpolyx +
-      "/Product optimum size：" + data2.psizeopt + "/Product size range：" + data2.prange +
-      "/Product optimum Tm：" + data2.ptmopt + "/Product minimum Tm：" + data2.ptmmin
-
-    val start=dutyController.insertDuty(data.taskname,id,"PMR","Emboss Eprimer3",input,param,"")
-
-    Future{
-      val includedregion_command=
-        if(data.includedregion=="") "" else " -includedregion \"" + data.includedregion + "\""
-      val targetregion_command=
-        if(data.targetregion=="") "" else " -targetregion \"" + data.targetregion + "\""
-      val excludedregion_command=
-        if(data.excludedregion=="") "" else " -excludedregion \"" + data.excludedregion + "\""
-      val forwardinput_command=
-        if(data.forwardinput=="") "" else " -forwardinput \"" + data.forwardinput + "\""
-      val reverseinput_command=
-        if(data.reverseinput=="") "" else " -reverseinput \"" + data.reverseinput + "\""
-
-      val command = Utils.path+"R/EMBOSS/EMBOSS-6.6.0/emboss/eprimer32 -sequence " + seqFile.getAbsolutePath +
-        " -outfile " + dutyDir + "/out/sequence.eprimer32" + mishyblibraryfile + mispriminglibraryfile +
-        " -primer \"" + data.primer + "\" -task \"" + task(0) + "\" -hybridprobe \"" + data.hybridprobe +
-        "\" -numreturn \"" + data.numreturn + "\"" + includedregion_command + targetregion_command +
-        excludedregion_command + forwardinput_command + reverseinput_command +
-        " -gcclamp \"" + data.gcclamp + "\" -optsize \"" + data.optsize + "\" -minsize \"" +
-        data.minsize + "\" -maxsize \"" + data.maxsize + "\" -opttm \"" + data.opttm + "\" -mintm \"" + data.mintm +
-        "\" -maxtm \"" + data.maxtm + "\" -maxdifftm \"" + data.maxdifftm + "\" -ogcpercent \"" + data.ogcpercent +
-        "\" -mingc \"" + data.mingc + "\" -maxgc \"" + data.maxgc + "\" -saltconc \"" + data.saltconc + "\" -dnaconc \"" +
-        data2.dnaconc + "\" -maxpolyx \"" + data2.maxpolyx + "\" -psizeopt \"" + data2.psizeopt + "\" -prange \"" +
-        data2.prange + "\" -ptmopt \"" + data2.ptmopt + "\" -ptmmin \"" + data2.ptmmin + "\" -ptmmax \"" +
-        data2.ptmmax + "\""
-
-      println(command)
-
-      FileUtils.writeStringToFile(new File(s"$dutyDir/temp/run.sh"),command)
-      val execCommand = new ExecCommand
-      execCommand.exect(s"sh $dutyDir/temp/run.sh",dutyDir+"/temp")
-
-      if (execCommand.isSuccess) {
-        val finish=dutyController.updateFini(id,data.taskname)
-        FileUtils.writeStringToFile(new File(dutyDir,"log.txt"),"Start Time:"+start+"\n\nFinish Time:"+finish+"\n\n运行成功！")
-        rservice.creatZip(dutyDir)
-      } else {
-        dutydao.updateFailed(id,data.taskname)
-        FileUtils.writeStringToFile(new File(dutyDir,"log.txt"),"Start Time:"+start+"\n\n错误信息：\n"+execCommand.getErrStr+"\n\n运行失败！")
-      }
-    }
-    Ok(Json.obj("valid" -> "运行中！"))
-  }
-
+//  def doFAPROTAX=Action(parse.multipartFormData) { implicit request =>
+//    val data = TaxFunForm.bindFromRequest.get
+//    val id=request.session.get("userId").get
+//    val dutyDir=rservice.creatUserDir(id,data.taskname)
+//
+//    //在用户下创建任务文件夹和结果文件夹
+//    val tableFile=new File(dutyDir,"table.txt")
+//    val otuFile=new File(dutyDir,"otu.biom")
+//    val file1 = request.body.file("table").get
+//    rservice.fileTrimMove(file1.ref, tableFile)
+////    file1.ref.copyTo(tableFile)
+//
+//    //数据库加入duty（运行中）
+//    val start=dutyController.insertDuty(data.taskname,id,"FAP","FAPROTAX功能预测",file1.filename,"/","")
+//    //矩阵文件读取写入任务文件下table.txt
+//
+//    Future{
+//      val command =if(file1.filename.contains("biom")) {
+//        rservice.fileTrimMove(file1.ref, otuFile)
+////        file1.ref.copyTo(otuFile)
+//        "python3 " + Utils.path + "R/FAPROTAX/FAPROTAX_1.2.4/collapse_table.py -i " + otuFile.getAbsolutePath + " -o " + dutyDir + "/out/functional_table.biom -g " + Utils.path + "R/FAPROTAX/FAPROTAX_1.2.4/FAPROTAX.txt --collapse_by_metadata 'taxonomy' -s " + dutyDir + "/out/out && \n" +
+//        "biom convert -i " + dutyDir + "/out/functional_table.biom -o " + dutyDir + "/out/functional_table.txt --to-tsv --table-type \"Function table\" && \n" +
+//        "perl " + Utils.path + "R/FAPROTAX/format_txttoXls.pl " + dutyDir + "/out/functional_table.txt " + dutyDir + "/out/functional_table.xls && \n" +
+//        "rm " + dutyDir + "/out/functional_table.txt && \n" +
+//        "cd " + dutyDir + "/out/out && \n" +
+//        "find *biom > function.list && \n" +
+//        "perl " + Utils.path + "R/FAPROTAX/format_mult-Biomtotxt.pl function.list ./ && \n" +
+//        "find *txt > function_txt.list && \n" +
+//        "perl " + Utils.path + "R/FAPROTAX/combine.function.pl function_txt.list ../functional_otu.txt"
+//      }else {
+//        "biom convert -i " + tableFile.getAbsolutePath + " -o " + otuFile.getAbsolutePath + " --table-type=\"OTU table\" --to-json --process-obs-metadata taxonomy && \n"+
+//          "python3 " + Utils.path + "R/FAPROTAX/FAPROTAX_1.2.4/collapse_table.py -i " + otuFile.getAbsolutePath + " -o " + dutyDir + "/out/functional_table.biom -g " + Utils.path + "R/FAPROTAX/FAPROTAX_1.2.4/FAPROTAX.txt --collapse_by_metadata 'taxonomy' -s " + dutyDir + "/out/out && \n" +
+//          "biom convert -i " + dutyDir + "/out/functional_table.biom -o " + dutyDir + "/out/functional_table.txt --to-tsv --table-type \"Function table\" && \n" +
+//          "perl " + Utils.path + "R/FAPROTAX/format_txttoXls.pl " + dutyDir + "/out/functional_table.txt " + dutyDir + "/out/functional_table.xls && \n" +
+//          "rm " + dutyDir + "/out/functional_table.txt && \n" +
+//          "cd " + dutyDir + "/out/out && \n" +
+//          "find *biom > function.list && \n" +
+//          "perl " + Utils.path + "R/FAPROTAX/format_mult-Biomtotxt.pl function.list ./ && \n" +
+//          "find *txt > function_txt.list && \n" +
+//          "perl " + Utils.path + "R/FAPROTAX/combine.function.pl function_txt.list ../functional_otu.txt"
+//      }
+//
+//      println(command)
+//
+//      FileUtils.writeStringToFile(new File(s"$dutyDir/temp/run.sh"),command)
+//      val execCommand = new ExecCommand
+//      execCommand.exect(s"sh $dutyDir/temp/run.sh",dutyDir+"/temp")
+//
+//      if (execCommand.isSuccess) {
+//        val finish=dutyController.updateFini(id,data.taskname)
+//        val target=dutyDir+"/out/outTables.zip"
+//        new File(target).createNewFile()
+//        CompressUtil.zip(dutyDir+"/out/out",target)
+//        FileUtils.writeStringToFile(new File(dutyDir,"log.txt"),"Start Time:"+start+"\n\nFinish Time:"+finish+"\n\n运行成功！")
+//        rservice.creatZip(dutyDir)
+//      } else {
+//        dutydao.updateFailed(id,data.taskname)
+//        FileUtils.writeStringToFile(new File(dutyDir,"log.txt"),"Start Time:"+start+"\n\n错误信息：\n"+execCommand.getErrStr+"\n\n运行失败！")
+//      }
+//    }
+//    Ok(Json.obj("valid" -> "运行中！"))
+//  }
 
 }

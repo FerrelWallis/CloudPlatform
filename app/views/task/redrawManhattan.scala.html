@@ -50,9 +50,9 @@
                                 下载结果图
                             </button>
                             <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 35px, 0px); top: 0px; left: 0px; will-change: transform;width: 150px">
-                                <a class="dropdown-item" id="downPic" onclick="downloadpics('manhattan','pdf')">下载 pdf</a>
-                                <a class="dropdown-item" id="downPng" onclick="downloadpics('manhattan','png')">下载 png</a>
-                                <a class="dropdown-item" id="downTiff" onclick="downloadpics('manhattan','tiff')">下载 tiff</a>
+                                <a class="dropdown-item" id="downPic" onclick="downloadpics('@row.status','@row.taskname','manhattan','pdf')">下载 pdf</a>
+                                <a class="dropdown-item" id="downPng" onclick="downloadpics('@row.status','@row.taskname','manhattan','png')">下载 png</a>
+                                <a class="dropdown-item" id="downTiff" onclick="downloadpics('@row.status','@row.taskname','manhattan','tiff')">下载 tiff</a>
                             </div>
                         </div>
                     </div>
@@ -75,64 +75,54 @@
                             </ul>
                             <div class="tab-content" style="box-sizing: border-box!important;padding-top: 30px">
                                 <div class="tab-pane fade active in" id="picpara">
-                                    <div class="form-group-p">
-                                        <div class="form-group picleft">
-                                            <label for="">数据取值范围：</label>
-                                        </div>
-                                        <div class="form-group picright" style="margin-left: 10px">
-                                            <input type="text" id="yrmin" name="yrmin" class="form-control" placeholder="数字"  style="width: 50px;float: left;margin-right: 5px">
-                                            <label style="float: left">--</label>
-                                            <input type="text" id="yrmax" name="yrmax" class="form-control" placeholder="数字"  style="width: 50px;  margin-left: 5px;float: left">
-                                            <label style="float: left">（默认所有）</label>
-                                        </div>
-                                    </div>
-                                    <div class="form-group-p novirtual">
-                                        <div class="form-group picleft">
+                                    @units.redrawUnits.input_text_2("","数据取值范围(默认所有)：","--","yrmin","yrmax","数字","数字")
+                                    <div class="form-group-p novirtual use-flex">
+                                        <div class="form-group">
                                             <label for="">是否绘制分界线：</label>
                                         </div>
-                                        <div class="form-group right picright">
-                                            <select name="showah" id="showah" onchange="checkshowah()">
+                                        <div class="form-group">
+                                            <select name="showah" id="showah" onchange="checkshowah()" style="width: 100%;">
                                                 <option value="TRUE">yes</option>
                                                 <option value="FALSE">no</option>
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="form-group-p limit">
-                                        <div class="form-group picleft">
+                                    <div class="form-group-p limit use-flex">
+                                        <div class="form-group">
                                             <label for="">分界线位置：</label>
                                         </div>
-                                        <div class="form-group picright" style="margin-left: 10px">
-                                            <input type="text" id="ahpos" name="ahpos" class="form-control" placeholder="数字"  style="width: 80px;float: left;margin-right: 5px">
+                                        <div class="form-group" style="margin-left: 10px">
+                                            <input type="text" id="ahpos" name="ahpos" class="form-control" placeholder="数字"  style="width: 100%;">
                                         </div>
                                     </div>
-                                    <div class="form-group-p novirtual">
-                                        <div class="form-group picleft">
+                                    <div class="form-group-p novirtual use-flex">
+                                        <div class="form-group">
                                             <label for="">数据展现形式：</label>
                                         </div>
-                                        <div class="form-group right picright">
-                                            <select name="dt" id="dt">
+                                        <div class="form-group">
+                                            <select name="dt" id="dt" style="width: 100%;">
                                                 <option value="point">point</option>
                                                 <option value="line">line</option>
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="form-group-p novirtual">
-                                        <div class="form-group picleft">
+                                    <div class="form-group-p novirtual use-flex">
+                                        <div class="form-group">
                                             <label>分隔显示数据：</label>
                                         </div>
-                                        <div class="form-group right picright">
-                                            <select id="p" name="p">
+                                        <div class="form-group">
+                                            <select id="p" name="p" style="width: 100%;">
                                                 <option value="FALSE">no</option>
                                                 <option value="TRUE">yes</option>
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="form-group-p">
-                                        <div class="form-group picleft">
+                                    <div class="form-group-p use-flex">
+                                        <div class="form-group">
                                             <label>清晰度：</label>
                                         </div>
-                                        <div class="form-group right picright">
-                                            <select id="dpi" name="dpi">
+                                        <div class="form-group">
+                                            <select id="dpi" name="dpi" style="width: 100%;">
                                                 <option value="300">300</option>
                                                 <option value="600">600</option>
                                                 <option value="96">96</option>
@@ -140,16 +130,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="form-group-p">
-                                        <div class="form-group picleft">
-                                            <label for="">图片长宽：</label>
-                                        </div>
-                                        <div class="form-group picright" style="margin-left: 10px">
-                                            <input type="text" id="width" name="width" class="form-control" placeholder="数字" value="15" style="width: 50px;float: left;margin-right: 5px">
-                                            <label style="float: left">--</label>
-                                            <input type="text" id="height" name="height" class="form-control" placeholder="数字" value="12" style="width: 50px;  margin-left: 5px;float: left">
-                                        </div>
-                                    </div>
+                                    @units.redrawUnits.input_text_2("","图片长宽：","--","width","height","数字","数字")
                                     <br>
                                 </div>
                                 <div class="tab-pane fade" id="colopara">
@@ -163,7 +144,7 @@
                                             </div>
                                             <br><br>
                                             <div class="form-group-p" >
-                                                <div class="form-group" style="width: 85%">
+                                                <div class="form-group" style="width: calc(100% - 20px)">
                                                     <ul id="mycolor">
                                                     </ul>
                                                     <input type="text" id="color" name="color" class="form-control" value="" style="display: none">
@@ -173,23 +154,23 @@
                                     </div>
                                     <br>
                                     <div class="form-group-p novirtual limit">
-                                        <div id="snamecolor">
-                                            <div class="form-group">
+                                        <div class="form-group" id="snamecolor">
+                                            <div style="float: left;">
                                                 <label>分界线上方点颜色：</label>
                                             </div>
-                                            <div class="form-group" style="width: 60%">
-                                                <div  class="evo-cp-wrap" style="margin-right: 10px">
+                                            <div style="width: 200px; float: left;">
+                                                <div class="evo-cp-wrap" style="margin-right: 10px">
                                                     <input id="hpccolo"  name="hpccolo" value=" " class="colorPicker evo-cp0">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form-group-p limit">
-                                        <div id="snamecolor">
-                                            <div class="form-group">
+                                        <div class="form-group" id="snamecolor">
+                                            <div style="float: left;">
                                                 <label>水平分界线颜色：</label>
                                             </div>
-                                            <div class="form-group" style="width: 60%">
+                                            <div style="width: 200px; float: left;">
                                                 <div  class="evo-cp-wrap" style="margin-right: 10px">
                                                     <input id="ahcolo"  name="ahcolo" value=" " class="colorPicker evo-cp0">
                                                 </div>
@@ -197,11 +178,11 @@
                                         </div>
                                     </div>
                                     <div class="form-group-p virtual">
-                                        <div id="snamecolor">
-                                            <div class="form-group">
+                                        <div class="form-group" id="snamecolor">
+                                            <div style="float: left;">
                                                 <label>数据名颜色：</label>
                                             </div>
-                                            <div class="form-group" style="width: 60%">
+                                            <div style="width: 200px; float: left;">
                                                 <div  class="evo-cp-wrap" style="margin-right: 10px">
                                                     <input id="lbscolo"  name="lbscolo" value=" " class="colorPicker evo-cp0">
                                                 </div>
@@ -366,43 +347,20 @@
 
     <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/fileinput.min.js")" type="text/javascript"></script>
     <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/locales/zh.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("myjs/redraw.js")" type="text/javascript"></script>
 
     <script>
 
             const updatetime="2020-09-19";
 
-            function checkupdate(){
-                $(".update").text(updatetime);
-                if("@row.subtime".split(" ")[0]<=updatetime) {
-                    $(".update_panel").show();
-                    $(".redraw_panel").hide();
-                } else {
-                    $(".redraw_panel").show();
-                    $(".update_panel").hide();
-                }
-            }
-
-            function downloadpics(picname,suffix){
-                if("@row.status"!=="已完成"){
-                    swal({
-                        title: "无法下载",
-                        text: "任务未完成，无法下载！",
-                        type: "warning",
-                        confirmButtonText: "确认"
-                    });
-                }else{
-                    window.location.href = "/CloudPlatform/SoftTool/download?taskname=@row.taskname&picname="+picname+"&suffix="+suffix+"&num="+Math.random();
-                }
-            }
-
             const colorValidators = {
                 validators: {
                     notEmpty:{
-                        message: '不能为空!'
+                        message: '不能为空！'
                     },
-                    regexp: {
-                        regexp: /^#([0-9a-fA-F]{6})$/,
-                        message: "色值不合法！色值必须以#开头，色值需为6位"
+                    color: {
+                        type: ['hex','keyword'],  // The default value for type
+                        message: '错误色值！支持hex或keyword色值'
                     }
                 }
             };
@@ -415,7 +373,7 @@
                         invalid: 'glyphicon glyphicon-remove',
                         validating: 'glyphicon glyphicon-refresh'
                     },
-                    excluded: [':disabled'],
+                    excluded: [':disabled','#hpccolo:hidden','#lbscolo:hidden'],
                     fields: {
                         yrmin: {
                             validators: {
@@ -507,7 +465,7 @@
 
             $(document).ready(function () {
                 if("@row.status"=="已完成"){
-                    checkupdate();
+                    checkupdate(updatetime, "@row.subtime");
                     $("#MHT").show();
                     $.ajax({
                         url:"/CloudPlatform/SoftTool/getManhattanData?taskname=@row.taskname",
@@ -533,7 +491,7 @@
                             colornum=data.group.length;
                             var colo="";
                             $.each(data.group,function (i,v) {
-                                colo +="<li class='form-group' style='width: 100%;'><div style='float: left;width: 30%;margin-top: 5px;'><label>"+v+"</label></div><div style='float: left;width: 70%'><input id='color"+i+"'  name='color"+i+"' class='colorPicker evo-cp0'></div></li>";
+                                colo +="<li class='form-group' style='width: 100%;'><div style='float: left;width: 30%;margin-top: 5px;'><label title='"+v+"'>"+v+"</label></div><div style='float: left;width: 70%'><input id='color"+i+"'  name='color"+i+"' class='colorPicker evo-cp0'></div></li>";
                             });
                             $("#mycolor").html(colo);
                             $.each(data.group,function (i,v) {
@@ -544,9 +502,10 @@
                                             $("#MHT").formValidation("revalidateField", "color"+i);
                                         });
                             });
-
+                            // $(".evo-cp-wrap").css("float", "left");
+                            // $(".evo-cp-wrap").css("width", "180px");
                             $(".evo-cp-wrap").css("float", "left");
-                            $(".evo-cp-wrap").css("width", "180px");
+                            $(".evo-cp-wrap").css("width", "calc(100% - 34px)");
                             checkVirtual();
                             if(samnum>1) checkshowah();
                         }

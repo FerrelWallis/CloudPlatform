@@ -1,0 +1,9 @@
+@(divname:String,title:String,name:String,min:String,max:String,step:String)
+<div class="form-group-p use-flex" id="@divname">
+    <div class="form-group">
+        <label>@title</label>
+    </div>
+    <div class="form-group" style="line-height: 28px; margin-bottom: 26px;">
+        <input id="@name" name="@name" data-slider-id='s@name' type="text" data-slider-min="@min" data-slider-max="@max" data-slider-step="@step" style="width: 100%;"/>
+    </div>
+</div>

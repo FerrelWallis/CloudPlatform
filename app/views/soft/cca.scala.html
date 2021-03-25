@@ -37,211 +37,17 @@
         <div class=" mysoft-content-left whitebox" style="width: 771px;overflow-y: auto">
             <form id="CCA" method="GET" enctype="multipart/form-data" class="well form-inline" style="box-sizing: border-box!important;">
                 <div class="softpic mws-ic CCA"> </div>
-                <h3 class="tools-title">CCA/RDA</h3>
-                <br><br>
-                <div class="form-group-p">
-                    <div class="form-group">
-                        <label for="mytaskname">任务编号：</label>
-                    </div>
-                    <div class="form-group">
-                        <input id="mytaskname" type="text" class="form-control" name="taskname" placeholder="" value="cca">
-                    </div>
-                </div>
-                <br><br>
-                <div>
-                    <div id="mydiv1" class="one-line">
-                        <div class="form-group-p" style="width: 500px">
-                            <div class="form-group">
-                                <label for="exampleInputName0"><em>1：</em>OTU丰度表：</label>
-                            </div>
-                            <div class="form-group">
-                                <input type="file" class="form-control file" id="table1" name="table1" onchange="checkTable()">
-                            </div>
-                        </div>
-                        <div class="form-group-extra">
-                            <em><a href="/assets/files/CCA_otu.txt" target='_blank'>示例文件</a></em>
-                        </div>
-                        <br>
-                        <br>
-                    </div>
-                    <div id="mydiv0" class="one-line">
-                        <div class="form-group-p" style="width: 500px">
-                            <div class="form-group">
-                                <label for="exampleInputName0">
-                                    <em>2：</em>环境因子列表文件：
-                                </label>
-                            </div>
-                            <div class="form-group">
-                                <input type="file" class="form-control file" id="table2" name="table2" onchange="checkEvi()">
-                            </div>
-                        </div>
-                        <div class="form-group-extra">
-                            <em><a href="/assets/files/CCA_env.txt" target='_blank'>示例文件</a></em>
-                        </div>
-                        <br>
-                        <br>
-                    </div>
-                </div>
-                    <!-- 参数 -->
-                <div class="form-group-p">
-                    <div class="form-group">
-                        <label for="qushi">
-                            <em>3：</em>分析类型：
-                        </label>
-                    </div>
-                    <div class="form-group">
-                        <select name="anatype" id="anatype">
-                            <option value="RDA">RDA</option>
-                            <option value="CCA">CCA</option>
-                        </select>
-                    </div>
-                </div>
-                <br>
-                <br>
-                <label for="exampleInputName2">
-                    <em>4：</em>选填：
-                </label>
-                <br><br>
-                <div id="groupfile" class="one-line">
-                    <div class="form-group-p">
-                        <div class="form-group">
-                            <input type="checkbox" name="isgroup" value="A" id="isgroup" class="form-control" style="height: 13px;width: auto;float: left;margin-top: 3px;">&nbsp;&nbsp;
-                        </div>
-                        <span >是否分组绘图</span>
-                    </div>
-                    <br>
-                    <div id="group" style="display: none;">
-                        <div class="form-group-p" style="width: 500px">
-                            <div class="form-group">
-                                <label for="exampleInputName0">
-                                    分组文件：
-                                </label>
-                            </div>
-                            <div class="form-group">
-                                <input type="file" class="form-control file" id="table3" name="table3" onchange="checkGroupfile()">
-                            </div>
-                        </div>
-                        <div class="form-group-extra">
-                            <em><a href="/assets/files/CCA_group.txt" target='_blank'>示例文件</a></em>
-                        </div>
-                        <br>
-                        <br>
-                    </div>
-                    <br>
-                    <br>
-                </div>
-
+                <h3 class="tools-title">CCA/RDA</h3><br><br>
+                @units.textinput("","","任务编号：", "taskname","","")
+                @units.fileupload("1：", "mydiv1", "OTU丰度表：","table1","CCA_otu.txt")
+                @units.fileupload("2：", "mydiv0", "环境因子列表文件：","table2","CCA_env.txt")
+                @units.selector("3：","","分析类型：","anatype")
+                @units.checkbox("4： ","","是否分组绘图","isgroup")<br>
+                @units.fileupload("","group","分组文件：","table3","CCA_group.txt")<br><br>
                 <input type="button" value="提&nbsp;&nbsp;交" name="submit" class="btn btn-primary" onclick="cca()">
             </form>
         </div>
-
-        <div class="handler"></div>
-        <div class="mysoft-content-right" style="width: 305px;">
-
-            <ul class="nav nav-tabs">
-                <li id="ins_tab1" class="active">
-                    <a href="###" data-target="#instruction" data-toggle="tab">使用说明</a>
-                </li>
-                <li class="" id="out_tab1">
-                    <a href="###" data-target="#example" data-toggle="tab">教学视频</a>
-                </li>
-                <li class="" id="his_tab1">
-                    <a href="#" data-target="#history" data-toggle="tab">历史任务</a>
-                </li>
-            </ul>
-            <div class="tab-content" style="box-sizing: border-box!important;">
-                <div class="tab-pane fade active in" id="instruction">
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>1.背景介绍</strong></span><br>
-                        CCA或RDA是基于对应分析发展而来的一种排序方法，将对应分析与多元回归分析相结合，每一步计算均与环境因子进行回归，又称多元直接梯度分析。此分析是主要用来反映菌群与环境因子之间关系。RDA是基于线性模型，CCA是基于单峰模型。分析可以检测环境因子、样本、菌群三者之间的关系或者两两之间的关系。
-                        <br>
-                    </p>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>2.操作界面</strong></span><br>
-                        操作界面包含任务编号、OTU丰度表、环境因子列表文件、分析类型和是否分组绘图选项，其中1和2需要上传数据，3和4只需要进行选择。
-                        <br>
-                    </p>
-                    <img src="/assets/images/softpic/instruction/cca1.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;padding-left: 44%">操作界面</p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>2.1.输入文件</strong></span><br>
-                        需要输入的文件包括OTU丰度表和环境因子列表文件，如果选择按分组进行绘图，还需要提供分组信息表，文件必须为tab-delimited保存的txt格式，示例文件如下。
-                        <br>
-                    </p>
-                    <br>
-                    <img src="/assets/images/softpic/instruction/cca2.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;padding-left: 44%">OTU丰度表</p>
-                    <img src="/assets/images/softpic/instruction/cca3.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;padding-left: 39%">环境因子列表文件</p>
-                    <img src="/assets/images/softpic/instruction/cca4.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;padding-left: 44%">分组信息表</p>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        上传文件后，点击“提交”按键即可。<br>
-                    </p>
-                    <img src="/assets/images/softpic/instruction/cca5.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>2.2.查看进程</strong></span><br>
-                        提交任务后，点击界面右侧的“CCA/RDA历史任务”模块，可以看到任务编号、提交时间、结束时间和状态。通过点击界面“我的任务”也可以查看任务编号、软件名称和状态等信息，点击任务编号，即可查看分析结果。
-                        <br>
-                    </p>
-                    <img src="/assets/images/softpic/instruction/cca6.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        在任务详情界面，展示的是任务参数、结果文件列表和在线调整图片3个区域，提供结果文件下载和图片调整功能。<br>
-                    </p>
-                    <img src="/assets/images/softpic/instruction/cca7.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>3.示例图片</strong></span><br>
-                        <span style="font-weight:700;"><strong>3.1.按分组绘图，分析方法RDA</strong></span><br>
-                    </p>
-                    <img src="/assets/images/softpic/instruction/cca8.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>3.2.按分组绘图，分析方法为CCA</strong></span><br>
-                    </p>
-                    <img src="/assets/images/softpic/instruction/cca9.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
-                    <br>
-                    <p style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;">
-                        <span style="font-weight:700;"><strong>4.结果文件列表</strong></span><br>
-                        结果文件包含CCA/RDA结果图、百分比表、样本坐标表、物种坐标表、环境因子坐标表，其中CCA/RDA结果图可以进行在线调整。
-                        <br>
-                    </p>
-                    <img src="/assets/images/softpic/instruction/cca10.png" class="img-rounded img-thumbnail img-responsive" style="height:auto;">
-                    <span style="color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;"></span>
-                    <br>
-                </div>
-                <div class="tab-pane fade" id="example">
-                    <div id="dplayer"></div>
-                </div>
-                <div id="history" class="form1_ins tab-pane fade">
-                    <a id="btn-refresh" class="btn_refresh mws-i-24 i-refresh-3" onclick="refresh('@abbre')">刷新状态</a>
-                    <ul id="hisul" style="margin-top: 15px">
-                        <li id="hislist" class="hislist">
-                            <div class="his_time"><span>任务编号</span></div>
-                            <div class="his_time"><span style="margin-left: -20px;">结束时间</span></div>
-                            <div class="his_name"><span style="margin-left: -23px;">状态</span></div>
-                            <hr>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+        @units.pageRight("", "","CCA")
     </div>
 
     <script type="text/javascript" src="@routes.Assets.versioned("js/toolsAdjust.js")"></script>
@@ -249,13 +55,31 @@
     <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/fileinput.min.js")" type="text/javascript"></script>
     <script src="@routes.Assets.versioned("bootstrap-fileinput-master/js/locales/zh.js")" type="text/javascript"></script>
     <script src="@routes.Assets.versioned("myjs/soft.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("myjs/redraw.js")" type="text/javascript"></script>
     <script type="text/javascript">
+
+            $("#table3").change(function () {
+                checkGroupfile();
+            });
+
+            $("#table2").change(function () {
+                checkEvi();
+            });
+
+            $("#table1").change(function () {
+                checkTable();
+            });
 
             $(document).ready(function () {
                 formValidation();
                 loadHistory("@abbre");
                 getTaskName("CCA","CCA");
                 loadVideo("//13125180.s21v.faiusr.com/58/ABUIABA6GAAgxZ2K_QUorKzs7gc.mp4","/assets/images/softpic/video/cca_video.png")
+                $("#group").hide();
+                $("#instruction").append(instruction);
+                var anatype = ["RDA","CCA"];
+                var anatypename = ["RDA","CCA"];
+                creatSelector("anatype",anatypename,anatype,"RDA");
             });
 
             $("#isgroup").click(function () {
@@ -544,69 +368,89 @@
             }
 
             function formValidation() {
-                $('#CCA').formValidation({
-                    framework: 'bootstrap',
-                    icon: {
-                        valid: 'glyphicon glyphicon-ok',
-                        invalid: 'glyphicon glyphicon-remove',
-                        validating: 'glyphicon glyphicon-refresh'
-                    },
-                    fields: {
-                        taskname: {
-                            validators: {
-                                notEmpty: {
-                                    message: '任务编号不能为空!'
-                                },
-                                remote:{
-                                    type: 'POST',
-                                    url: '@routes.DutyController.checktaskname()',
-                                    message: "任务编号重复，请重新输入",
-                                    delay: 1000
-                                }
-                            }
-                        },
-                        table1: {
-                            validators: {
-                                notEmpty: {
-                                    message: '必须上传OTU丰度表!'
-                                },
-                                file: {
-                                    // extension: 'txt',
-                                    // type: 'image/jpeg,image/png',
-                                    maxSize: 5*1024*1024,
-                                    message: '文件格式必须为txt，且不得大于5M！'
-                                }
-                            }
-                        },
-                        table2: {
-                            validators: {
-                                notEmpty: {
-                                    message: '必须上传环境因子列表文件!'
-                                },
-                                file: {
-                                    // extension: 'jpeg,jpg,png',
-                                    // type: 'image/jpeg,image/png',
-                                    maxSize: 5*1024*1024,
-                                    message: '文件不得大于5M！'
-                                }
-                            }
-                        },
-                        table3: {
-                            validators: {
-                                notEmpty: {
-                                    message: '必须上传分组文件或取消分组绘图!'
-                                },
-                                file: {
-                                    // extension: 'jpeg,jpg,png',
-                                    // type: 'image/jpeg,image/png',
-                                    maxSize: 5*1024*1024,
-                                    message: '文件不得大于5M！'
-                                }
-                            }
-                        }
-                    }
-                });
+                let field = {};
+                let table = ["table1", "table2", "table3"];
+                FieldFile(field, table);
+                let text = ["taskname"];
+                FieldTaskname(field, text);
+                let excluded = [":hidden"];
+                addFormValidation("CCA", field, excluded)
             }
+
+            var instruction = "<p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                    "                        <span style=\"font-weight:700;\"><strong>1.背景介绍</strong></span><br>\n" +
+                    "                        CCA或RDA是基于对应分析发展而来的一种排序方法，将对应分析与多元回归分析相结合，每一步计算均与环境因子进行回归，又称多元直接梯度分析。此分析是主要用来反映菌群与环境因子之间关系。RDA是基于线性模型，CCA是基于单峰模型。分析可以检测环境因子、样本、菌群三者之间的关系或者两两之间的关系。\n" +
+                    "                        <br>\n" +
+                    "                    </p>\n" +
+                    "                    <br>\n" +
+                    "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                    "                        <span style=\"font-weight:700;\"><strong>2.操作界面</strong></span><br>\n" +
+                    "                        操作界面包含任务编号、OTU丰度表、环境因子列表文件、分析类型和是否分组绘图选项，其中1和2需要上传数据，3和4只需要进行选择。\n" +
+                    "                        <br>\n" +
+                    "                    </p>\n" +
+                    "                    <img src=\"/assets/images/softpic/instruction/cca1.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                    "                    <span style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\"></span>\n" +
+                    "                    <br>\n" +
+                    "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;padding-left: 44%\">操作界面</p>\n" +
+                    "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                    "                        <span style=\"font-weight:700;\"><strong>2.1.输入文件</strong></span><br>\n" +
+                    "                        需要输入的文件包括OTU丰度表和环境因子列表文件，如果选择按分组进行绘图，还需要提供分组信息表，文件必须为tab-delimited保存的txt格式，示例文件如下。\n" +
+                    "                        <br>\n" +
+                    "                    </p>\n" +
+                    "                    <br>\n" +
+                    "                    <img src=\"/assets/images/softpic/instruction/cca2.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                    "                    <span style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\"></span>\n" +
+                    "                    <br>\n" +
+                    "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;padding-left: 44%\">OTU丰度表</p>\n" +
+                    "                    <img src=\"/assets/images/softpic/instruction/cca3.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                    "                    <span style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\"></span>\n" +
+                    "                    <br>\n" +
+                    "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;padding-left: 39%\">环境因子列表文件</p>\n" +
+                    "                    <img src=\"/assets/images/softpic/instruction/cca4.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                    "                    <span style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\"></span>\n" +
+                    "                    <br>\n" +
+                    "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;padding-left: 44%\">分组信息表</p>\n" +
+                    "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                    "                        上传文件后，点击“提交”按键即可。<br>\n" +
+                    "                    </p>\n" +
+                    "                    <img src=\"/assets/images/softpic/instruction/cca5.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                    "                    <span style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\"></span>\n" +
+                    "                    <br>\n" +
+                    "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                    "                        <span style=\"font-weight:700;\"><strong>2.2.查看进程</strong></span><br>\n" +
+                    "                        提交任务后，点击界面右侧的“CCA/RDA历史任务”模块，可以看到任务编号、提交时间、结束时间和状态。通过点击界面“我的任务”也可以查看任务编号、软件名称和状态等信息，点击任务编号，即可查看分析结果。\n" +
+                    "                        <br>\n" +
+                    "                    </p>\n" +
+                    "                    <img src=\"/assets/images/softpic/instruction/cca6.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                    "                    <span style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\"></span>\n" +
+                    "                    <br>\n" +
+                    "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                    "                        在任务详情界面，展示的是任务参数、结果文件列表和在线调整图片3个区域，提供结果文件下载和图片调整功能。<br>\n" +
+                    "                    </p>\n" +
+                    "                    <img src=\"/assets/images/softpic/instruction/cca7.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                    "                    <span style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\"></span>\n" +
+                    "                    <br>\n" +
+                    "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                    "                        <span style=\"font-weight:700;\"><strong>3.示例图片</strong></span><br>\n" +
+                    "                        <span style=\"font-weight:700;\"><strong>3.1.按分组绘图，分析方法RDA</strong></span><br>\n" +
+                    "                    </p>\n" +
+                    "                    <img src=\"/assets/images/softpic/instruction/cca8.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                    "                    <span style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\"></span>\n" +
+                    "                    <br>\n" +
+                    "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                    "                        <span style=\"font-weight:700;\"><strong>3.2.按分组绘图，分析方法为CCA</strong></span><br>\n" +
+                    "                    </p>\n" +
+                    "                    <img src=\"/assets/images/softpic/instruction/cca9.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                    "                    <span style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\"></span>\n" +
+                    "                    <br>\n" +
+                    "                    <p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
+                    "                        <span style=\"font-weight:700;\"><strong>4.结果文件列表</strong></span><br>\n" +
+                    "                        结果文件包含CCA/RDA结果图、百分比表、样本坐标表、物种坐标表、环境因子坐标表，其中CCA/RDA结果图可以进行在线调整。\n" +
+                    "                        <br>\n" +
+                    "                    </p>\n" +
+                    "                    <img src=\"/assets/images/softpic/instruction/cca10.png\" class=\"img-rounded img-thumbnail img-responsive\" style=\"height:auto;\">\n" +
+                    "                    <span style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\"></span>\n" +
+                    "                    <br>";
 
     </script>
 }
