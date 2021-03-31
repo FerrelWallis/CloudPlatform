@@ -33,8 +33,8 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
     Future {
       val result = abbre match {
         case "PCA" => tools.pca.Run(dutyDir, params)
-        case "ADB" => tools.ADB.Run(dutyDir, params)
-        case "MLN" => tools.MLN.Run(dutyDir, params)
+        case "ADB" => tools.boxDiversity.Run(dutyDir, params)
+        case "MLN" => tools.multiLinear.Run(dutyDir, params)
         case "PMR" => tools.eprimer.Run(dutyDir, params)
         case "GTF" => tools.getorf.Run(dutyDir, params)
         case "PIC" => tools.picrust.Run(dutyDir, params)
@@ -44,6 +44,9 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
         case "LF2" => tools.lefse2.Run(dutyDir, params)
         case "LEF" => tools.lefse.Run(dutyDir, params)
         case x if x == "GO" || x == "KEGG" => tools.gokegg.Run(dutyDir, params, abbre)
+        case "TT" => tools.tabletrans.Run(dutyDir)
+        case "MTT" => tools.merge2table.Run(dutyDir, params)
+        case "MMT" => tools.mergeMultiTable.Run(dutyDir, params)
       }
       val msg = if(result._1 == 1) {
         creatZip(dutyDir)
@@ -66,7 +69,7 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
       else Map(""->"")
     var params = abbre match {
       case "PCA" => tools.pca.GetParams(dutyDir, elements)
-      case "ADB" => tools.ADB.GetParams(dutyDir, elements)
+      case "ADB" => tools.boxDiversity.GetParams(dutyDir, elements)
       case "TAX" => tools.tax4fun.GetParams(dutyDir)
       case "LF2" => tools.lefse2.GetParams(dutyDir, elements)
       case "LEF" => tools.lefse.GetParams(dutyDir)
@@ -84,7 +87,7 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
     val oldEle = jsonToMap(Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf).head.elements)
     var result = abbre match {
       case "PCA" => tools.pca.ReDraw(dutyDir, newEle)
-      case "ADB" => tools.ADB.ReDraw(dutyDir, newEle, oldEle)
+      case "ADB" => tools.boxDiversity.ReDraw(dutyDir, newEle, oldEle)
       case "LF2_Res" => tools.lefse2.ReDrawRes(dutyDir, newEle, oldEle)
       case "LF2_Cla" => tools.lefse2.ReDrawCla(dutyDir, newEle, oldEle)
       case "LF2_Fea" => tools.lefse2.ReDrawFea(dutyDir, newEle, oldEle)

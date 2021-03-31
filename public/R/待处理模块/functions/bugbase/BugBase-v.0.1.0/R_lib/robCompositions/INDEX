@@ -1,0 +1,67 @@
+aDist                   Aitchison distance
+addLR                   Additive log-ratio transformation
+addLRinv                Additive logistic transformaton
+adjust                  Adjusting for original scale
+adtest                  Anderson-Darling Normality Tests
+adtestWrapper           Wrapper for Anderson-Darling tests
+arcticLake              Arctic lake sediment data
+biplot.factanal         Biplot method
+biplot.pcaCoDa          Biplot method
+bootnComp               Bootstrap to find optimal number of components
+cancer                  Hospital discharges on cancer and distribution
+                        of age
+cenLR                   Centred log-ratio transformation
+cenLRinv                Inverse centred log-ratio transformation
+coffee                  coffee data set
+compareMahal            Compares Mahalanobis distances from two
+                        approaches
+constSum                Constant sum
+daFisher                Discriminant analysis by Fisher Rule.
+economy                 Economic indicators
+expenditures            Synthetic household expenditures toy data set
+expendituresEU          Mean consumption expenditures data.
+gemas                   Gemas geochemical data set
+gm                      geometric mean
+haplogroups             Haplogroups data.
+impAll                  Replacement of rounded zeros and missing
+                        values.
+impCoda                 Imputation of missing values in compositional
+                        data
+impKNNa                 Imputation of missing values in compositional
+                        data using knn methods
+impRZalr                alr EM-based Imputation for Rounded Zeros
+impRZilr                EM-based replacement of rounded zeros in
+                        compositional data
+imputeBDLs              EM-based replacement of rounded zeros in
+                        compositional data
+isomLR                  Isometric log-ratio transformation
+laborForce              Labour force by status in employment
+lifeExpGdp              Life expectancy and GDP (2008) for EU-countries
+lmCoDaX                 Classical and robust regression of
+                        non-compositional response on compositional
+                        predictors
+machineOperators        machine operators
+mcad                    Metabolomics mcad data set
+missPatterns            missing or zero pattern structure.
+mortality               Mortality and life expectancy in the EU
+orthbasis               Orthonormal basis
+outCoDa                 Outlier detection for compositional data
+pcaCoDa                 Robust principal component analysis for
+                        compositional data
+pfa                     Factor analysis for compositional data
+phd                     PhD Students in the EU
+plot.imp                Plot method for objects of class imp
+plot.pcaCoDa            Plot method
+print.imp               Print method for objects of class imp
+robCompositions-package
+                        Robust Estimation for Compositional Data.
+skyeLavas               Aphyric skye lavas data
+summary.imp             Summary method for objects of class imp
+ternaryDiag             Ternary diagram
+ternaryDiagAbline       Adds a line to a ternary diagram.
+ternaryDiagEllipse      Adds tolerance ellipses to a ternary diagram.
+ternaryDiagPoints       Add points or lines to a given ternary diagram.
+trondelagC              Regional geochemical survey of soil C in Norway
+trondelagO              Regional geochemical survey of soil O in Norway
+variation               Robust and classical variation matrix
+zeroOut                 Detection of outliers of zero-inflated data

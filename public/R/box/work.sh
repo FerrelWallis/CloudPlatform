@@ -1,0 +1,2 @@
+/lustre/sdb/xueyj/conda//lib/bin/Rscript /lustre/sdb/xueyj/samplepackage/boxplot/boxplot.R -i /lustre/sdb/xueyj/samplepackage/boxplot/Diff.mat.txt -o /lustre/sdb/xueyj/samplepackage/boxplot -rt 12 -lsa 1:1.5:1.5
+/lustre/sdb/xueyj/conda//lib/bin/Rscript /lustre/sdb/xueyj/samplepackage/boxplot/boxplot.R -i /lustre/sdb/xueyj/samplepackage/boxplot/Diff.mat.txt -o /lustre/sdb/xueyj/samplepackage/boxplot -rt 12 -lsa 1:1.5:1.5 -in boxpoint -sp TRUE

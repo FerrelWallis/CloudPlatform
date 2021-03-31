@@ -1,0 +1,10 @@
+OTUID	Focus
+Bacteroidetes	Bacteroidetes
+Actinobacteria	Actinobacteria
+Firmicutes	Other
+Chloroflexi	Other
+Gemmatimonadetes	Other	
+Acidobacteria	Other
+Patescibacteria	Patescibacteria
+Cyanobacteria	Cyanobacteria
+Verrucomicrobia	Other

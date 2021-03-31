@@ -1,0 +1,31 @@
+description	namespace	ratio_in_study
+mitochondrial electron transport, cytochrome c to oxygen	biological_process	7
+aerobic electron transport chain	biological_process	7
+extracellular matrix	cellular_component	14
+purine nucleoside triphosphate biosynthetic process	biological_process	22
+ribonucleoside triphosphate biosynthetic process	biological_process	22
+respiratory electron transport chain	biological_process	25
+respiratory chain complex	cellular_component	22
+fatty acid catabolic process	biological_process	20
+oxidative phosphorylation	biological_process	27
+lipid oxidation	biological_process	12
+fatty acid oxidation	biological_process	12
+nucleoside triphosphate biosynthetic process	biological_process	23
+antibiotic catabolic process	biological_process	16
+proton-transporting two-sector ATPase complex	cellular_component	14
+energy coupled proton transport, down electrochemical gradient	biological_process	10
+ATP synthesis coupled proton transport	biological_process	10
+cytoplasmic translational elongation	biological_process	14
+respiratory chain	cellular_component	23
+mitochondrial respiratory chain	cellular_component	23
+mitochondrial ATP synthesis coupled proton transport	biological_process	9
+glucose metabolic process	biological_process	18
+nucleoside diphosphate metabolic process	biological_process	19
+inner mitochondrial membrane protein complex	cellular_component	34
+biofilm matrix	cellular_component	13
+fungal biofilm matrix	cellular_component	13
+acetate metabolic process	biological_process	11
+ribonucleoside triphosphate metabolic process	biological_process	45
+pyridine nucleotide metabolic process	biological_process	32
+monovalent inorganic cation transport	biological_process	28
+large ribosomal subunit	cellular_component	47

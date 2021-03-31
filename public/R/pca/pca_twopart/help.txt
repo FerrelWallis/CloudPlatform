@@ -1,0 +1,24 @@
+r包
+suppressMessages(library("ggplot2"))
+suppressMessages(library("ggrepel"))
+
+
+pca_data.R 
+
+-i	读取的表格路径
+-o	数据存放文件夹路径
+-sca	数据是否归一化
+
+每次执行存3个表格   画图数据表格(pca.x.xls),特征向量矩阵表格(pca.rotation.xls),pca值表格(pca.sdev.xls)
+根据参数是否归一化	存上面3个表格,归一化和不归一化表格名字不一样.
+					画图数据表格(pca.scale.x.xls),特征向量矩阵表格(pca.scale.rotation.xls),pca值表格(pca.scale.sdev.xls)
+
+
+
+
+
+pca_plot.R 
+参数 -i 画图数据表格路径
+     -si pca值表格路径
+
+详细看pca_plot.R -h

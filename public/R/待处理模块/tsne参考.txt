@@ -1,0 +1,3 @@
+参考网页： https://www.jianshu.com/p/da710b0fcecc
+
+基迪奥参数设置参考：https://www.omicshare.com/tools/Home/Soft/tsne

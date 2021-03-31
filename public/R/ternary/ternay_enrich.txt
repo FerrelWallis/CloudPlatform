@@ -1,0 +1,10 @@
+OTUID	Enrich
+Bacteroidetes	Water
+Actinobacteria	Water
+Firmicutes	Clay
+Chloroflexi	Slit
+Gemmatimonadetes	Clay	
+Acidobacteria	Water
+Patescibacteria	Clay
+Cyanobacteria	Salt
+Verrucomicrobia	Slit

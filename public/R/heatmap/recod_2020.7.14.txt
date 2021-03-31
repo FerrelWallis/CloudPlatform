@@ -1,0 +1,47 @@
+-i	读入的矩阵表格文件路径
+-o	输出图片的文件夹路径
+-c	配置颜色‘:’分割，可以多种颜色
+-cc	渐变的颜色数量
+-inr	读取表格的行数
+-inc	读取表格的列数
+-lg	数据处理，三种lg2,lg10,none
+-sc	数据归一化，三种，row,col,none
+-ari	行分组信息表格文件路径
+-aci	列分组信息表格文件路径
+-trf	行树的文件文件路径
+-tcf	列树的文件文件路径
+-cln	是否检测标签文件的行列名字,使热图行列名对应
+-lfi	读入的格子标签文件路径
+-crw	热图行自动聚类TRUE/FALSE
+-ccl	热图列自动聚类TRUE/FALSE
+-crm	行自动聚类方法	ward,single,complete,average,mcquitty,median,centroid
+-ccm	列自动聚类方法	ward,single,complete,average,mcquitty,median,centroid
+-cbc	小格子边框颜色
+-lnc	小格子里面内容颜色
+-th	树的高度50:50
+-sn	展示xy格子内容，默认TRUE:TRUE:FALSE
+-fs	xy轴字大小10:10
+-smt	展示热图的部分	left,right,top,bottom,topTriangle,bottomTriangle 默认full
+-rp	把行树分成几个部分
+-cp	把列树分成几个部分
+-fn	小格子里面内容大小
+-m	主标题内容
+-nc	缺失值数据的颜色设置
+-lr	没用的参数
+-lc	没用的参数
+-san	展示行列分组文件的名字TRUE:TRUE
+-in	输出文件的名字
+-if	输出文件的格式
+
+
+
+./data/cor.xls	矩阵数据文件
+./data/row_group.xls	行的分组文件
+./data/col_group.xls	列的分组树文件
+./data/inputcol.tre	列树文件
+./data/inputrow.tre	行树文件
+./data/star.xls	读入的格子标签文件
+
+
+inr 只有一行，sc归一化是col 会报错
+inc只有一列，sc归一化是row 会报错

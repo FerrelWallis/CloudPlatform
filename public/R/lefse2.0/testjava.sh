@@ -1,0 +1,1 @@
+java -jar /mnt/sdb/ww/bak/CloudPlatform/R/lefse2.0/lefse.jar -script /mnt/sdb/ww/bak/CloudPlatform/R/lefse2.0/lefse_to_export -path /mnt/sdb/ww/bak/CloudPlatform/R/lefse2.0/test/otu_taxa_table.biom -map /mnt/sdb/ww/bak/CloudPlatform/R/lefse2.0/test/lefse_map.txt -out /mnt/sdb/ww/bak/CloudPlatform/R/lefse2.0/test

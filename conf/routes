@@ -27,11 +27,12 @@ GET           /CloudPlatform/Softwares/home/search                   controllers
 GET           /CloudPlatform/Softwares/home/likelist                 controllers.SoftController.getLike
 GET           /CloudPlatform/Softwares/home/likebref                 controllers.SoftController.getLikebrief
 
-#Cluster
+#runSoft
 POST          /CloudPlatform/SoftTool/runSoft                        controllers.RService.runSoft(abbre:String, sname:String)
 POST          /CloudPlatform/SoftTool/getParams                      controllers.RService.getParams(taskname:String,abbre:String)
 POST          /CloudPlatform/SoftTool/reDrawRun                      controllers.RService.reDrawRun(taskname:String,abbre:String)
 
+#Cluster
 POST          /CloudPlatform/SoftTool/runPcoa                        controllers.RClusterController.doPCOA(isgroup:Boolean,table:String,group:String)
 POST          /CloudPlatform/SoftTool/getPcoaData                    controllers.RClusterController.readPCAData(taskname:String,abbre:String)
 POST          /CloudPlatform/SoftTool/redrawPcoa                     controllers.RClusterController.redrawPCA(taskname:String,abbre:String)
@@ -157,11 +158,6 @@ POST          /CloudPlatform/SoftTool/redrawPLS                      controllers
 #Sequence
 POST          /CloudPlatform/SoftTool/runRevseq                      controllers.RSequenceController.doRevseq
 
-
-#Chart
-POST          /CloudPlatform/SoftTool/runTableTrans                  controllers.RChartController.doTableTrans
-POST          /CloudPlatform/SoftTool/runMerge2Table                 controllers.RChartController.doMerge2Table
-POST          /CloudPlatform/SoftTool/runMergeMulTable               controllers.RChartController.doMergeMulTable(filenum:Int)
 
 
 

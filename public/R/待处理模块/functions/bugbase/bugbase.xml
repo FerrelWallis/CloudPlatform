@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<tool id="bugbase" name="BugBase" version="0.1.0" description="determines high-level phenotypes present in microbiome samples">
+    <command>
+    "${SOFTDIR}/bin/Perl/bin/perl" "${SOFTDIR}/tools/bugbase/bugbase.pl"  -i "$input"   -log2 "$log2"  -otus "$otus"  -prediction "$prediction" -contribution "$contribution"
+    #if($threshold.type == "yes")
+        -threshold "$threshold.value"
+    #end
+    </command>
+    <inputs>                  
+        <param name="input" label="Input GG13.5 closed reference OTU table file in tabular foramt, can be obtained from Tool: 'Get Greengenes13.5 closed reference OTU Table'" type="data" format="tabular"/>
+        <param name="log2" type="select" label="Use centered log-ratio transformation instead of relative abundance" help="This helps prevent issues with the compositionality of sequencing data.">
+            <option value="yes" >Yes</option>
+            <option value="no" selected="true">No</option>
+        </param> 
+        <conditional name="threshold">
+            <param name="type" label="Specific Thresholds" help="The threshold is the percentage of genes within a category that an OTU must posses to display a phenotype. If default, BugBase will use the threshold with the highest variance in your data, will set a different threshold for each phenotype according to the variances reported. ">
+                <option value="yes">Yes</option>
+                <option value="no" selected="true">Default</option>
+            </param>
+            <when value="yes">
+                <param name="value" label="Threshold" type="float" value="0.01" help="You can specify which threshold you would like to set for all phenotypes. The higher the threshold, the more stringent you are in deeming an OTU to possess a phenotype. The threshold must be between 0 and 1.">
+                    <validator type="in_range" min="0" max="1"/>
+                </param>
+            </when>
+        </conditional>
+    </inputs>
+    <outputs>
+        <data format="tabular" name="otus" label ="16S copy-number normalized OTU table" filename="16s_normalized_otu_table.txt"/> 
+        <data format="tabular" name="contribution" label ="OTU contributions for each phenotype" filename="contributing_otus.txt"/> 
+        <data format="tabular" name="prediction" label ="Prediction Table" filename="predictions_table.txt"/> 
+    </outputs>
+</tool>

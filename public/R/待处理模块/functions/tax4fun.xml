@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<tool id="sm_Tax4Fun" name="Tax4Fun" version="0.3.1" description="predicts the functional or metabolic capabilities of microbial communities based on 16S data samples">
+    <command>
+    "${SOFTDIR}/bin/Perl/bin/perl" "${SOFTDIR}/tools/functions/tax4fun.pl"  -i "$input" -t "$tax_input" -r "$reference" -o "$output" -fctProfiling "$fctProfiling" -refProfile "$refProfile" -shortReadMode "$shortReadMode"
+    </command>
+    <inputs>                  
+        <param name="input" label="Input OTU table file in tabular foramt" type="data" format="tabular"/>
+        <param name="tax_input" label="Taxonomy assignment file(for example: OTU1   (tab_sep)   d__Bacteria; p__Bacteroidetes; c__Cytophagia)" type="data" format="tabular"/>
+        <param name="reference" type="select" label="Choose taxonomy annation database">
+            <option value="SILVA115">SILVA115</option>
+            <option value="SILVA119">SILVA119</option>
+            <option value="SILVA123" selected="true">SILVA123</option>
+        </param> 
+        <param name="fctProfiling" type="select" label="fctProfiling" help="if TRUE (default) the functional capabilities of microbial communities based on 16S data samples are computed using the precomputed KEGG Ortholog eference profiles, and if FALSE the metabolic capabilities using the pre-computed KEGG Pathway reference profiles according to the MoP approach are computed.">
+            <option value="TRUE">TRUE</option>
+            <option value="FALSE">FALSE</option>
+        </param> 
+        <param name="refProfile" type="select" label="refProfile" help="Giving the method for precomputing the functional reference profiles. This must be either 'UProC' (default) or 'PAUDA'.">
+            <option value="UProC">UProC</option>
+            <option value="PAUDA">PAUDA</option>
+        </param> 
+        <param name="shortReadMode" type="select" label="shortReadMode" help="if TRUE (default) the functional reference profiles are computed based on 100 bp reads, and if FALSE the reference profiles are computed based on 400 bp reads.">
+            <option value="TRUE">TRUE</option>
+            <option value="FALSE">FALSE</option>
+        </param> 
+    </inputs>
+    <outputs>
+        <data format="tabular" name="output" label ="Tax4Fun result file" filename="func_table.txt"/> 
+    </outputs>
+</tool>

@@ -55,3 +55,11 @@ play.sbt.PlayExceptions$CompilationException: Compilation error[非法的表达�
 	at java.util.concurrent.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1056)
 	at java.util.concurrent.ForkJoinPool.runWorker(ForkJoinPool.java:1692)
 	at java.util.concurrent.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:157)
+2021-03-31 09:24:40,620 [WARN] from slick.basic.DatabaseConfig in play-dev-mode-akka.actor.default-dispatcher-66 - Use `profile` instead of `driver`. The latter is deprecated since Slick 3.2 and will be removed.
+2021-03-31 09:24:40,689 [INFO] from play.api.http.EnabledFilters in play-dev-mode-akka.actor.default-dispatcher-66 - Enabled Filters (see <https://www.playframework.com/documentation/latest/Filters>):
+
+    play.filters.headers.SecurityHeadersFilter
+    play.filters.hosts.AllowedHostsFilter
+    filters.ExampleFilter
+
+2021-03-31 09:24:40,690 [INFO] from play.api.Play in play-dev-mode-akka.actor.default-dispatcher-66 - Application started (Dev) (no global state)

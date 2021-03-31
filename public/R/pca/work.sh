@@ -1,0 +1,1 @@
+E:\\R-3.6.3\\bin\\Rscript pca_plot.R -i C:/Users/Administrator/Desktop/ww/pca/pca.x.xls -si C:/Users/Administrator/Desktop/ww/pca/pca.sdev.xls -g C:/Users/Administrator/Desktop/ww/pca/group.txt -c TRUE -da x:2,4 -o C:/Users/Administrator/Desktop/ww/pca

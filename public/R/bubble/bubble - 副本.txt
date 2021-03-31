@@ -1,0 +1,50 @@
+description	group	value
+response to stimulus	BP	440
+response to light stimulus	BP	100	a
+response to abiotic stimulus	BP	221
+circadian rhythm	BP	35
+response to radiation	BP	101
+rhythmic process	BP	35
+response to chemical	BP	264
+response to wounding	BP	47
+response to jasmonic acid	BP	44
+response to auxin	BP	52
+regulation of jasmonic acid mediated signaling pathway	BP	16
+response to oxygen-containing compound	BP	166
+response to stress	BP	247
+response to hormone	BP	154
+auxin-activated signaling pathway	BP	23
+response to endogenous stimulus	BP	156
+jasmonic acid biosynthetic process	BP	11
+monocarboxylic acid metabolic process	BP	52
+response to far red light	BP	17
+jasmonic acid metabolic process	BP	12
+response to blue light	BP	24
+response to external stimulus	BP	146
+response to drug	BP	76
+response to temperature stimulus	BP	69
+response to organic substance	BP	182
+response to red or far red light	BP	32
+cellular response to auxin stimulus	BP	23
+response to inorganic substance	BP	105
+transcription corepressor activity	MF	12
+response to acid chemical	BP	120
+fatty acid metabolic process	BP	31
+monocarboxylic acid biosynthetic process	BP	30
+glucan catabolic process	BP	13
+plant-type cell wall	CC	39
+response to other organism	BP	109
+response to osmotic stress	BP	75
+response to karrikin	BP	23
+response to external biotic stimulus	BP	109
+response to antibiotic	BP	44
+photoperiodism	BP	18
+cell wall	CC	67
+response to biotic stimulus	BP	109
+oxidation-reduction process	BP	95
+external encapsulating structure	CC	67
+cellular response to red or far red light	BP	14
+response to cold	BP	48
+integral component of plasma membrane	CC	36
+cellular carbohydrate catabolic process	BP	15
+intrinsic component of plasma membrane	CC	48

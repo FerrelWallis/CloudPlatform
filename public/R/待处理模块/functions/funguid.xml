@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<tool id="funguid" name="FUNGulid" version="1.1" description="assigns functional information to OTUs">
+    <command>
+    "${SOFTDIR}/bin/Perl/bin/perl" "${SOFTDIR}/tools/functions/funguid.pl"  -i "$input" -t "$tax_input"  -o "$output"  
+    </command>
+    <inputs>                  
+        <param name="input" label="Input OTU table file in tabular foramt" type="data" format="tabular"/>
+        <param name="tax_input" label="Taxonomy assignment file(for example: OTU1   (tab_sep)   k__Fungi;p__Mucoromycota;c__norank;o__Mortierellales)" type="data" format="tabular"/>
+    </inputs>
+    <outputs>
+        <data format="tabular" name="output" label ="FUNGulid result file" filename="fungulid_result.txt"/> 
+    </outputs>
+</tool>

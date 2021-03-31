@@ -1,0 +1,1 @@
+Rscript network_data.R -i1 ./data/table1.txt -i2 ./data/table2.txt -o ./xls/result.xls

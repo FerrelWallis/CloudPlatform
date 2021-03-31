@@ -1,0 +1,14 @@
+# Title     : TODO
+# Objective : TODO
+# Created by: xuyj
+# Created on: 2020/10/14 0014
+pacman::p_load(lazyopt, dplyr, magrittr)
+opt <- matrix(
+  c("inputfile", "i", 2, "character", "inputfile path", "",
+    "outputfile", "o", 2, "character", "outputfile path", ""),
+  ncol = 6, byrow = TRUE) %>% lazyopt()
+opt %$%
+  read.delim(inputfile, check.names = FALSE, row.names = 1, header = TRUE) %>%
+  t() %>%
+  write.table(., file = opt$outputfile, sep = "\t", col.names = NA)
+

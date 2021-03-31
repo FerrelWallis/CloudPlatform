@@ -1,0 +1,12 @@
+id	group2
+KQGRcry	cryoconite
+TGLcry	cryoconite
+TGLmw	meltwater
+MGGQcry	cryoconite
+PL4mw	meltwater
+PL4snow	snow
+QTsnow1	snow
+QTsnow2	snow
+Qycry	cryoconite
+QYice	snow
+QYmw	meltwater

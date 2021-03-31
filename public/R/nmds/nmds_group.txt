@@ -1,0 +1,7 @@
+SampleID	Group
+13	A
+14	A
+15	B
+19	B
+20	C
+21	C

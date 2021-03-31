@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<tool id="faprotax" name="FAPROTAX" version="1.1" description="converting taxonomic microbial community profiles into putative functional profiles">
+    <command>
+    "${SOFTDIR}/bin/Perl/bin/perl" "${SOFTDIR}/tools/functions/faprotax.pl"  -i "$input" -t "$tax_input"  -o "$output"  -r "$output1"
+    </command>
+    <inputs>                  
+        <param name="input" label="Input OTU table file in tabular foramt" type="data" format="tabular"/>
+        <param name="tax_input" label="Taxonomy assignment file(for example: OTU1   (tab_sep)   d__Bacteria; p__Bacteroidetes; c__Cytophagia)" type="data" format="tabular"/>
+    </inputs>
+    <outputs>
+        <data format="tabular" name="output" label ="FAPROTAX result file" filename="func_table.txt"/> 
+        <data format="tabular" name="output1" label ="Report file" filename="report.txt"/> 
+    </outputs>
+</tool>

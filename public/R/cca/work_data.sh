@@ -1,0 +1,1 @@
+Rscript rda_cca_data.R -pi C:/Users/Administrator/Desktop/yun/rdacca_twopart/data/phylum.top10.xls -ei C:/Users/Administrator/Desktop/yun/rdacca_twopart/data/env1.log10.txt -o C:/Users/Administrator/Desktop/yun/rdacca_twopart/xls -m RDA

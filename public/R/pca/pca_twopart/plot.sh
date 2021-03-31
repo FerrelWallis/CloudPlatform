@@ -1,0 +1,2 @@
+Rscript pca_plot.R -i C:/Users/Administrator/Desktop/ss/xls/pca.x.xls -si C:/Users/Administrator/Desktop/ss/xls/pca.sdev.xls -o C:/Users/Administrator/Desktop/ss/pdf
+Rscript pca_plot.R -i C:/Users/Administrator/Desktop/ss/xls/pca.x.xls -si C:/Users/Administrator/Desktop/ss/xls/pca.sdev.xls -o C:/Users/Administrator/Desktop/ss/pdf -g C:/Users/Administrator/Desktop/ss/data/group.txt

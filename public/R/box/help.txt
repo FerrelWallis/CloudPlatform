@@ -1,0 +1,6 @@
+脚本参数  -rm  建议设置成12   默认是 5     次数越多，极端值就越少。
+详细参数见   -h
+所需包
+suppressMessages(library("ggplot2"))
+suppressMessages(library("dplyr"))
+

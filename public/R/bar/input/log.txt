@@ -1,0 +1,15 @@
+Start Time:2021-03-16 09:19:11
+
+错误信息：
+Error in terms.formula(formula, "Condition", data = data) : 
+  attempt to use zero-length variable name
+Calls: rda ... rda.formula -> ordiParseFormula -> terms -> terms.formula
+Execution halted
+
+
+Error in file(file, "rt") : cannot open the connection
+Calls: read.delim -> read.table -> file
+Execution halted
+
+
+运行失败！

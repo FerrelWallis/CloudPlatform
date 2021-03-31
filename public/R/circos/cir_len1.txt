@@ -1,0 +1,11 @@
+Chr	length	color
+chr1	32081097	red
+chr2	53007170	red
+chr3	30665222	red
+chr4	29345339	yellow
+chr5	49530009	yellow
+chr6	23635499	green
+chr7	22269071	green
+chr8	21027568	blue
+chr9	40395599	blue
+chrUn	43823408	blue

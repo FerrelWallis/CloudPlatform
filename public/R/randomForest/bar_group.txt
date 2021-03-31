@@ -1,0 +1,7 @@
+SampleID	Group
+13	Control
+14	Control
+15	Control
+19	Treatment
+20	Treatment
+21	Treatment
