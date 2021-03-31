@@ -90,6 +90,8 @@
                 @units.checkbox("2： ","","使用已有参考","refer")
                 @units.selector("","para","选择物种：","species")<br><br>
                 @units.fileupload("3：","para2","背景基因文件：","table2","golist.txt")<br>
+                @units.textinput("","div_table","","tablenum","","2")
+                @units.textinput("","div_group","","groupnum","","2")
                 <input type="button" value="提&nbsp;&nbsp;交" name="submit" class="btn btn-primary" onclick="dogo()">
             </form>
         </div>
@@ -108,7 +110,9 @@
                 loadHistory("@abbre");
                 getTaskName("GO","GO");
                 loadVideo("//13125180.s21v.faiusr.com/58/ABUIABA6GAAg08zS_QUo9trJ5AE.mp4","/assets/images/softpic/video/go_video.png")
-
+                $("#div_table").hide();
+                $("#div_group").hide();
+                $("#refer").val("FALSE");
                 $("#para").hide();
                 $("#instruction").append(instruction);
                 var speciesname = ["Agaricus_bisporus","Arabidopsis_thaliana","Beet","Candida_albicans","Chicken","Cow","Goat","Human_HG19","Human_HG38","Mouse","Rat","Rice","Sheep","Solanum_lycopersicum","Solanum_tuberosum","Soybean","watermelon","White_pear","Zebrafish"];
@@ -227,7 +231,7 @@
                                     layer.close(index);
                                     var form1 = new FormData($("#GO")[0]);
                                     $.ajax({
-                                        url: "/CloudPlatform/SoftTool/runGo?types=go&refer="+ref+"&table="+table,
+                                        url: "/CloudPlatform/SoftTool/runSoft?abbre=@abbre&sname=GO富集分析",
                                         type: "post",
                                         processData: false,
                                         contentType: false,
@@ -256,6 +260,7 @@
             var ref="FALSE";
 
             function curtable(param) {
+                $("#tablenum").val(param);
                 table=param;
             }
 
@@ -264,11 +269,11 @@
                 if (isSelected === true) {
                     $("#para").show();
                     $("#para2").hide();
-                    ref="TRUE";
+                    $("#refer").val("TRUE");
                 } else {
                     $("#para").hide();
                     $("#para2").show();
-                    ref="FALSE";
+                    $("#refer").val("FALSE");
                 }
             });
 

@@ -53,25 +53,6 @@ POST          /CloudPlatform/SoftTool/getRFData                      controllers
 POST          /CloudPlatform/SoftTool/redrawRF                       controllers.RClusterController.redrawRF(taskname:String)
 
 
-#Function
-POST          /CloudPlatform/SoftTool/runGo                          controllers.RFunctionController.doGo(types:String,refer:String,table:String)
-POST          /CloudPlatform/SoftTool/getGOData                      controllers.RFunctionController.readGoData(types:String,taskname:String)
-POST          /CloudPlatform/SoftTool/redrawGO                       controllers.RFunctionController.redrawGO(taskname:String,types:String)
-
-POST          /CloudPlatform/SoftTool/runTax4Fun                     controllers.RFunctionController.doTax4Fun
-POST          /CloudPlatform/SoftTool/getTAX4Fun                     controllers.RFunctionController.readTax4Fun(taskname:String)
-
-POST          /CloudPlatform/SoftTool/runLefse                       controllers.RFunctionController.doLefse
-POST          /CloudPlatform/SoftTool/getLefse                       controllers.RFunctionController.readLefse(taskname:String)
-
-POST          /CloudPlatform/SoftTool/runLefse2                      controllers.RFunctionController.doLefse2
-POST          /CloudPlatform/SoftTool/getLefse2                      controllers.RFunctionController.readLefse2(taskname:String)
-POST          /CloudPlatform/SoftTool/redrawLefRes                   controllers.RFunctionController.redrawLefRes(taskname:String)
-POST          /CloudPlatform/SoftTool/redrawLefCla                   controllers.RFunctionController.redrawLefCla(taskname:String)
-POST          /CloudPlatform/SoftTool/redrawLefFea                   controllers.RFunctionController.redrawLefFea(taskname:String)
-
-
-
 #Paint
 POST          /CloudPlatform/SoftTool/runBoxplot                     controllers.RPaintController.doBoxplot
 POST          /CloudPlatform/SoftTool/getBoxData                     controllers.RPaintController.readBoxData(taskname:String)

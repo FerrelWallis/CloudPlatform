@@ -161,6 +161,16 @@
                             var r=parseInt(i)+1;
                             let row=line[i].trim().split('\t');
                             var name=[];
+                            if(row.length >= 200){
+                                flagtable = flagtable&&false;
+                                swal({
+                                    title: "OTU分度表错误",
+                                    text: "OTU数目大于200，请先进行差异筛选后再进行分析！",
+                                    type: "warning",
+                                    confirmButtonText: "确认"
+                                });
+                                resolve(false);
+                            }
                             if(row.length!=length){
                                 flagtable=flagtable&&false;
                                 swal({

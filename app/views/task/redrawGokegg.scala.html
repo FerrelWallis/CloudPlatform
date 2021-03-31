@@ -179,7 +179,7 @@
                     checkupdate(updatetime, "@row.subtime");
                     $("#GO").show();
                     $.ajax({
-                        url:"/CloudPlatform/SoftTool/getGOData?types=go&taskname=@row.taskname",
+                        url:"/CloudPlatform/SoftTool/getParams?taskname=@row.taskname&abbre=@row.sabbrename",
                         type:"post",
                         success:function (data) {
                             $.each(data.pics,function (i,v) {
@@ -236,12 +236,13 @@
                     $("#color").val(c.join(":"));
                     var form1 = new FormData($("#gostack")[0]);
                     $.ajax({
-                        url: "/CloudPlatform/SoftTool/redrawGO?types=go&taskname=@row.taskname",
+                        url: "/CloudPlatform/SoftTool/reDrawRun?taskname=@row.taskname&abbre=@row.sabbrename",
                         type: "post",
                         processData: false,
                         contentType: false,
                         data: form1,
                         success: function (data) {
+                            console.log(data);
                             if(data.valid=="false") {
                                 layer.close(index);
                                 swal({
@@ -252,9 +253,6 @@
                                 });
                             } else {
                                 $("#redraw_pic1").attr("src","/CloudPlatform/pic?path="+data.pics+"&num="+Math.random());
-                                // $.each(data.groupcolor,function (i,v) {
-                                //     $("#GO").formValidation('addField','color'+i, colorValidators);
-                                // });
                                 for(var i=0;i<colornum;i++)
                                     $("#GO").formValidation('removeField','color'+i);
                                 $("#mycolor").html();

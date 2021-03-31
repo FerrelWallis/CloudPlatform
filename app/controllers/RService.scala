@@ -8,7 +8,7 @@ import javax.inject.Inject
 import org.apache.commons.io.FileUtils
 import play.api.data.Form
 import play.api.data.Forms._
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.{AbstractController, Action, AnyContent, ControllerComponents, Headers, Result}
 import utils.{CompressUtil, ExecCommand, MyStringTool, Utils}
 
@@ -41,6 +41,9 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
         case "FAP" => tools.faprotax.Run(dutyDir, params)
         case "TAX" => tools.tax4fun.Run(dutyDir, params)
         case "PCO" => tools.pca.Run(dutyDir, params)
+        case "LF2" => tools.lefse2.Run(dutyDir, params)
+        case "LEF" => tools.lefse.Run(dutyDir, params)
+        case x if x == "GO" || x == "KEGG" => tools.gokegg.Run(dutyDir, params, abbre)
       }
       val msg = if(result._1 == 1) {
         creatZip(dutyDir)
@@ -57,11 +60,17 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
   def getParams(taskname:String,abbre: String) = Action { implicit request =>
     val id=request.session.get("userId").get
     val dutyDir=Utils.path+"/users/"+id+"/"+taskname
-    val elements=jsonToMap(Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf).head.elements)
+    val ele = Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf).head.elements
+    val elements =
+      if(ele != "") jsonToMap(Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf).head.elements)
+      else Map(""->"")
     var params = abbre match {
       case "PCA" => tools.pca.GetParams(dutyDir, elements)
       case "ADB" => tools.ADB.GetParams(dutyDir, elements)
-      case "TAX" => tools.tax4fun.GetParams(dutyDir, elements)
+      case "TAX" => tools.tax4fun.GetParams(dutyDir)
+      case "LF2" => tools.lefse2.GetParams(dutyDir, elements)
+      case "LEF" => tools.lefse.GetParams(dutyDir)
+      case x if x == "KEGG" || x == "GO" => tools.gokegg.GetParams(dutyDir, elements, abbre)
     }
     val pics=getReDrawPics(dutyDir)
     if(params.toString().indexOf("\"pics\"") < 0) params = params ++ Json.obj("pics" -> pics)
@@ -73,17 +82,25 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
     val id=request.session.get("userId").get
     val dutyDir=Utils.path+"/users/"+id+"/"+taskname
     val oldEle = jsonToMap(Await.result(dutydao.getSingleDuty(id,taskname),Duration.Inf).head.elements)
-    val result = abbre match {
+    var result = abbre match {
       case "PCA" => tools.pca.ReDraw(dutyDir, newEle)
       case "ADB" => tools.ADB.ReDraw(dutyDir, newEle, oldEle)
+      case "LF2_Res" => tools.lefse2.ReDrawRes(dutyDir, newEle, oldEle)
+      case "LF2_Cla" => tools.lefse2.ReDrawCla(dutyDir, newEle, oldEle)
+      case "LF2_Fea" => tools.lefse2.ReDrawFea(dutyDir, newEle, oldEle)
+      case x if x == "KEGG" || x == "GO" => tools.gokegg.ReDraw(dutyDir, newEle, abbre)
     }
-    if(result._1 == "true") {
+    val valid = result.value("valid").toString()
+    val elements = result.value("elements").toString()
+    if(valid == "true") {
       creatZip(dutyDir)
-      Await.result(dutydao.updateElements(id,taskname,result._3),Duration.Inf)
+      Await.result(dutydao.updateElements(id,taskname,elements),Duration.Inf)
     }
-    var json = Json.obj("valid"->result._1, "pics"->result._2)
-    Ok(json)
+    result = result.-("elements")
+    Ok(result)
   }
+
+
 
 
   //创建用户任务文件夹和结果文件夹

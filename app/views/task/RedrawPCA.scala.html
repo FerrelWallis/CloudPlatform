@@ -309,6 +309,7 @@
                             contentType: false,
                             data: form1,
                             success: function (data) {
+                                console.log(data);
                                 $("#redraw_pic").attr("src","/CloudPlatform/pic?path="+data.pics+"&num="+Math.random());
                                 layer.close(index);
                             }

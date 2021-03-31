@@ -170,7 +170,7 @@
                     checkupdate(updatetime, "@row.subtime");
                     $("#KO").show();
                     $.ajax({
-                        url:"/CloudPlatform/SoftTool/getGOData?types=ko&taskname=@row.taskname",
+                        url:"/CloudPlatform/SoftTool/getParams?taskname=@row.taskname&abbre=@row.sabbrename",
                         type:"post",
                         success:function (data) {
                             $.each(data.pics,function (i,v) {
@@ -198,8 +198,6 @@
                                             $("#KO").formValidation("revalidateField", "color"+i);
                                         });
                             });
-                            // $(".evo-cp-wrap").css("float", "left");
-                            // $(".evo-cp-wrap").css("width", "180px");
                             $(".evo-cp-wrap").css("float", "left");
                             $(".evo-cp-wrap").css("width", "calc(100% - 34px)");
                         }
@@ -229,16 +227,13 @@
                     $("#color").val(c.join(":"));
                     var form1 = new FormData($("#kododge")[0]);
                     $.ajax({
-                        url: "/CloudPlatform/SoftTool/redrawGO?types=ko&taskname=@row.taskname",
+                        url: "/CloudPlatform/SoftTool/reDrawRun?taskname=@row.taskname&abbre=@row.sabbrename",
                         type: "post",
                         processData: false,
                         contentType: false,
                         data: form1,
                         success: function (data) {
                             $("#redraw_pic1").attr("src","/CloudPlatform/pic?path="+data.pics+"&num="+Math.random());
-                            // $.each(data.groupcolor,function (i,v) {
-                            //     $("#color"+i).colorpicker("val", v);
-                            // });
                             for(var i=0;i<colornum;i++)
                                 $("#KO").formValidation('removeField','color'+i);
                             colornum=data.groupname.length;
@@ -256,8 +251,6 @@
                                             $("#KO").formValidation("revalidateField", "color"+i);
                                         });
                             });
-                            // $(".evo-cp-wrap").css("float", "left");
-                            // $(".evo-cp-wrap").css("width", "180px");
                             $(".evo-cp-wrap").css("float", "left");
                             $(".evo-cp-wrap").css("width", "calc(100% - 34px)");
                             layer.close(index);

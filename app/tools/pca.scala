@@ -183,7 +183,7 @@ object pca extends MyFile with MyStringTool{
     } else {
       valid = "false"
     }
-    (valid, pics, newelements)
+    Json.obj("valid"->valid, "pics"->pics, "elements"->newelements)
   }
 
 

@@ -72,7 +72,7 @@ object tax4fun extends MyFile with MyStringTool with MyMapTool{
     (state, msg, "Tax4Fun功能预测", file1.filename, param, "")
   }
 
-  def GetParams(dutyDir: String, elements: Map[String, String])(implicit request: Request[AnyContent]) = {
+  def GetParams(dutyDir: String)(implicit request: Request[AnyContent]) = {
     val pics= (dutyDir+"/out/pca.png",dutyDir+"/out/kegg_L1.png",dutyDir+"/out/kegg_L2.png",dutyDir+"/out/kegg_L3.png")
 
     Json.obj("pics"->pics)

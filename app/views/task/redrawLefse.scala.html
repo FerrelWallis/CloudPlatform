@@ -144,7 +144,7 @@
                     checkupdate(updatetime, "@row.subtime");
                     $("#GO").show();
                     $.ajax({
-                        url:"/CloudPlatform/SoftTool/getLefse?taskname=@row.taskname",
+                        url:"/CloudPlatform/SoftTool/getParams?taskname=@row.taskname&abbre=@row.sabbrename",
                         type:"post",
                         success:function (data) {
                             if(data.lefse_LDA=="false") {

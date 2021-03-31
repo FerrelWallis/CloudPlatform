@@ -731,7 +731,7 @@
                     checkupdate(updatetime, "@row.subtime");
                     $("#GO").show();
                     $.ajax({
-                        url:"/CloudPlatform/SoftTool/getLefse2?taskname=@row.taskname",
+                        url:"/CloudPlatform/SoftTool/getParams?taskname=@row.taskname&abbre=@row.sabbrename",
                         type:"post",
                         success:function (data) {
                             if(data.lefse_LDA=="false") {
@@ -739,7 +739,7 @@
                                 $(".LDA_nopic").show();
                                 lefse_LDA=false;
                             }else lefse_LDA=true;
-                            $.each(data.pdfUrl,function (i,v) {
+                            $.each(data.pics,function (i,v) {
                                 var num=i+1;
                                 pdfurl.push(v);
                                 $("#pdf"+num).attr("src","/CloudPlatform/Utils/viewer?file=/CloudPlatform/pdf&fileUrl="+v+"&num="+Math.random());
@@ -790,7 +790,7 @@
                     });
                     var form1 = new FormData($("#res")[0]);
                     $.ajax({
-                        url: "/CloudPlatform/SoftTool/redrawLefRes?taskname=@row.taskname",
+                        url: "/CloudPlatform/SoftTool/reDrawRun?taskname=@row.taskname&abbre=@row.sabbrename"+"_Res",
                         type: "post",
                         processData: false,
                         contentType: false,
@@ -824,7 +824,7 @@
                     });
                     var form1 = new FormData($("#cla")[0]);
                     $.ajax({
-                        url: "/CloudPlatform/SoftTool/redrawLefCla?taskname=@row.taskname",
+                        url: "/CloudPlatform/SoftTool/reDrawRun?taskname=@row.taskname&abbre=@row.sabbrename"+"_Cla",
                         type: "post",
                         processData: false,
                         contentType: false,
@@ -859,7 +859,7 @@
                     });
                     var form1 = new FormData($("#fea")[0]);
                     $.ajax({
-                        url: "/CloudPlatform/SoftTool/redrawLefFea?taskname=@row.taskname",
+                        url: "/CloudPlatform/SoftTool/reDrawRun?taskname=@row.taskname&abbre=@row.sabbrename"+"_Fea",
                         type: "post",
                         processData: false,
                         contentType: false,

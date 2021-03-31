@@ -128,7 +128,7 @@ object ADB extends MyFile with MyStringTool with MyMapTool{
     } else {
       valid = "false"
     }
-    (valid, pics, elejson)
+    Json.obj("valid"->valid, "pics"->pics, "elements"->elejson)
   }
 
 
