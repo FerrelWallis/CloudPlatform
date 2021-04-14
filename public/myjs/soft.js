@@ -148,6 +148,7 @@ function checkrunning(abbre) {
             else running=false;
         }
     });
+    return running;
 }
 
 function removeul(){
@@ -167,3 +168,14 @@ $(".file").fileinput({
     showRemove:true,
     browseLabel: "选择文件"
 });
+
+function switchRunningTab() {
+    $("#his_tab1").addClass("active");
+    $("#out_tab1").removeClass("active");
+    $("#ins_tab1").removeClass("active");
+    $("#faq_tab1").removeClass("active");
+    $("#history").addClass("active").addClass("in");
+    $("#example").removeClass("active");
+    $("#instruction").removeClass("active");
+    $("#faq").removeClass("active");
+}

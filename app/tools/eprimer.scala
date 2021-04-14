@@ -16,7 +16,7 @@ object eprimer extends MyFile with MyStringTool with MyMapTool{
   
   def Run(dutyDir: String, params: Map[String, String])(implicit request: Request[MultipartFormData[TemporaryFile]]) = {
     var state = 1
-    var msg = "eprimer Success!"
+    var msg = "Run Success!"
 
     val seqFile=new File(dutyDir,"seq.txt")
     val mishybFile=new File(dutyDir,"mishyb.txt")

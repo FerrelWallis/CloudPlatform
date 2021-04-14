@@ -42,6 +42,7 @@
                 @units.fileupload("1： ", "mydiv1", "上传矩阵文件：","table1","bar_table.txt")
                 @units.checkbox("2： ","","是否分组绘图","isgroup")<br>
                 @units.fileupload("","group","上传分组文件：","table2","bar_group.txt")<br>
+                @units.textinput("","div_isgroup","","isgrouptext","","FALSE")
                 <div class="panel panel-default">
                     <div class="panel-heading" data-toggle="collapse" href="#collapseOne">
                         <h4 class="panel-title">
@@ -87,6 +88,7 @@
                 getTaskName("BAR","BAR");
                 loadVideo("//13125180.s21v.faiusr.com/58/ABUIABA6GAAgqdDmggYooZiTygE.mp4","/assets/images/softpic/video/bar_video.png")
                 $("#group").hide();
+                $("#div_isgroup").hide();
                 $("#instruction").append(instruction);
                 var tf = ["TRUE","FALSE"];
                 var tfname = ["yes","no"];
@@ -120,7 +122,7 @@
                                         layer.close(index);
                                         var form1 = new FormData($("#BAR")[0]);
                                         $.ajax({
-                                            url: "/CloudPlatform/SoftTool/runBar?isgroup=" + $("#isgroup").prop("checked") ,
+                                            url: "/CloudPlatform/SoftTool/runSoft?abbre=@abbre&sname=柱状图",
                                             type: "post",
                                             processData: false,
                                             contentType: false,
@@ -128,12 +130,7 @@
                                             success: function (data) {
                                                 removeul();
                                                 loadHistory("@abbre");
-                                                $("#his_tab1").addClass("active");
-                                                $("#out_tab1").removeClass("active");
-                                                $("#ins_tab1").removeClass("active");
-                                                $("#history").addClass("active").addClass("in");
-                                                $("#example").removeClass("active");
-                                                $("#instruction").removeClass("active");
+                                                switchRunningTab();
                                                 getTaskName("BAR","BAR");
                                             }
                                         });
@@ -150,8 +147,10 @@
                 var isSelected = this.checked;
                 if (isSelected === true) {
                     $("#group").show();
+                    $("#isgrouptext").val("TRUE");
                 } else {
                     $("#group").hide();
+                    $("#isgrouptext").val("FALSE");
                 }
             });
 

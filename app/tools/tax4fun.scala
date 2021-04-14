@@ -15,7 +15,7 @@ import scala.concurrent.duration.Duration
 object tax4fun extends MyFile with MyStringTool with MyMapTool{
   def Run(dutyDir: String, params: Map[String, String])(implicit request: Request[MultipartFormData[TemporaryFile]]) = {
     var state = 1
-    var msg = "ADB Success!"
+    var msg = "Run Success!"
     
     val tableFile=new File(dutyDir,"table.txt")
     val otuFile=new File(dutyDir,"otu_taxa_table.format.txt")

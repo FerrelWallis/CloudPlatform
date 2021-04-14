@@ -1,1 +1,0 @@
-Rscript rda_cca_plot.R -pci C:/Users/Administrator/Desktop/yun/rdacca_twopart/xls/percent.xls -sai C:/Users/Administrator/Desktop/yun/rdacca_twopart/xls/samples.xls -spi C:/Users/Administrator/Desktop/yun/rdacca_twopart/xls/species.xls -ei C:/Users/Administrator/Desktop/yun/rdacca_twopart/xls/envi.xls -o C:/Users/Administrator/Desktop/yun/rdacca_twopart/png

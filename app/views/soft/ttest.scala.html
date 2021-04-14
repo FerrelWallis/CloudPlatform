@@ -117,7 +117,7 @@
                                         layer.close(index);
                                         var form1 = new FormData($("#TC")[0]);
                                         $.ajax({
-                                            url: "/CloudPlatform/SoftTool/runTTest",
+                                            url: "/CloudPlatform/SoftTool/runSoft?abbre=@abbre&sname=T检验",
                                             type: "post",
                                             processData: false,
                                             contentType: false,
@@ -125,12 +125,7 @@
                                             success: function (data) {
                                                 removeul();
                                                 loadHistory("@abbre");
-                                                $("#his_tab1").addClass("active");
-                                                $("#out_tab1").removeClass("active");
-                                                $("#ins_tab1").removeClass("active");
-                                                $("#history").addClass("active").addClass("in");
-                                                $("#example").removeClass("active");
-                                                $("#instruction").removeClass("active");
+                                                switchRunningTab();
                                                 getTaskName("TC","TC");
                                             }
                                         });

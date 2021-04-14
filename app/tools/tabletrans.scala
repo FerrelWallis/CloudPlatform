@@ -16,7 +16,7 @@ import scala.concurrent.duration.Duration
 object tabletrans extends MyFile with MyStringTool with MyMapTool{
   def Run(dutyDir: String)(implicit request: Request[MultipartFormData[TemporaryFile]]) = {
     var state = 1
-    var msg = "table trans Success!"
+    var msg = "Run Success!"
 
     val file1=request.body.file("table1").get
     val tableFile=new File(dutyDir,file1.filename)

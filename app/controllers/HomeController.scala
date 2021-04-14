@@ -13,14 +13,6 @@ import play.api.mvc._
 @Singleton
 class HomeController @Inject()(cc: ControllerComponents) extends AbstractController(cc) {
 
-  /**
-   * Create an Action to render an HTML page with a welcome message.
-   * The configuration in the `routes` file means that this method
-   * will be called when the application receives a `GET` request with
-   * a path of `/`.
-   */
-
-
   def index = Action {implicit request=>
     Redirect(routes.HomeController.home())
   }
@@ -49,6 +41,10 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
     Ok(views.html.panels.news())
   }
 
+  def faq=Action{implicit request=>
+    Ok(views.html.panels.faq())
+  }
+
   def manager=Action{implicit request=>
     Ok(views.html.panels.manager())
   }
@@ -61,16 +57,7 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
     Ok(views.html.panels.feedbak())
   }
 
-
-
-
-
-
-
-
   //test below
-
-  //taskname
   def viewer= Action {implicit request=>
    Ok(views.html.service.pdfviewer())
   }
@@ -79,38 +66,6 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
     Ok(views.html.test.header())
   }
 
-  def testlog= Action {implicit request=>
-    Ok(views.html.test.allsoft())
-  }
-
-  def testSlider=Action{implicit request=>
-    Ok(views.html.test.myslider())
-  }
-
-  def testindex=Action{implicit request=>
-    Ok(views.html.test.testindex())
-  }
-
-  def testperson=Action{implicit request=>
-    Ok(views.html.test.personal())
-  }
-
-  def testtable=Action{implicit request=>
-    Ok(views.html.test.testTable())
-
-  }
-
-  def SendPdf(file: File,headers:Headers): Result = {
-    val lastModifiedStr = file.lastModified().toString
-    val MimeType = "pdf"
-    val byteArray = Files.readAllBytes(file.toPath)
-    val ifModifiedSinceStr = headers.get(IF_MODIFIED_SINCE)
-    if (ifModifiedSinceStr.isDefined && ifModifiedSinceStr.get == lastModifiedStr) {
-      NotModified
-    } else {
-      Ok(byteArray).as(MimeType).withHeaders(LAST_MODIFIED -> file.lastModified().toString)
-    }
-  }
 
 
 }

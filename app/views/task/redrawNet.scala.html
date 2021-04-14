@@ -188,7 +188,7 @@
 
             function loading(){
                 $.ajax({
-                    url:"/CloudPlatform/SoftTool/getNetData?taskname=@row.taskname",
+                    url:"/CloudPlatform/SoftTool/getParams?taskname=@row.taskname&abbre=@row.sabbrename",
                     type:"post",
                     success:function (data) {
                         cy = window.cy = cytoscape({
@@ -288,7 +288,7 @@
                     });
                     var form1 = new FormData($("#Net")[0]);
                     $.ajax({
-                        url: "/CloudPlatform/SoftTool/redrawNet?taskname=@row.taskname",
+                        url: "/CloudPlatform/SoftTool/reDrawRun?taskname=@row.taskname&abbre=@row.sabbrename",
                         type: "post",
                         processData: false,
                         contentType: false,

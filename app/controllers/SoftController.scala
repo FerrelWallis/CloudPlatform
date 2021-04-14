@@ -62,6 +62,8 @@ class SoftController @Inject()(cc: ControllerComponents,softdao:softDao,userdao:
       case "RF" => views.html.soft.randomForest(abbre)
       case "SCA" => views.html.soft.scatterplots(abbre)
       case "ADB" => views.html.soft.boxDiversity(abbre)
+      case "EDR" => views.html.soft.edger(abbre)
+      case "SNE" => views.html.soft.tsne(abbre)
     })
   }
 
@@ -89,7 +91,7 @@ class SoftController @Inject()(cc: ControllerComponents,softdao:softDao,userdao:
         case "RSQ" => views.html.task.redrawDataOnly(row.head)
         case "GTF" => views.html.task.redrawDataOnly(row.head)
         case "PMR" => views.html.task.redrawDataOnly(row.head)
-        case "VOC" => views.html.task.redrawVolcano(row.head)
+        case x if x == "VOC" || x == "EDR" => views.html.task.redrawVolcano(row.head)
         case "MHT" => views.html.task.redrawManhattan(row.head)
         case "TRM" => views.html.task.redrawTreemap(row.head)
         case "VIO" => views.html.task.redrawViolin(row.head)
@@ -119,183 +121,58 @@ class SoftController @Inject()(cc: ControllerComponents,softdao:softDao,userdao:
         case "RF" => views.html.task.redrawRandomForest(row.head)
         case "SCA" => views.html.task.redrawScatter(row.head)
         case "ADB" => views.html.task.redrawBoxDiveristy(row.head)
+        case "SNE" => views.html.task.redrawTSNE(row.head)
       })
     }else{
       Redirect(routes.HomeController.mytask())
     }
   }
 
-  def getlatestSix = Action { implicit request =>
-    val table=Await.result(softdao.getLastestSix,Duration.Inf)
-    val row = table.map{x=>
-      val pics=s"<a onclick=checklog('/CloudPlatform/SoftPage/"+x.abbrename+"')><div class='mws-report-icon mws-ic "+x.abbrename+"'></div></a>"
-      val descrip=s"<a><h4>"+x.sname+"</h4><p style='padding-right: 10px'>"+x.descreption+"</p></a>"
-      val likeclass=
-        if(request.session.get("userId").isEmpty)
-          "fa fa-lg  fa-star-o"
-        else {
-          val userlike=Await.result(userdao.getLike(request.session.get("userId").get),Duration.Inf)
-          if(userlike.split("/").contains(Integer.toString(x.id))) "fa fa-lg  fa-star yellow-icon"
-          else "fa fa-lg  fa-star-o"
-        }
-      val like= s"<i class='"+likeclass+"' onmouseover='mover($(this))' onmouseout='mout($(this))' onclick='collect($(this),"+x.id+")'></i>"
-      val onclick="<div style='height: 115px' onclick=checklog('/CloudPlatform/SoftPage/"+x.abbrename+"')>" + descrip + "</div>"
-
-      Json.obj("description"->onclick,"pics"->pics,"like"->like)
+  def getSix(types:String) = Action { implicit request =>
+    val table = if(types == "late") Await.result(softdao.getLastestSix,Duration.Inf)
+    else Await.result(softdao.gethotestSix,Duration.Inf)
+    val rows=table.map{ x =>
+      Json.obj("abbrename"->x.abbrename, "id"->x.id, "sname"->x.sname, "descreption"->x.descreption)
     }
-    Ok(Json.obj("rows"->row))
-  }
-
-  def gethotestSix = Action { implicit request =>
-    val table=Await.result(softdao.gethotestSix,Duration.Inf)
-    val row = table.map{x=>
-      val pics=s"<a onclick=checklog('/CloudPlatform/SoftPage/"+x.abbrename+"')><div class='mws-report-icon mws-ic "+x.abbrename+"'></div></a>"
-      val descrip=s"<a><h4>"+x.sname+"</h4><p style='padding-right: 10px'>"+x.descreption+"</p></a>"
-      val likeclass=
-        if(request.session.get("userId").isEmpty)
-          "fa fa-lg  fa-star-o"
-        else {
-          val userlike=Await.result(userdao.getLike(request.session.get("userId").get),Duration.Inf)
-
-          if(userlike.split("/").contains(Integer.toString(x.id))) "fa fa-lg  fa-star yellow-icon"
-          else "fa fa-lg  fa-star-o"
-        }
-      val like= s"<i class='"+likeclass+"' onmouseover='mover($(this))' onmouseout='mout($(this))' onclick='collect($(this),"+x.id+")'></i>"
-      val onclick="<div style='height: 115px' onclick=checklog('/CloudPlatform/SoftPage/"+x.abbrename+"')>" + descrip + "</div>"
-      Json.obj("description"->onclick,"pics"->pics,"like"->like)
-    }
-    Ok(Json.obj("rows"->row))
-  }
-
-  def getAllSoft = Action { implicit request =>
-    val row = TableUtils.SoftsMap.map{x=>
-      val status=if(x.status==1) "" else "waiting"
-      val click=
-        if(status=="") "onclick=checklog('/CloudPlatform/SoftPage/"+x.abbrename+"')"
-        else "onclick=waiting()"
-      val pics=s"<a " + click + "><div class='mws-report-icon mws-ic "+x.abbrename+"'></div></a>"
-      val descrip=s"<a><h4>"+x.sname+"</h4><p style='padding-right: 10px'>"+x.descreption+"</p></a>"
-      val likeclass=
-        if(request.session.get("userId").isEmpty)
-          "fa fa-lg fa-star-o"
-        else {
-          val userlike=Await.result(userdao.getLike(request.session.get("userId").get),Duration.Inf)
-          if(userlike.split("/").contains(Integer.toString(x.id))) "fa fa-lg fa-star yellow-icon"
-          else "fa fa-lg fa-star-o"
-        }
-      val like= s"<i class='"+likeclass+"' onmouseover='mover($(this))' onmouseout='mout($(this))' onclick='collect($(this),"+x.id+")'></i>"
-      val onclick="<div style='height: 115px' " + click + ">" + descrip + "</div>"
-
-      Json.obj("description"-> onclick,"pics"->pics,"like"->like,"status"->status)
-    }
-    Ok(Json.obj("rows"->row))
+    val ulike =
+      if(request.session.get("userId").isEmpty) ""
+      else Await.result(userdao.getLike(request.session.get("userId").get),Duration.Inf)
+    Ok(Json.obj("rows"->rows, "userlike"->ulike))
   }
 
   def getTypes(types:String)= Action { implicit request =>
-    val row = TableUtils.SoftsMap.filter(_.types==types).map{x=>
-      val status=if(x.status==1) "" else "waiting"
-      val click=
-        if(status=="") "onclick=checklog('/CloudPlatform/SoftPage/"+x.abbrename+"')"
-        else "onclick=waiting()"
-      val pics=s"<a " + click + "><div class='mws-report-icon mws-ic "+x.abbrename+"'></div></a>"
-      val descrip=s"<a><h4>"+x.sname+"</h4><p style='padding-right: 10px'>"+x.descreption+"</p></a>"
-      val likeclass=
-        if(request.session.get("userId").isEmpty)
-          "fa fa-lg  fa-star-o"
-        else {
-          val userlike=Await.result(userdao.getLike(request.session.get("userId").get),Duration.Inf)
-          if(userlike.split("/").contains(Integer.toString(x.id))) "fa fa-lg  fa-star yellow-icon"
-          else "fa fa-lg  fa-star-o"
-        }
-      val like= s"<i class='"+likeclass+"' onmouseover='mover($(this))' onmouseout='mout($(this))' onclick='collect($(this),"+x.id+")'></i>"
-      val onclick="<div style='height: 115px' " + click + ">" + descrip + "</div>"
-
-      Json.obj("description"-> onclick,"pics"->pics,"like"->like,"status"->status)
+    val ulike =
+      if(request.session.get("userId").isEmpty) ""
+      else Await.result(userdao.getLike(request.session.get("userId").get),Duration.Inf)
+    val table =
+      if(types == "all") TableUtils.SoftsMap
+      else if(types == "like") {
+        val mylike=Await.result(userdao.getLike(request.session.get("userId").get),Duration.Inf).split("/").filter(_.trim!="")
+        TableUtils.SoftsMap.filter(x => mylike.contains(String.valueOf(x.id)))
+      } else TableUtils.SoftsMap.filter(_.types==types)
+    val row = table.map{x=>
+      Json.obj("abbrename"->x.abbrename, "id"->x.id, "sname"->x.sname, "descreption"->x.descreption, "status"->x.status)
     }
-    Ok(Json.obj("rows"->row))
+    Ok(Json.obj("rows"->row, "userlike"->ulike))
   }
 
-  def getLike= Action { implicit request =>
-    val mylike=Await.result(userdao.getLike(request.session.get("userId").get),Duration.Inf).split("/").filter(_.trim!="")
-    val row = TableUtils.SoftsMap.filter(x => mylike.contains(String.valueOf(x.id))).map{ x=>
-      val status=if(x.status==1) "" else "waiting"
-      val click=
-        if(status=="") "onclick=checklog('/CloudPlatform/SoftPage/"+x.abbrename+"')"
-        else "onclick=waiting()"
-      val pics=s"<a " + click + "><div class='mws-report-icon mws-ic "+x.abbrename+"'></div></a>"
-      val descrip=s"<a><h4>"+x.sname+"</h4><p style='padding-right: 10px'>"+x.descreption+"</p></a>"
-      val likeclass=
-        if(request.session.get("userId").isEmpty)
-          "fa fa-lg  fa-star-o"
-        else {
-          val userlike=Await.result(userdao.getLike(request.session.get("userId").get),Duration.Inf)
-          if(userlike.split("/").contains(Integer.toString(x.id))) "fa fa-lg  fa-star yellow-icon"
-          else "fa fa-lg  fa-star-o"
-        }
-      val like= s"<i class='"+likeclass+"' onmouseover='mover($(this))' onmouseout='mout($(this))' onclick='collect($(this),"+x.id+")'></i>"
-      val onclick="<div style='height: 115px' " + click + ">" + descrip + "</div>"
-
-      Json.obj("description"-> onclick,"pics"->pics,"like"->like,"status"->status)
+  def getSearch(search:String)= Action { implicit request =>
+    val ulike =
+      if(request.session.get("userId").isEmpty) ""
+      else Await.result(userdao.getLike(request.session.get("userId").get),Duration.Inf)
+    val table = if(search == "") TableUtils.SoftsMap else TableUtils.SoftsMap.filter(y=> y.sname.toLowerCase.contains(search.toLowerCase) || y.descreption.toLowerCase.contains(search.toLowerCase))
+    val row =  table.map{x =>
+      Json.obj("abbrename"->x.abbrename, "id"->x.id, "sname"->x.sname, "descreption"->x.descreption, "status"->x.status)
     }
-    Ok(Json.obj("rows"->row))
+    Ok(Json.obj("rows"->row, "userlike"->ulike))
   }
 
   def getLikebrief= Action { implicit request =>
     val mylike=Await.result(userdao.getLike(request.session.get("userId").get),Duration.Inf).split("/").filter(_.trim!="")
     val row = TableUtils.SoftsMap.filter(x => mylike.contains(String.valueOf(x.id))).map{ x=>
-      val pics=s"<a href='/CloudPlatform/SoftPage/"+x.abbrename+"'><div class='mws-report-icon mws-ic "+x.abbrename+"'></div></a>"
-      val descrip=s"<a><h4>"+x.sname+"</h4></a>"
-      val likeclass=
-        if(request.session.get("userId").isEmpty)
-          "fa fa-lg  fa-star-o"
-        else {
-          val userlike=Await.result(userdao.getLike(request.session.get("userId").get),Duration.Inf)
-          if(userlike.split("/").contains(Integer.toString(x.id))) "fa fa-lg  fa-star yellow-icon"
-          else "fa fa-lg  fa-star-o"
-        }
-      val like= s"<i class='"+likeclass+"' onmouseover='mover($(this))' onmouseout='mout($(this))' onclick='collect($(this),"+x.id+")'></i>"
-      val onclick="<div style='height: 115px' onclick=checklog('/CloudPlatform/SoftPage/"+x.abbrename+"')>" + descrip + "</div>"
-      Json.obj("description"-> onclick,"pics"->pics,"like"->like)
+      Json.obj("abbrename"->x.abbrename, "sname"->x.sname)
     }
     Ok(Json.obj("rows"->row))
-  }
-
-  def getSearch(search:String)= Action { implicit request =>
-    val row = TableUtils.SoftsMap.filter(y=> y.sname.toLowerCase.contains(search) || y.descreption.toLowerCase.contains(search)).map{x=>
-      val status=if(x.status==1) "" else "waiting"
-      val click=
-        if(status=="") "onclick=checklog('/CloudPlatform/SoftPage/"+x.abbrename+"')"
-        else "onclick=waiting()"
-      val pics=s"<a " + click + "><div class='mws-report-icon mws-ic "+x.abbrename+"'></div></a>"
-      val descrip=s"<a><h4>"+x.sname+"</h4><p style='padding-right: 10px'>"+x.descreption+"</p></a>"
-      val likeclass=
-        if(request.session.get("userId").isEmpty)
-          "fa fa-lg  fa-star-o"
-        else {
-          val userlike=Await.result(userdao.getLike(request.session.get("userId").get),Duration.Inf)
-          if(userlike.split("/").contains(Integer.toString(x.id))) "fa fa-lg  fa-star yellow-icon"
-          else "fa fa-lg  fa-star-o"
-        }
-      val like= s"<i class='"+likeclass+"' onmouseover='mover($(this))' onmouseout='mout($(this))' onclick='collect($(this),"+x.id+")'></i>"
-      val onclick="<div style='height: 115px' " + click + ">" + descrip + "</div>"
-
-      Json.obj("description"-> onclick,"pics"->pics,"like"->like,"status"->status)
-    }
-    Ok(Json.obj("rows"->row))
-  }
-
-
-  //test below
-  def softpage=Action{implicit request=>
-    Ok(views.html.soft.softPage())
-  }
-
-  def testsoft=Action {implicit request=>
-    Ok(views.html.test.testsoft())
-  }
-
-  def testcynet=Action {implicit request=>
-    Ok(views.html.test.cynet())
   }
 
 }

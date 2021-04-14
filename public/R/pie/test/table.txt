@@ -1,8 +1,0 @@
-family	Number
-Siphoviridae	815
-Podoviridae	479
-Myoviridae	371
-Mimiviridae	309
-Lavidaviridae	57
-Phycodnaviridae	38
-Others	34

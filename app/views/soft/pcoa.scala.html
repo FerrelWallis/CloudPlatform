@@ -86,50 +86,10 @@
                 @units.selector("2： ","","计算距离方法：","m")
                 @units.selector("3： ","","是否显示样本名：","showname")
                 @units.selector("","divshowerro","是否显示箭头：","showerro")
-@*                <div class="form-group-p">*@
-@*                    <div class="form-group ">*@
-@*                        <label><em>2： </em>计算距离方法：</label>*@
-@*                    </div>*@
-@*                    <div class="form-group right">*@
-@*                        <select id="m" name="m" style="width: 30%;">*@
-@*                            <option value="bray_curtis">bray_curtis</option>*@
-@*                            <option value="euclidean">euclidean</option>*@
-@*                            <option value="abund_jaccard">abund_jaccard</option>*@
-@*                            <option value="hellinger">hellinger</option>*@
-@*                        </select>*@
-@*                    </div>*@
-@*                </div>*@
-@*                <br>*@
-@*                <br>*@
-@*                <div class="form-group-p">*@
-@*                    <div class="form-group ">*@
-@*                        <label><em>2： </em>是否显示样本名：</label>*@
-@*                    </div>*@
-@*                    <div class="form-group right">*@
-@*                        <select id="showname" name="showname" style="width: 30%;" onchange="shown()">*@
-@*                            <option value="FALSE">no</option>*@
-@*                            <option value="TRUE">yes</option>*@
-@*                        </select>*@
-@*                    </div>*@
-@*                </div>*@
-@*                <br>*@
-@*                <br>*@
-@*                <div class="form-group-p" id="showerro" style="display: none">*@
-@*                    <div class="form-group" style="margin-left: 25px">*@
-@*                        <label>是否显示箭头：</label>*@
-@*                    </div>*@
-@*                    <div class="form-group right">*@
-@*                        <select name="showerro" style="width: 30%;">*@
-@*                            <option value="TRUE">yes</option>*@
-@*                            <option value="FALSE">no</option>*@
-@*                        </select>*@
-@*                    </div>*@
-@*                    <br>*@
-@*                </div>*@
                 <div class="form-group-p">
                     <div class="form-group">
-                        <label style="float: left;"><em>3： </em>是否分组绘图</label>
-                        <input type="checkbox" name="isgroup" value="A" id="isgroup" class="form-control" style="height: 13px;width: auto;float: left;margin-top: 9px;margin-left: 5px">
+                        <label style="float: left;"><em>4： </em>是否分组绘图</label>
+                        <input type="checkbox" id="isgroup" class="form-control" style="height: 13px;width: auto;float: left;margin-top: 9px;margin-left: 5px">
                     </div>
                 </div>
                 <br>
@@ -202,6 +162,9 @@
                 </div>
                 <br>
                 <br>
+                @units.textinput("","div_table","","tablenum","","2")
+                @units.textinput("","div_group","","groupnum","","2")
+                @units.textinput("","div_isgroup","","isgrouptext","","FALSE")
                 <input type="button" value="提&nbsp;&nbsp;交" name="submit" class="btn btn-primary" style="margin-bottom: 20px" onclick="PCA()">
             </form>
         </div>
@@ -226,6 +189,9 @@
                 loadHistory("@abbre");
                 getTaskName("PCO","PCO");
                 // loadVideo("//13125180.s21v.faiusr.com/58/ABUIABA6GAAg_Z2K_QUojLX0pwY.mp4","/assets/images/softpic/video/pca_video.png")
+                $("#div_table").hide();
+                $("#div_group").hide();
+                $("#div_isgroup").hide();
                 $("#instruction").append(instruction);
                 var m = ["bray_curtis","euclidean","abund_jaccard","hellinger"];
                 creatSelector("m",m,m,"bray_curtis");
@@ -239,8 +205,10 @@
             $("#isgroup").click(function () {
                 var isSelected = this.checked;
                 if (isSelected === true) {
+                    $("#isgrouptext").val("TRUE");
                     $("#group").show();
                 } else {
+                    $("#isgrouptext").val("FALSE");
                     $("#group").hide();
                 }
             });
@@ -277,7 +245,7 @@
                                         layer.close(index);
                                         var form1 = new FormData($("#PCO")[0]);
                                         $.ajax({
-                                            url: "/CloudPlatform/SoftTool/runPcoa?isgroup=" + $("#isgroup").prop("checked") + "&table=" + table + "&group=" + group + "&abbre=@abbre",
+                                            url: "/CloudPlatform/SoftTool/runSoft?abbre=@abbre&sname=PCoA",
                                             type: "post",
                                             processData: false,
                                             contentType: false,
@@ -285,16 +253,10 @@
                                             success: function (data) {
                                                 removeul();
                                                 loadHistory("@abbre");
-                                                $("#his_tab1").addClass("active");
-                                                $("#out_tab1").removeClass("active");
-                                                $("#ins_tab1").removeClass("active");
-                                                $("#history").addClass("active").addClass("in");
-                                                $("#example").removeClass("active");
-                                                $("#instruction").removeClass("active");
+                                                switchRunningTab();
                                                 getTaskName("PCO","PCO");
                                             }
                                         });
-
                                     }, 2000);
                                 }
                             });
@@ -491,9 +453,11 @@
             var group=2;
 
             function curtable(param) {
+                $("#tablenum").val(param);
                 table=param;
             }
             function curgroup(param) {
+                $("#groupnum").val(param);
                 group=param;
             }
 

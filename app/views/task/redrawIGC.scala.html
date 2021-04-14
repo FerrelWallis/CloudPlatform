@@ -121,7 +121,7 @@
                                     <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 35px, 0px); top: 0px; left: 0px; will-change: transform;width: 150px">
                                         <a class="dropdown-item" id="downPic" onclick="downloadpics('@row.status','@row.taskname','heatmap','pdf')">下载 pdf</a>
                                         <a class="dropdown-item" id="downPng" onclick="downloadpics('@row.status','@row.taskname','heatmap','png')">下载 png</a>
-                                        <a class="dropdown-item" id="downTiff" onclick="downloadpics('@row.status','@row.taskname','heatmap','tiff')">下载 tiff</a>
+                                        <a class="dropdown-item" id="downTiff" onclick="downloadpics('@row.status','@row.taskname','heatmap','tiff.gz')">下载 tiff</a>
                                     </div>
                                 </div>
                             </div>
@@ -233,7 +233,7 @@
     <script src="@routes.Assets.versioned("myjs/redraw.js")" type="text/javascript"></script>
     <script>
 
-            const updatetime="2021-01-26";
+            const updatetime="2021-04-05";
 
             $("#cluster_rows").change(function () {
                 showr();
@@ -393,9 +393,10 @@
 
             function loading() {
                 $.ajax({
-                    url:"/CloudPlatform/SoftTool/getIGCData?taskname=@row.taskname",
+                    url:"/CloudPlatform/SoftTool/getParams?taskname=@row.taskname&abbre=@row.sabbrename",
                     type:"post",
                     success:function (data) {
+                        $("#rows").html("");
                         var rows = [], rowsname = [];
                         for(var i = 0; i <= parseInt(data.len); i++) {
                             rows.push(i);
@@ -461,8 +462,6 @@
                                         });
                             else $("#" + i).val(v);
                         });
-                        // $(".evo-cp-wrap").css("width", "120px");
-                        // $(".evo-cp-wrap").css("float", "left");
                         $(".evo-cp-wrap").css("float", "left");
                         $(".evo-cp-wrap").css("width", "calc(100% - 34px)");
 
@@ -537,7 +536,7 @@
                     });
                     var form1 = new FormData($("#IGCNet")[0]);
                     $.ajax({
-                        url: "/CloudPlatform/SoftTool/redrawIGCNet?taskname=@row.taskname",
+                        url: "/CloudPlatform/SoftTool/reDrawRun?taskname=@row.taskname&abbre=@row.sabbrename" + "_Net",
                         type: "post",
                         processData: false,
                         contentType: false,
@@ -649,7 +648,7 @@
                         $("#designcolor").val(colors.join(":"));
                         var form1 = new FormData($("#IGCHeat")[0]);
                         $.ajax({
-                            url: "/CloudPlatform/SoftTool/redrawIGCHeat?rtree="+$("#rtree").val()+"&ctree="+$("#ctree").val()+"&xfs="+$("#xfs").val()+"&yfs="+$("#yfs").val()+"&sc="+$("#sc").val()+"&xfa="+$("#xfa").val()+"&fn="+$("#fn").val()+"&taskname=@row.taskname",
+                            url: "/CloudPlatform/SoftTool/reDrawRun?taskname=@row.taskname&abbre=@row.sabbrename" + "_Heat",
                             type: "post",
                             processData: false,
                             contentType: false,

@@ -99,7 +99,14 @@ object Utils{
     val command = s"convert -density 300 "+ pdfpath + " " + pngpath
     val execCommand = new ExecCommand
     //exec需要指定结果输出路径的时候，不指定默认本地任务路径
-    execCommand.exec(command)
+    val del = "rm -rf " + pngpath + ".gz"
+    val gz = s"gzip " + pngpath
+    if(pngpath.indexOf("tiff") >= 0) {
+      println(command)
+      println(gz)
+      execCommand.exec(Array(del, command, gz))
+    }
+    else execCommand.exec(command)
   }
 
   //Linux下

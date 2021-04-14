@@ -68,9 +68,6 @@ class onStart @Inject()(softDao:softDao,utilsDao:utilsDao,dutyDao:dutyDao,dutyCo
         val time = System.currentTimeMillis()
         val clean = verifyTimeMap.filter(x => (time - x._2) / 1000.0 > 600) //时间间隔大于10分钟
         clean.keys.foreach { x =>
-//          println("keys="+x)
-//          println("map="+verifyMap)
-//          println("timemap"+verifyTimeMap)
           verifyMap.remove(x)
         }
         verifyTimeMap = clean

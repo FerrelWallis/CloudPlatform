@@ -78,14 +78,14 @@
                 getTaskName("LF2","LF2");
                 loadVideo("//13125180.s21v.faiusr.com/58/ABUIABA6GAAgn_TmggYohMq1nQE.mp4","/assets/images/softpic/video/lefse2_video.png");
                 $("#instruction").append(instruction);
+                $("#faq").html(faq);
                 $("#ediv").hide();
                 var yname = ["one-against-one","one-against-all(约束较不严,耗时长)"];
                 var y = ["1","0"];
                 creatSelector("y",yname,y,"one-against-one");
                 var ename = ["no","yes"];
                 var e = ["0","1"];
-                creatSelector("e",ename,e,"es");
-
+                creatSelector("e",ename,e,"no");
             });
 
             var sample,flagtable=true;
@@ -153,12 +153,7 @@
                                         success: function (data) {
                                             removeul();
                                             loadHistory("@abbre");
-                                            $("#his_tab1").addClass("active");
-                                            $("#out_tab1").removeClass("active");
-                                            $("#ins_tab1").removeClass("active");
-                                            $("#history").addClass("active").addClass("in");
-                                            $("#example").removeClass("active");
-                                            $("#instruction").removeClass("active");
+                                            switchRunningTab();
                                             getTaskName("LF2","LF2");
                                         }
                                     });
@@ -181,6 +176,72 @@
                 let excluded = [":hidden"];
                 addFormValidation("LF2", field, excluded)
             }
+
+            var faq = "<div class=\"panel-group panel-group-met-scrollbar\" id=\"lf2-example\" style=\"overflow-x: auto; border-bottom: 1px solid #e5e5e5;\">\n" +
+                    "            <div class=\"panel\">\n" +
+                    "                <div class=\"panel-heading\">\n" +
+                    "                    <a class=\"accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#lf2-example\" href=\"#collapse-faq0\">\n" +
+                    "                        <span style=\"font-weight:700;\"><strong>1. 使用凌恩生物结题报告中的什么数据进行分析？</strong></span>\n" +
+                    "                    </a>\n" +
+                    "                </div>\n" +
+                    "                <div id=\"collapse-faq0\" class=\"panel-collapse collapse in\">\n" +
+                    "                    <div class=\"panel-body\">\n" +
+                    "                        <p>凌恩生物扩增子结题报告中OTU丰度表，位于结果文件夹的 01.OTU_Taxa/normalize/otu_taxa_table.biom，或同一文件夹下的otu_taxa_table.xls，xls文件在使用时用excel打开，首行添加““# Constructed from biom file”另存为“制表符分隔的txt文件”，biom无需此步骤。</p>\n" +
+                    "                        <p>注意！一定要选择带有分类信息的OTU丰度表！否则一定会报错！</p><br>\n" +
+                    "                        <img src=\"/assets/images/softpic/faq/lf1.png\" style=\"height:auto;\">\n" +
+                    "                        <img src=\"/assets/images/softpic/faq/lf2.png\" style=\"height:auto;width: 230px;\">\n" +
+                    "                    </div>\n" +
+                    "                </div>\n" +
+                    "            </div>\n" +
+                    "            <div class=\"panel\">\n" +
+                    "                <div class=\"panel-heading\">\n" +
+                    "                    <a class=\"accordion-toggle collapsed\" data-toggle=\"collapse\" data-parent=\"#lf2-example\" href=\"#collapse-faq1\">\n" +
+                    "                        <span style=\"font-weight:700;\"><strong>2. 提示“第xx行样本名不存在”或“第xx行存在重复值”</strong></span>\n" +
+                    "                    </a>\n" +
+                    "                </div>\n" +
+                    "                <div id=\"collapse-faq1\" class=\"panel-collapse collapse\">\n" +
+                    "                    <div class=\"panel-body\">\n" +
+                    "                        <p>出现该提示时，请从以下几方面自查文件格式：</p>\n" +
+                    "                        <p>1）是否已将xls文件另存为“<strong>制表符分隔的txt文件</strong>”；</p>\n" +
+                    "                        <p>2）文件<strong>格式</strong>是否与<strong>示例文件</strong>相同；</p>\n" +
+                    "                        <p>3）文件中是否有<strong>特殊符号和中文</strong>，例如 <strong>%、NA、+、-、（）、空格、科学计数、罗马字母</strong>等，去掉特殊符号，将空值用数字“0”替换，中文更改为英文；</p>\n" +
+                    "                        <p>4）数据中是否有<strong>空列、空行、重复的行、重复的列</strong>，特别是行名（一般为gene id）、列名(一般为样本名)出现重复值，有的话就删掉，<strong>空列和重复列会影响画图，请务必检查（可以用excel查看是否有重复）</strong>；</p>\n" +
+                    "                        <p>5）所有文件中是否都有该样本名。</p>\n" +
+                    "                        <p>排查完之后，重新上传数据、提交任务。如果仍然不能分析，可通过左侧导航栏的“<strong>意见反馈</strong>”选项反馈意见，也可以加入<strong>凌波微课交流群</strong>，联系<strong>小助教或其他云平台老师解决</strong>。</p>\n" +
+                    "                        <br>\n" +
+                    "                    </div>\n" +
+                    "                </div>\n" +
+                    "            </div>\n" +
+                    "            <div class=\"panel\">\n" +
+                    "                <div class=\"panel-heading\">\n" +
+                    "                    <a class=\"accordion-toggle collapsed\" data-toggle=\"collapse\" data-parent=\"#lf2-example\" href=\"#collapse-faq2\">\n" +
+                    "                        <span style=\"font-weight:700;\"><strong>3. 带分类的OTU丰度表格式要求</strong></span>\n" +
+                    "                    </a>\n" +
+                    "                </div>\n" +
+                    "                <div id=\"collapse-faq2\" class=\"panel-collapse collapse\">\n" +
+                    "                    <div class=\"panel-body\">\n" +
+                    "                        <p>凌恩生物结题报告中的分类学一列中，在每个分类层级的英文单词前都有表示该层级的前缀（d_、P_等），<strong>是云平台进行lefse分析的必须因素</strong>，请务必检查自己的文件中是否有这些标识。</p>\n" +
+                    "                        <br>\n" +
+                    "                        <img src=\"/assets/images/softpic/faq/lf3.png\" style=\"height:auto;\">\n" +
+                    "                    </div>\n" +
+                    "                </div>\n" +
+                    "            </div>\n" +
+                    "            <div class=\"panel\">\n" +
+                    "                <div class=\"panel-heading\">\n" +
+                    "                    <a class=\"accordion-toggle collapsed\" data-toggle=\"collapse\" data-parent=\"#lf2-example\" href=\"#collapse-faq3\">\n" +
+                    "                        <span style=\"font-weight:700;\"><strong>4. 如何查看示例文件</strong></span>\n" +
+                    "                    </a>\n" +
+                    "                </div>\n" +
+                    "                <div id=\"collapse-faq3\" class=\"panel-collapse collapse\">\n" +
+                    "                    <div class=\"panel-body\">\n" +
+                    "                        <p>点击下方截图红框中的“示例文件”，即可打开新页面，查看云平台提供的示例文件。</p>\n" +
+                    "                        <br>\n" +
+                    "                        <img src=\"/assets/images/softpic/faq/lf4.png\" style=\"height:auto;\">\n" +
+                    "                        <br>\n" +
+                    "                    </div>\n" +
+                    "                </div>\n" +
+                    "            </div>\n" +
+                    "        </div>";
 
             var instruction = "<p style=\"color:#636E7B;font-family:Arial, 微软雅黑;font-size:14px;background-color:#FFFFFF;\">\n" +
                     "                        <span style=\"font-weight:700;\"><strong>1.背景介绍</strong></span><br>\n" +

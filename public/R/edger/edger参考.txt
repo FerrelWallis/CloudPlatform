@@ -1,6 +1,0 @@
-1. 参数（基迪奥说明有对参数的解释可以看一下）可以参考基迪奥的edgeR：
-https://www.omicshare.com/tools/Home/Soft/diffanalysis
-
-2. edgeR脚本参考：https://www.jianshu.com/p/0e1ad0cc4ce6
-
-3. 火山图用ggplot画（可以考虑之前的火山图脚本能不能复用）

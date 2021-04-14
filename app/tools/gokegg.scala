@@ -16,12 +16,12 @@ import scala.concurrent.duration.Duration
 object gokegg extends MyFile with MyStringTool with MyMapTool{
   def Run(dutyDir: String, params: Map[String, String], abbre:String)(implicit request: Request[MultipartFormData[TemporaryFile]]) = {
     var state = 1
-    var msg = "ADB Success!"
+    var msg = "Run Success!"
 
     val tableFile=new File(dutyDir,"table.txt")
     val koFile=new File(dutyDir,"kogo.txt")
     val tablenum = params("tablenum")
-    val refer = params("refer")
+    val refer = params("isrefer")
     
     val input=
       if(tablenum=="2"){

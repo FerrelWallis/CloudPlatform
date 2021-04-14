@@ -57,10 +57,10 @@
                             <div id="div1" class="one-line">
                                 <div class="form-group-p">
                                     <div class="form-group">
-                                        <label for="exampleInputName2">上传矩阵文件：</label>
+                                        <label for="exampleInputName2">上传文件：</label>
                                     </div>
                                     <div class="form-group">
-                                        <input type="file" class="form-control file" id="table1" name="table1" onchange="checkTablefile()" style="width: 100%;">
+                                        <input type="file" class="form-control file" id="table1" name="table1" onchange="checkTablefile()">
                                     </div>
                                 </div>
                                 <br>
@@ -145,6 +145,9 @@
                 <br>
                 @units.textinput("3：","","读取数据行数（默认全部）：", "un", "数字", "")
                 @units.selector("4： ","","图片展示方式：","fp")
+                @units.textinput("","div_table","","tablenum","","1")
+                @units.textinput("","div_group","","groupnum","","1")
+                @units.textinput("","div_isgroup","","isgrouptext","","FALSE")
                 <br>
                 <input type="button" value="提&nbsp;&nbsp;交" name="submit" class="btn btn-primary" style="margin-bottom: 20px" onclick="violin()">
             </form>
@@ -165,21 +168,24 @@
                 formValidation();
                 loadHistory("@abbre");
                 getTaskName("VIO","VIO");
+                $("#div_table").hide();
+                $("#div_group").hide();
+                $("#div_isgroup").hide();
                 // loadVideo("//13125180.s21v.faiusr.com/58/ABUIABA6GAAg_Z2K_QUojLX0pwY.mp4","/assets/images/softpic/video/pca_video.png")
 
                 var fp = ["FALSE","TRUE"];
                 var fpname = ["纵向显示","横向显示"];
                 creatSelector("fp",fpname,fp,"纵向显示");
-
-
             });
 
             $("#isgroup").click(function () {
                 var isSelected = this.checked;
                 if (isSelected === true) {
                     $("#group").show();
+                    $("#isgrouptext").val("TRUE");
                 } else {
                     $("#group").hide();
+                    $("#isgrouptext").val("FALSE");
                 }
             });
 
@@ -212,7 +218,7 @@
                                         layer.close(index);
                                         var form1 = new FormData($("#VIO")[0]);
                                         $.ajax({
-                                            url: "/CloudPlatform/SoftTool/runViolin?isgroup=" + $("#isgroup").prop("checked") + "&table=" + table + "&group=" + group,
+                                            url: "/CloudPlatform/SoftTool/runSoft?abbre=@abbre&sname=小提琴图",
                                             type: "post",
                                             processData: false,
                                             contentType: false,
@@ -220,12 +226,7 @@
                                             success: function (data) {
                                                 removeul();
                                                 loadHistory("@abbre");
-                                                $("#his_tab1").addClass("active");
-                                                $("#out_tab1").removeClass("active");
-                                                $("#ins_tab1").removeClass("active");
-                                                $("#history").addClass("active").addClass("in");
-                                                $("#form1").removeClass("active");
-                                                $("#instruction1").removeClass("active");
+                                                switchRunningTab();
                                                 getTaskName("VIO","VIO");
                                             }
                                         });
@@ -424,9 +425,11 @@
             var group=1;
 
             function curtable(param) {
+                $("#tablenum").val(param);
                 table=param;
             }
             function curgroup(param) {
+                $("#groupnum").val(param);
                 group=param;
             }
 

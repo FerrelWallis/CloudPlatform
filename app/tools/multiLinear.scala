@@ -16,7 +16,7 @@ object multiLinear extends MyFile with MyStringTool with MyMapTool{
 
   def Run(dutyDir: String, params: Map[String, String])(implicit request: Request[MultipartFormData[TemporaryFile]]) = {
     var state = 1
-    var msg = "MLN Success!"
+    var msg = "Run Success!"
 
     val tableFile1=new File(dutyDir,"otu.txt")
     val tableFile2=new File(dutyDir,"env.txt")

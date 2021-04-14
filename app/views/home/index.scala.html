@@ -79,8 +79,6 @@
             }
     </style>
 
-
-
     <div class="container mainpadding" style="margin-top: 10px!important;">
         <div class="mws-panel grid_8">
             <div class="mws-tabs">
@@ -132,7 +130,6 @@
             url: "/CloudPlatform/Utils/getAllRunning",
             type: "post",
             success: function (data) {
-                console.log(data.rows);
                 $.each(data.rows,function (i,v) {
                     var i=v[0];
                     var content=v[1];
@@ -146,54 +143,15 @@
             $(document).ready(function () {
                 loadhot();
                 loadlate();
-                //文字横向滚动
-                // ScrollImgLeft();
-
             });
-
-            // function ScrollImgLeft(){
-            //     var speed=50;//初始化速度 也就是字体的整体滚动速度
-            //     var MyMar = null;//初始化一个变量为空 用来存放获取到的文本内容
-            //     var scroll_begin = document.getElementById("scroll_begin");//获取滚动的开头id
-            //     var scroll_end = document.getElementById("scroll_end");//获取滚动的结束id
-            //     var scroll_div = document.getElementById("scroll_div");//获取整体的开头id
-            //     scroll_end.innerHTML=scroll_begin.innerHTML;//滚动的是html内部的内容,原生知识!
-            //     // 定义一个方法 左右滚动
-            //     // function Marquee(){
-            //     //     if(scroll_end.offsetWidth-scroll_div.scrollLeft<=0)
-            //     //         scroll_div.scrollLeft-=scroll_begin.offsetWidth;
-            //     //     else scroll_div.scrollLeft++;
-            //     // }
-            //     MyMar=setInterval(Marquee,speed);//给上面的方法设置时间  setInterval
-            //     // 鼠标点击这条公告栏的时候,清除上面的方法,让公告栏暂停
-            //     scroll_div.onmouseover = function(){
-            //         clearInterval(MyMar);
-            //     }
-            //     //鼠标点击其他地方的时候,公告栏继续运动
-            //     scroll_div.onmouseout = function(){
-            //         MyMar = setInterval(Marquee,speed);
-            //     }
-            // }
 
             function loadlate() {
                 removeul("latelist");
                 $.ajax({
-                    url: "/CloudPlatform/Softwares/home/latest",
+                    url: "/CloudPlatform/Softwares/home/indexSix?types=late",
                     type: "get",
                     success: function (data) {
-                        var html="";
-                        $.each(data.rows,function (i,v) {
-                            html += "<li class='mws-report'>" + v.pics + "<div class='mws-report-content'>" +
-                                    "<div class='likeable' style='float:right;'><div id='fmsg1' style='display:none;'>" +
-                                    "<div class='tooltip fade left in' style='width: 75px;bottom: 2px;right: 19px;display: block;'>" +
-                                    "<div class='tooltip-arrow'></div><div class='tooltip-inner'>点击收藏</div>" +
-                                    "</div></div><div id='fmsg2' style='display:none;'>" +
-                                    "<div class='tooltip fade left in' style='width: 75px;bottom: 2px;right: 19px;display: block;'>" +
-                                    "<div class='tooltip-arrow'></div><div class='tooltip-inner'>取消收藏</div></div></div>" + v.like +
-                                    "</div>"+v.description+"</div></li>";
-
-                        });
-                        $("#latelist").html(html);
+                        softbox(data.rows, data.userlike, "latelist");
                     }
                 });
             }
@@ -201,23 +159,39 @@
             function loadhot() {
                 removeul("hotlist");
                 $.ajax({
-                    url: "/CloudPlatform/Softwares/home/hotest",
+                    url: "/CloudPlatform/Softwares/home/indexSix?types=hot",
                     type: "get",
                     success: function (data) {
-                        var html="";
-                        $.each(data.rows,function (i,v) {
-                            html += "<li class='mws-report'>" + v.pics + "<div class='mws-report-content'>" +
-                                    "<div class='likeable' style='float:right;'><div id='fmsg1' style='display:none;'>" +
-                                    "<div class='tooltip fade left in' style='width: 75px;bottom: 2px;right: 19px;display: block;'>" +
-                                    "<div class='tooltip-arrow'></div><div class='tooltip-inner'>点击收藏</div>" +
-                                    "</div></div><div id='fmsg2' style='display:none;'>" +
-                                    "<div class='tooltip fade left in' style='width: 75px;bottom: 2px;right: 19px;display: block;'>" +
-                                    "<div class='tooltip-arrow'></div><div class='tooltip-inner'>取消收藏</div></div></div>" + v.like +
-                                    "</div>"+v.description+"</div></li>";
-                        });
-                        $("#hotlist").html(html);
+                        softbox(data.rows, data.userlike, "hotlist");
                     }
                 });
+            }
+
+            function softbox(rows, userlike, place) {
+                var html="";
+                $.each(rows,function (i,v) {
+                    var likeclass = "";
+                    if(@session.get("userId").isEmpty)
+                        likeclass = "fa fa-lg  fa-star-o";
+                    else {
+                        if(userlike.toString().split("/").indexOf("" + v.id) >= 0) likeclass = "fa fa-lg  fa-star yellow-icon";
+                        else likeclass = "fa fa-lg  fa-star-o";
+                    }
+                    html += "<li class='mws-report'>" +
+                            "<a onclick=checklog('/CloudPlatform/SoftPage/"+v.abbrename+"')><div class='mws-report-icon mws-ic "+v.abbrename+"'></div></a>" +
+                            "<div class='mws-report-content'>" +
+                            "<div class='likeable' style='float:right;'><div id='fmsg1' style='display:none;'>" +
+                            "<div class='tooltip fade left in' style='width: 75px;bottom: 2px;right: 19px;display: block;'>" +
+                            "<div class='tooltip-arrow'></div><div class='tooltip-inner'>点击收藏</div>" +
+                            "</div></div><div id='fmsg2' style='display:none;'>" +
+                            "<div class='tooltip fade left in' style='width: 75px;bottom: 2px;right: 19px;display: block;'>" +
+                            "<div class='tooltip-arrow'></div><div class='tooltip-inner'>取消收藏</div></div></div>" +
+                            "<i class='"+likeclass+"' onmouseover='mover($(this))' onmouseout='mout($(this))' onclick='collect($(this),"+v.id+")'></i>" +
+                            "</div>"+
+                            "<div style='height: 115px' onclick=checklog('/CloudPlatform/SoftPage/"+v.abbrename+"')>" + "<a><h4>"+v.sname+"</h4><p style='padding-right: 10px'>"+v.descreption+"</p></a>" + "</div>" +
+                            "</div></li>";
+                });
+                $("#"+place).html(html);
             }
 
             function removeul(param){

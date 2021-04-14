@@ -1,1 +1,0 @@
-E:\\R-3.6.3\\bin\\Rscript duanzhou.R -i ALL.new.functional_table.txt -o ./ -bsp 3000 -tps 0.2

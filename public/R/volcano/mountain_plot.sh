@@ -1,1 +1,0 @@
-E:\\R-3.6.3\\bin\\Rscript mountain.R -i da.txt -o ./

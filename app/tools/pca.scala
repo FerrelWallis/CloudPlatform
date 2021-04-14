@@ -18,10 +18,11 @@ import scala.concurrent.{Await, ExecutionContext, Future}
 
 object pca extends MyFile with MyStringTool{
 
-  def Run(dutyDir: String, params: Map[String, String])(implicit request: Request[MultipartFormData[TemporaryFile]]) = {
+  def Run(dutyDir: String, params: Map[String, String], abbre:String)(implicit request: Request[MultipartFormData[TemporaryFile]]) = {
     var state = 1
-    var msg = "PCA Success!"
-    val isgroup = params("isgroup")
+    var msg = "Run Success!"
+
+    val isgroup = params("isgrouptext")
     val tablenum = params("tablenum")
     val groupnum = params("groupnum")
     val tableFile=new File(dutyDir,"table.txt")
@@ -39,17 +40,23 @@ object pca extends MyFile with MyStringTool{
         else "无"
       }
 
-    println(isgroup == "TRUE")
-    val (param,co)=
+    val (param,co)= if(abbre == "PCA") {
       if(isgroup == "TRUE")
         ("是否归一化：" + params("scale") + "/是否显示样本名：" + params("showname") +
-          "/是否分组绘图：" + params("isgroup"), "#CD0000:#3A89CC:#769C30:#D99536:#7B0078:#BFBC3B:" +
+          "/是否分组绘图：" + isgroup, "#CD0000:#3A89CC:#769C30:#D99536:#7B0078:#BFBC3B:" +
           "#E2609F:#00688B:#C10077:#CAAA76:#EEEE00:#458B00:#8B4513:#008B8B:#6E8B3D:#8B7D6B:#7FFF00:" +
           "#CDBA96:#ADFF2F")
       else ("是否归一化：" +  params("scale") + "/是否显示样本名：" + params("showname") +
-        "/是否分组绘图：" + params("isgroup"), "#48FF75")
+        "/是否分组绘图：" + isgroup, "#48FF75")
+    } else {
+      if(isgroup == "TRUE") ("计算距离方法：" + params("m") + "/是否显示样本名：" + params("showname") + "/是否分组绘图：" +
+        isgroup,
+        "#CD0000:#3A89CC:#769C30:#D99536:#7B0078:#BFBC3B:#E2609F:#00688B:#C10077:#CAAA76" +
+          ":#EEEE00:#458B00:#8B4513:#008B8B:#6E8B3D:#8B7D6B:#7FFF00:#CDBA96:#ADFF2F")
+      else ("计算距离方法：" + params("m") + "/是否显示样本名：" + params("showname") + "/是否分组绘图：" + isgroup,"#48FF75")
+    }
 
-    val (xdata,ydata) = ("PC1","PC2")
+    val (xdata,ydata,sname) = if(abbre == "PCA") ("PC1","PC2","主成分分析（PCA）") else ("PCOA1","PCOA2","PCoA")
 
     val groupdata=
       if(isgroup == "TRUE" ){
@@ -58,8 +65,6 @@ object pca extends MyFile with MyStringTool{
           val groupdatas = FileUtils.readFileToString(file.ref.file).trim
           FileUtils.writeStringToFile(groupFile, ("#SampleID\tGroup\n"+groupdatas).reformFile)
         }else{
-          println(("#SampleID\tGroup\n" + params("txdata2").trim))
-          println(("#SampleID\tGroup\n" + params("txdata2").trim).reformFile)
           FileUtils.writeStringToFile(groupFile, ("#SampleID\tGroup\n" + params("txdata2").trim).reformFile)
         }
         " -g "+groupFile.getAbsolutePath
@@ -80,15 +85,24 @@ object pca extends MyFile with MyStringTool{
       "ydamax"->"").toString()
 
     try {
-      val execCommand = new ExecCommand()
-      val command1 = "Rscript " + Utils.path + "R/pca/pca_data.R" + " -i " + tableFile.getAbsolutePath +
-        " -o " + dutyDir + "/out -sca " + params("scale")
-      val command2 = "Rscript " + Utils.path + "R/pca/pca_plot.R -i " + dutyDir+"/out/pca.x.xls" +
-        " -si " + dutyDir + "/out/pca.sdev.xls" + groupdata + " -o " +dutyDir+"/out" + name +
-        " -if pdf -ss " + params("showerro") + " -sl " + params("showname")
-      execCommand.exect(Array(command1, command2), new File(dutyDir + "/temp"))
-      println(command1)
-      println(command2)
+      val command = if(abbre == "PCA")
+        "Rscript " + Utils.path + "R/pca/pca_data.R" + " -i " + tableFile.getAbsolutePath +
+        " -o " + dutyDir + "/out -sca " + params("scale") + " && \n" + "Rscript " + Utils.path +
+        "R/pca/pca_plot.R -i " + dutyDir+"/out/pca.x.xls" + " -si " + dutyDir + "/out/pca.sdev.xls" +
+        groupdata + " -o " +dutyDir+"/out" + name + " -if pdf -ss " + params("showerro") + " -sl " +
+        params("showname")
+      else
+        "biom convert -i " + tableFile.getAbsolutePath + " -o " + dutyDir + "/temp.biom --table-type=\"OTU table\" --to-json && \n" +
+        "beta_diversity.py -i " +  dutyDir + "/temp.biom -o " + dutyDir + "/out -m " + params("m") + " && \n" +
+        "Rscript " + Utils.path + "R/pcoa/pcoa-data.R -i " + dutyDir + "/out/" + params("m") + "_temp.txt -o " + dutyDir + "/out && \n" +
+        "Rscript " + Utils.path + "R/pcoa/pcoa-plot.R -i " + dutyDir+"/out/PCOA.x.xls" + " -si " + dutyDir +
+        "/out/PCOA.sdev.xls" + groupdata + " -o " +dutyDir+"/out" + name + " -if pdf -ss " + params("showerro") +
+        " -sl " + params("showname")
+
+      println(command)
+      FileUtils.writeStringToFile(new File(s"$dutyDir/temp/run.sh"),command)
+      val execCommand = new ExecCommand
+      execCommand.exect(s"sh $dutyDir/temp/run.sh",dutyDir+"/temp")
 
       if (!execCommand.isSuccess) {
         state = 2
@@ -100,10 +114,10 @@ object pca extends MyFile with MyStringTool{
     } catch {
       case e: Exception => state = 2; msg = e.getMessage
     }
-    (state, msg, "主成分分析（PCA）", input, param, elements)
+    (state, msg, sname, input, param, elements)
   }
 
-  def GetParams(dutyDir: String, elements: Map[String, String])(implicit request: Request[AnyContent]) = {
+  def GetParams(dutyDir: String, elements: Map[String, String], abbre: String)(implicit request: Request[AnyContent]) = {
     val color=elements("color").split(":")
     val head=FileUtils.readFileToString(new File(dutyDir+"/table.txt")).trim.split("\n")
     val gnum=head(0).trim.split("\t").drop(1).length
@@ -115,17 +129,17 @@ object pca extends MyFile with MyStringTool{
         if(f.map{_.split('\t').head}.drop(1).length<gnum) g.append("nogroup")
         g.toArray
       }else Array("nogroup")
-    val filepath=dutyDir+"/out/pca.x.xls"
+    val filepath= if(abbre=="PCA") dutyDir+"/out/pca.x.xls" else dutyDir+"/out/PCOA.x.xls"
     val data=FileUtils.readLines(new File(filepath))
     val col=data.get(0).split("\"").filter(_.trim!="").map(_.trim)
     Json.obj("group"->group,"cols"->col,"elements"->elements,"color"->color)
   }
 
-  def ReDraw(dutyDir: String, elements: Map[String, String])(implicit request: Request[MultipartFormData[TemporaryFile]]) = {
+  def ReDraw(dutyDir: String, elements: Map[String, String], abbre:String)(implicit request: Request[MultipartFormData[TemporaryFile]]) = {
     val groupFile=new File(dutyDir,"group.txt")
     val groupdata=if(groupFile.exists()) " -g " + groupFile.getAbsolutePath else ""
-    val newelements= Json.obj("xdata"->elements("xdata"),"ydata"->elements("ydata"),"width"->"15",
-      "length"->"12","showname"->elements("showname"),"showerro"->elements("showerro"),
+    val newelements= Json.obj("xdata"->elements("xdata"),"ydata"->elements("ydata"),"width"->elements("width"),
+      "length"->elements("length"),"showname"->elements("showname"),"showerro"->elements("showerro"),
       "color"->elements("color"),"resolution"->elements("resolution"), "xts"->elements("xts"),
       "yts"->elements("yts"),"xls"->elements("xls"),"yls"->elements("yls"),"lts"->elements("lts"),
       "lms"->elements("lms"),"lmtext"->elements("lmtext"),"ms"->elements("ms"),"mstext"->elements("mstext"),
@@ -153,7 +167,9 @@ object pca extends MyFile with MyStringTool{
     val lms=if(!elements("lmtext").equals("")) " -lms sans:bold.italic:" + elements("lms") + ":\"" + elements("lmtext")+"\"" else ""
     val ms=if(!elements("mstext").equals("")) " -ms sans:plain:" + elements("ms") + ":\"" + elements("mstext")+"\"" else ""
 
-    val script="R/pca/pca_plot.R" + " -i " + dutyDir + "/out/pca.x.xls" + " -si " + dutyDir+"/out/pca.sdev.xls"
+    val script=
+      if(abbre=="PCA") "R/pca/pca_plot.R" + " -i " + dutyDir + "/out/pca.x.xls" + " -si " + dutyDir+"/out/pca.sdev.xls"
+      else "R/pcoa/pcoa-plot.R" + " -i " + dutyDir + "/out/PCOA.x.xls" + " -si " + dutyDir+"/out/PCOA.sdev.xls"
 
     val command = "Rscript " + Utils.path + script + groupdata + " -o " +dutyDir+"/out" + " -pxy "+
       elements("xdata") + ":" + elements("ydata") + " -is "+ elements("width") +
@@ -166,9 +182,6 @@ object pca extends MyFile with MyStringTool{
     FileUtils.writeStringToFile(new File(s"$dutyDir/temp/run.sh"),command)
     val execCommand = new ExecCommand
     execCommand.exect(s"sh $dutyDir/temp/run.sh",dutyDir+"/temp")
-
-    //    val execCommand = new ExecCommand
-    //    execCommand.exect(command,dutyDir+"/temp")
 
     println(command)
     println(execCommand.getOutStr)

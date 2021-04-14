@@ -20,7 +20,9 @@
                 <div class="softpic mws-ic @abbre"> </div>
                 <h3 class="tools-title">曼哈顿图（Manhattan）</h3><br><br>
                 @units.textinput("","","任务编号：", "taskname","","")
-                @units.fileupload2("", "div1", "上传文件：","table1","manhattan.txt","manhattan_virtual.txt")<br><br>
+                @units.fileupload2("", "div1", "上传文件：","table1","manhattan.txt","manhattan_virtual.txt")
+                @units.textinput("","div_samnum","","samnum","","")
+                @units.textinput("","div_sam","","sam","","")<br><br>
                 <input type="button" value="提&nbsp;&nbsp;交" name="submit" class="btn btn-primary" onclick="runManhattan()" style="margin-bottom: 20px">
             </form>
         </div>
@@ -43,6 +45,8 @@
                 formValidation();
                 loadHistory("@abbre");
                 getTaskName("MHT","MHT");
+                $("#div_sam").hide();
+                $("#div_samnum").hide();
                 $("#instruction").append(instruction);
                 // loadVideo("//13125180.s21v.faiusr.com/58/ABUIABA6GAAgts3S_QUo_uGeyAc.mp4","/assets/images/softpic/video/heatmap_video.png")
             });
@@ -61,8 +65,8 @@
                         var check=[];
                         check.push(checkTable());
                         Promise.all(check).then((r)=>{
-                            var samnum=sample.length;
-                            var sam=sample.join(",");
+                            $("#samnum").val(sample.length);
+                            $("#sam").val(sample.join(","));
                             if(flagtable && checktaskname()) {
                                 var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
                                 var index = layer.alert(element, {
@@ -75,7 +79,7 @@
                                     layer.close(index);
                                     var form1 = new FormData($("#MHT")[0]);
                                     $.ajax({
-                                        url: "/CloudPlatform/SoftTool/runManhattan?samnum="+samnum+"&sam="+sam,
+                                        url: "/CloudPlatform/SoftTool/runSoft?abbre=@abbre&sname=曼哈顿图（Manhattan）",
                                         type: "post",
                                         processData: false,
                                         contentType: false,
@@ -83,12 +87,7 @@
                                         success: function (data) {
                                             removeul();
                                             loadHistory("@abbre");
-                                            $("#his_tab1").addClass("active");
-                                            $("#out_tab1").removeClass("active");
-                                            $("#ins_tab1").removeClass("active");
-                                            $("#history").addClass("active").addClass("in");
-                                            $("#example").removeClass("active");
-                                            $("#instruction").removeClass("active");
+                                            switchRunningTab();
                                             getTaskName("MHT","MHT");
                                         }
                                     });

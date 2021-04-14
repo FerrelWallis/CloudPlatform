@@ -16,7 +16,7 @@ object picrust extends MyFile with MyStringTool with MyMapTool{
   
   def Run(dutyDir: String, params: Map[String, String])(implicit request: Request[MultipartFormData[TemporaryFile]]) = {
     var state = 1
-    var msg = "picrust Success!"
+    var msg = "Run Success!"
 
     new File(dutyDir + "/out").delete()
     val tableFile=new File(dutyDir,"table.txt")

@@ -26,7 +26,6 @@
 
         <!--JavaScript-->
         <script type="text/javascript" src="@routes.Assets.versioned("bootstrap/js/jquery-3.1.1.min.js")"></script>
-@*        <script type="text/javascript" src="@routes.Assets.versioned("jquery-cookie/jquery.cookie-1.4.1.min.js")"></script>*@
 
         <!--主页下导航栏,个人中心-->
         <script type="text/javascript" src="@routes.Assets.versioned("js/mws.js")"></script>
@@ -35,6 +34,7 @@
         <script src="@routes.Assets.versioned("FormValidation/dist/js/formValidation.js")" type="text/javascript"></script>
         <script src="@routes.Assets.versioned("FormValidation/dist/js/framework/bootstrap.js")" type="text/javascript"></script>
         <script src="@routes.Assets.versioned("bootstrap-sweetalert-master/dist/sweetalert.min.js")" type="text/javascript"></script>
+        <script type = "text/javascript" src="@routes.Assets.versioned("bootstrap/js/bootstrap.js")"></script>
 
         <title>@title</title>
 
@@ -44,7 +44,7 @@
         @home.header()
         <div id="mws-wrapper">
             @home.sidebar()
-            <div id="mws-container" class="clearfix">
+            <div id="mws-container" class="clearfix" style="width: calc(100% - 206px); height: calc(100% - 110px);">
             @content
             </div>
         </div>

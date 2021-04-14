@@ -80,8 +80,12 @@
 <div id="mws-header" class="clearfix fix" style="height: 100px">
     <div id="mws-logo-container">
         <div id="mws-logo-wrap">
-            <img class="logo" src="/assets/images/logo6.png" style="margin-top: 15px;  margin-left: 0px;">
+            <img class="logo" src="/assets/images/logo6.png" style="margin-top: 15px;margin-left: 0px;width: 220px;height: 73px;">
         </div>
+    </div>
+    <div style="height: 100px;width: 120px;display: inline-block;">
+        <a onclick="showCode()"><img src="/assets/images/code.png" style="width: 80px;display: inline-block;height: 80px;margin-top: 10px;"></a>
+        <p style="vertical-align: middle;display: inline-block;width: 20%;color: #b2d9ff;text-align: center;margin: 11px 0 0 0;white-space: unset!important;">技术支持</p>
     </div>
     <div style="float: right;height: 100px;">
         <div id="mws-user-tools" class="clearfix" style="position: relative;">
@@ -563,7 +567,6 @@
     </div>
 </div>
 
-
 <div class="modal fade" id="mailpage" tabindex="-3" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog mailpage" role="document" style="width: 95%;">
         <div class="modal-content">
@@ -595,6 +598,23 @@
     </div>
 </div>
 
+<div class="modal fade" id="headerCode" tabindex="-4" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">技术支持</h4>
+            </div>
+            <div class="modal-body" style="padding: 0px; text-align: center">
+                <img src="/assets/images/code.png" style="height: 600px;">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭<span class="glyphicon glyphicon-remove" aria-hidden="true" style="padding-left: 5px;"></span></button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <div id="logPage" class="reveal-modal" style="width: 700px; left: 45%;top:12%;background: white;border-radius: 3px">
     <div class="cont" style="width: 100%;padding-top: 0px;">
@@ -618,6 +638,7 @@
 
 <script type="text/javascript" src="@routes.Assets.versioned("myjs/mytoolAdjust.js")"></script>
 <script>
+
     var E = window.wangEditor;
     var maileditor = new E('#maileditor');
     //自定义菜单配置
@@ -662,6 +683,10 @@
         $(this).css("background-position","center");
         $(this).css("background-size","100%");
     });
+
+    function showCode() {
+        $("#headerCode").modal();
+    }
 
     function openFeedpage(fid, user, mid) {
         $.ajax({
@@ -1241,7 +1266,5 @@
                 }
             });
         }
-
-
 
 </script>

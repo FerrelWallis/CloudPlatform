@@ -1,1 +1,0 @@
-E:\\R-3.6.3\\bin\\Rscript ggplot2_treemap.R -i C:/Users/Administrator/Desktop/ww/treemap/da.txt -o C:/Users/Administrator/Desktop/ww/treemap

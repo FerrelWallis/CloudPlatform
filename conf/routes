@@ -9,6 +9,7 @@ GET           /CloudPlatform                                         controllers
 GET           /CloudPlatform/home                                    controllers.HomeController.home
 GET           /CloudPlatform/home/allsoft                            controllers.HomeController.allsoft(types:String)
 GET           /CloudPlatform/home/updateNews                         controllers.HomeController.updatenews
+GET           /CloudPlatform/home/faq                                controllers.HomeController.faq
 
 GET           /CloudPlatform/PersonalCenter                          controllers.HomeController.personal
 GET           /CloudPlatform/myTask                                  controllers.HomeController.mytask
@@ -19,12 +20,9 @@ GET           /CloudPlatform/feedback                                controllers
 GET           /CloudPlatform/SoftPage/:abbre                         controllers.SoftController.softPage(abbre:String)
 GET           /CloudPlatform/Mytask/taskPreview/:abbre               controllers.SoftController.previewPage(abbre:String, taskname:String)
 
-GET           /CloudPlatform/Softwares/home/latest                   controllers.SoftController.getlatestSix
-GET           /CloudPlatform/Softwares/home/hotest                   controllers.SoftController.gethotestSix
-GET           /CloudPlatform/Softwares/home/alllist                  controllers.SoftController.getAllSoft
+GET           /CloudPlatform/Softwares/home/indexSix                 controllers.SoftController.getSix(types:String)
 GET           /CloudPlatform/Softwares/home/types                    controllers.SoftController.getTypes(types:String)
 GET           /CloudPlatform/Softwares/home/search                   controllers.SoftController.getSearch(search:String)
-GET           /CloudPlatform/Softwares/home/likelist                 controllers.SoftController.getLike
 GET           /CloudPlatform/Softwares/home/likebref                 controllers.SoftController.getLikebrief
 
 #runSoft
@@ -32,133 +30,8 @@ POST          /CloudPlatform/SoftTool/runSoft                        controllers
 POST          /CloudPlatform/SoftTool/getParams                      controllers.RService.getParams(taskname:String,abbre:String)
 POST          /CloudPlatform/SoftTool/reDrawRun                      controllers.RService.reDrawRun(taskname:String,abbre:String)
 
-#Cluster
-POST          /CloudPlatform/SoftTool/runPcoa                        controllers.RClusterController.doPCOA(isgroup:Boolean,table:String,group:String)
-POST          /CloudPlatform/SoftTool/getPcoaData                    controllers.RClusterController.readPCAData(taskname:String,abbre:String)
-POST          /CloudPlatform/SoftTool/redrawPcoa                     controllers.RClusterController.redrawPCA(taskname:String,abbre:String)
-
-POST          /CloudPlatform/SoftTool/runCCA                         controllers.RClusterController.doCCA(isgroup:Boolean)
-POST          /CloudPlatform/SoftTool/getCCAData                     controllers.RClusterController.readCCAData(taskname:String)
-POST          /CloudPlatform/SoftTool/redrawCCA                      controllers.RClusterController.redrawCCA(taskname:String,showsname:Boolean,showevi:Boolean,showspeci:Boolean)
-
-POST          /CloudPlatform/SoftTool/runNMD                         controllers.RClusterController.doNmds(isgroup:Boolean)
-POST          /CloudPlatform/SoftTool/getNMDData                     controllers.RClusterController.readNmdsData(taskname:String)
-POST          /CloudPlatform/SoftTool/redrawNMD                      controllers.RClusterController.redrawNmds(taskname:String)
-
-POST          /CloudPlatform/SoftTool/runPCA3                        controllers.RClusterController.do3DPCA(isgroup:Boolean)
-POST          /CloudPlatform/SoftTool/getPCA3Data                    controllers.RClusterController.read3DPCAData(taskname:String)
-POST          /CloudPlatform/SoftTool/redrawPCA3                     controllers.RClusterController.redraw3DPCA(taskname:String)
-
-POST          /CloudPlatform/SoftTool/runRF                          controllers.RClusterController.doRF
-POST          /CloudPlatform/SoftTool/getRFData                      controllers.RClusterController.readRFData(taskname:String)
-POST          /CloudPlatform/SoftTool/redrawRF                       controllers.RClusterController.redrawRF(taskname:String)
-
-
-#Paint
-POST          /CloudPlatform/SoftTool/runBoxplot                     controllers.RPaintController.doBoxplot
-POST          /CloudPlatform/SoftTool/getBoxData                     controllers.RPaintController.readBoxData(taskname:String)
-POST          /CloudPlatform/SoftTool/redrawBox                      controllers.RPaintController.redrawBox(taskname:String)
-
-POST          /CloudPlatform/SoftTool/runHeatmap                     controllers.RPaintController.doHeatmap(isgroupr:Boolean,isgroupc:Boolean,istag:Boolean)
-POST          /CloudPlatform/SoftTool/getHeatData                    controllers.RPaintController.readHeatData(taskname:String)
-POST          /CloudPlatform/SoftTool/redrawHeat                     controllers.RPaintController.redrawHeatmap(taskname:String,rtree:String,ctree:String,xfs:String,yfs:String,sc:String,xfa:String,fn:String)
-
-POST          /CloudPlatform/SoftTool/runNet                         controllers.RPaintController.doNet
-POST          /CloudPlatform/SoftTool/getNetData                     controllers.RPaintController.readNetData(taskname:String)
-POST          /CloudPlatform/SoftTool/redrawNet                      controllers.RPaintController.redrawNet(taskname:String)
-
-POST          /CloudPlatform/SoftTool/getJvennData                   controllers.RPaintController.getJvennData
-POST          /CloudPlatform/SoftTool/getJvennData2                  controllers.RPaintController.getJvennData2
-
-POST          /CloudPlatform/SoftTool/runBar                         controllers.RPaintController.doBar(isgroup:Boolean)
-POST          /CloudPlatform/SoftTool/getBarGroupData                controllers.RPaintController.readBarData(taskname:String)
-POST          /CloudPlatform/SoftTool/redrawBar                      controllers.RPaintController.redrawBar(taskname:String)
-
-POST          /CloudPlatform/SoftTool/runAbiview                     controllers.RPaintController.doAbiview
-POST          /CloudPlatform/SoftTool/getAbiData                     controllers.RPaintController.readAbiview(taskname:String)
-POST          /CloudPlatform/SoftTool/redrawAbiview                  controllers.RPaintController.redrawAbiview(taskname:String)
-
-POST          /CloudPlatform/SoftTool/runVolcano                     controllers.RPaintController.doVolcano
-POST          /CloudPlatform/SoftTool/getVolcanoData                 controllers.RPaintController.readVolcanoData(taskname:String)
-POST          /CloudPlatform/SoftTool/redrawVolcano                  controllers.RPaintController.redrawVolcano(taskname:String)
-
-POST          /CloudPlatform/SoftTool/runManhattan                   controllers.RPaintController.doManhattan(samnum:Int,sam:String)
-POST          /CloudPlatform/SoftTool/getManhattanData               controllers.RPaintController.readManhattanData(taskname:String)
-POST          /CloudPlatform/SoftTool/redrawManhattan                controllers.RPaintController.redrawManhattan(taskname:String,samnum:Int,sam:String)
-
-POST          /CloudPlatform/SoftTool/runTreemap                     controllers.RPaintController.doTreemap(groups:String,isgroup:Boolean)
-POST          /CloudPlatform/SoftTool/getTreemapData                 controllers.RPaintController.readTreemapData(taskname:String)
-POST          /CloudPlatform/SoftTool/redrawTreemap                  controllers.RPaintController.redrawTreemap(taskname:String,groups:String)
-
-POST          /CloudPlatform/SoftTool/runViolin                      controllers.RPaintController.doViolin(isgroup:Boolean,table:String,group:String)
-POST          /CloudPlatform/SoftTool/getViolinData                  controllers.RPaintController.readViolinData(taskname:String)
-POST          /CloudPlatform/SoftTool/redrawViolin                   controllers.RPaintController.redrawViolin(taskname:String)
-
-POST          /CloudPlatform/SoftTool/runFreqHisto                   controllers.RPaintController.doFreqHisto
-POST          /CloudPlatform/SoftTool/getFreqHistoData               controllers.RPaintController.readFreqHistoData(taskname:String)
-POST          /CloudPlatform/SoftTool/redrawFreqHisto                controllers.RPaintController.redrawFreqHisto(taskname:String)
-
-POST          /CloudPlatform/SoftTool/runBreakBar                    controllers.RPaintController.doBreakBar
-POST          /CloudPlatform/SoftTool/getBreakBarData                controllers.RPaintController.readBreakBarData(taskname:String)
-POST          /CloudPlatform/SoftTool/redrawBreakBar                 controllers.RPaintController.redrawBreakBar(taskname:String)
-
-POST          /CloudPlatform/SoftTool/runPie                         controllers.RPaintController.doPie
-POST          /CloudPlatform/SoftTool/getPieData                     controllers.RPaintController.readPieData(taskname:String)
-POST          /CloudPlatform/SoftTool/redrawPie                      controllers.RPaintController.redrawPie(taskname:String)
-
-POST          /CloudPlatform/SoftTool/runEBL                         controllers.RPaintController.doEBL
-POST          /CloudPlatform/SoftTool/getEBLData                     controllers.RPaintController.readEBLData(taskname:String)
-POST          /CloudPlatform/SoftTool/redrawEBL                      controllers.RPaintController.redrawEBL(taskname:String)
-
-POST          /CloudPlatform/SoftTool/runBubble                      controllers.RPaintController.doBubble
-POST          /CloudPlatform/SoftTool/getBubbleData                  controllers.RPaintController.readBubbleData(taskname:String)
-POST          /CloudPlatform/SoftTool/redrawBubble                   controllers.RPaintController.redrawBubble(taskname:String)
-
-POST          /CloudPlatform/SoftTool/runCircos                      controllers.RPaintController.doCircos(filenum:String,l:Boolean,o:Boolean)
-POST          /CloudPlatform/SoftTool/getCircosData                  controllers.RPaintController.readCircosData(taskname:String)
-POST          /CloudPlatform/SoftTool/redrawCircos                   controllers.RPaintController.redrawCircos(taskname:String,showha:Boolean)
-
-POST          /CloudPlatform/SoftTool/runTree                        controllers.RPaintController.doTree
-POST          /CloudPlatform/SoftTool/getTreeData                    controllers.RPaintController.readTreeData(taskname:String)
-POST          /CloudPlatform/SoftTool/redrawTree                     controllers.RPaintController.redrawTree(taskname:String)
-
-POST          /CloudPlatform/SoftTool/runTernary                     controllers.RPaintController.doTernary
-POST          /CloudPlatform/SoftTool/getTernaryData                 controllers.RPaintController.readTernaryData(taskname:String)
-POST          /CloudPlatform/SoftTool/redrawTernary                  controllers.RPaintController.redrawTernary(taskname:String)
-
-POST          /CloudPlatform/SoftTool/runCCS                         controllers.RPaintController.doCCS
-POST          /CloudPlatform/SoftTool/getCCS                         controllers.RPaintController.readCCS(taskname:String)
-POST          /CloudPlatform/SoftTool/redrawCCS                      controllers.RPaintController.redrawCCS(taskname:String)
-
-POST          /CloudPlatform/SoftTool/runLIN                         controllers.RPaintController.doLIN
-POST          /CloudPlatform/SoftTool/getLIN                         controllers.RPaintController.readLINData(taskname:String)
-POST          /CloudPlatform/SoftTool/redrawLIN                      controllers.RPaintController.redrawLIN(taskname:String)
-
-POST          /CloudPlatform/SoftTool/runSCA                         controllers.RPaintController.doSCA
-POST          /CloudPlatform/SoftTool/getSCA                         controllers.RPaintController.readSCAData(taskname:String)
-POST          /CloudPlatform/SoftTool/redrawSCA                      controllers.RPaintController.redrawSCA(taskname:String)
-
-
-#Check
-POST          /CloudPlatform/SoftTool/runIGC                         controllers.RCheckController.doIGC(tablenum:Int)
-POST          /CloudPlatform/SoftTool/getIGCData                     controllers.RCheckController.readIGC(taskname:String)
-POST          /CloudPlatform/SoftTool/redrawIGCHeat                  controllers.RCheckController.redrawIGCHeat(taskname:String,rtree:String,ctree:String,xfs:String,yfs:String,sc:String,xfa:String,fn:String)
-POST          /CloudPlatform/SoftTool/redrawIGCNet                   controllers.RCheckController.redrawIGCNet(taskname:String)
-
-POST          /CloudPlatform/SoftTool/runTTest                       controllers.RCheckController.doTTest
-POST          /CloudPlatform/SoftTool/runWilcoxon                    controllers.RCheckController.doWilcoxon
-POST          /CloudPlatform/SoftTool/runKruskal                     controllers.RCheckController.doKruskal
-POST          /CloudPlatform/SoftTool/runAnova                       controllers.RCheckController.doAnova
-
-POST          /CloudPlatform/SoftTool/runPLS                         controllers.RCheckController.doPlsda
-POST          /CloudPlatform/SoftTool/getPLSData                     controllers.RCheckController.readPlsdaData(taskname:String)
-POST          /CloudPlatform/SoftTool/redrawPLS                      controllers.RCheckController.redrawPlsda(taskname:String)
-
-
-#Sequence
-POST          /CloudPlatform/SoftTool/runRevseq                      controllers.RSequenceController.doRevseq
-
-
+POST          /CloudPlatform/SoftTool/getJvennData                   controllers.RService.getJvennData
+POST          /CloudPlatform/SoftTool/getJvennData2                  controllers.RService.getJvennData2
 
 
 POST          /CloudPlatform/Utils/sendMSG                           controllers.UtilsController.sendMSG(phone:String,where:String)
@@ -187,16 +60,12 @@ GET           /CloudPlatform/Utils/previewFile                       controllers
 POST          /CloudPlatform/Utils/readFileContent                   controllers.UtilsController.readFileContent(taskname:String,filename:String)
 POST          /CloudPlatform/Utils/getFilePath                       controllers.UtilsController.getFilePath(taskname:String,filename:String)
 POST          /CloudPlatform/Utils/getSoftFreq                       controllers.UtilsController.softFreq
-#POST          /CloudPlatform/SoftTool/runKegg                        controllers.RService.doKegg(id:String,userefer:Boolean,desc:Boolean)
 
-#POST          /CloudPlatform/SoftTool/runDirected                    controllers.RService.doDirected(id:String)
-
-GET         /CloudPlatform/SoftTool/creatDownDuty                  controllers.RService.creatDownDuty(taskname:String,uid:String,num:Double)
+GET           /CloudPlatform/SoftTool/creatDownDuty                  controllers.RService.creatDownDuty(taskname:String,uid:String,num:Double)
 POST          /CloudPlatform/SoftTool/getDownloadFiles               controllers.RService.getDownloadFiles(taskname:String,soft:String)
 GET           /CloudPlatform/SoftTool/downloadFile                   controllers.RService.downloadFile(taskname:String,filename:String,num:Double)
 GET           /CloudPlatform/SoftTool/downloadZip                    controllers.RService.downloadZip(taskname:String,num:Double)
 GET           /CloudPlatform/SoftTool/download                       controllers.RService.download(taskname:String,picname:String,suffix:String,num:Double)
-#GET           /CloudPlatform/SoftTool/download                       controllers.RService.download(taskname:String,filename:String)
 GET           /CloudPlatform/SoftTool/downloadExamples               controllers.RService.downloadExamples(name:String)
 GET           /CloudPlatform/pic                                     controllers.RService.getPic(path:String,num:Double)
 GET           /CloudPlatform/pdf                                     controllers.RService.getPdf(fileUrl:String)
@@ -208,7 +77,6 @@ POST          /CloudPlatform/MyTasks/getDutys                        controllers
 POST          /CloudPlatform/MyTasks/getDutysByType                  controllers.DutyController.getDutyByType(sabbrename:String)
 POST          /CloudPlatform/MyTasks/deleteDutys                     controllers.DutyController.deleteDutys(ids:String)
 POST          /CloudPlatform/MyTasks/deleteDuty                      controllers.DutyController.deleteDuty(taskname:String)
-#GET           /CloudPlatform/MyTasks/taskPreview                     controllers.DutyController.taskPreview(taskname:String)
 POST          /CloudPlatform/MyTasks/checkTaskname                   controllers.DutyController.checktaskname
 POST          /CloudPlatform/MyTasks/showlog                         controllers.DutyController.showLog(taskname:String)
 POST          /CloudPlatform/MyTasks/showlogByUid                    controllers.DutyController.showLogByUid(taskname:String, uid:String)
@@ -232,13 +100,6 @@ POST          /CloudPlatform/User/updateAutho                        controllers
 #test below
 GET     /viewer                     controllers.HomeController.viewer
 GET     /test                       controllers.HomeController.test
-GET     /testlog                    controllers.HomeController.testlog
-GET     /testslider                 controllers.HomeController.testSlider
-GET     /testindex                  controllers.HomeController.testindex
-GET     /slider                     controllers.HomeController.testperson
-GET     /table                      controllers.HomeController.testtable
-GET     /testsoft                   controllers.SoftController.testsoft
-GET     /cynet                      controllers.SoftController.testcynet
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

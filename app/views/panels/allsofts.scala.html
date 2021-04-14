@@ -177,42 +177,65 @@
 
             function searchsoft(){
                 var parm=$("#searchbar").val();
-                if(parm!=""){
-                    $("#li_search").click();
-                    loadSoft("search",parm);
-                }
+                if(parm=="") parm = " ";
+                $("#li_search").click();
+                loadSoft("search",parm);
             }
 
             function loadSoft(param,content){
                 if(@session.get("userId").isEmpty && param=="like") openSignin();
                 removeul(param);
                 var url="";
-                if(param=="all") url = "/CloudPlatform/Softwares/home/alllist";
-                else if(param=="like") url = "/CloudPlatform/Softwares/home/likelist";
+                if(param=="all") url = "/CloudPlatform/Softwares/home/types?types=all";
+                else if(param=="like") url = "/CloudPlatform/Softwares/home/types?types=like";
                 else if(param=="search") url = "/CloudPlatform/Softwares/home/search?search="+content;
                 else url = "/CloudPlatform/Softwares/home/types?types="+param;
                 $.ajax({
                     url: url,
                     type: "get",
                     success: function (data) {
-                        var html="";
-                        if(param=="like" && JSON.stringify(data.rows)=="[]") html="<li><div>暂无收藏</div></li>";
-                        else if(param=="search" && JSON.stringify(data.rows)=="[]") html="<li><div>搜索的软件不存在！</div></li>";
-                        else if(param!="like" && param!="search" && JSON.stringify(data.rows)=="[]") html="<li><div>功能开发中，敬请期待！</div></li>";
-                        else
-                            $.each(data.rows,function (i,v) {
-                                html += "<li class='mws-report " + v.status + "'>" + v.pics + "<div class='mws-report-content'>" +
-                                        "<div class='likeable' style='float:right;'><div id='fmsg1' style='display:none;'>" +
-                                        "<div class='tooltip fade left in' style='width: 75px;bottom: 2px;right: 19px;display: block;'>" +
-                                        "<div class='tooltip-arrow'></div><div class='tooltip-inner'>点击收藏</div>" +
-                                        "</div></div><div id='fmsg2' style='display:none;'>" +
-                                        "<div class='tooltip fade left in' style='width: 75px;bottom: 2px;right: 19px;display: block;'>" +
-                                        "<div class='tooltip-arrow'></div><div class='tooltip-inner'>取消收藏</div></div></div>" + v.like +
-                                        "</div>"+v.description+"</div></li>";
-                            });
-                        $("#"+param).html(html);
+                        softbox2(data.rows, data.userlike, param)
                     }
                 });
+            }
+
+            function softbox2(rows, userlike, param) {
+                var html="";
+                if(param=="like" && JSON.stringify(rows)=="[]") html="<li><div>暂无收藏</div></li>";
+                else if(param=="search" && JSON.stringify(rows)=="[]") html="<li><div>搜索的软件不存在！</div></li>";
+                else if(param!="like" && param!="search" && JSON.stringify(rows)=="[]") html="<li><div>功能开发中，敬请期待！</div></li>";
+                else
+                    $.each(rows,function (i,v) {
+                        var status= "";
+                        if(v.status!=1) status = "waiting";
+                        var click = "";
+                        if(status=="") click = "onclick=checklog('/CloudPlatform/SoftPage/"+v.abbrename+"')";
+                        else click = "onclick=waiting()";
+                        var likeclass="";
+                        if(@session.get("userId").isEmpty)
+                            likeclass="fa fa-lg fa-star-o";
+                        else {
+                            if(userlike.toString().split("/").indexOf("" + v.id) >= 0) likeclass="fa fa-lg fa-star yellow-icon";
+                            else likeclass="fa fa-lg fa-star-o";
+                        }
+                        html += "<li class='mws-report " + status + "'>" +
+                                "<a " + click + "><div class='mws-report-icon mws-ic "+v.abbrename+"'></div></a>" +
+                                "<div class='mws-report-content'>" +
+                                "<div class='likeable' style='float:right;'><div id='fmsg1' style='display:none;'>" +
+                                "<div class='tooltip fade left in' style='width: 75px;bottom: 2px;right: 19px;display: block;'>" +
+                                "<div class='tooltip-arrow'></div><div class='tooltip-inner'>点击收藏</div>" +
+                                "</div></div><div id='fmsg2' style='display:none;'>" +
+                                "<div class='tooltip fade left in' style='width: 75px;bottom: 2px;right: 19px;display: block;'>" +
+                                "<div class='tooltip-arrow'></div><div class='tooltip-inner'>取消收藏</div></div></div>" +
+
+                                "<i class='"+likeclass+"' onmouseover='mover($(this))' onmouseout='mout($(this))' onclick='collect($(this),"+v.id+")'></i>" +
+
+                                "</div>"+
+                                "<div style='height: 115px' " + click + ">" + "<a><h4>"+v.sname+"</h4><p style='padding-right: 10px'>"+v.descreption+"</p></a>" + "</div>"+
+
+                                "</div></li>";
+                    });
+                $("#"+param).html(html);
             }
 
             function removeul(param){

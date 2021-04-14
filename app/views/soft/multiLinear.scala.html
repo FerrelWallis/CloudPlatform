@@ -105,12 +105,7 @@
                                             success: function (data) {
                                                 removeul();
                                                 loadHistory("@abbre");
-                                                $("#his_tab1").addClass("active");
-                                                $("#out_tab1").removeClass("active");
-                                                $("#ins_tab1").removeClass("active");
-                                                $("#history").addClass("active").addClass("in");
-                                                $("#example").removeClass("active");
-                                                $("#instruction").removeClass("active");
+                                                switchRunningTab();
                                                 getTaskName("MLN","MLN");
                                             }
                                         });

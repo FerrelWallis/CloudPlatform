@@ -43,6 +43,7 @@
                 @units.fileupload("1： ", "mydiv1","上传矩阵文件：","table1","PCA3d_table.txt")
                 @units.checkbox("2： ","","是否分组绘图","isgroup")<br>
                 @units.fileupload("","group","上传分组文件：","table2","PCA3d_group.txt")
+                @units.textinput("","div_isgroup","","isgrouptext","","FALSE")
                 <br><br>
                 <input type="button" value="提&nbsp;&nbsp;交" name="submit" class="btn btn-primary" onclick="run()">
             </form>
@@ -68,8 +69,10 @@
         $("#isgroup").click(function () {
             var isSelected = this.checked;
             if (isSelected === true) {
+                $("#isgrouptext").val("TRUE");
                 $("#group").show();
             } else {
+                $("#isgrouptext").val("FALSE");
                 $("#group").hide();
             }
         });
@@ -79,6 +82,7 @@
                 loadHistory("@abbre");
                 getTaskName("TPC","TPC");
                 $("#group").hide();
+                $("#div_isgroup").hide();
                 // loadVideo("//13125180.s21v.faiusr.com/58/ABUIABA6GAAg_L6R_wUomKf9nwE.mp4","/assets/images/softpic/video/bar_video.png")
             });
 
@@ -109,7 +113,7 @@
                                         layer.close(index);
                                         var form1 = new FormData($("#TPC")[0]);
                                         $.ajax({
-                                            url: "/CloudPlatform/SoftTool/runPCA3?isgroup=" + $("#isgroup").prop("checked") ,
+                                            url: "/CloudPlatform/SoftTool/runSoft?abbre=@abbre&sname=三维PCA" ,
                                             type: "post",
                                             processData: false,
                                             contentType: false,
@@ -117,12 +121,7 @@
                                             success: function (data) {
                                                 removeul();
                                                 loadHistory("@abbre");
-                                                $("#his_tab1").addClass("active");
-                                                $("#out_tab1").removeClass("active");
-                                                $("#ins_tab1").removeClass("active");
-                                                $("#history").addClass("active").addClass("in");
-                                                $("#example").removeClass("active");
-                                                $("#instruction").removeClass("active");
+                                                switchRunningTab();
                                                 getTaskName("TPC","TPC");
                                             }
                                         });

@@ -1,1 +1,0 @@
-Rscript pca_plot.R -i C:/Users/Administrator/Desktop/yun/pca_twopart/xls/pca.x.xls -si C:/Users/Administrator/Desktop/yun/pca_twopart/xls/pca.sdev.xls -o C:/Users/Administrator/Desktop/yun/pca_twopart/pdf -g C:/Users/Administrator/Desktop/yun/pca_twopart/data/group.txt

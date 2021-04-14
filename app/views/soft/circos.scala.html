@@ -48,6 +48,9 @@
                 </div>
                 <br>
                 <br>
+                @units.textinput("","div_filenum","","filenum","","")
+                @units.textinput("","div_l","","l","","")
+                @units.textinput("","div_o","","o","","")
                 <input type="button" value="提&nbsp;&nbsp;交" name="submit" class="btn btn-primary" onclick="doCircos()">
                 <br>
                 <br>
@@ -80,6 +83,9 @@
                 loadHistory("@abbre");
                 getTaskName("CIR","CIR");
                 $("#line-part").hide();
+                $("#div_filenum").hide();
+                $("#div_l").hide();
+                $("#div_o").hide();
                 $("#instruction").append(instruction);
                 var tf = ["TRUE","FALSE"];
                 var tfname = ["yes","no"];
@@ -206,6 +212,11 @@
                     var fv = form.data("formValidation");
                     fv.validate();
                     if (fv.isValid()) {
+                        if($("#line").prop("checked")) $("#l").val("TRUE");
+                        else $("#l").val("FALSE");
+                        if($("#ot").prop("checked")) $("#o").val("TRUE");
+                        else $("#o").val("FALSE");
+                        $("#filenum").val(filenum);
                         tablesflag=true;
                         var check=[];
                         check.push(checkTable("fttable","基因组结构文件"));
@@ -226,7 +237,7 @@
                                     layer.close(index);
                                     var form1 = new FormData($("#CIR")[0]);
                                     $.ajax({
-                                        url: "/CloudPlatform/SoftTool/runCircos?filenum="+filenum+"&l="+$("#line").prop("checked")+"&o="+$("#ot").prop("checked"),
+                                        url: "/CloudPlatform/SoftTool/runSoft?abbre=@abbre&sname=Circos圈图",
                                         type: "post",
                                         processData: false,
                                         contentType: false,
@@ -234,12 +245,7 @@
                                         success: function (data) {
                                             removeul();
                                             loadHistory("@abbre");
-                                            $("#his_tab1").addClass("active");
-                                            $("#out_tab1").removeClass("active");
-                                            $("#ins_tab1").removeClass("active");
-                                            $("#history").addClass("active").addClass("in");
-                                            $("#example").removeClass("active");
-                                            $("#instruction").removeClass("active");
+                                            switchRunningTab();
                                             getTaskName("CIR","CIR");
                                         }
                                     });

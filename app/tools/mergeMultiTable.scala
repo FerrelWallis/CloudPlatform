@@ -16,7 +16,7 @@ import scala.concurrent.duration.Duration
 object mergeMultiTable extends MyFile with MyStringTool with MyMapTool{
   def Run(dutyDir: String, params: Map[String, String])(implicit request: Request[MultipartFormData[TemporaryFile]]) = {
     var state = 1
-    var msg = "table trans Success!"
+    var msg = "Run Success!"
     val filenum = request.body.files.length
     val (files,input)=(1 to filenum).map{i=>
       val file=request.body.file("table"+i).get

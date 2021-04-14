@@ -22,16 +22,6 @@ class ExampleFilter @Inject()(
     implicit override val mat: Materializer,
     exec: ExecutionContext) extends Filter {
 
-//  override def apply(nextFilter: RequestHeader => Future[Result])
-//           (requestHeader: RequestHeader): Future[Result] = {
-//    // Run the next filter in the chain. This will call other filters
-//    // and eventually call the action. Take the result and modify it
-//    // by adding a new header.
-//    nextFilter(requestHeader).map { result =>
-//      result.withHeaders("X-ExampleFilter" -> "foo")
-//    }
-//  }
-
   override def apply(f: (RequestHeader) => Future[Result])(rh: RequestHeader): Future[Result] = {
     if (rh.session.get("userId").isEmpty && rh.path != "/" && rh.path != "/CloudPlatform" && !rh.path.contains("home") && !rh.path.contains("/assets/") && !rh.path.contains("/CloudPlatform/User/") && !rh.path.contains("/CloudPlatform/Utils/") ) {
       Future.successful(Results.Redirect(routes.HomeController.home2()))

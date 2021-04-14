@@ -26,6 +26,8 @@ import utils.FilesUtils.test
 case class PageData(limit: Int, offset: Int, order: String, search: Option[String], sort: Option[String])
 class DutyController @Inject()(cc: ControllerComponents, dutydao:dutyDao)(implicit exec: ExecutionContext) extends AbstractController(cc) {
 
+
+
   def insertDuty(taskname:String,uid:String,sabbrename:String,sname:String,input:String,param:String,elements:String) ={
 //    val date=Calendar.getInstance(Locale.CHINA).getTime
     val time=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())

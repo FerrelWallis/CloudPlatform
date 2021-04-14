@@ -144,3 +144,19 @@ blockquote {
 .btn-file {
     float: right;
 }
+
+#faq .panel-body, #faq .panel-heading {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+#faq .panel-body{
+    padding-top: 18px;
+}
+
+#faq .panel-heading span {
+    font-size: 14px;
+}
+
+#faq .panel-body p {
+    font-size: 14px;
+}

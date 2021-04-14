@@ -41,7 +41,7 @@
                             <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 35px, 0px); top: 0px; left: 0px; will-change: transform;width: 150px">
                                 <a class="dropdown-item" id="downPic" onclick="downloadpics('@row.status','@row.taskname','circle','pdf')">下载 pdf</a>
                                 <a class="dropdown-item" id="downPng" onclick="downloadpics('@row.status','@row.taskname','circle','png')">下载 png</a>
-                                <a class="dropdown-item" id="downTiff" onclick="downloadpics('@row.status','@row.taskname','circle','tiff')">下载 tiff</a>
+                                <a class="dropdown-item" id="downTiff" onclick="downloadpics('@row.status','@row.taskname','circle','tiff.gz')">下载 tiff</a>
                             </div>
                         </div>
                     </div>
@@ -68,58 +68,6 @@
                                     @units.redrawUnits.selector("","线圈样式：","blt")
                                     @units.redrawUnits.selector("","是否显示圈所对应文件名：","stl")
                                     @units.redrawUnits.selector("","是否显示基因组窗口信息：","sl")
-                                    @*                                    <div class="form-group-p">*@
-@*                                        <div class="form-group" style="margin-top: 5px;position: relative">*@
-@*                                            <label for="">染色体间距</label>*@
-@*                                            <div style="float:right; position: absolute; right: 11px; top: 5px;">*@
-@*                                                <div id='gaptip1' style="display: none">*@
-@*                                                    <div class='tooltip fade top in' style='width: 200px; bottom: 20px; right: -89px; display: block;'>*@
-@*                                                        <div class='tooltip-arrow'></div>*@
-@*                                                        <div class='tooltip-inner'>单数字：统一设置间距，如2。多数字逗号分隔，分别设置间距，数量必须与间距数量一致，如1,2,3。</div>*@
-@*                                                    </div>*@
-@*                                                </div>*@
-@*                                                <i class="mws-ic-16 ic-question1" onmouseover="gapfocus('gaptip1')" onmouseout="gapblur('gaptip1')" style="padding-left: 22px; background-position: center; padding-top: 2px;"></i>*@
-@*                                            </div>*@
-@*                                            <label style="padding-left: 15px;">：</label>*@
-@*                                        </div>*@
-@*                                        <div class="form-group right" style="line-height: 39px;">*@
-@*                                            <input id="cbsgap" name="cbsgap" type="text" style="width: 100%"/>*@
-@*                                        </div>*@
-@*                                    </div>*@
-@*                                    <div class="form-group-p">*@
-@*                                        <div class="form-group">*@
-@*                                            <label>线圈样式：</label>*@
-@*                                        </div>*@
-@*                                        <div class="form-group right">*@
-@*                                            <select id="blt" name="blt" style="width: 100%;">*@
-@*                                                <option value="0">透明</option>*@
-@*                                                <option value="1">实线</option>*@
-@*                                                <option value="2">虚线</option>*@
-@*                                            </select>*@
-@*                                        </div>*@
-@*                                    </div>*@
-@*                                    <div class="form-group-p">*@
-@*                                        <div class="form-group">*@
-@*                                            <label>是否显示圈所对应文件名：</label>*@
-@*                                        </div>*@
-@*                                        <div class="form-group right">*@
-@*                                            <select id="stl" name="stl" style="width: 100%;">*@
-@*                                                <option value="TRUE">yes</option>*@
-@*                                                <option value="FALSE">no</option>*@
-@*                                            </select>*@
-@*                                        </div>*@
-@*                                    </div>*@
-@*                                    <div class="form-group-p">*@
-@*                                        <div class="form-group">*@
-@*                                            <label>是否显示基因组窗口信息：</label>*@
-@*                                        </div>*@
-@*                                        <div class="form-group right">*@
-@*                                            <select id="sl" name="sl" style="width: 100%;">*@
-@*                                                <option value="TRUE">yes</option>*@
-@*                                                <option value="FALSE">no</option>*@
-@*                                            </select>*@
-@*                                        </div>*@
-@*                                    </div>*@
                                     <div class="form-group-p">
                                         <div class="form-group">
                                             <label>显示基因组窗口方式：</label>
@@ -141,6 +89,7 @@
                                             <input type="checkbox" name="high" id="high" onchange="checkhigh()" class="form-control" style="height: 13px;width: auto;float: left;margin-top: 9px;margin-left: 5px">
                                         </div>
                                     </div>
+                                    @units.redrawUnits.input_text_1("div_showha","","showha","")
                                     <div id="highpart" style="border: 1px solid lightgrey;border-radius: 5px;padding: 10px;margin-left: 30px;display: none">
                                         <div>
                                             <br>
@@ -212,42 +161,6 @@
                                         @units.redrawUnits.colorpicker("","染色体标签颜色：","fttagcolor")
                                         @units.redrawUnits.colorpicker("","刻度颜色：","kscolor")
                                         @units.redrawUnits.colorpicker("","高亮区域颜色：","highcolor")
-@*                                        <div class="form-group-p">*@
-@*                                            <div id="snamecolor">*@
-@*                                                <div class="form-group">*@
-@*                                                    <label>染色体标签颜色：</label>*@
-@*                                                </div>*@
-@*                                                <div class="form-group">*@
-@*                                                    <div  class="evo-cp-wrap">*@
-@*                                                        <input id="fttagcolor"  name="fttagcolor" value=" " class="colorPicker evo-cp0" style="margin-top: -5px;">*@
-@*                                                    </div>*@
-@*                                                </div>*@
-@*                                            </div>*@
-@*                                        </div>*@
-@*                                        <div class="form-group-p">*@
-@*                                            <div id="snamecolor">*@
-@*                                                <div class="form-group">*@
-@*                                                    <label>刻度颜色：</label>*@
-@*                                                </div>*@
-@*                                                <div class="form-group">*@
-@*                                                    <div  class="evo-cp-wrap">*@
-@*                                                        <input id="kscolor"  name="kscolor" value=" " class="colorPicker evo-cp0" style="margin-top: -5px;">*@
-@*                                                    </div>*@
-@*                                                </div>*@
-@*                                            </div>*@
-@*                                        </div>*@
-@*                                        <div class="form-group-p">*@
-@*                                            <div id="snamecolor">*@
-@*                                                <div class="form-group">*@
-@*                                                    <label>高亮区域颜色：</label>*@
-@*                                                </div>*@
-@*                                                <div class="form-group">*@
-@*                                                    <div class="evo-cp-wrap">*@
-@*                                                        <input id="highcolor"  name="highcolor" value=" " class="colorPicker evo-cp0" style="margin-top: -5px;">*@
-@*                                                    </div>*@
-@*                                                </div>*@
-@*                                            </div>*@
-@*                                        </div>*@
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="fontpara">
@@ -257,54 +170,6 @@
                                     @units.redrawUnits.slider("","基因组结构高度：","ftheight","0","1","0.1")
                                     @units.redrawUnits.slider("","刻度粗细：","kssize","0","5","1")
                                     @units.redrawUnits.slider("","刻度字体大小：","ksfont","0","2","0.1")
-@*                                    <div class="form-group-p">*@
-@*                                        <div class="form-group fontleft" style="margin-top: 5px;">*@
-@*                                            <label for="">共线性连线距圆心距离：</label>*@
-@*                                        </div>*@
-@*                                        <div class="form-group fontright" style="line-height: 39px;">*@
-@*                                            <input id="ch" name="ch" data-slider-id='sch' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.1"/>*@
-@*                                        </div>*@
-@*                                    </div>*@
-@*                                    <div class="form-group-p">*@
-@*                                        <div class="form-group fontleft" style="margin-top: 5px;">*@
-@*                                            <label for="">圈起始位置：</label>*@
-@*                                        </div>*@
-@*                                        <div class="form-group fontright" style="line-height: 39px;">*@
-@*                                            <input id="cbsdegree" name="cbsdegree" data-slider-id='scbsdegree' type="text" data-slider-min="0" data-slider-max="360" data-slider-step="5"/>*@
-@*                                        </div>*@
-@*                                    </div>*@
-@*                                    <div class="form-group-p">*@
-@*                                        <div class="form-group fontleft" style="margin-top: 5px;">*@
-@*                                            <label for="">染色体标签大小：</label>*@
-@*                                        </div>*@
-@*                                        <div class="form-group fontright" style="line-height: 39px;">*@
-@*                                            <input id="fttagfont" name="fttagfont" data-slider-id='sfttagfont' type="text" data-slider-min="0" data-slider-max="5" data-slider-step="0.5" data-slider-value="18"/>*@
-@*                                        </div>*@
-@*                                    </div>*@
-@*                                    <div class="form-group-p novirtual">*@
-@*                                        <div class="form-group fontleft">*@
-@*                                            <label for="">基因组结构高度：</label>*@
-@*                                        </div>*@
-@*                                        <div class="form-group fontright" style="line-height: 39px;">*@
-@*                                            <input id="ftheight" name="ftheight" data-slider-id='sftheight' type="text" data-slider-min="0" data-slider-max="1" data-slider-step="0.1" data-slider-value="1"/>*@
-@*                                        </div>*@
-@*                                    </div>*@
-@*                                    <div class="form-group-p">*@
-@*                                        <div class="form-group fontleft" style="margin-top: 5px;">*@
-@*                                            <label for="">刻度粗细：</label>*@
-@*                                        </div>*@
-@*                                        <div class="form-group fontright" style="line-height: 39px;">*@
-@*                                            <input id="kssize" name="kssize" data-slider-id='skssize' type="text" data-slider-min="0" data-slider-max="5" data-slider-step="1" data-slider-value="18"/>*@
-@*                                        </div>*@
-@*                                    </div>*@
-@*                                    <div class="form-group-p">*@
-@*                                        <div class="form-group fontleft" style="margin-top: 5px;">*@
-@*                                            <label for="">刻度字体大小：</label>*@
-@*                                        </div>*@
-@*                                        <div class="form-group fontright" style="line-height: 39px;">*@
-@*                                            <input id="ksfont" name="ksfont" data-slider-id='sksfont' type="text" data-slider-min="0" data-slider-max="2" data-slider-step="0.1" data-slider-value="18"/>*@
-@*                                        </div>*@
-@*                                    </div>*@
                                 </div>
                             </div>
                             <br>
@@ -409,11 +274,11 @@
                     creatSelector("m",tfname,tf);
                     creatSelector("stl",tfname,tf);
                     creatSelector("sl",tfname,tf);
-
+                    $("#div_showha").hide();
                     checkupdate(updatetime, "@row.subtime");
                     $("#CIR").show();
                     $.ajax({
-                        url:"/CloudPlatform/SoftTool/getCircosData?taskname=@row.taskname",
+                        url: "/CloudPlatform/SoftTool/getParams?taskname=@row.taskname&abbre=@row.sabbrename",
                         type:"post",
                         success:function (data) {
                             $("#redraw_pic").attr("src","/CloudPlatform/pic?path="+data.pics[0]+"&num="+Math.random());
@@ -673,11 +538,12 @@
                     }
                     $("#highname").val(highname.join(":"));
                     $("#hightrack").val(hightrack.join(":"));
-                    console.log($("#highname").val());
-                    console.log($("#hightrack").val());
+                    if($("#high").prop("checked")) $("#showha").val("TRUE");
+                    else $("#showha").val("FALSE");
+
                     var form1 = new FormData($("#CIR")[0]);
                     $.ajax({
-                        url: "/CloudPlatform/SoftTool/redrawCircos?taskname=@row.taskname&showha="+ $("#high").prop("checked"),
+                        url: "/CloudPlatform/SoftTool/reDrawRun?taskname=@row.taskname&abbre=@row.sabbrename",
                         type: "post",
                         processData: false,
                         contentType: false,

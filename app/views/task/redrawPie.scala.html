@@ -40,7 +40,7 @@
                             <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 35px, 0px); top: 0px; left: 0px; will-change: transform;width: 150px">
                                 <a class="dropdown-item" id="downPic" onclick="downloadpics('@row.status','@row.taskname','pie','pdf')">下载 pdf</a>
                                 <a class="dropdown-item" id="downPng" onclick="downloadpics('@row.status','@row.taskname','pie','png')">下载 png</a>
-                                <a class="dropdown-item" id="downTiff" onclick="downloadpics('@row.status','@row.taskname','pie','tiff')">下载 tiff</a>
+                                <a class="dropdown-item" id="downTiff" onclick="downloadpics('@row.status','@row.taskname','pie','tiff.gz')">下载 tiff</a>
                             </div>
                         </div>
                     </div>
@@ -149,7 +149,7 @@
                     checkupdate(updatetime, "@row.subtime");
                     $("#BIS").show();
                     $.ajax({
-                        url:"/CloudPlatform/SoftTool/getPieData?taskname=@row.taskname",
+                        url:"/CloudPlatform/SoftTool/getParams?taskname=@row.taskname&abbre=@row.sabbrename",
                         type:"post",
                         success:function (data) {
                             $("#redraw_pic").attr("src","/CloudPlatform/pic?path="+data.pics[0]+"&num="+Math.random());
@@ -202,7 +202,7 @@
                     $("#color").val(colors.join(","));
                     var form1 = new FormData($("#BIS")[0]);
                     $.ajax({
-                        url: "/CloudPlatform/SoftTool/redrawPie?taskname=@row.taskname",
+                        url: "/CloudPlatform/SoftTool/reDrawRun?taskname=@row.taskname&abbre=@row.sabbrename",
                         type: "post",
                         processData: false,
                         contentType: false,

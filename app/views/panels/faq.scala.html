@@ -1,0 +1,256 @@
+@()(implicit session: Session)
+@home.main("FAQ"){
+
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("mycss/news.css")" media="screen" />
+
+    <style>
+            .faq_p {
+                font-size:15px;
+            }
+
+            .panel-body p{
+                font-size: 14px;
+            }
+
+            .next_p{
+                padding-left: 25px;
+            }
+    </style>
+
+    <div style="background: white; min-height: 810px; width: 99.5%;">
+        <div style="min-height: 16.43px;padding: 15px; border-bottom: 1px solid #e5e5e5;">
+            <h4 style="margin-bottom: 0px; margin-left: 20px; font-weight: bold; line-height: 1.1;font-size: 20px;">常见FAQ</h4>
+        </div>
+        <div class="panel-group panel-group-met-scrollbar" id="faq-example" style=" overflow-x: auto; border-bottom: 1px solid #e5e5e5;">
+            <div class="panel">
+                <div class="panel-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#faq-example" href="#collapse-faq0">
+                        <span class="faq_p" style="font-weight:700;"><strong>1. 使用哪种数据格式？</strong></span>
+                    </a>
+                </div>
+                <div id="collapse-faq0" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <p>答：一般情况下都需要使用制表符分隔的txt文件，可以用excel打开，另存为“制表符分隔的文件”。</p>
+                        <img src="/assets/images/softpic/faq/all_faq1.png" style="height:auto;width: 300px;padding-left: 25px">
+                    </div>
+                </div>
+            </div>
+            <div class="panel">
+                <div class="panel-heading">
+                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#faq-example" href="#collapse-faq1">
+                        <span class="faq_p" style="font-weight:700;"><strong>2. 出现提示“第xx行样本名不存在”或“第xx行存在重复值”</strong></span>
+                    </a>
+                </div>
+                <div id="collapse-faq1" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <p>答：出现该提示时，请从以下几方面自查文件格式：</p>
+                        <p class="next_p">1）是否已将xls文件另存为“<strong>制表符分隔的txt文件</strong>”；</p>
+                        <p class="next_p">2）文件<strong>格式</strong>是否与<strong>示例文件</strong>相同；</p>
+                        <p class="next_p">3）文件中是否有<strong>特殊符号和中文</strong>，例如 <strong>%、NA、+、-、（）、空格、科学计数、罗马字母</strong>等，去掉特殊符号，将空值用数字“0”替换，中文更改为英文；</p>
+                        <p class="next_p">4）数据中是否有<strong>空列、空行、重复的行、重复的列</strong>，特别是行名（一般为gene id）、列名(一般为样本名)出现重复值，有的话就删掉，<strong>空列和重复列会影响画图，请务必检查（可以用excel查看是否有重复）</strong>；</p>
+                        <p class="next_p">5）所有文件中是否都有该样本名。</p>
+                        <p class="next_p">排查完之后，重新上传数据、提交任务。如果仍然不能分析，可通过左侧导航栏的“<strong>意见反馈</strong>”选项反馈意见，也可以加入<strong>凌波微课交流群</strong>，联系<strong>小助教或其他云平台老师解决</strong>。</p>
+                    </div>
+                </div>
+            </div>
+            <div class="panel">
+                <div class="panel-heading">
+                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#faq-example" href="#collapse-faq2">
+                        <span class="faq_p" style="font-weight:700;"><strong>3. 如何查看示例文件</strong></span>
+                    </a>
+                </div>
+                <div id="collapse-faq2" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <p>答：点击对应文件上传区域旁边斜体的“示例文件”，即可打开新页面，查看云平台提供的示例文件。</p>
+                        <img src="/assets/images/softpic/faq/all_faq2.png" style="height:auto;width: 600px;padding-left: 25px">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+
+
+
+            function formValidation() {
+                $("#mailSigninForm").formValidation({
+                    framework: 'bootstrap',
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        phone: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入账号！'
+                                }
+                            }
+                        },
+                        code: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入验证码！'
+                                }
+                            }
+                        }
+                    }
+                });
+                $("#signinForm").formValidation({
+                    framework: 'bootstrap',
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        user: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入账号！'
+                                }
+                            }
+                        },
+                        password: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入密码！'
+                                }
+                            }
+                        },
+                        validnumber: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入验证码！'
+                                },
+                                callback: {
+                                    message: '验证码错误！',
+                                    callback: function () {
+                                        return $('#validnumber').val() === code;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+                $('#signupForm').formValidation({
+                    framework: 'bootstrap',
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        phone: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入手机号！'
+                                },
+                                phone:{
+                                    message: '请输入正确手机号',
+                                    country: 'CN'
+                                }
+                            }
+                        },
+                        name: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请填写姓名！'
+                                }
+                            }
+                        },
+                        email: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请填写邮箱地址！'
+                                },
+                                emailAddress:{
+                                    message:'请输入正确邮箱地址！'
+                                }
+                            }
+                        },
+                        company: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请填写单位！'
+                                }
+                            }
+                        },
+                        password: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入密码！'
+                                },
+                                stringLength: {
+                                    min: 6,
+                                    message: '请输入至少六位密码！'
+                                }
+                            }
+                        },
+                        password1: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入确认密码！'
+                                },
+                                identical: {
+                                    field: 'password',
+                                    message: '两次密码不一致!'
+                                }
+                            }
+                        },
+                        validnumber: {
+                            validators: {
+                                notEmpty: {
+                                    message: "请输入验证码！"
+                                }
+                            }
+                        }
+                    }
+                });
+                $('#passwordForm').formValidation({
+                    framework: 'bootstrap',
+                    icon: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        password1: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入新密码！'
+                                },
+                                stringLength: {
+                                    min: 6,
+                                    message: '请输入至少六位密码！'
+                                }
+                            }
+                        },
+                        password2: {
+                            validators: {
+                                notEmpty: {
+                                    message: '请输入确认密码！'
+                                },
+                                identical: {
+                                    field: 'password1',
+                                    message: '两次密码不一致!'
+                                }
+                            }
+                        },
+                        validnumber: {
+                            validators: {
+                                notEmpty: {
+                                    message: "请输入验证码！"
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+    </script>
+}
+
+

@@ -1,3 +1,0 @@
-ID	Number
-Known	1948
-Unkown	27328

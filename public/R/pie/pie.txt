@@ -1,7 +1,0 @@
-phylum	a1	a2	a2
-Proteobacteria	6378	6708	6708
-Actinobacteria	662	557	557
-Firmicutes	526	551	551
-Bacteroidetes	469	392	392
-Acidobacteria	212	149	149
-Nitrospirae	61	27	27

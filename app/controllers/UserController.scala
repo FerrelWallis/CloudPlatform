@@ -34,22 +34,12 @@ class UserController  @Inject()(cc: ControllerComponents,onstart:onStart,utilsCo
         val id = if(form.password.equals(utilsController.getMD5String(x.pwd))) x.id.toString else ""
         Ok(Json.obj("valid" -> valid,"id" -> id))
       }
-//      usersdao.checkUserByEmail(form.user, form.password).map { x =>
-//        val valid = (x.length == 1).toString
-//        val id = if(x.length == 1) x.head.id.toString else ""
-//        Ok(Json.obj("valid" -> valid,"id" -> id))
-//      }
     }else{
       usersdao.getByPhone(form.user).map { x =>
         val valid = form.password.equals(utilsController.getMD5String(x.pwd)).toString
         val id = if(form.password.equals(utilsController.getMD5String(x.pwd))) x.id.toString else ""
         Ok(Json.obj("valid" -> valid,"id" -> id))
       }
-//      usersdao.checkUserByPhone(form.user, form.password).map { x =>
-//        val valid = (x.length == 1).toString
-//        val id = if(x.length == 1) x.head.id.toString else ""
-//        Ok(Json.obj("valid" -> valid,"id" -> id))
-//      }
     }
   }
 

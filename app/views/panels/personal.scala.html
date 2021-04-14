@@ -145,7 +145,7 @@
             }
     </style>
 
-    <div class="container" style="margin: 0 10px;width: 98%;margin-top: 20px">
+    <div class="container" style="margin: 0 10px;width: 98%;margin-top: 20px; padding-left: 0px">
         <div class="mws-panel  grid_5" style="width: 53%;margin-bottom: 20px">
             <div class="mws-panel-header">
                 <span class="mws-i-24 i-user">个人资料</span>
@@ -154,7 +154,6 @@
                 <div class="mws-panel-content">
                     <div class="grid_1" style="width: 22%" >
                         <img src="/assets/example/profile.jpg" style="width: 161px;border-radius: 50px;">
-                        <a style="margin-top: 5px; margin-left: 10px; float: right; background: #1f3851; color: white; padding: 5px 15px 5px 15px; border-radius: 6px;">更换头像</a>
                     </div>
                     <div class="grid_6 persondetail" style="margin-top: 1px;" >
                         <div class="grid_1" style="width: 30%">
@@ -267,7 +266,12 @@
                     if(JSON.stringify(data.rows)=="[]") html="<li><div>暂无收藏</div></li>";
                     else
                         $.each(data.rows,function (i,v) {
-                            html += "<li class='mws-re'>" +v.pics+ "<div class='mws-report-content'>" + v.description+ "</div></li>";
+                            html += "<li class='mws-re'>" +
+                                    "<a href='/CloudPlatform/SoftPage/"+v.abbrename+"'><div class='mws-report-icon mws-ic "+
+                                    v.abbrename+"'></div></a>" + "<div class='mws-report-content'>" +
+                                    "<div style='height: 115px' onclick=checklog('/CloudPlatform/SoftPage/"+v.abbrename+"')>" +
+                                    "<a><h4>"+v.sname+"</h4></a>" + "</div>"+
+                                    "</div></li>";
                         });
                     $("#like").html(html);
                 }

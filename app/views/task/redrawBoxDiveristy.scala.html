@@ -62,7 +62,7 @@
                                     <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 35px, 0px); top: 0px; left: 0px; will-change: transform;width: 150px">
                                         <a class="dropdown-item" id="downPic" onclick="downloadpics('@row.status','@row.taskname','S.obs','pdf')">下载 pdf</a>
                                         <a class="dropdown-item" id="downPng" onclick="downloadpics('@row.status','@row.taskname','S.obs','png')">下载 png</a>
-                                        <a class="dropdown-item" id="downTiff" onclick="downloadpics('@row.status','@row.taskname','S.obs','tiff')">下载 tiff</a>
+                                        <a class="dropdown-item" id="downTiff" onclick="downloadpics('@row.status','@row.taskname','S.obs','tiff.gz')">下载 tiff</a>
                                     </div>
                                 </div>
                             </div>
@@ -241,7 +241,7 @@
             function switchPic(index,tools) {
                 $("#downPic").attr("onclick","downloadpics('@row.status','@row.taskname','"+nav[index]+"','pdf')");
                 $("#downPng").attr("onclick","downloadpics('@row.status','@row.taskname','"+nav[index]+"','png')");
-                $("#downTiff").attr("onclick","downloadpics('@row.status','@row.taskname','"+nav[index]+"','tiff')");
+                $("#downTiff").attr("onclick","downloadpics('@row.status','@row.taskname','"+nav[index]+"','tiff.gz')");
                 $("#redraw_pic").attr("src","/CloudPlatform/pic?path=" + picpath + nav[index] + ".png&num=" + Math.random());
                 loadParam(tools);
                 $("#picname").val(nav[index]);

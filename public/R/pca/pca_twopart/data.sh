@@ -1,1 +1,0 @@
-Rscript pca_data.R -i E:/projects/DrawPicture-r/com/work/PCA-/data/table.txt -o C:/Users/Administrator/Desktop/ss/xls -sca TRUE

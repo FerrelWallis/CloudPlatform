@@ -135,20 +135,28 @@ public class leet {
     //              cab: c + ab + cab(这里cab表示的是c跟所有ab子集的组合ca、cab、cb，因此cab数量 = ab数量)
     //状态定义：由上面两个子问题可以看出，假设原字符串S的子集数量是 s，每当往字符串S的前面添加一个元素 x，
     //         如果x第一次出现，xS的子集的数量 = 1 + S字符串的所有子集数量 + x对S所有子集的组合（==S子集数量），即 1 + 2 * S子集数量
-    //         如果x不是第一次出现，xS子集的数量 = 1 + 2 * S子集数量 - 前面所有以x为其实的字符串的子集
-    //         比如(b)cbg, 新加入b的时候按照上面的计算bg的子集（b、bg）会再重复一遍，因此要减去
+    //         如果x不是第一次出现，xS子集的数量 = 0 + 2 * S子集数量 - (前面所有以x为起始的字符串的子集index - 1)的子集数量,
+    //         例如 b(bgb) = 0 + 2 * bgb数量 - gb数量
     //dp方程：定义dp[i]表示以i为起点的字符串的子集数量
-    //       dp[i] = 1 + dp[i + 1] * 2 - (第一次s[i]出现)？0 ：sum(dp[x]) x表示前面所有s[i]字符出现的下标
+    //       dp[i] = (s[i]第一次出现? 1 : 0) + dp[i + 1] * 2 - (第一次s[i]出现)？0 ：sum(dp[x]) x表示前面所有s[i]字符出现的下标
+    public static void main(String[] args) {
+        leet test = new leet();
+        System.out.println(test.distinctSubseqII("ccc"));
+    }
+
     public int distinctSubseqII(String S) {
         char[] s = S.toCharArray();
         int len = s.length;
-        int[] sum = new int[26]; //记录遍历到目前为止该字符的所有dp之和
+        int[] pre = new int[26]; //记录上一个重复字符出现的index
+        Arrays.fill(pre, len);
         int[] dp = new int[len];
         dp[len - 1] = 1;
-        sum[s[len - 1] - 'a'] = 1;
+        pre[s[len - 1] - 'a'] = len - 1;
         for(int i = len - 2; i >= 0; i--) {
-            dp[i] = 1 + 2 * dp[i + 1] - sum[s[i] - 'a'];
-            sum[s[i] - 'a'] += dp[i];
+            int minus = 0, preindex = pre[s[i] - 'a'];
+            if(preindex < len - 1) minus = dp[preindex + 1];
+            dp[i] = ((pre[s[i] - 'a'] == len)? 1 : 0) + 2 * dp[i + 1] - minus;
+            pre[s[i] - 'a'] = i;
         }
         return dp[0];
     }
@@ -184,12 +192,19 @@ public class leet {
 
     //Note: 1 <= target <= 10000.
 
-    //
-    public static void main(String[] args) {
-
-    }
-
-    public int racecar(int target) {
+    //子问题: 再不reverse的情况下, 1A 3AA 7AAA 15AAAA 31AAAAA....,拿5为例，他的最小数量之可能存在与2种情况，(7-2)或(3-1+3)
+    //状态定义: 即所有数字可以分为2种情况：1.只有A就可以获得(log2(t) + 1) 2.需要R才能获得
+    //         而第2种情况中有分两种情况,假设x为最近大于target的无A的操作数，pos1为最近大于target的无A的位置（操作数为x），
+    //         pos2为最远小于target的无A的位置(操作数为x-1)
+    //         1. 走到 pos1，再往回走 t - pos1，总操作数为 x + dp[t - pos1] + 1(1是R)
+    //         2. 走到 pos2，往回走 back = ((1 << b) - 1) (操作数b:1~x-2)，再往前走 t - pos2 + back, 总操作数为 (x - 1) + b + dp[t - pos2 + back]
+    //dp方程: dp[i] 表示走到 i 这个位置的操作数 dp[1] = 1 dp[2] = 4
+    //x = log2(i) + 1 表示最近大于target的无A操作数；pos = (1 << x) - 1 表示最近大于target的无A的所在位置
+    // if(pos == i) dp[i] = x
+    // else { dp[i] = x + dp[pos - t] + 1
+    // for(int x1 = 1; x1 < x - 1; x1++) { dp[i] = min(dp[i], x - 1 + ) }
+    // }
+    public int racecar2(int target) {
         int speed = 1, position = 0, control;
         while (position < target) {
             position += speed;
@@ -197,7 +212,50 @@ public class leet {
         return 0;
     }
 
+    class Solution {
+        public int racecar(int target) {
+            int[] f = new int[target + 2];
+            f[1]=1; //A
+            f[2]=4; //AARA 或者 ARRA
+            int k = 2;
+            // S记录连续k个A指令，达到的位置
+            int S = 3;
+            for (int i = 3; i <= target; i++) {
+                if(i == S) {
+                    f[i] = k++;
+                    // 2^k - 1
+                    S = (1<<k) - 1;
+                } else {
+                    // 情况1：连续k个A后，回退
+                    f[i] = k + 1 + f[S-i];
+                    // 情况2：连续k-1个A后，回退(0/1/.../k-2)步后，再前进
+                    for (int back = 0; back <= k-2; back++) {
+                        // 回退后还需前进的距离：i+S(back)-S(k-1)
+                        int distance = i + (1<<back) - (1<<(k-1));
+                        f[i] = Math.min(f[i], (k-1)+2+back+f[distance]);
+                    }
+                }
+            }
+            return f[target];
+        }
+    }
 
+
+
+    int[] dp = new int[10001];
+    public int racecar(int t) {
+        if (dp[t] > 0) return dp[t];
+        int n = (int)(Math.log(t) / Math.log(2)) + 1;
+        if (1 << n == t + 1) { //
+            dp[t] = n;
+        } else {
+            dp[t] = racecar((1 << n) - 1 - t) + n + 1;
+            for (int m = 0; m < n - 1; ++m) {
+                dp[t] = Math.min(dp[t], racecar(t - (1 << (n - 1)) + (1 << m)) + n + m + 1);
+            }
+        }
+        return dp[t];
+    }
 
 
 

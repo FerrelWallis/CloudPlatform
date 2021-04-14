@@ -15,7 +15,7 @@ import scala.concurrent.duration.Duration
 object lefse2 extends MyFile with MyStringTool with MyMapTool{
   def Run(dutyDir: String, params: Map[String, String])(implicit request: Request[MultipartFormData[TemporaryFile]]) = {
     var state = 1
-    var msg = "ADB Success!"
+    var msg = "Run Success!"
 
     var input=""
     val tableFile=new File(dutyDir,"table.txt")
@@ -95,12 +95,9 @@ object lefse2 extends MyFile with MyStringTool with MyMapTool{
     val cla=elements("cla").jsonToMap
     val fea=elements("fea").jsonToMap
     val lefse_LDA= if(new File(dutyDir+"/out/lefse_LDA.png").length()==0) "false" else "true"
-    //获取图片
     val pics= ((dutyDir+"/out/lefse_LDA.pdf",dutyDir+"/out/lefse_LDA.cladogram.pdf",dutyDir+"/out/lefse_LDA.features.pdf"))
-
     val fname = FileUtils.readLines(new File(dutyDir + "/out/lefse_LDA_diff.xls")).asScala.map{_.replaceAll("\"","").split("\t")(0)}.sorted
-
-    Json.obj("pics"->pics,"lefse_LDA"->lefse_LDA,"res"->res,"cla"->cla,"fea"->fea,"fname"->fname)
+    Json.obj("pics"->pics,"res"->res,"cla"->cla,"fea"->fea,"fname"->fname)
   }
 
   def ReDrawRes(dutyDir: String, newElements: Map[String, String], elements: Map[String, String])(implicit request: Request[MultipartFormData[TemporaryFile]]) = {

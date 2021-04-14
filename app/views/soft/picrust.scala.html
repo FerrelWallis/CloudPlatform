@@ -144,7 +144,14 @@
                                 type: "warning",
                                 confirmButtonText: "确认"
                             });
-                        }else{
+                        }else if(checkrunning()){
+                            swal({
+                                title: "运行数量限制",
+                                text: "Picrust运行数量限制，当前运行中的任务数量最多为1个！",
+                                type: "warning",
+                                confirmButtonText: "确认"
+                            });
+                        }else {
                             if(checktaskname()) {
                                 var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
                                 var index = layer.alert(element, {
@@ -153,34 +160,29 @@
                                     title: "提醒",
                                     btn: []
                                 });
-                                setTimeout(function () {
-                                    layer.close(index);
-                                    var form1 = new FormData($("#PICRUST")[0]);
-                                    $.ajax({
-                                        url: "/CloudPlatform/SoftTool/runSoft?abbre=@abbre&sname=PICRUST2功能预测",
-                                        type: "post",
-                                        processData: false,
-                                        contentType: false,
-                                        data: form1,
-                                        success: function (data) {
-                                            removeul();
-                                            loadHistory("@abbre");
-                                            $("#his_tab1").addClass("active");
-                                            $("#out_tab1").removeClass("active");
-                                            $("#ins_tab1").removeClass("active");
-                                            $("#history").addClass("active").addClass("in");
-                                            $("#example").removeClass("active");
-                                            $("#instruction").removeClass("active");
-                                            getTaskName("PICRUST","PIC");
-                                        }
-                                    });
-                                }, 2000);
+                                var form1 = new FormData($("#PICRUST")[0]);
+                                $.ajax({
+                                    url: "/CloudPlatform/SoftTool/runSoft?abbre=@abbre&sname=PICRUST2功能预测",
+                                    type: "post",
+                                    processData: false,
+                                    contentType: false,
+                                    data: form1,
+                                    success: function (data) {
+                                        layer.close(index);
+                                        removeul();
+                                        loadHistory("@abbre");
+                                        switchRunningTab();
+                                        getTaskName("PICRUST","PIC");
+                                    }
+                                });
                             }
                         }
                     }
                     lock = true;
                 }
             }
+
+
 
             function formValidation() {
                 let field = {};

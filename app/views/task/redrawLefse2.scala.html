@@ -212,8 +212,6 @@
                                     </button>
                                     <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 35px, 0px); top: 0px; left: 0px; will-change: transform;width: 150px">
                                         <a class="dropdown-item" id="downPic2" onclick="downloadpics('@row.status','@row.taskname','lefse_LDA.cladogram','pdf')">下载 pdf</a>
-@*                                        <a class="dropdown-item" id="downPng2" onclick="downloadpics('lefse_LDA.cladogram','png')">下载 png</a>*@
-@*                                        <a class="dropdown-item" id="downTiff2" onclick="downloadpics('lefse_LDA.cladogram','tiff')">下载 tiff</a>*@
                                     </div>
                                 </div>
                             </div>
@@ -507,8 +505,6 @@
                                     </button>
                                     <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 35px, 0px); top: 0px; left: 0px; will-change: transform;width: 150px">
                                         <a class="dropdown-item" id="downPic2" onclick="downloadpics('@row.status','@row.taskname','lefse_LDA.features','pdf')">下载 pdf</a>
-@*                                        <a class="dropdown-item" id="downPng2" onclick="downloadpics('lefse_LDA.cladogram','png')">下载 png</a>*@
-@*                                        <a class="dropdown-item" id="downTiff2" onclick="downloadpics('lefse_LDA.cladogram','tiff')">下载 tiff</a>*@
                                     </div>
                                 </div>
                             </div>
@@ -723,7 +719,6 @@
                 else $(".feafname").hide();
             };
 
-            var lefse_LDA=true;
             var pdfurl=[];
 
             $(document).ready(function ()  {
@@ -734,11 +729,6 @@
                         url:"/CloudPlatform/SoftTool/getParams?taskname=@row.taskname&abbre=@row.sabbrename",
                         type:"post",
                         success:function (data) {
-                            if(data.lefse_LDA=="false") {
-                                $("#redraw_pic1").hide();
-                                $(".LDA_nopic").show();
-                                lefse_LDA=false;
-                            }else lefse_LDA=true;
                             $.each(data.pics,function (i,v) {
                                 var num=i+1;
                                 pdfurl.push(v);

@@ -15,7 +15,7 @@ import scala.concurrent.duration.Duration
 object lefse extends MyFile with MyStringTool with MyMapTool{
   def Run(dutyDir: String, params: Map[String, String])(implicit request: Request[MultipartFormData[TemporaryFile]]) = {
     var state = 1
-    var msg = "picrust Success!"
+    var msg = "Run Success!"
 
     var input=""
     val tableFile=new File(dutyDir,"table.txt")
