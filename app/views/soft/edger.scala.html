@@ -61,7 +61,7 @@
                         sample = [];
                         checkTable().then((r)=>{
                             checkGroupfile().then((r)=>{
-                                if(tablesflag && checktaskname()){
+                                if(flagtable && checktaskname()){
                                     var element = "<div id='content'><span id='info'>文件上传中...</span>&nbsp;<img class='runningImage' src='/assets/images/loader-twitter.gif' style='width: 30px;height: 20px;float: right;padding-right: 11px;padding-top: 2px;'></div>"
                                     var index = layer.alert(element, {
                                         skin: 'layui-layer-lan',
@@ -70,6 +70,7 @@
                                         btn: []
                                     });
                                     setTimeout(function () {
+                                        layer.close(index);
                                         var form1 = new FormData($("#EDR")[0]);
                                         $.ajax({
                                             url: "/CloudPlatform/SoftTool/runSoft?abbre=@abbre&sname=edgeR差异分析",
@@ -88,7 +89,6 @@
                                 }
                             });
                         });
-                        layer.close(index);
                     }
                     lock = true;
                 }
