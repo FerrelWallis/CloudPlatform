@@ -103,7 +103,7 @@
                     checkupdate(updatetime, "@row.subtime");
                     $("#ABI").show();
                     $.ajax({
-                        url:"/CloudPlatform/SoftTool/getAbiData?taskname=@row.taskname",
+                        url:"/CloudPlatform/SoftTool/getParams?taskname=@row.taskname&abbre=@row.sabbrename",
                         type:"post",
                         success:function (data) {
                             pdfurl=data.pdfUrl;
@@ -130,7 +130,7 @@
                     });
                     var form1 = new FormData($("#ABI")[0]);
                     $.ajax({
-                        url: "/CloudPlatform/SoftTool/redrawAbiview?taskname=@row.taskname",
+                        url: "/CloudPlatform/SoftTool/reDrawRun?taskname=@row.taskname&abbre=@row.sabbrename",
                         type: "post",
                         processData: false,
                         contentType: false,

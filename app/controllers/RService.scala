@@ -191,7 +191,6 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
     Ok(result)
   }
 
-
   //getVennData
   def getJvennData = Action(parse.multipartFormData) { implicit request =>
     val file = request.body.file("browse_upload").get.ref.file
@@ -257,14 +256,11 @@ class RService @Inject()(cc: ControllerComponents,dutydao:dutyDao,dutyController
     Ok(Json.obj("data" -> data, "name" -> name, "values" -> values))
   }
 
-
-
   //创建用户任务文件夹和结果文件夹
   def creatUserDir(uid:String,taskname:String): String ={
     new File(userDutyDir+uid+"/"+taskname).mkdir()
     new File(userDutyDir+uid+"/"+taskname+"/out").mkdir()
     new File(userDutyDir+uid+"/"+taskname+"/temp").mkdir()
-
     userDutyDir+uid+"/"+taskname
   }
 
